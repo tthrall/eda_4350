@@ -1,0 +1,3 @@
+"0","salk_nfip |> knitr::kable("
+"0","  caption = ""NFIP: polio rate per 100,000 subjects"""
+"0",")"

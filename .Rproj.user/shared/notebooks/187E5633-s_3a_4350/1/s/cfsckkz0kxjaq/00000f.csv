@@ -1,0 +1,4 @@
+"0","NB10_z_score <- NB10_long |> "
+"0","  dplyr::mutate("
+"0","    z_score = (deficit - NB10_stats$avg)/NB10_stats$sd"
+"0","  )"

@@ -1,0 +1,3 @@
+"0","salk_blind |> knitr::kable("
+"0","  caption = ""Double-Blind: polio rate per 100,000 subjects"""
+"0",")"

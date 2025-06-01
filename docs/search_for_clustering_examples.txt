@@ -1,0 +1,59 @@
+search_for_clustering_examples
+
+1.  Clustering of samples and variables with mixed-type data - PMC
+https://pmc.ncbi.nlm.nih.gov/articles/PMC5705083/
+
+2.  Multivariate Clustering Analysis in R | Laboratory for Interdisciplinary Statistical Analysis | University of Colorado Boulder
+https://www.colorado.edu/lab/lisa/services/short-courses/multivariate-clustering-analysis-r
+
+3.  LISA Short Course: Multivariate Clustering Analysis in R on Vimeo
+https://vimeo.com/135381791?&signup=true#_=_
+
+4.  5 Examples of Cluster Analysis in Real Life
+https://www.statology.org/cluster-analysis-real-life-examples/
+
+5.  Lesson 14: Cluster Analysis | STAT 505
+https://online.stat.psu.edu/stat505/lesson/14
+
+6.  14.1 - Example: Woodyard Hammock Data | STAT 505
+https://online.stat.psu.edu/stat505/lesson/14/14.1
+
+7.  k-Means 101: An introductory guide to k-Means clustering in R | R-bloggers
+datasets::quakes
+https://www.r-bloggers.com/2021/03/k-means-101-an-introductory-guide-to-k-means-clustering-in-r/
+
+8.  clustering_english_edition1_amazon
+https://xsliulab.github.io/Workshop/2021/week10/r-cluster-book.pdf
+
+9.  (PDF) K-Means Clustering Example in R
+https://www.researchgate.net/publication/337772949_K-Means_Clustering_Example_in_R
+
+10.  Overview of clustering methods in R | R-bloggers
+https://www.r-bloggers.com/2024/01/overview-of-clustering-methods-in-r/
+
+11.  A Tutorial on People Analytics Using R – Clustering - AIHR
+https://www.aihr.com/blog/people-analytics-r-clustering/
+
+12.  IBM HR Analytics Employee Attrition & Performance
+https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset
+
+13.  What is clustering? | IBM
+https://www.ibm.com/think/topics/clustering
+
+14.  Chapter 15 Clustering in R | Biology 723: Statistical Computing for Biologists
+https://bio723-class.github.io/Bio723-book/clustering-in-r.html
+
+15.  Clustering Mixed Data Types in R | R-bloggers
+https://www.r-bloggers.com/2016/06/clustering-mixed-data-types-in-r/
+
+CRAN: Package ISLR
+https://cran.r-project.org/web/packages/ISLR/index.html
+
+CRAN: Package ISLR2
+https://cran.r-project.org/web/packages/ISLR2/index.html
+
+An Introduction to Statistical Learning
+https://www.statlearning.com/
+
+
+

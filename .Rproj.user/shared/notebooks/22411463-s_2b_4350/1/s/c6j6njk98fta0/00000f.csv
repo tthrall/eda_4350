@@ -1,0 +1,5 @@
+"0","# count (book, word) occurrences"
+"0","# including stop-words"
+"0","ja_book_wd_ct <- ja_words_raw |> "
+"0","  # n = number of (book, word) occurrences"
+"0","  dplyr::count(book, word)"

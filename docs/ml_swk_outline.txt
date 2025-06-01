@@ -1,0 +1,204 @@
+
+Chapter 1: Introduction—Examples from Real Life
+Chapter 2: The Problem of Learning
+Chapter 3: Regression
+Chapter 4: Survey of Classification Techniques
+Chapter 5: Bias–Variance Trade-off
+Chapter 6: Combining Classifiers
+Chapter 7: Risk Estimation and Model Selection
+Chapter 8: Consistency
+Chapter 9: Clustering
+Chapter 10: Optimization
+Chapter 11: High-Dimensional Data
+Chapter 12: Communication with Clients
+Chapter 13: Current Challenges in Machine Learning
+Chapter 14: R Source Code
+Appendix A: List of Symbols
+Appendix B: Solutions to Selected Exercises
+Appendix C: Converting Between Normal Parameters and Level-Curve Ellipsoids
+Appendix D: Training Data and Fitted Parameters
+References
+Index
+
+
+Problem 1 (“Shuttle”). The space shuttle is set to launch. For every previous launch, the air temperature is known and the number of O-rings on the solid rocket boosters which were damaged is known (there are six O-rings, and O-ring damage is a potentially catastrophic event). Based on the current air temperature, estimate the probability that at least one O-ring on a solid rocket booster will be damaged if the shuttle launches now.
+
+This is a regression problem. Poor analysis, and poor communication of some good analysis (Tufte, 2001), resulted in the loss of the shuttle Challenger and its crew on January 28, 1986.
+
+Problem 2 (“Ballot”). Immediately after the 2000 US presidential election, some voters in Palm Beach County, Florida, claimed that a confusing ballot form caused them to vote for Pat Buchanan, the Reform Party candidate, when they thought they were voting for Al Gore, the Democratic Party candidate. Based on county-by-county demographic information (number of registered members of each political party, number of people with annual income in a certain range, number of people with a certain level of education, etc.) and county-by-county vote counts from the 1996 presidential election, estimate how many people in Palm Beach County voted for Buchanan but thought they were voting for Gore.
+
+This regression problem was studied a great deal in 2000 and 2001, as the outcome of the vote in Palm Beach County could have decided the election.
+
+Problem 3 (“Heart”). A patient who is suffering from acute chest pain has entered a hospital, where several numerical variables (for example, systolic blood pressure, age) and several binary variables (for example, whether tachycardia present or not) are measured. Identify the patient as “high risk” (probably will die within 30 days) or “low risk” (probably will live 30 days).
+
+This is a classification problem.
+
+Problem 4 (“Postal Code”). An optical scanner has scanned a hand-written ZIP code on a piece of mail. It has approximately separated the digits, and each digit is represented as an 8 × 8 array of pixels, each of which has one of 256 gray-scale values, 0 (white), ..., 255 (black). Identify each pixel array as one of the digits 0 through 9.
+
+This is a classification problem which affects all of us (though not so much now as formerly).
+
+Problem 5 (“Spam”). Identify email as “spam” or “not spam,” based only on the subject line. Or based on the full header. Or based on the content of the email.
+
+This is probably the best known and most studied classification problem of all, solutions to which are applied many billions of times per day.1
+
+Problem 6 (“Vault”). Some neolithic tribes built dome-shaped stone burial vaults. Given the location and several internal measurements of some burial vaults, estimate how many distinct vault-building cultures there have been, say which vaults were built by which culture and, for each culture, give the dimensions of a vault which represents that culture’s ideal vault shape (or name the actual vault which best realizes each culture’s ideal).
+
+This is a clustering problem.
+
+
+Chapter 2: The Problem of Learning
+2.1 Domain
+2.2 Range
+2.3 Data
+2.4 Loss
+2.5 Risk
+2.6 The Reality of the Unknown Function
+2.7 Training and Selection of Models, and Purposes of Learning
+2.8 Notation
+
+
+Chapter 3: Regression
+3.1 General Framework
+3.2 Loss
+3.3 Estimating the Model Parameters
+3.4 Properties of Fitted Values
+3.5 Estimating the Variance
+3.6 A Normality Assumption
+3.7 Computation
+3.8 Categorical Features
+3.9 Feature Transformations, Expansions, and Interactions
+3.10 Variations in Linear Regression
+3.11 Nonparametric Regression
+
+
+Chapter 4: Survey of Classification Techniques
+4.1 The Bayes Classifier
+4.2 Introduction to Classifiers
+4.3 A Running Example
+4.4 Likelihood Methods
+4.5 Prototype Methods
+4.6 Logistic Regression
+4.7 Neural Networks
+4.8 Classification Trees
+4.9 Support Vector Machines
+4.10 Postscript: Example Problem Revisited
+
+
+Chapter 5: Bias–Variance Trade-off
+5.1 Squared-Error Loss
+5.2 Arbitrary Loss
+
+
+Chapter 6: Combining Classifiers
+6.1 Ensembles
+6.2 Ensemble Design
+6.3 Bootstrap Aggregation (Bagging)
+6.4 Bumping
+6.5 Random Forests
+6.6 Boosting
+6.7 Arcing
+6.8 Stacking and Mixture of Experts
+
+Chapter 7: Risk Estimation and Model Selection
+7.1 Risk Estimation via Training Data
+7.2 Risk Estimation via Validation or Test Data
+7.3 Cross-Validation
+7.4 Improvements on Cross-Validation
+7.5 Out-of-Bag Risk Estimation
+7.6 Akaike’s Information Criterion
+7.7 Schwartz’s Bayesian Information Criterion
+7.8 Rissanen’s Minimum Description Length Criterion
+7.9 R2 and Adjusted R2
+7.10 Stepwise Model Selection
+7.11 Occam’s Razor
+
+
+Chapter 8: Consistency
+8.1 Convergence of Sequences of Random Variables
+8.2 Consistency for Parameter Estimation
+8.3 Consistency for Prediction
+8.4 There Are Consistent and Universally Consistent Classifiers
+8.5 Convergence to Asymptopia Is Not Uniform and May Be Slow
+
+
+Chapter 9: Clustering
+9.1 Gaussian Mixture Models
+9.2 k-Means
+9.3 Clustering by Mode-Hunting in a Density Estimate
+9.4 Using Classifiers to Cluster
+9.5 Dissimilarity
+9.6 k-Medoids
+9.7 Agglomerative Hierarchical Clustering
+9.8 Divisive Hierarchical Clustering
+9.9 How Many Clusters Are There? Interpretation of Clustering
+9.10 An Impossibility Theorem
+
+
+Chapter 10: Optimization
+10.1 Quasi-Newton Methods
+10.2 The Nelder–Mead Algorithm
+10.3 Simulated Annealing
+10.4 Genetic Algorithms
+10.5 Particle Swarm Optimization
+10.6 General Remarks on Optimization
+10.7 The Expectation-Maximization Algorithm
+
+
+Chapter 11: High-Dimensional Data
+11.1 The Curse of Dimensionality
+11.2 Two Running Examples
+11.3 Reducing Dimension While Preserving Information
+11.4 Model Regularization
+
+
+Chapter 12: Communication with Clients
+12.1 Binary Classification and Hypothesis Testing
+12.2 Terminology for Binary Decisions
+12.3 ROC Curves
+12.4 One-Dimensional Measures of Performance
+12.5 Confusion Matrices
+12.6 Multiple Testing
+12.7 Expert Systems
+
+
+Chapter 13: Current Challenges in Machine Learning
+13.1 Streaming Data
+13.2 Distributed Data
+13.3 Semi-supervised Learning
+13.4 Active Learning
+13.5 Feature Construction via Deep Neural Networks
+13.6 Transfer Learning
+13.7 Interpretability of Complex Models
+
+
+Chapter 14: R Source Code
+14.1 Author’s Biases
+14.2 Libraries
+14.3 The Running Example (Section 4.3)
+14.4 The Bayes Classifier (Section 4.1)
+14.5 Quadratic Discriminant Analysis (Section 4.4.1)
+14.6 Linear Discriminant Analysis (Section 4.4.2)
+14.7 Gaussian Mixture Models (Section 4.4.3)
+14.8 Kernel Density Estimation (Section 4.4.4)
+14.9 Histograms (Section 4.4.5)
+14.10 The Naive Bayes Classifier (Section 4.4.6)
+14.11 k-Nearest-Neighbor (Section 4.5.1)
+14.12 Learning Vector Quantization (Section 4.5.4)
+14.13 Logistic Regression (Section 4.6)
+14.14 Neural Networks (Section 4.7)
+14.15 Classification Trees (Section 4.8)
+14.16 Support Vector Machines (Section 4.9)
+14.17 Bootstrap Aggregation (Section 6.3)
+14.18 Boosting (Section 6.6)
+14.19 Arcing (Section 6.7)
+14.20 Random Forests (Section 6.5)
+
+
+Appendix A: List of Symbols
+Appendix B: Solutions to Selected Exercises
+Appendix C: Converting Between Normal Parameters and Level-Curve Ellipsoids
+Appendix D: Training Data and Fitted Parameters
+References
+Index
+
+

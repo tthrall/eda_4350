@@ -1,0 +1,8 @@
+"0","g_gtemp_tbl <- gtemp_tbl |> "
+"0","  ggplot(mapping = aes("
+"0","    x = year, y = dtemp, color = type"
+"0","  )) + geom_line() + "
+"0","  labs("
+"0","    title = ""Change in global temperatures: 1850-2023"""
+"0","  )"
+"0","g_gtemp_tbl"

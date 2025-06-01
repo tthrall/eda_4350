@@ -1,0 +1,18 @@
+EM-software
+
+1.  CRAN: Package em
+	https://cran.r-project.org/web/packages/em/index.html
+	
+	em: A Generic Function of the EM Algorithm for Finite Mixture Models in R
+    https://cran.r-project.org/web/packages/em/vignettes/em_intro.pdf
+	
+	Dongjie Wu, 2023?
+	(student author, at the time?)
+	
+	
+	
+2.  A quick tour of mclust
+	https://cran.r-project.org/web/packages/mclust/vignettes/mclust.html
+	
+	Luca Scrucca, 2024
+	(co-developer Raftery)

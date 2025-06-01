@@ -1,0 +1,31 @@
+ice_core_info
+
+1.  MCMC: A (very) Beginnner’s Guide
+    https://prappleizer.github.io/Tutorials/MCMC/MCMC_Tutorial.html
+
+2.  prappleizer.github.io/Tutorials/MCMC/ice_core_data.txt
+    https://github.com/prappleizer/prappleizer.github.io/blob/master/Tutorials/MCMC/ice_core_data.txt
+
+3.  CO2 Ice Core Data
+    https://www.co2.earth/co2-ice-core-data
+
+4.  Available Data from the Ice Core Paleoclimatology Group | Byrd Polar and Climate Research Center
+    https://byrd.osu.edu/research/groups/ice-core-paleoclimatology/data
+
+5.  Analysis of Vostok Ice Core Data
+    https://globalchange.umich.edu/globalchange1/current/labs/Lab10_Vostok/Vostok.htm
+
+6.  Milankovitch (Orbital) Cycles and Their Role in Earth's Climate - NASA Science
+    https://science.nasa.gov/science-research/earth-science/milankovitch-orbital-cycles-and-their-role-in-earths-climate/
+
+7.  About Ice Cores | NSF Ice Core Facility
+    https://icecores.org/about-ice-cores#:~:text=The%20oldest%20continuous%20ice%20core,around%20a%20central%2C%20vertical%20core.
+
+8.  Ice core basics
+    https://www.antarcticglaciers.org/glaciers-and-climate/ice-cores/ice-core-basics/
+
+9.  Two EPICA ice cores revealing 800,000 years of climate history: an overview. | EPIC
+    https://epic.awi.de/id/eprint/18400/
+
+10. RPubs - Analysis of Vostok Ice Data
+    https://rpubs.com/nataliegrier/569988

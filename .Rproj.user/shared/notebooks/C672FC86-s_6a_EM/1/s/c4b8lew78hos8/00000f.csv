@@ -1,0 +1,5 @@
+"0","f_em <- faithful_tbl |> "
+"0","  dplyr::bind_cols(em_out$posterior) |> "
+"0","  dplyr::mutate("
+"0","    z = dplyr::if_else(comp.1 > comp.2, 1L, 2L)"
+"0","  )"

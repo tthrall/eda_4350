@@ -1,0 +1,7 @@
+"0","# f_ivl: successive 2-inch intervals of father heights"
+"0","# f_mpt: mid-point of each interval"
+"0","father_son_ht <- father_son_ht |> "
+"0","  mutate("
+"0","    f_ivl = cut(father, seq(58, 76, 2)), "
+"0","    f_mpt = (2 * ceiling(father/2)) - 1"
+"0","  )"

@@ -1,0 +1,7 @@
+"0","lit_digest_tbl <- tibble::tribble("
+"0","  ~source, ~FDR_prediction, "
+"0","  ""Digest"", 43L, "
+"0","  ""Gallup re Digest"", 44L, "
+"0","  ""Gallup re election"", 56L, "
+"0","  ""election result"", 62L"
+"0",")"

@@ -1,0 +1,451 @@
+---
+title: "Clustering: EDA in Higher Dimensions"
+subtitle: "Part 1, session 2a of Data Mining Intro"
+author: 
+  - name: "Send comments to: Tony T (adthral)"
+date: "`r format(Sys.time(), '%Y-%m-%d %H:%M', usetz = TRUE)`"
+output: 
+  html_document:
+    toc: true
+    df_print: paged
+    mathjax: default
+  word_document:
+    toc: true
+    df_print: tibble
+  pdf_document:
+    toc: true
+    df_print: tibble
+abstract: 
+  "Introduce statistical clustering methods."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = FALSE, 
+  error   = FALSE, 
+  message = FALSE, 
+  warning = FALSE
+)
+```
+
+```{r libraries}
+library(assertthat)
+library(GGally)
+library(here)
+library(ISLR2)
+library(latex2exp)
+library(tidyverse)
+library(tinytex)
+library(UsingR)
+
+```
+
+```{r local_source}
+# if needed, load local code as follows
+
+# source(here("code", "handedness_data.R"))
+```
+
+------------------------------------------------------------------------
+
+## Initial Remarks
+
+In the context of machine learning, "unsupervised learning" encompasses algorithms designed to seek patterns in data, with minimal required guidance from the user, and without the benefit of a response variable (or a set of observation "labels") to be approximated by functions of predictor variables.  Most but not all of these algorithms are designed for high-dimensional data, that is, data with many variables (columns).
+
+This approach is in the spirit of exploratory data analysis (EDA), which is practically forced upon us when we come across a new data set (and can remain essential throughout the life-cycle of a project). On the one hand, EDA has no sharp measures of success that we are driven to optimize, so one might say that we're strolling through the data, taking in the scenery. On the other hand, we are looking for unanticipated patterns in the data, and therefore it is useful to record just what patterns we do anticipate, conjecture, or wonder about.
+
+In our previous sessions we have reviewed some ways of looking at one or two variables at a time. When we are presented with a new data set having many variables, it is useful to simplify the data in some way to help us form a first impression.
+
+One way is to look for a few functions of the many variables that somehow carry much of the original information. The prime method for doing so is principal component analysis (PCA), where the functions are linear and capture much of the variation in the data. We'll come back to PCA in subsequent sessions.
+
+In this session we'll discuss another way to simplify the data, namely, to group observations having similar profiles (patterns in the values of the variables). Such clustering methods are currently of great interest in both science and industry, giving rise to a number of new clustering methods.
+
+## US Colleges
+
+```{r college}
+college <- ISLR2::College |> 
+  as_tibble(rownames = "college_name")
+```
+
+```{r college_vars_tbl}
+college_vars_tbl <- tibble::tibble(
+  var_name = names(college),
+) |> 
+  mutate(
+    dscr = case_when(
+      var_name == "college_name" ~ 
+        "Name of the college or university", 
+      var_name == "Private" ~ 
+        "No or Yes indicating private or public", 
+      var_name == "Apps" ~ 
+        "Number of applications received", 
+      var_name == "Accept" ~ 
+        "Number of applications accepted", 
+      var_name == "Enroll" ~ 
+        "Number of new students enrolled", 
+      var_name == "Top10perc" ~ 
+        "Pct. new students from top 10% of H.S. class", 
+      var_name == "Top25perc" ~ 
+        "Pct. new students from top 25% of H.S. class", 
+      var_name == "F.Undergrad" ~ 
+        "Number of fulltime undergraduates", 
+      var_name == "P.Undergrad" ~ 
+        "Number of parttime undergraduates", 
+      var_name == "Outstate" ~ 
+        "Out-of-state tuition", 
+      var_name == "Room.Board" ~ 
+        "Room and board costs", 
+      var_name == "Books" ~ 
+        "Estimated book costs", 
+      var_name == "Personal" ~ 
+        "Estimated personal spending", 
+      var_name == "PhD" ~ 
+        "Pct. of faculty with PhD's", 
+      var_name == "Terminal" ~ 
+        "Pct. of faculty with terminal degree", 
+      var_name == "S.F.Ratio" ~ 
+        "Student/faculty ratio", 
+      var_name == "perc.alumni" ~ 
+        "Pct. alumni who donate", 
+      var_name == "Expend" ~ 
+        "Instructional expenditure per student", 
+      var_name == "Grad.Rate" ~ 
+        "Graduation rate"
+    )
+  )
+```
+
+We begin with data about US universities and colleges from 1995, described in the book, *An Introduction to Statistical Learning with applications in R* ([ISLR](https://www.statlearning.com)). The data are recorded within the R package `ISLR2` as `ISLR2::College`.  From the R command `help("College")` we see that the data consist of 777 observations (data rows), and obtain the following description of the variables (data columns).
+
+```{r college_vars_tbl__kable}
+college_vars_tbl |> knitr::kable(
+  caption = "US college variables (1995 issue of USNWR)", 
+  col.names = c("variable", "description")
+)
+```
+
+### Class Exercise
+
+Team up with a classmate and make your own copy of the `ISLR2::College` data.  Record your questions and conjectures about the data.  Which of these could be addressed by the set of data variables?  Take 15 minutes to prepare to report out to the class.
+
+### K-means Clustering
+
+We'll start our discussion of clustering using a function in the R `stats` package, namely `stats::kmeans()`.  The function requires us to specify either the desired number $K$ of clusters (groups) of observations to be formed, or else to provide an initial set of $K$ cluster centers. If we merely provide the desired number $K$ of clusters, `kmeans()` randomly selects $K$ data rows (observations) as the initial set of cluster centers. 
+
+Given a set of cluster centers the algorithm iteratively searches for a better set, meaning a set having a smaller "within-cluster sum of squares".  In broad terms, this is done in two steps.
+
+  1.  Assign: the algorithm assigns each data point to the nearest center (in Euclidean distance) thereby partitioning the data points into $K$ clusters.
+  1.  Update: For each cluster of data points, the algorihtm calculates a new cluster center, namely, the mean vector of the data points within the cluster.  This yields a new set of cluster centers.
+  
+Convergence criteria: For each cluster the algorithm adds up the (point, center) squared distances.  Those $K$ sums of squares are summed to form the "within-cluster sum of squares (WCSS)".  In addition the algorithm records the grand mean vector, the average across the entire data set and sums the squared (cluster-center, grand-mean) Euclidean distances, which is called the "between-cluster sum of squares (BCSS)".  The algorithm concludes the search when cluster-membership no longer changes, or when the decrease in WCSS is sufficiently small.
+
+#### Grouping variables
+
+Let's try specifying $K$ cluster centers based on some initial ideas about how the observations might be grouped.  To specify cluster centers let's try grouping the data based on binary factors (splitting on the median value) derived from the following variables:
+
+  - enrollment percentage (100 * Enroll / Apps)
+  - Top10perc
+  - Expend
+
+Before proceeding, let's examine the distribution of these variables.  Here's a set of scatter plots showing each pair of the above three variables.
+
+```{r college_factors}
+# split selected variables at their median value
+college_factors <- college |> 
+  mutate(
+    enroll_pct = 100 * Enroll / Apps,
+    enroll_fct = enroll_pct < median(enroll_pct),
+    top_10_fct = Top10perc  < median(Top10perc),
+    expend_fct = Expend     < median(Expend)
+  ) |> 
+  # for binary factors above, re-code (T, F) to ("lwr", "upr")
+  mutate(across(
+    .cols = c(enroll_fct, top_10_fct, expend_fct), 
+    .fns  = ~ if_else(.x, "lwr", "upr")
+  )) |> 
+  # label each group with 3 bits
+  mutate(
+    enroll_lbl = if_else(enroll_fct == "lwr", 0L, 1L), 
+    top_10_lbl = if_else(top_10_fct == "lwr", 0L, 1L), 
+    expend_lbl = if_else(expend_fct == "lwr", 0L, 1L), 
+    grp_lbl    = paste0("g_", enroll_lbl, top_10_lbl, expend_lbl)
+  ) |> 
+  # remove redundant labeling vars
+  dplyr::select(- enroll_lbl, - top_10_lbl, - expend_lbl)
+
+# record the median values
+enr_pct_mid <- median(college_factors$ enroll_pct)
+top_10_mid  <- median(college_factors$ Top10perc)
+expend_mid  <- median(college_factors$ Expend)
+```
+
+```{r g_grp_var_matrix}
+# Form a matrix of figures, showing each 
+# distinct pair of variables in a scatter diagram.
+g_grp_var_matrix <- college_factors |> 
+  GGally::ggpairs(
+    columns = c("enroll_pct", "Top10perc", "Expend")
+  )
+g_grp_var_matrix
+```
+
+We see that `enroll_pct` is negatively correlated with the other two variables, `Top10perc` and `Expend`, which are positively correlated.  Also note that `Expend` is measured (in US dollars) on a very different scale from the other two variables (to be further discussed).
+
+Now let's look at the three variables more closely, one at a time.
+
+```{r g_enroll_pct}
+g_enroll_pct <- college_factors |> 
+  ggplot(mapping = aes(x = enroll_pct)) + 
+  geom_histogram() + 
+  geom_vline(
+    xintercept = enr_pct_mid, linewidth = 2, colour = "red"
+  ) + 
+  labs(
+    title = "% enrolled per application", 
+    subtitle = "(vertical line at median)"
+  )
+g_enroll_pct
+```
+
+```{r g_top_10}
+g_top_10 <- college_factors |> 
+  ggplot(mapping = aes(x = Top10perc)) + 
+  geom_histogram() + 
+  geom_vline(
+    xintercept = top_10_mid, linewidth = 2, colour = "red"
+  ) + 
+  labs(
+    title = "% of new students from top 10% in their HS", 
+    subtitle = "(vertical line at median)"
+  )
+g_top_10
+```
+
+```{r g_Expend}
+g_Expend <- college_factors |> 
+  ggplot(mapping = aes(x = Expend)) + 
+  geom_histogram() + 
+  geom_vline(
+    xintercept = expend_mid, linewidth = 2, colour = "red"
+  ) + 
+  labs(
+    title = "Instructional expenditure per student", 
+    subtitle = "(vertical line at median)"
+  )
+g_Expend
+```
+
+The figures above show decent variation on either side of the median value.  Therefore cutting each of the 3 variables at their respective medians is not unduly distorting, as long as we bear in mind that each distribution has a right tail (with varying degrees of positive skewness).
+
+For each of the variables shown we create a binary variable having two levels, "lwr" and "upr", meaning below the median value, or else no less than the median value.  We then form 8 groups, each a combination of levels of the 3 binary variables, which we label $g_{000}, g_{001}, \ldots, g_{111}$ to denote the binary factors based on `enroll_pct`, `Top10perc`, and `Expend` (in that order), with {"lwr", "upr"} coded as {0, 1}.
+
+We will provide function `kmeans()` the averages of the numeric variables within each group, thus representing a sample of 777 observations by just 8 groups.  But we are still in a 18-dimensional space corresponding to the 18 numeric data columns (the original 17 plus `enroll_pct`).
+
+To examine our initial grouping of the data let's first select the variables from which we defined the 8 groups and examine the scatter diagrams of each pair using color to distinguish points belonging to different groups.  This selection of variables should maximize the separation between groups, and just serves as a check.
+
+Here are scatter diagrams of each pair  of the variables `enroll_pct`, `Top10perc`, and `Expend`, with points colored by group membership.
+
+```{r g_enroll_top_10}
+g_enroll_top_10 <- college_factors |> 
+  ggplot(mapping = aes(
+    x = enroll_pct, y = Top10perc, 
+    colour = grp_lbl, shape = grp_lbl
+  )) + 
+  scale_shape_manual(values = 0:7) +
+  geom_point() + 
+  labs(
+    title = "(enroll_pct, Top10perc)", 
+    subtitle = "grouping variables (1, 2)"
+  )
+g_enroll_top_10
+```
+
+```{r g_enroll_Expend}
+g_enroll_Expend <- college_factors |> 
+  ggplot(mapping = aes(
+    x = enroll_pct, y = Expend, 
+    colour = grp_lbl, shape = grp_lbl
+  )) + 
+  scale_shape_manual(values = 0:7) +
+  geom_point() + 
+  labs(
+    title = "(enroll_pct, Expend)", 
+    subtitle = "grouping variables (1, 3)"
+  )
+g_enroll_Expend
+```
+
+```{r g_top_10_Expend}
+g_top_10_Expend <- college_factors |> 
+  ggplot(mapping = aes(
+    x = Top10perc, y = Expend, 
+    colour = grp_lbl, shape = grp_lbl
+  )) + 
+  scale_shape_manual(values = 0:7) +
+  geom_point() + 
+  labs(
+    title = "(Top10perc, Expend)", 
+    subtitle = "grouping variables (2, 3)"
+  )
+g_top_10_Expend
+```
+
+The figures show good separation between groups, as we expected.
+
+Again as a reality-check, the table below shows the mean per group of the underlying grouping variables.
+
+```{r means_per_grp}
+means_per_grp <- college_factors |> 
+  # remove original non-numeric variables
+  dplyr::select(- college_name, - Private) |> 
+  # reduce grouping variables to just grp_lbl
+  dplyr::select(- (enroll_fct:expend_fct)) |> 
+  # vector of mean values per group
+  summarise(across(
+    .cols = everything(), 
+    .fns  = ~ mean(.x, na.rm = TRUE)
+  ), 
+  # grouping variable
+  .by = "grp_lbl", 
+  # group size: number of original data rows per group
+  count = n()
+  ) |> 
+  arrange(grp_lbl)
+```
+
+```{r means_per_grp__kable}
+means_per_grp |> 
+  dplyr::select(
+    grp_lbl, enroll_pct, Top10perc, Expend
+  ) |> 
+  knitr::kable(
+    caption = "Mean values per group of underlying grouping variables", 
+    col.names = c("group", "enroll_pct", "Top10perc", "Expend"), 
+    digits = 1
+  )
+  
+```
+
+#### Results for specified inital cluster centers
+
+The figures and table immediately above serve to check that we've not made some error in the formation of the 8 groups.  Calculated, but not shown, are the mean values per group of the remaining numeric variables.
+
+Now let's see the clusters that the `kmeans()` function devises when we provide it with initial cluster centers.  For each of our 8 groups we calculated a vector of mean values across 18 numeric variables.  We now provide these 8 vectors of mean values as 8 initial cluster centers to the `kmeans()` function.[^cc_matrix]
+
+[^cc_matrix]: `kmeans()` expects the cluster centers to be expressed as a matrix, in which each _row_ represents a single cluster center and each column  represents a "coordinate" of the cluster centers that matches and is labeled as one of the numeric variables (columns) of the data matrix.
+
+The resulting clusters are shown in the scatter diagrams below, where for purposes of comparison we have projected the clusters onto the grouping variables we previously adopted.
+
+```{r m_kmeans_ctrs}
+# to ensure reproducibility, set random seed
+set.seed(42) # nod to Hitchhiker's Guide to the Galaxy
+
+# use means_per_grp as initial cluster centers
+m_kmeans_ctrs <- college_factors |> 
+  # retain only original numeric variables and enroll_pct
+  dplyr::select(
+    - college_name, - Private, - (enroll_fct:grp_lbl)
+  ) |> 
+  kmeans(
+    centers = means_per_grp |> 
+      # retain only original numeric variables and enroll_pct
+      dplyr::select(
+        - grp_lbl, - count
+      )
+  )
+```
+
+```{r college_km_ctrs}
+# assign observations to km clusters
+college_km_ctrs <- college_factors |> 
+  mutate(cluster = m_kmeans_ctrs$ cluster)
+```
+
+```{r g_enroll_top_10_kmc}
+g_enroll_top_10_kmc <- college_km_ctrs |> 
+  mutate(cluster = as_factor(cluster)) |> 
+  ggplot(mapping = aes(
+    x = enroll_pct, y = Top10perc, 
+    colour = cluster, shape = cluster
+  )) + 
+  scale_shape_manual(values = 0:7) +
+  geom_point() + 
+  labs(
+    title = "(enroll_pct, Top10perc)", 
+    subtitle = "grouping variables (1, 2)"
+  )
+g_enroll_top_10_kmc
+```
+
+```{r g_enroll_Expend_kmc}
+g_enroll_Expend_kmc <- college_km_ctrs |> 
+  mutate(cluster = as_factor(cluster)) |> 
+  ggplot(mapping = aes(
+    x = enroll_pct, y = Expend, 
+    colour = cluster, shape = cluster
+  )) + 
+  scale_shape_manual(values = 0:7) + 
+  geom_point() + 
+  labs(
+    title = "(enroll_pct, Expend)", 
+    subtitle = "grouping variables (1, 3)"
+  )
+g_enroll_Expend_kmc
+```
+
+```{r g_top_10_Expend_kmc}
+g_top_10_Expend_kmc <- college_km_ctrs |> 
+  mutate(cluster = as_factor(cluster)) |> 
+  ggplot(mapping = aes(
+    x = Top10perc, y = Expend, 
+    colour = cluster, shape = cluster
+  )) + 
+  scale_shape_manual(values = 0:7) + 
+  geom_point() + 
+  labs(
+    title = "(Top10perc, Expend)", 
+    subtitle = "grouping variables (2, 3)"
+  )
+g_top_10_Expend_kmc
+```
+
+```{r km_ctr_tbl}
+# reformat cluster centers as a tibble
+km_ctr_tbl <- m_kmeans_ctrs$ centers |> 
+  as_tibble(rownames = "cluster") |> 
+  mutate(cluster = as.integer(cluster)) |> 
+  dplyr::select(cluster, everything())
+```
+
+```{r km_ctr_tbl__kable}
+km_ctr_tbl |> 
+  dplyr::select(cluster, enroll_pct, Top10perc, Expend) |> 
+  knitr::kable(
+  caption = "K-means: grouping variable means per cluster", 
+  digits = 1
+)
+```
+
+The clusters formed by `kmeans()` seem rather similar to our original groups.  If we scrutinize the `kmeans()` clustering shown above, we can see that the clusters closely follow the `Expend` variable, which may be due to the large scale of that variable.
+
+#### Results for random inital cluster centers
+
+
+
+#### Which value of $K$?
+
+
+
+#### Other clustering algorithms
+
+
+
+## Team Exercises
+
+
+
+## Resources
+
+[An Introduction to Statistical Learning](https://www.statlearning.com/) by James, Witten, Hastie, & Tibshirani
+
+[K-means clustering with tidy data principles – tidymodels](https://www.tidymodels.org/learn/statistics/k-means/)

@@ -1,0 +1,2 @@
+"0","ocean_pgram <- timeSeriesDataSets::gtemp_ocean_ts |> "
+"0","  stats::spectrum()"

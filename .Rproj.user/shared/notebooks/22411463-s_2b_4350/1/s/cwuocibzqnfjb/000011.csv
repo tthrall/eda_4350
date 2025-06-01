@@ -1,0 +1,6 @@
+"0","hgwells_word_ct |> "
+"0","  dplyr::slice_head(n = 10) |> "
+"0","  knitr::kable("
+"0","  caption = ""H.G. Wells: 10 most common (non-stop) words"", "
+"0","  col.names = c(""word"", ""count"")"
+"0",")"

@@ -1,0 +1,10 @@
+T.W. Anderson, I. Olkin,
+Maximum-likelihood estimation of the parameters of a multivariate normal distribution,
+Linear Algebra and its Applications,
+Volume 70,
+1985,
+Pages 147-171,
+ISSN 0024-3795,
+https://doi.org/10.1016/0024-3795(85)90049-7.
+(https://www.sciencedirect.com/science/article/pii/0024379585900497)
+Abstract: This paper provides an exposition of alternative approaches for obtaining maximum- likelihood estimators (MLE) for the parameters of a multivariate normal distribution under different assumptions about the parameters. A central focus is on two general techniques, namely, matrix differentiation and matrix transformations. These are systematically applied to derive the MLE of the means under a rank constraint and of the covariances when there are missing observations. Derivations using induction and inequalities are also included to illustrate alternative methods. Other examples, such as a connection with an econometric model, are included. Although the paper is primarily expository, some of the proofs are new.

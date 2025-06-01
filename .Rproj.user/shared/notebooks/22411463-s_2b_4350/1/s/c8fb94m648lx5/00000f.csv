@@ -1,0 +1,4 @@
+"0","# use max tf-idf to find the most distinctive word per book"
+"0","ja_max_wd_per_book <- ja_tf_idf |> "
+"0","  group_by(book) |> "
+"0","  filter(tf_idf == max(tf_idf, na.rm = TRUE))"

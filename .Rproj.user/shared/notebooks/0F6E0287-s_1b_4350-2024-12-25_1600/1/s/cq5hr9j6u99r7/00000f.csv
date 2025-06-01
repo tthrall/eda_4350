@@ -1,0 +1,2 @@
+"0","# make your own copy of the survey data "
+"0","gss_cat <- forcats::gss_cat"

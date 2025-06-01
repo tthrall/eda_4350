@@ -1,0 +1,6 @@
+"0","faithful_2 <- faithful_4 |> "
+"0","  dplyr::filter(delay_low == duration_low) |> "
+"0","  dplyr::mutate("
+"0","    z = dplyr::if_else(delay_low, 1L, 2L)"
+"0","  ) |> "
+"0","  dplyr::select(z, delay, duration)"

@@ -1,0 +1,6 @@
+"0","f_tag_smy |> "
+"0","  dplyr::select(z:dd_cor) |> "
+"0","  knitr::kable("
+"0","    caption = ""Summary statistics for initial clusters of data points"", "
+"0","    digits = 1"
+"0","  )"

@@ -1,0 +1,47 @@
+{
+  "markdown/eda_4350.qmd": {
+    "eda_4350.html": "a1e64dc1"
+  },
+  "markdown/s_1a_4350.qmd": {
+    "s_1a_4350.html": "f79adbe3"
+  },
+  "markdown/s_1b_4350.qmd": {
+    "s_1b_4350.html": "20d32b0a"
+  },
+  "z_warehouse/z_markdown/s_1b_4350-2024-12-25_1600.qmd": {
+    "s_1b_4350-2024-12-25_1600.html": "7409e17b"
+  },
+  "markdown/s_2a/s_2a_4350.qmd": {
+    "s_2a_4350.html": "30d0d333"
+  },
+  "markdown/s_1b/s_1b_4350.qmd": {
+    "s_1b_4350.html": "91f366bc"
+  },
+  "markdown/s_2b/s_2b_4350.qmd": {
+    "s_2b_4350.html": "e226f0d8"
+  },
+  "markdown/s_3b/s_3b_4350.qmd": {
+    "s_3b_4350.html": "dc71294b"
+  },
+  "markdown/s_3a/s_3a_4350.qmd": {
+    "s_3a_4350.html": "967e51de"
+  },
+  "markdown/s_5b/s_5b_4350.qmd": {
+    "s_5b_4350.html": "6d963b6e"
+  },
+  "markdown/s_6a/s_6a_4350.qmd": {
+    "s_6a_4350.html": "52685662"
+  },
+  "markdown/s_6b/s_6b_4350.qmd": {
+    "s_6b_4350.html": "403c0201"
+  },
+  "markdown/s_6a_LDA/s_6a_LDA.qmd": {
+    "s_6a_LDA.html": "069c2784"
+  },
+  "markdown/s_6a_LDA/s_6a_Dirichlet_dstn.qmd": {
+    "s_6a_Dirichlet_dstn.html": "215243ee"
+  },
+  "markdown/s_6a_LDA/s_6a_EM.qmd": {
+    "s_6a_EM.html": "a57e8bdf"
+  }
+}

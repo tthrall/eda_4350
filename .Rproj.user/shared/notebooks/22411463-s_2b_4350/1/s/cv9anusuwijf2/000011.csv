@@ -1,0 +1,6 @@
+"0","sf_token_tbl <- sf_line_tbl |> "
+"0","  tidytext::unnest_tokens("
+"0","    input  = ""line"", "
+"0","    output = ""word"""
+"0","  )"
+"0","sf_token_tbl"

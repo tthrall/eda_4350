@@ -1,0 +1,3 @@
+"0","NB10_first_5 |> knitr::kable("
+"0","  caption = ""NB10: measurement (grams) and deficiency (micro-grams)"""
+"0",")"

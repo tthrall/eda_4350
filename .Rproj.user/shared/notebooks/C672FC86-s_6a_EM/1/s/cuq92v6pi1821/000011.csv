@@ -1,0 +1,6 @@
+"0","f_em_smy |> "
+"0","  dplyr::select(z, count:dd_cor) |> "
+"0","  knitr::kable("
+"0","    caption = ""Summary statistics for final groups of data points"", "
+"0","    digits = 1"
+"0","  )"

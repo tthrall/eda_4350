@@ -1,0 +1,4 @@
+"0","g_s_minus_f <- father_son_ht |> "
+"0","  ggplot(mapping = aes(x = s_minus_f)) + "
+"0","  geom_histogram()"
+"0","g_s_minus_f"

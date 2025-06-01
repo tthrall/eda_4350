@@ -1,0 +1,8 @@
+"0","beta_ratio_wide <- ap_topics |> "
+"0","  mutate(topic = paste0(""beta_"", topic)) |> "
+"0","  pivot_wider(names_from = topic, values_from = beta) |> "
+"0","  filter("
+"0","    pmin(beta_1, beta_2) > 0, "
+"0","    pmax(beta_1, beta_2) > 0.001"
+"0","  ) |> "
+"0","  mutate(log_ratio = log2(beta_2 / beta_1))"

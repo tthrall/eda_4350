@@ -1,0 +1,7 @@
+"0","truman_dewey_tbl <- tibble::tribble("
+"0","  ~source, ~Truman, ~Dewey, ~Thrumond, ~Wallace, "
+"0","  ""Crossley"", 45L, 50L, 2L, 3L, "
+"0","  ""Gallup"", 44L, 50L, 2L, 4L, "
+"0","  ""Roper"", 38L, 53L, 5L, 4L, "
+"0","  ""election result"", 50L, 45L, 3L, 2L"
+"0",")"

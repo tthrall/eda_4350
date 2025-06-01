@@ -1,0 +1,121 @@
+s_6a_outline
+
+eda_4350_ketrage_v3
+
+tt_slides
+
+render(here("markdown", "s_1a", "s_1a_4350.qmd"), output_format = "word_document")
+
+Heights of Fathers and Sons	1
+Class Exercise: Diamond Data	3
+Class Exercise: General Social Survey Data	4
+Discussion: what should EDA mean?	4
+Team Exercises	6
+Resources	7
+
+render(here("markdown", "s_1b", "s_1b_4350.qmd"), output_format = "word_document")
+
+Heights of Fathers and Sons	2
+Z-Scores: transforming data values to standard units	3
+SD line	4
+Regression line	4
+The Normal distribution	7
+Class Exercise: Diamond Data	8
+Simulating Random Variables	8
+Cautionary Remarks	9
+Robust statistics	9
+Anscombe Quartet	9
+Statistical Independence	10
+Definition	11
+The case when X and Y are categorical variables	11
+Simpson’s Paradox	13
+Entropy	15
+Background	15
+Yes-No Questions	15
+Definition	16
+HX,Y for independent X,Y	17
+Mutual Information	18
+KL Divergence	18
+Team Exercises	19
+Resources	20
+
+render(here("markdown", "s_2a", "s_2a_4350.qmd"), output_format = "word_document")
+
+Initial Remarks	1
+US Colleges	2
+Class Exercise	3
+Grouping Variables	3
+Example: college data grouping variables	3
+Measures of clustering effectiveness	7
+Standardizing variables	7
+Within-group distances in standard units	8
+K-means Clustering	8
+Results for specified inital cluster centers	9
+Jaccard similarity	10
+Distribution of point-center distances	11
+Results for random inital cluster centers	12
+Which value of K?	14
+Other clustering algorithms	15
+Team Exercises	16
+Resources	16
+
+render(here("markdown", "s_2b", "s_2b_4350.qmd"), output_format = "word_document")
+
+Text Analysis
+Introduction	1
+Text Example	2
+Larger Text Examples	3
+Jane Austen’s novels	3
+The Gutenberg Project	4
+Class Exercise	5
+TF-IDF: Term Frequency - Inverse Doc Frequency	5
+Document-Term Matrix (DTM)	6
+Example: Associated Press articles	7
+Example: inaugural addresses of US presidents	8
+Topic Models	9
+Latent Dirichlet allocation (LDA)	10
+Example: Associated Press articles	10
+Additional Aspects of Text Analysis	12
+Team Exercises	12
+Resources	13
+
+render(here("markdown", "s_3a", "s_3a_4350.qmd"), output_format = "word_document")
+
+Sampling and Study Design
+Introduction	1
+Observational Study Examples	2
+Literary Digest Poll, 1936	2
+Truman versus Dewey, 1948	2
+Using Chance in Surveys	3
+More Recent Election Polls	4
+UC Berkeley Admissions	5
+Class Exercise	5
+Experimental Study Examples	6
+Salk Vaccine Field Trial	6
+Portacaval Shunt	7
+Repeated Weighing of NB10	8
+Accuracy of the Sample Average	13
+Team Exercises	14
+Resources	15
+
+render(here("markdown", "s_3b", "s_3b_4350.qmd"), output_format = "word_document")
+
+Statistical Simulation
+[incoporated into presentation of eda_v3 chpt 7 "Sampling"]
+
+render(here("markdown", "s_6a", "s_6a_4350.qmd"), output_format = "word_document")
+
+Part 1 Review
+Introduction	1
+Overview of Topics	2
+Class Exercises	2
+Clarification Needed (10 minute prep)	3
+Selection of Topics (15 minute prep)	3
+Intended Participants (10 minute prep)	3
+Learning Outcomes (15 minute prep)	3
+Teaching Style (10 minute prep)	4
+
+
+
+
+

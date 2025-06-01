@@ -1,0 +1,5 @@
+"0","# remove stop-words"
+"0","ja_words_xsw <- ja_words_raw |> "
+"0","  anti_join("
+"0","    y  = tidytext::stop_words, "
+"0","    by = ""word"")"

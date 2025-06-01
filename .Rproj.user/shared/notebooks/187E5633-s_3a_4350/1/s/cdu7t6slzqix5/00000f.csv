@@ -1,0 +1,3 @@
+"0","shunt_survival |> knitr::kable("
+"0","  caption = ""% patients alive after 3 years per (design, assignment)"""
+"0",")"

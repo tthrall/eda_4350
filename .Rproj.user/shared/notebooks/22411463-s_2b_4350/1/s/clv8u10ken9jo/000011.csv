@@ -1,0 +1,5 @@
+"0","sf_line_tbl <- tibble::tibble("
+"0","  l_idx = 24:28, "
+"0","  line  = sound_fury"
+"0",")"
+"0","sf_line_tbl"

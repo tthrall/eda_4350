@@ -1,0 +1,2 @@
+"0","data(""data_corpus_inaugural"", package = ""quanteda"")"
+"0","head(docvars(data_corpus_inaugural), 6)"

@@ -1,0 +1,7 @@
+"0","library(assertthat)"
+"0","library(here)"
+"0","library(latex2exp)"
+"0","library(tidyverse)"
+"0","library(tinytex)"
+"0","library(UsingR)"
+"0",""

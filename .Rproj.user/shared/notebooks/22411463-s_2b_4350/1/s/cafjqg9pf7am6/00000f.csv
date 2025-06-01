@@ -1,0 +1,4 @@
+"0","# calculate (tf, idf, tf-idf)"
+"0","ja_tf_idf <- ja_book_wd_ct |> "
+"0","  tidytext::bind_tf_idf(word, book, n) |> "
+"0","  arrange(book, desc(tf_idf))"

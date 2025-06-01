@@ -1,0 +1,7 @@
+"0","# save as text file just once"
+"0","save_file <- FALSE"
+"0","if (save_file) {"
+"0","  presidential_tbl |> write_tsv("
+"0","    here(""data"", ""retain"", ""presidential_tbl.txt"")"
+"0","  )"
+"0","}"

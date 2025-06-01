@@ -1,0 +1,2 @@
+"0","father_son_ht <- father_son_ht |> "
+"0","  mutate(s_minus_f = son - father)"

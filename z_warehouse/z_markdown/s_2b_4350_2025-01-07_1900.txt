@@ -1,0 +1,375 @@
+---
+title: "Text Analysis"
+subtitle: "Part 1, session 2b of Data Mining Intro"
+author: 
+  - name: "Send comments to: Tony T (adthral)"
+date: "`r format(Sys.time(), '%Y-%m-%d %H:%M', usetz = TRUE)`"
+output: 
+  html_document:
+    toc: true
+    df_print: paged
+    mathjax: default
+  word_document:
+    toc: true
+    df_print: tibble
+  pdf_document:
+    toc: true
+    df_print: tibble
+abstract: 
+  "Introduce basic ideas and methods of text analysis."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = FALSE, 
+  error   = FALSE, 
+  message = FALSE, 
+  warning = FALSE
+)
+```
+
+```{r libraries}
+library(assertthat)
+library(GGally)
+library(gutenbergr)
+library(here)
+library(ISLR2)
+library(janeaustenr)
+library(latex2exp)
+library(tidytext)
+library(tidyverse)
+library(tinytex)
+library(tokenizers)
+library(topicmodels)
+library(tufte)
+
+```
+
+```{r local_source}
+# source(here("code", "rmse_per_grp.R"))
+# source(here("code", "xtabs_to_jaccard.R"))
+```
+
+------------------------------------------------------------------------
+
+## Introduction
+
+This session highlights some basic ideas and methods that underpin a rapidly advancing field.  We follow the online book by Silge and Robinson cited below and use their R package `tidytext`.  The authors emphasize the "tidy" formatting of data (i.e., as key-value pairs) along with a set of R packages sharing this approach, collectively called the R `tidyverse`.
+
+## Text Example
+
+Toward the end of Shakespeare's play "Macbeth", the protagonist proclaims:
+
+```{r sound_fury}
+sound_fury <- c("Life's but a walking shadow, a poor player ",
+          "That struts and frets his hour upon the stage, ",
+          "And then is heard no more: it is a tale ", 
+          "Told by an idiot, full of sound and fury, ", 
+          "Signifying nothing.")
+
+sound_fury
+```
+
+(Source: "Macbeth", Act V, Scene V, lines 24-28.)
+
+For purposes of technical analysis we break these flowing lines into a table of words.  We begin as follows.
+
+```{r sf_line_tbl, echo=TRUE}
+sf_line_tbl <- tibble::tibble(
+  l_idx = 24:28, 
+  line  = sound_fury
+)
+sf_line_tbl
+```
+
+The table above merely identifies the original line number of each line.  The next step is to break each line into a sequence of "tokens", where a _token_ is a meaningful unit of text (such as a word) to be used as the unit of analysis.  ("Tokenization" is the process of splitting text into tokens.)  Applying `tidytext::unnest_tokens()` to the data table above, we obtain the following table, with just one token (word) per row.
+
+```{r sf_token_tbl, echo=TRUE}
+sf_token_tbl <- sf_line_tbl |> 
+  tidytext::unnest_tokens(
+    input  = "line", 
+    output = "word"
+  )
+sf_token_tbl
+```
+
+The next step is to remove so-called stop-words, that is, articles ("a", "the", ...), connectors ("and", "or", ...) and other words that provide structure to a sentence but otherwise carry little information.  The `tidytext` package contains a data frame, `stop_words`, of such words, which enables us to remove them from the above table of tokens.
+
+```{r sf_tokens_xsw, echo=TRUE}
+sf_tokens_xsw <- sf_token_tbl |> 
+  anti_join(
+    y  = tidytext::stop_words, 
+    by = "word"
+  )
+sf_tokens_xsw
+```
+
+## Larger Text Examples
+
+We'll use larger bodies of text via the following R packages.
+
+### Jane Austen's novels
+
+  - Package `janeaustenr`: Jane Austen (1775-1817) completed 6 novels, which the function `austen_books()` returns as a data frame with 2 columns: the `text` of the novels divided into strings (each approximating a line of printed text), and `book`, which gives the titles of the novels (in order of publication) as a factor.
+
+Here are the number of strings per book.
+
+```{r ja_strings_per_book}
+ja_strings_per_book <- austen_books() |> 
+  summarise(
+    .by = book, 
+    n_strings = n()
+  )
+ja_strings_per_book
+```
+
+Here are the ten words used most frequently across these novels.
+
+```{r ja_plus_chapters}
+# new columns per book: line number, chapter
+ja_plus_chapters <- austen_books() |> 
+  mutate(
+    .by        = book, 
+    linenumber = row_number(),
+    chapter    = cumsum(
+      str_detect(
+        text, 
+        regex(
+          "^chapter [\\divxlc]",
+          ignore_case = TRUE)
+      ))
+  )
+```
+
+```{r ja_words_raw}
+# break each line of text into several rows of words
+ja_words_raw <- ja_plus_chapters |> 
+  unnest_tokens(
+    input  = text, 
+    output = word
+  )
+```
+
+```{r ja_words_xsw}
+# remove stop-words
+ja_words_xsw <- ja_words_raw |> 
+  anti_join(
+    y  = tidytext::stop_words, 
+    by = "word")
+```
+
+```{r ja_word_ct}
+# count the number of occurrences of each word
+# list largest counts first
+ja_word_ct <- ja_words_xsw |> 
+  dplyr::count(word, sort = TRUE)
+```
+
+```{r ja_word_ct__kable}
+ja_word_ct |> 
+  dplyr::slice_head(n = 10) |> 
+  knitr::kable(
+  caption = "Jane Austen: 10 most frequently used words", 
+  col.names = c("word", "count")
+)
+```
+
+### The Gutenberg Project
+  
+  - Package `gutenbergr`: Enables the user to download and process public domain works in the [Project Gutenberg](https://www.gutenberg.org/) collection.
+
+The collection boasts over 75000 free electronic books.  The data frame `gutenberg_subjects` uses the Library of Congress Classifications (`lcc`) and Library of Congress Subject Headings (`lcsh`) to categorize topics included in the collection.  The package offers this and other such metadata to facilitate searching for desired works.
+
+As a contrast with Jane Austen, here are some well-known science fiction novels of H.G. Wells (1866-1946).
+
+```{r hgwells_books}
+hgwells_books <- tibble::tribble(
+  ~id, ~title,
+    35L, "The Time Machine",
+    36L, "The War of the Worlds",
+  5230L, "The Invisible Man",
+   159L, "The Island of Doctor Moreau"
+)
+hgwells_books
+```
+
+Among these novels, here are the most frequently used words.
+
+```{r hgwells_lines}
+# load file as tibble by one of these methods
+uncl_download <- FALSE
+load_rda      <- TRUE
+
+if (uncl_download) {
+  hgwells_lines <- gutenberg_download(
+    gutenberg_id = hgwells_books$ id)
+} else {
+  if (load_rda) {
+    load(here("data", "rda", "hgwells.rda"))
+    hgwells_lines <- hgwells
+    rm(hgwells)
+  }
+}
+```
+
+```{r hgwells_words}
+# break each line into rows, one word per row
+hgwells_words <- hgwells_lines |> 
+  unnest_tokens(
+    input  = text, 
+    output = word
+  ) |> 
+  # remove stop-words
+  anti_join(
+    y  = tidytext::stop_words, 
+    by = "word")
+```
+
+```{r hgwells_words__write}
+# save as text file just once
+save_file <- FALSE
+if (save_file) {
+  hgwells_words |> write_tsv(
+    here("data", "retain", "hgwells_words.txt")
+  )
+}
+```
+
+```{r hgwells_word_ct}
+hgwells_word_ct <- hgwells_words |> 
+  dplyr::count(word, sort = TRUE)
+```
+
+```{r hgwells_word_ct__kable}
+hgwells_word_ct |> 
+  dplyr::slice_head(n = 10) |> 
+  knitr::kable(
+  caption = "H.G. Wells: 10 most frequently used words", 
+  col.names = c("word", "count")
+)
+```
+
+## Class Exercise
+
+Team up with a classmate and devise a way to compare word frequencies in the novels of Jane Austen and H.G. Wells, respectively.  Share with the class your comparison of just the top 10 words used by each author.  Propose a method for comparing all the words used by each author.  Take 20 minutes to prepare to report to the class.
+
+## TF-IDF
+
+Can the number of times each word appears in a document be used to indicate what the document is about?  On the one hand, the number of occurrences of a word in a document might be an indication of the importance of the word within the document.  On the other hand, words that commonly occur in most documents are unlikely to distinguish the key ideas in a single selected document.
+
+We've already introduced the removal of stop-words as a means of separating the wheat from the chaff.  Another approach, called _tf-idf_, is to multiply a term's relative frequency (tf) in a selected document by its _inverse document frequency_ (idf) with respect to a collection or _corpus_ of documents.  That is, the relative frequency of a term $t$ in a specified document $d_0$ is the number of occurrences $\mathcal{n}(t, d_0)$ of term $t$ in document $d_0$ divided by the number of occurrences of all terms in document $d_0$.
+
+$$
+\begin{align}
+  tf(t, d_0) &= \frac{\mathcal{n}(t, d_0)}{\sum_{t^\prime \in d_0}\mathcal{n}(t^\prime, d_0)}
+\end{align}
+$$
+
+Here is one of several alternative definitions of idf.
+
+$$
+\begin{align}
+  idf(\text{term}) &= \log_e {\left(\frac{n_{\text{documents}}}{n_{\text{documents containing term}}}\right)}
+\end{align}
+$$
+
+Or more formally, 
+
+$$
+\begin{align}
+  idf(t, \mathcal{D}) &= \log_e \left( \frac{| \mathcal{D} |}{| \mathcal{D}_t |} \right) \\ 
+  \\ 
+  & t = \text{term} \\ 
+  & \mathcal{D} = \text{corpus of documents } \\
+  & \mathcal{D}_t = \{ d \in \mathcal{D} : t \in d  \}
+\end{align}
+$$
+
+Example: let $\mathcal{D}$ denote the set of Jane Austen's 6 novels, and let each novel take its turn as the document of interest.  Using tf-idf the most distinctive word per book is as follows.
+
+```{r ja_book_wd_ct}
+# count (book, word) occurrences
+# ignoring stop-words
+ja_book_wd_ct <- ja_words_xsw |> 
+  dplyr::count(book, word)
+```
+
+```{r ja_wd_in_books}
+# for each word, count books in which it appears
+ja_wd_in_books <- ja_book_wd_ct |> 
+  mutate(in_book = 1) |> 
+  summarise(
+    .by = word, 
+    n_books = sum(in_book, na.rm = TRUE)
+  )
+```
+
+```{r ja_book_all_ct}
+# for each book, sum (book, word) occurrences across words
+ja_book_all_ct <- ja_book_wd_ct |> 
+  summarise(
+    .by = book, 
+    n   = sum(n, na.rm = TRUE)
+  )
+```
+
+```{r ja_tf_per_book}
+# relative frequency of each word per book
+ja_tf_per_book <- ja_book_wd_ct |> 
+  # n_all: number of all word instances per book
+  left_join(
+    by = "book", 
+    y  = ja_book_all_ct |> rename(n_all = n)
+  ) |> 
+  mutate(tf = n / n_all)
+```
+
+```{r ja_tf_idf}
+# use max tf-idf to find the most distinctive word per book
+ja_tf_idf <- ja_tf_per_book |> 
+  # n_books: number of books in which word appears
+  left_join(
+    by = "word", 
+    y  = ja_wd_in_books
+  ) |> 
+  mutate(
+    idf    = log(6 / n_books), 
+    tf_idf = tf * idf
+  ) |> 
+  arrange(book, desc(tf_idf))
+```
+
+```{r ja_max_wd_per_book}
+ja_max_wd_per_book <- ja_tf_idf |> 
+  group_by(book) |> 
+  filter(tf_idf == max(tf_idf, na.rm = TRUE))
+```
+
+```{r ja_max_wd_per_book__kable}
+ja_max_wd_per_book |> 
+  knitr::kable(
+    caption = "Max tf-idf word per book", 
+    digits = 2
+  )
+```
+
+
+## Document-Term Matices
+
+
+## Topic Models
+
+
+
+## Team Exercises
+
+  1.  XXX
+
+  1.  YYY
+
+## Resources
+
+[Text Mining with R: A Tidy Approach](https://www.tidytextmining.com/) by Silge and Robinson
+
+[tf–idf - Wikipedia](https://en.wikipedia.org/wiki/Tf%E2%80%93idf)
+

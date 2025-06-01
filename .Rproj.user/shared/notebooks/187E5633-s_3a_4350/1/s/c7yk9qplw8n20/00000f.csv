@@ -1,0 +1,8 @@
+"0","NB10_normal_approx <- tibble::tibble("
+"0","  z = seq("
+"0","    from = min(NB10_z_score$ z_score, na.rm = TRUE), "
+"0","    to   = max(NB10_z_score$ z_score, na.rm = TRUE), "
+"0","    length.out = 1000"
+"0","  ), "
+"0","  d = dnorm(z)"
+"0",")"

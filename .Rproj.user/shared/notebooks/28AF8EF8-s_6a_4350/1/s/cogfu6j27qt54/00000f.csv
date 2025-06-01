@@ -1,0 +1,7 @@
+"0","topics_for_discussion |> write_tsv(here(
+    ""data"", ""retain""
+  ))
+"
+"2","Error: Cannot open file for writing:
+* 'C:/Users/tthra/OneDrive/Documents/post_2020-10/professional/R_projects/eda_4350/data/retain'
+"

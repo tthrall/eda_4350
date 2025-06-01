@@ -1,0 +1,4 @@
+"0","g_c_tbl <- c_tbl |> "
+"0","  ggplot(mapping = aes(x = c, y = s)) + "
+"0","  geom_path()"
+"0","g_c_tbl"

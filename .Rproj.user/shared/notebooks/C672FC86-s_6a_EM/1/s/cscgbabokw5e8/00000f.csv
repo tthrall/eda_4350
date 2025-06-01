@@ -1,0 +1,7 @@
+"0","g_faithful_tbl <- faithful_tbl |> "
+"0","  ggplot(mapping = aes("
+"0","    x = delay, y = duration"
+"0","  )) + "
+"0","  geom_point() + "
+"0","  labs(title = ""Old Faithful eruptions: delay and duration"")"
+"0","g_faithful_tbl"

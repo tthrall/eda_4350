@@ -1,0 +1,920 @@
+---
+title: "Conditional Distributions"
+subtitle: "Part 1, session 1b of Data Mining Intro"
+author: 
+  - name: "Send comments to: Tony T (adthral)"
+date: "`r format(Sys.time(), '%Y-%m-%d %H:%M', usetz = TRUE)`"
+output: 
+  html_document:
+    toc: true
+    df_print: paged
+    mathjax: default
+  word_document:
+    toc: true
+    df_print: tibble
+  pdf_document:
+    toc: true
+    df_print: tibble
+abstract: 
+  "Review concepts and techniques of exploratory data analysis."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = FALSE, 
+  error   = FALSE, 
+  message = FALSE, 
+  warning = FALSE
+)
+```
+
+```{r libraries}
+library(assertthat)
+library(here)
+library(latex2exp)
+library(tidyverse)
+library(tinytex)
+library(UsingR)
+
+```
+
+```{r local_source}
+source(here("code", "handedness_data.R"))
+```
+
+------------------------------------------------------------------------
+
+## Heights of Fathers and Sons
+
+```{r father_son_ht}
+father_son_ht <- UsingR::father.son |> 
+  as_tibble() |> 
+  rename(father = fheight, son = sheight)
+```
+
+```{r fs_moments}
+# vector of first and second central moments
+fs_moments <- father_son_ht |> 
+  summarise(
+    f_avg = mean(father, na.rm = TRUE), 
+    s_avg = mean(son, na.rm = TRUE), 
+    f_sd  = sd(father, na.rm = TRUE), 
+    s_sd  = sd(son, na.rm = TRUE), 
+    r     = cor(father, son)
+  ) |> 
+  as.vector() |> list_simplify()
+```
+
+```{r f_mpt}
+# construct additional variables
+# f_ivl: successive 2-inch intervals of father heights
+# f_mpt: mid-point of each interval
+father_son_ht <- father_son_ht |> 
+  mutate(
+    f_ivl = cut(father, seq(58, 76, 2)), 
+    f_mpt = (2 * ceiling(father/2)) - 1
+  )
+```
+
+The box-plot below can be regarded as the (sample) *conditional distribution* of sons' heights grouped by the height (rounded to the nearest odd inch) of each son's father.
+
+```{r g_f_mpt}
+g_f_mpt <- father_son_ht |> 
+  filter(! is.na(f_mpt)) |> 
+  ggplot(mapping = aes(
+    x = f_mpt |> as_factor(), 
+    y = son
+  )) + 
+  geom_boxplot()
+g_f_mpt
+```
+
+```{r s_stats_per_f_mpt}
+# son statistics per f_ivl
+s_stats_per_f_mpt <- father_son_ht |>    
+  group_by(f_ivl, f_mpt) |>    
+  summarise(     
+    s_count = n(),      
+    s_min   = min(son, na.rm = TRUE),      
+    s_mid   = median(son, na.rm = TRUE),      
+    s_max   = max(son, na.rm = TRUE),      
+    s_avg   = mean(son, na.rm = TRUE)
+  ) |> 
+  ungroup()
+s_stats_per_f_mpt |> print(digits = 1)
+```
+
+The last column in the table above is the sample average of the son's height given the father's height, which we take as an estimate of the population average of the son's height given the father's height, that is, the *conditional expectation* of son's height given father's height.
+
+The figure below represents these sample conditional averages per father's height as diamonds, whose area is roughly proportional to the number of sons in each group. The figure includes a reference line showing the father's (midpoint) height plus 1 inch, corresponding to our previous calculation of an average son-minus father difference.
+
+```{r g_s_avg_per_f_mpt}
+g_s_avg_per_f_mpt <- s_stats_per_f_mpt |> ggplot(mapping = aes(
+  x = f_mpt, 
+  y = s_avg, 
+)) + 
+  geom_line() + 
+  geom_count(
+    shape = 23, 
+    size = s_stats_per_f_mpt$s_count |> sqrt()) + 
+  geom_abline(
+    intercept = 1, 
+    slope = 1, 
+    linetype = "dotted", 
+    linewidth = 2, 
+    color = "red") + 
+  labs(
+    title = "Average of sons' heights per father's height", 
+    subtitle = "(dotted red line shows father's height + 1 inch)"
+  )
+g_s_avg_per_f_mpt
+```
+
+The above graph of average son-height per father's height forms an approximate straight line, although the slope of the line is less than 1 (which is the slope of the reference line).
+
+## Z-Scores: transforming data values to standard units
+
+Imagine choosing a father-son pair at random from the entire population and measuring their respective heights. This would be an example of a pair of random variables $(X, Y)$. If we happened to know the average and standard deviation of (father, son) heights, respectively, from the entire population, we could convert the given heights to so-called standard units, or z-scores, as follows.
+
+$$
+\begin{align}
+  Z_x(X) = \frac{X - \mu_x}{\sigma_x} \\
+  Z_y(Y) = \frac{Y - \mu_y}{\sigma_y} \\
+\end{align}
+$$
+
+Here $\mu$ signifies the average (arithmetic mean) height across the entire population, and $\sigma$ denotes the population standard deviation. Thus $Z_x(X)$ gives the number of standard deviations above or below the population average (expected value).
+
+Of course we seldom have precise values for these population parameters. In practice we then use sample estimates of the parameters, say $\hat{\mu}$ for the sample average and $\hat{\sigma}$ for the sample standard deviation.
+
+$$ 
+\begin{align}
+  \hat{\mu}_x &= \frac{1}{n} \sum_{k = 1}^{n} x_k \\ 
+  \hat{\sigma}_{x}^2 &= \frac{1}{n-1} \sum_{k = 1}^{n} (x_k - \hat{\mu}_x)^2 \\ 
+\end{align} 
+$$
+
+So the term "z-score" or "standard unit" is usually understood with respect to the sample distribution.
+
+$$
+\begin{align}
+  \hat{Z}_x(x_k) = \frac{x_k - \hat{\mu}_x}{\hat{\sigma}_x} \\ 
+  \hat{Z}_y(y_k) = \frac{y_k - \hat{\mu}_y}{\hat{\sigma}_y} \\ 
+\end{align} 
+$$
+
+### SD line
+
+The line given by the equation $\hat{Z}_y(y) = \hat{Z}_x(x)$ is called the "SD line". Here's an equivalent equation of this line.
+
+$$
+\begin{align}
+  \text{SD line: } \\
+  y & = \mathcal{l}_{SD}(x) \\
+  &= \hat{\mu}_y + \frac{\hat{\sigma}_y}{\hat{\sigma}_x} (x - \hat{\mu}_x) \\
+\end{align}
+$$
+
+Of all lines $y = \mathcal{l}(x)$ we might draw through the $(x_k,y_k)$ data points, the SD line $y = \mathcal{l}_{SD}(x)$ minimizes the sum of squared distances from each $(x_k,y_k)$ data point to its orthogonal projection to the line.
+
+### Regression line
+
+Consider the father's height as the predictor variable $(x)$ and the son's height as the response variable $(y)$. We now seek a line that minimizes a different metric, namely the distance between the son's height and its linear prediction based on the father's height. In statistical parlance we are regressing the son's height on the father's height. (Because we have just *one* predictor variable this is called *simple* linear regression.) The minimizing line is called the regression line, and has the following equation.
+
+$$\begin{align}   
+  \text{Regression line: } \\   
+y & = \mathcal{l}_{R}(x) \\   
+&= \hat{\mu}_y + \hat{r}  \frac{\hat{\sigma}_y}{\hat{\sigma}_x} (x - \hat{\mu}_x) \\ \end{align} $$
+
+An equivalent equation is $\hat{Z}_y(y) = \hat{r} \hat{Z}_x(x)$, where $\hat{r}$ denotes the sample correlation coefficient.
+
+$$
+  \hat{r} = \frac{1}{n-1} \sum_{k = 1}^{n} \hat{Z}_x(x_k) \hat{Z}_y(y_k)
+$$
+
+Note that $\hat{r}$ is restricted to the closed interval $[-1, 1]$.
+
+The figure below shows the SD line and the Regression line for the father-son data.
+
+```{r g_fs_points}
+g_fs_points <- father_son_ht |> 
+  ggplot(mapping = aes(x = father, y = son)) + 
+  geom_point()
+```
+
+```{r g_fs_lines}
+SD_slope = fs_moments[["s_sd"]] / fs_moments[["f_sd"]]
+R_slope  = fs_moments[["r"]] * SD_slope
+
+g_fs_lines <- g_fs_points + 
+  # SD line
+  geom_abline(
+    slope = SD_slope, 
+    intercept = 
+      fs_moments[["s_avg"]] - SD_slope * fs_moments[["f_avg"]], 
+    linetype = "dotted", 
+    linewidth = 2, 
+    color = "red"
+  ) + 
+  # Regression line
+  geom_abline(
+    slope = R_slope, 
+    intercept = 
+      fs_moments[["s_avg"]] - R_slope * fs_moments[["f_avg"]], 
+    linetype = "solid", 
+    linewidth = 2, 
+    color = "blue"
+  ) + 
+  labs(
+    title = "Father-son heights", 
+    subtitle = "SD line (dotted red), Regression line (solid blue)"
+  )
+g_fs_lines
+```
+
+The two lines intersect at the "point of averages", that is, at $(\hat{\mu}_x, \hat{\mu}_y)$, which need not coincide with any data point.
+
+The following figure and table summarize the regression "residuals", that is the son's height $(y)$ minus the height $(\hat{y})$ predicted by the linear model.
+
+```{r lm_fs}
+lm_fs <- lm(
+  data = father_son_ht, 
+  formula = son ~ father
+)
+lm_fs
+```
+
+```{r fs_residuals}
+# construct a data table including regression residuals
+fs_residuals <- father_son_ht |> 
+  mutate(
+    fitted_value = lm_fs$fitted.values, 
+    residual     = lm_fs$residuals
+  )
+```
+
+```{r g_fs_residuals}
+g_fs_residuals <- fs_residuals |> 
+  ggplot(mapping = aes(x = residual)) + 
+  geom_histogram() + 
+  labs(
+    title = "Histogram of regression residuals", 
+    subtitle = "son's height minus predicted height"
+  )
+g_fs_residuals
+```
+
+```{r fs_residuals__smy}
+fs_residuals$residual |> summary() |> print(digits = 1)
+```
+
+There are many ways to examine how well a model represents the data. Here's a scatter diagram of the value predicted (fitted) by the model versus the son's actual height.
+
+```{r g_resid_son}
+g_resid_son <- fs_residuals |> 
+  ggplot(mapping = aes(
+    x = son, y = fitted_value
+  )) + 
+  geom_point() + 
+  geom_abline(
+    intercept = 0, 
+    slope = 1, 
+    linetype = "dotted", 
+    linewidth = 2, 
+    colour = "red"
+  ) + 
+  labs(
+    title = "Model-fitted value versus son's height", 
+    subtitle = "(reference line: fitted = son)"
+  )
+g_resid_son
+```
+
+We see that the sons who are extremely short or extremely tall are not represented well by the model, which is heavily influenced by mid-range father-son heights containing most of the data. The father's height alone is a helpful but imperfect predictor of the son's height.
+
+### The Normal distribution
+
+The father-son data set is well approximated by a bivariate normal distribution. The parameter estimates are as follows.
+
+```{r fs_moments__show}
+fs_moments |> print(digits = 1)
+```
+
+Sons are on average about an inch taller than fathers. Fathers and sons share similar standard deviations (2.7 versus 2.8). The sample correlation coefficient is about 0.5.
+
+Among the mathematical properties of normal distributions is the fact that if the pair of random variables $(X, Y)$ has a bivariate normal distribution, then the conditional expectation $E(Y | X)$ is indeed the linear regression function $\mathcal{l}_R(X)$ whose equation is that of the population regression line, $Z_y(Y) = r \; Z_x(X)$. The conditional distribution $\mathcal{D}(Y | X)$ of $Y$ given $X$ is normal with a mean of $\mathcal{l}_R(X)$ and a standard deviation of $\sqrt{1 - r^2} \; \sigma_y$. Conditioning on $X$ thus shrinks the standard deviation of $Y$ by a factor of $\sqrt{1 - r^2}$. For the father-son data, with $r$ approximately equal to 0.5, this shrinkage factor is approximately 0.87, a 13% reduction in the standard deviation of $Y$.
+
+### Simulating random variables
+
+The R package `stats` contains functions that generate pseudo-random numbers following normal and other well-known distributions. Here are some functions for simulating independent instances of a continuous (labeled `dbl`) or discrete (labeled `int`) random variable.
+
+```{r stats_rnd_fns}
+stats_rnd_fns <- tibble::tribble(
+  ~fn, ~type, ~distribution, 
+  "rbeta", "dbl", "Beta", 
+  "rcauchy", "dbl", "Cauchy", 
+  "rchisq", "dbl", "(non-central) Chi-Squared", 
+  "rexp", "dbl", "Exponential", 
+  "rf", "dbl", "F", 
+  "rgamma", "dbl", "Gamma", 
+  "rlnorm", "dbl", "Log Normal", 
+  "rlogis", "dbl", "Logistic", 
+  "rnorm", "dbl", "Normal", 
+  "rt", "dbl", "Student t", 
+  "runif", "dbl", "Uniform", 
+  "rweibull", "dbl", "Weibull", 
+  "rbinom", "int", "Binomial", 
+  "rgeom", "int", "Geometric", 
+  "rhyper", "int", "Hypergeometric", 
+  "rnbinom", "int", "Negative Binomial", 
+  "rpois", "int", "Poisson", 
+)
+```
+
+```{r stats_rnd_fns__kable}
+stats_rnd_fns |> knitr::kable(
+  caption = "Some random number generators in the R stats package"
+)
+```
+
+There are many other packages for generating *dependent* random variables.
+
+## Cautionary Remarks
+
+### Robust statistics
+
+The sample average (arithmetic mean) is notoriously sensitive to outliers (data points far removed from most of the other data points). For this reason, the median is often used in place of the mean to describe central or typical values. For example, medians are commonly used to typify home prices in a neighborhood, and for other financial data.
+
+Similarly, the interquartile range (IQR, the third minus the first quartile of the data) may be preferred to the standard deviation to measure how widely data points are spread around a central value (e.g., median).
+
+In the present context this means that both the SD line and the Regression line are highly sensitive to outlying data points.
+
+### Anscombe Quartet
+
+Professor [Frank Anscombe](https://en.wikipedia.org/wiki/Frank_Anscombe) constructed the "Anscombe Quartet": 4 data sets, each consisting of 11 observations of $(x, y)$ pairs of numeric values. Here are the statistics per group.
+
+```{r anscombe_tbl}
+anscombe_tbl <- datasets::anscombe |> 
+  as_tibble()
+
+# construct 4 groups of x-values
+x_tbl <- anscombe_tbl |> 
+  # original row index
+  mutate(idx = 1:nrow(anscombe)) |> 
+  dplyr::select(idx, x1:x4) |> 
+  pivot_longer(
+    cols = x1:x4, 
+    names_to = "grp", 
+    names_prefix = "x", 
+    values_to = "x"
+  ) |> 
+  mutate(grp = as.integer(grp))
+
+# construct 4 groups of y-values
+y_tbl <- anscombe_tbl |> 
+  # original row index
+  mutate(idx = 1:nrow(anscombe)) |> 
+  dplyr::select(idx, y1:y4) |> 
+  pivot_longer(
+    cols = y1:y4, 
+    names_to = "grp", 
+    names_prefix = "y", 
+    values_to = "y"
+  ) |> 
+  mutate(grp = as.integer(grp))
+
+# join x and y values
+xy_long <- x_tbl |> left_join(
+  y  = y_tbl, 
+  by = c("idx", "grp")
+) |> 
+  dplyr::select(grp, idx, x, y) |> 
+  arrange(grp, idx)
+```
+
+```{r xy_stats}
+xy_stats <- xy_long |> 
+  summarise(
+    .by   = grp, 
+    x_avg = mean(x, na.rm = TRUE), 
+    y_avg = mean(y, na.rm = TRUE), 
+    x_sd  = sd(x, na.rm = TRUE), 
+    y_sd  = sd(y, na.rm = TRUE), 
+    r     = cor(x, y)
+  )
+xy_stats
+```
+
+The four groups share virtually identical averages, standard deviations, and $(x, y)$ correlation coefficients. Consequently the four data sets generate identical regression lines. Yet, as shown below, the pattern of $(x, y)$ values differs markedly among these data sets.
+
+```{r g_xy}
+g_xy <- xy_long |> 
+  ggplot(mapping = aes(
+    x = x, y = y, group = grp
+  )) + 
+  geom_point() + 
+  facet_grid(cols = vars(grp))
+g_xy
+```
+
+Moral: pay attention to the data! The graphical and tabular summaries we choose to present should be useful and informative. For example, it might be helpful to note that group 2 looks like the partial outline of a parabola. We should note that group 3 consists of 10 points falling on a line, with one outlier. In group 4 we should note that 10 of the 11 data $x$-values are identical. We want to minimize the chance of inadvertently conveying false impressions by merely reporting standard summary statistics.
+
+## Class Exercise: Diamond Data
+
+Team up with a classmate and load the diamond data provided by R package `ggplot2`. Of the 10 variables (data columns) choose one of them as the response variable $(y)$, and another as a predictor variable $(x)$. Construct a scatter diagram of $(x, y)$ data points. Calculate the equation of the regression line. Is the predictor variable useful, or irrelevant? The R package `stats` includes potentially helpful functions including a linear regression function, `stats::lm()`, and a local polynomial regression function `stats::loess()`. Take 20 minutes to prepare to report out to the class.
+
+```{r diamonds}
+# make your own copy of the diamond data
+diamonds <- ggplot2::diamonds
+```
+
+## Statistical Independence
+
+The father-son data is an example of a pair of statistically dependent variables, since the distribution of sons' heights changes when conditioned on the father's height. (The same can be said for fathers' heights conditioned on the height of the son.) Short fathers tend to have short sons; tall fathers tend to have tall sons.
+
+Practical examples of statistically *independent* (unrelated) variables exist but are rare, since studies typically collect data on variables believed to be related. Nevertheless, the concept of statistical independence is very useful, as it gives rise to measures of departure from statistical independence (and thus measures of statistical association).
+
+The correlation coefficient $r$ is an example of such a measure for two continuous variables. If $(X, Y)$ is a pair of statistically independent variables, then $r = 0$. Note, however, that $(X, Y)$ may be statistically dependent even if uncorrelated, that is, even if $r = 0$.
+
+### Definition
+
+The pair of random variables $(X, Y)$ is defined to be statistically independent if
+
+$$
+\begin{align}
+  P(X \in A, \; Y \in B) &= P(X \in A) \times P(Y \in B) \\
+  & \text{for all possible sets } A, B \\ 
+\end{align}
+$$
+
+If $P(A) > 0$ then statistical independence implies:
+
+$$
+\begin{align}
+  P(Y \in B \; | \; X \in A) &= \frac{P(X \in A, \; Y \in B)}{P(X \in A)} \\ 
+  &= P(Y \in B) \\ 
+  & \text{whenever } P(A) > 0 \\
+\end{align}
+$$
+
+That is, the conditional probability of random variable $Y$ belonging to set $B$ given that $X$ belongs to set $A$ is equal to the unconditional probability that $Y$ belongs to set $B$. It follows that the conditional expectation $E(Y | X)$ does not depend on $X$, and thus equals the constant $E(Y)$, the unconditional expected value of $Y$.
+
+### The case when X and Y are categorical variables
+
+As previously noted, for a pair $(X,Y)$ of continuous variables, the correlation coefficient is a measure (though not a definitive measure) of statistical association or dependence. In the case when $X$ and $Y$ are each restricted to a discrete set of values, the chi-square statistic is a useful measure of statistical association.
+
+We use data on handedness (right, left, or ambidextrous) of US adults aged 25-34. The data were collected by the US Health and Nutrition Examination Survey (HANES), as cited in [FPP](https://www.goodreads.com/book/show/147358.Statistics). The question we investigate is whether handedness is independent of sex (male, female). Here are the counts for the six combinations of handedness and sex.
+
+```{r hs_tbl}
+hs_tbl <- gen_handedness()
+```
+
+```{r hs_wide}
+hs_wide <- hs_tbl |> 
+  pivot_wider(
+    names_from  = "sex", 
+    values_from = "count"
+  )
+```
+
+```{r hs_wide__kable}
+hs_wide |> knitr::kable(
+  caption = "Handedness counts among sampled males and females", 
+  col.names = c("handedness", "male", "female")
+)
+```
+
+The percentages of handedness among males and among females are as follows.
+
+```{r h_smy}
+h_smy <- hs_tbl |> 
+  summarise(
+    .by = "hnd", 
+    count = sum(count, na.rm = TRUE)
+  )
+# # A tibble: 3 × 2
+#   hnd   count
+#   <chr> <int>
+# 1 right  2004
+# 2 left    205
+# 3 ambi     28
+```
+
+```{r s_smy}
+s_smy <- hs_tbl |> 
+  summarise(
+    .by = "sex", 
+    count = sum(count, na.rm = TRUE)
+  )
+# # A tibble: 2 × 2
+#   sex    count
+#   <chr>  <int>
+# 1 male    1067
+# 2 female  1170
+```
+
+```{r hs_pct_wide}
+m_total <- s_smy[[1, 2]]
+f_total <- s_smy[[2, 2]]
+
+hs_pct_wide <- hs_wide |> 
+  mutate(
+    male   = 100 * male   / m_total, 
+    female = 100 * female / f_total
+  )
+```
+
+```{r hs_pct_wide__kable}
+hs_pct_wide |> knitr::kable(
+  caption = "Percentage handedness among males, and among females", 
+  col.names = c("handedness", "male", "female"), 
+  digits = 1
+)
+```
+
+If handedness and sex were independent, we should see similar percentages of males and females for each type of handedness. The above table indeed shows similar percentages, but are they close enough to conclude independence?
+
+In the early 1900's Karl Pearson developed the chi-squared test of independence of categorical variables. The reasoning is as follows. Suppose we accept as population estimates the data percentages of handedness (across males and females), and we also accept the somewhat different percentages of males and females in the sample. These so-called *marginal* distributions are not in dispute. What we're investigating concerns the cell percentages, combinations of handedness and sex. Under the assumption of independence we would expect the cell percentages in the data to be close to the product of the handedness percentage and the male or female percentage. This gives us an expected cell percentage (assuming independence), which we convert to an expected cell count. Pearson's test of independence is based on the following chi-squared statistic.
+
+$$
+\begin{align}
+  \chi^2 &= \sum_{j = 1}^J {\sum_{k = 1}^K {\frac{(O_{j,k} - E_{j,k})^2}{E_{j,k}}}} \\ 
+  O_{j,k} &= \text{observed count for cell } \{j, k\} \\ 
+  E_{j,k} &= \text{expected count for cell } \{j, k\} \\ 
+\end{align}
+$$
+
+Pearson calculated the distribution of this statistic mathematically based on the notion of "degrees of freedom".
+
+That is, for each index $j$ the expected values summed across $k$ are constrained to match the corresponding sum of the observed values. Similarly, for each index $k$ the expected values summed across $j$ are constrained to match the corresponding sum of the observed values. Given these fixed marginal sums, cell values can vary with $(J-1) \times (K-1)$ degrees of freedom.
+
+Under the assumption of independence, the chi-squared statistic follows the distribution of the sum of squared independent standard normal variables, the number of independent normal variables matching the degrees of freedom.
+
+```{r hs_chi_sq}
+hs_chi_sq <- hs_wide |> 
+  dplyr::select(male, female) |> 
+  as.matrix() |> 
+  chisq.test()
+
+# data:  as.matrix(dplyr::select(hs_wide, male, female))
+# X-squared = 11.806, df = 2, p-value = 0.002731
+```
+
+For the handedness data the degrees of freedom equals 2, and the value of the statistic is `r round(hs_chi_sq$statistic, 1)`, which is beyond the 99% quantile of the corresponding chi-squared distribution (and thus yields a "p-value" of less than 1%). This would be regarded as strong evidence against the assumption of independence.
+
+The chi-squared statistic is the sum of squared terms of the following form.
+
+$$
+\begin{align}
+  \frac{O_{j,k} - E_{j,k}}{\sqrt{E_{j,k}}} \\ 
+\end{align}
+$$
+
+These terms are called "Pearson residuals". For the handedness data, the Pearson residuals are as follows.
+
+```{r hs_resid_wide}
+# Pearson residuals
+hs_resid_wide <- hs_wide |> 
+  dplyr::select(hnd) |> 
+  mutate(
+    male   = hs_chi_sq$residuals[, 1], 
+    female = hs_chi_sq$residuals[, 2]
+  )
+```
+
+```{r hs_resid_wide__kable}
+hs_resid_wide |> knitr::kable(
+  caption = "Pearson residuals for handedness data", 
+  col.names = c("handedness", "male", "female"), 
+  digits = 1
+)
+
+```
+
+Roughly speaking, under independence the magnitude of cell values should align with the scale of standard normal variables. For the handedness data, the large value of the chi-square statistic cannot be attributed to a single cell of the table, but rather to the left-handed and ambidextrous cells (handedness to which males are more prone than females).
+
+### Simpson's Paradox
+
+```{r ucb_admissions}
+# reformat data
+ucb_admissions <- datasets::UCBAdmissions |> 
+  as_tibble() |> 
+  rename_with(tolower) |> 
+  rename(sex = gender) |> 
+  rename(count = n) |> 
+  dplyr::select(dept, sex, admit, count)
+```
+
+```{r ucb_sex_smy}
+# count Male and Female applicants
+ucb_sex_smy <- ucb_admissions |> 
+  summarise(
+    .by = c("sex"), 
+    count = sum(count, na.rm = TRUE)
+  )
+# ucb_sex_smy
+# # A tibble: 2 × 2
+#   sex    count
+#   <chr>  <dbl>
+# 1 Male    2691
+# 2 Female  1835
+```
+
+```{r ucb_total_applicants}
+# count all applicants
+ucb_total_applicants <- 
+  ucb_sex_smy[[1, 2]] + 
+  ucb_sex_smy[[2, 2]]
+```
+
+```{r ucb_sa_smy}
+# count admissions/rejections per sex
+ucb_sa_smy <- ucb_admissions |> 
+  summarise(
+    .by = c("sex", "admit"), 
+    count = sum(count, na.rm = TRUE)
+  )
+# ucb_sa_smy
+# # A tibble: 4 × 3
+#   sex    admit    count
+#   <chr>  <chr>    <dbl>
+# 1 Male   Admitted  1198
+# 2 Male   Rejected  1493
+# 3 Female Admitted   557
+# 4 Female Rejected  1278
+```
+
+```{r ucb_sa_wide}
+# count Males and Females in separate columns
+ucb_sa_wide <- ucb_sa_smy |> 
+  pivot_wider(
+    names_from = "sex", 
+    values_from = "count"
+  )
+```
+
+```{r ucb_sa_pct}
+# convert counts to percentages
+ucb_sa_pct <- ucb_sa_wide |> 
+  mutate(
+    Male   = 100 * Male   / ucb_sex_smy[[1, 2]], 
+    Female = 100 * Female / ucb_sex_smy[[2, 2]]
+  )
+```
+
+We now turn to a different set of categorical data from a study of graduate admissions at UC Berkeley in 1973 available in R as `datasets::UCBAdmissions`. The study was prompted by a concern of bias against females. The table below summarizes admission percentages for males and for females across the six largest departments.
+
+```{r ucb_sa_pct__kable}
+ucb_sa_pct |> 
+  rename(decision = admit) |> 
+  knitr::kable(
+  caption = "Admission percentages for males and for females", 
+  digits = 1
+)
+```
+
+These percentages look damning, but the table below, showing admission rates per department, tells a different story.
+
+```{r ucb_dept_smy}
+# applicants per department
+ucb_dept_smy <- ucb_admissions |> 
+  summarise(
+    .by = c("dept"), 
+    count = sum(count, na.rm = TRUE)
+  ) |> 
+  mutate(
+    # percent of all applicants applying to each dept
+    pct = 100 * count / ucb_total_applicants
+  )
+# ucb_dept_smy |> print(digits = 1)
+# # A tibble: 6 × 3
+#   dept  count   pct
+#   <chr> <dbl> <dbl>
+# 1 A       933  20.6
+# 2 B       585  12.9
+# 3 C       918  20.3
+# 4 D       792  17.5
+# 5 E       584  12.9
+# 6 F       714  15.8
+```
+
+```{r ucb_da_smy}
+# count addmissions/rejections per department
+ucb_da_smy <- ucb_admissions |> 
+  summarise(
+    .by = c("dept", "admit"), 
+    count = sum(count, na.rm = TRUE)
+  )
+```
+
+```{r ucb_da_wide}
+# move (Admitted, Rejected) into separate columns
+ucb_da_wide <- ucb_da_smy |> 
+  pivot_wider(
+    names_from = admit, 
+    values_from = count
+  )
+# ucb_da_wide
+# # A tibble: 6 × 3
+#   dept  Admitted Rejected
+#   <chr>    <dbl>    <dbl>
+# 1 A          601      332
+# 2 B          370      215
+# 3 C          322      596
+# 4 D          269      523
+# 5 E          147      437
+# 6 F           46      668
+```
+
+```{r ucb_da_pct}
+# overall admission rate per department
+ucb_da_pct <- ucb_da_wide |> 
+  mutate(
+    # percent admitted per department (Male + Female)
+    MF_pct = 100 * Admitted / ucb_dept_smy$count
+  )
+# ucb_da_pct |> print(digits = 1)
+# # A tibble: 6 × 4
+#   dept  Admitted Rejected MF_pct
+#   <chr>    <dbl>    <dbl>  <dbl>
+# 1 A          601      332  64.4 
+# 2 B          370      215  63.2 
+# 3 C          322      596  35.1 
+# 4 D          269      523  34.0 
+# 5 E          147      437  25.2 
+# 6 F           46      668   6.44
+```
+
+```{r ucb_m_d_smy}
+# count male applicants per department
+ucb_m_d_smy <- ucb_admissions |> 
+  filter(sex == "Male") |> 
+  summarise(
+    .by = "dept", 
+    count = sum(count, na.rm = TRUE)
+  )
+```
+
+```{r ucb_m_da_smy}
+# count male admissions/rejections per department
+ucb_m_da_smy <- ucb_admissions |> 
+  filter(sex == "Male") |> 
+  summarise(
+    .by = c("dept", "admit"), 
+    count = sum(count, na.rm = TRUE)
+  )
+```
+
+```{r ucb_m_da_wide}
+# ucb_m_da_smy, with (Admitted, Rejected) columns
+ucb_m_da_wide <- ucb_m_da_smy |> 
+  pivot_wider(
+    names_from  = "admit", 
+    values_from = "count"
+  )
+```
+
+```{r ucb_m_da_pct}
+# convert counts to percents
+ucb_m_da_pct <- ucb_m_da_wide |> 
+  mutate(
+    Admitted = 100 * Admitted / ucb_m_d_smy$count, 
+    Rejected = 100 * Rejected / ucb_m_d_smy$count
+  )
+```
+
+```{r ucb_f_d_smy}
+# count female applicants per department
+ucb_f_d_smy <- ucb_admissions |> 
+  filter(sex == "Female") |> 
+  summarise(
+    .by = "dept",
+    count = sum(count, na.rm = TRUE)
+  )
+```
+
+```{r ucb_f_da_smy}
+# count female admissions/rejections per department
+ucb_f_da_smy <- ucb_admissions |> 
+  filter(sex == "Female") |> 
+  summarise(
+    .by = c("dept", "admit"), 
+    count = sum(count, na.rm = TRUE)
+  )
+```
+
+```{r ucb_f_da_wide}
+# ucb_f_da_smy, with (Admitted, Rejected) columns
+ucb_f_da_wide <- ucb_f_da_smy |> 
+  pivot_wider(
+    names_from  = "admit", 
+    values_from = "count"
+  )
+```
+
+```{r ucb_f_da_pct}
+# convert counts to percents
+ucb_f_da_pct <- ucb_f_da_wide |> 
+  mutate(
+    Admitted = 100 * Admitted / ucb_f_d_smy$count, 
+    Rejected = 100 * Rejected / ucb_f_d_smy$count
+  )
+```
+
+```{r ucb_das_pct}
+ucb_das_pct <- ucb_da_pct |> 
+  dplyr::select(dept, MF_pct) |> 
+  left_join(
+    y  = ucb_m_da_pct |> 
+      dplyr::select(dept, Admitted) |> 
+      rename(M_pct = Admitted), 
+    by = "dept"
+  ) |> 
+  left_join(
+    y  = ucb_f_da_pct |> 
+      dplyr::select(dept, Admitted) |> 
+      rename(F_pct = Admitted), 
+    by = "dept"
+  ) |> 
+  dplyr::select(dept, M_pct, F_pct, MF_pct)
+```
+
+```{r ucb_das_pct__kable}
+ucb_das_pct |> knitr::kable(
+  caption = "Admission percentages per department", 
+  col.names = c("dept", "among_males", "among_females", "overall"), 
+  digits = 1
+)
+```
+
+The table shows that four of the six departments admitted a greater percentage of female applicants than male applicants. In the remaining two departments females did somewhat worse than males. Yet, summing over all six departments, women applicants fared decidedly worse than male applicants. How can this be?
+
+The answer can be found by: (1) noting that the table above lists departments, labeled A through F, in descending order of overall admission rates; and (2) examining the following table that shows each department's share of applicants: male, female, and overall.
+
+```{r ucb_ds_smy}
+# count number of applicantions per (dept, sex)
+ucb_ds_smy <- ucb_admissions |> 
+  summarise(
+    .by = c("dept", "sex"), 
+    count = sum(count, na.rm = TRUE)
+  )
+```
+
+```{r ucb_ds_wide}
+# list (Male, Female) as separate columns
+ucb_ds_wide <- ucb_ds_smy |> 
+  pivot_wider(
+    names_from  = "sex", 
+    values_from = "count"
+  ) |> 
+  mutate(
+    total = Male + Female
+  )
+```
+
+```{r ucb_ds_wide__kable}
+ucb_ds_wide |> knitr::kable(
+  caption = "Number of applications per department", 
+  col.names = c("dept", "from_males", "from_females", "overall")
+)
+```
+
+Here are the same counts but now converted into per-department percentage of applications from males, females, and overall, respectively.
+
+```{r ucb_ds_pct}
+# convert counts to percents
+ucb_ds_pct <- ucb_ds_wide |> 
+  mutate(
+    Male   = 100 * Male   / ucb_sex_smy[[1, 2]], 
+    Female = 100 * Female / ucb_sex_smy[[2, 2]], 
+    total  = 100 * total  / ucb_total_applicants
+  )
+```
+
+```{r ucb_ds_pct__kable}
+ucb_ds_pct |> knitr::kable(
+  caption = "Percent of applications per department", 
+  col.names = c("dept", "from_males", "from_females", "overall"), 
+  digits = 1
+)
+```
+
+We see that relatively few females applied to departments A and B, which had the highest overall admission rates. Females tended more than males to apply to departments having overall low rates of admission. That is, departmental admission rate is an explanatory variable missing from the initial summary of male and female admission rates across all six departments.
+
+This phenomenon, a pattern per group that is masked when summarized across groups, is known as [Simpson's paradox](https://en.wikipedia.org/wiki/Simpson%27s_paradox). More generally, we must be on guard for possible missing variables (sometimes called "confounding" variables) that might alter our conclusions.
+
+## Team Exercises
+
+1.  Simulate bivariate normal variables: Using `stats::rnorm()` or otherwise, generate independent instances of a standard normal variable $X$ (having mean zero and standard deviation 1). Now devise a way (e.g., using $X$ and a new, independent standard normal variable $Z$) to constuct variable $Y$ (to be paired with $X$) so that $Y$ given $X$ follows a normal distribution having mean value $r \; X$ and having standard deviation $\sqrt{1 - r^2}$ (choosing $r$ so that $-1 < r < 1$). What are the unconditional mean and standard deviation of $Y$? What is the correlation coefficient of the pair $(X, Y)$?
+
+2.  Simpson's paradox: In the discussion above we illustrated Simpson's paradox using the UCB Admissions data. Find or construct a different example.
+
+## Resources
+
+[R Graphics Cookbook (2e)](https://r-graphics.org/) by Winston Chang
+
+[Statistics (4e)](https://www.goodreads.com/book/show/147358.Statistics) by Freedman, Pisani, Purves \| Goodreads
+
+[Independence](https://en.wikipedia.org/wiki/Independence_(probability_theory)) (probability theory) - Wikipedia
+
+[Sex bias in graduate admissions](https://pubmed.ncbi.nlm.nih.gov/17835295/): data from Berkeley, by Bickel, Hammel, and O'connell

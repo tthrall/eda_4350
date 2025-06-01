@@ -1,0 +1,2 @@
+"0","land_spec <- timeSeriesDataSets::gtemp_land_ts |> "
+"0","  stats::spec.pgram(spans = c(5, 5))"

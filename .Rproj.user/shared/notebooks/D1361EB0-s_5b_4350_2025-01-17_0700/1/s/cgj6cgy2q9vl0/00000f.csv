@@ -1,0 +1,2 @@
+"0","land_pgram <- timeSeriesDataSets::gtemp_land_ts |> "
+"0","  stats::spectrum()"

@@ -1,0 +1,7 @@
+"0","# Form a matrix of figures, showing each "
+"0","# distinct pair of variables in a scatter diagram."
+"0","g_grp_var_matrix <- college_factors |> "
+"0","  GGally::ggpairs("
+"0","    columns = c(""Top10perc"", ""Expend"")"
+"0","  )"
+"0","g_grp_var_matrix"

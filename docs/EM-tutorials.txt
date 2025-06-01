@@ -1,0 +1,60 @@
+EM-tutorials
+
+1.  The Expectation Maximization Algorithm: A short tutorial
+    https://www.lri.fr/~sebag/COURS/EM_algorithm.pdf
+	
+	Sean Borman, 2004
+	(student author, at the time)
+	
+2.  A Gentle Tutorial of the EM Algorithm and its Application to Parameter Estimation for Gaussian Mixture and Hidden Markov Models
+    https://f.hubspotusercontent40.net/hubfs/8111846/Unicon_October2020/pdf/bilmes-em-algorithm.pdf
+    
+	Jeff Bilmes, 1998
+	(student author, at the time)
+	
+3.  The EM Algorithm Explained. The Expectation-Maximization algorithm… | by Chloe Bi | Medium
+    https://medium.com/@chloebee/the-em-algorithm-explained-52182dbb19d9
+	
+	Chloe Bi, 2019
+	(nice blog portraying lower bound as concave quadratic)
+	
+4.  EM_Algorithm.pdf
+    https://www.columbia.edu/~mh2078/MachineLearningORFE/EM_Algorithm.pdf
+	
+	Martin Haugh, 2015
+	(deserves another glance)
+	
+5.  CSC 311: Introduction to Machine Learning - Tutorial 10 - EM Algorithm
+    https://www.cs.toronto.edu/~rgrosse/courses/csc311_f20/tutorials/tut10/Tut10.pdf
+	
+	R. Grosse, faculty, U. Toronto, 2020
+	(deserves another glance)
+	
+6.  EM Demystified: An Expectation-Maximization Tutorial
+    https://vannevar.ece.uw.edu/techsite/papers/documents/UWEETR-2010-0002.pdf
+	
+	Yihua Chen and Miya Gupta, 2010
+	(deserves another glance)
+	
+7.  Expectation Maximization: A Gentle Introduction
+    https://campar.in.tum.de/twiki/pub/Main/MoritzBlume/EMGaussianMix.pdf
+	
+	Moritz Blume, 2002
+	(deserves another glance)
+
+8.  Expectation–maximization algorithm - Wikipedia
+    https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm
+	
+	last edited on 11-Dec-2024
+
+9.  Expectation-Maximization
+	https://www.di.fc.ul.pt/~jpn/r/EM/EM.html
+	
+	John Neto, 2014
+	(deserves another glance)
+
+10. A View of the EM Algorithm that Justifies Incremental, Sparse, and Other Variants
+	https://www.cs.toronto.edu/~fritz/absps/emk.pdf
+	
+	R.M. Neal and G.E. Hinton, 1998
+

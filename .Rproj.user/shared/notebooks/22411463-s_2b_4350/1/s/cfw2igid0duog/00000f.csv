@@ -1,0 +1,3 @@
+"0","presidential_tbl <- presidential_dfm |> "
+"0","  tidytext::tidy()"
+"0","presidential_tbl"

@@ -1,0 +1,17 @@
+{
+  "hash": "7c8ea2d7d134a8a9531361368b48921d",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Time Series & Point Processes: Frequency Analysis\"\nsubtitle: \"Part 1, session 5b of Data Mining Intro\"\nauthor: \n  - name: \"Send comments to: Tony T (adthral)\"\ndate: \"2025-05-18 14:47 BST\"\noutput: \n  html_document:\n    toc: true\n    df_print: paged\n    mathjax: default\n  word_document:\n    toc: true\n    df_print: tibble\n  pdf_document:\n    toc: true\n    df_print: tibble\nabstract: \n  \"Introduce frequency domain analysis of time series and point processes.\"\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\n\n------------------------------------------------------------------------\n\n## Introduction\n\n\\[TODO\\]\n\n## Fourier Analysis of Time Series\n\n\\[TODO\\]\n\n### Example 1: Change in Global Temperature\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n::: {.cell-output-display}\n![](s_5b_4350_files/figure-html/g_gtemp_tbl-1.png){width=672}\n:::\n:::\n\n\n\n\\[TODO\\]\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](s_5b_4350_files/figure-html/land_pgram-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n::: {.cell-output-display}\n![](s_5b_4350_files/figure-html/land_spec-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n::: {.cell-output-display}\n![](s_5b_4350_files/figure-html/ocean_pgram-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n::: {.cell-output-display}\n![](s_5b_4350_files/figure-html/ocean_spec-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n:::\n\n\n\n## Point Processes\n\n\\[TODO\\]\n\n## Spatial Processes\n\n\\[TODO\\]\n\n## Team Exercises\n\n1.  \n\n## Resources\n\n[CRAN Task View: Time Series Analysis](https://cran.r-project.org/web/views/TimeSeries.html)\n\n[Fourier Analysis of Time Series: An Introduction](https://www.google.co.uk/books/edition/Fourier_Analysis_of_Time_Series/BNpQAAAAMAAJ?hl=en) by Peter Bloomfield\n",
+    "supporting": [
+      "s_5b_4350_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

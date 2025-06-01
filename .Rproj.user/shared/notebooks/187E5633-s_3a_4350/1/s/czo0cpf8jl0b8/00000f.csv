@@ -1,0 +1,5 @@
+"0","NB10_stats <- NB10_long |> "
+"0","  summarise("
+"0","    avg = mean(deficit, na.rm = TRUE), "
+"0","    sd  = sd(deficit, na.rm = TRUE)"
+"0","  )"

@@ -1,0 +1,8 @@
+"0","g_f_mpt <- father_son_ht |> "
+"0","  filter(! is.na(f_mpt)) |> "
+"0","  ggplot(mapping = aes("
+"0","    x = f_mpt |> as_factor(), "
+"0","    y = son"
+"0","  )) + "
+"0","  geom_boxplot()"
+"0","g_f_mpt"

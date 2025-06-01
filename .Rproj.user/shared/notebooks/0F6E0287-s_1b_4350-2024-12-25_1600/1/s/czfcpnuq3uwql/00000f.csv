@@ -1,0 +1,3 @@
+"0","# within each 2-inch interval calculate mid-point"
+"0","father_son_ht <- father_son_ht |> "
+"0","  mutate(f_mpt = (2 * round(father/2))) - 1"

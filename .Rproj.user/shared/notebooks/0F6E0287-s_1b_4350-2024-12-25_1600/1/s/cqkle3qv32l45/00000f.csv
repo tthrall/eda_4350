@@ -1,0 +1,8 @@
+"0","son_per_f_mpt <- father_son_ht |>    "
+"0","  group_by(f_mpt) |>    "
+"0","  summarise(     "
+"0","    count = n(),      "
+"0","    min   = min(son, na.rm = TRUE),      "
+"0","    max   = max(son, na.rm = TRUE),      "
+"0","    avg   = mean(son, na.rm = TRUE)   ) "
+"0","son_per_f_mpt"

@@ -1,0 +1,4 @@
+Rosset_Tibshirani_2019_citation
+
+Rosset, S., & Tibshirani, R. J. (2019). From Fixed-X to Random-X Regression: Bias-Variance Decompositions, Covariance Penalties, and Prediction Error Estimation. Journal of the American Statistical Association, 115(529), 138–151. https://doi.org/10.1080/01621459.2018.1424632
+

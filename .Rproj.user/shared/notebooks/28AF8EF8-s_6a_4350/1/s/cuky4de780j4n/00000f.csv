@@ -1,0 +1,5 @@
+"0","eda_v3_outline <- read_tsv("
+"0","  file = here(""data"", ""retain"", ""eda_v3_outline.txt"")) |> "
+"0","  dplyr::mutate(across("
+"0","    .cols = idx_1:i_pg, "
+"0","    .fns  = as.integer))"
