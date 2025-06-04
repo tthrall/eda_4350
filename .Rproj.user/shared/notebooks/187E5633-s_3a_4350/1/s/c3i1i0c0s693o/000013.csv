@@ -1,5 +1,0 @@
-"0","NB10_long |> ggplot(mapping = aes(x = deficit)) + "
-"0","  geom_histogram(fill = ""coral"") + "
-"0","  labs("
-"0","    title = ""NB10: micrograms below 10 grams"""
-"0","  )"

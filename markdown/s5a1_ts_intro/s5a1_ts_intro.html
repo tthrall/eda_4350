@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Send comments to: Tony T (tthrall)">
+
+<title>Temporally Dependent Data and Methods</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="s5a1_ts_intro_files/libs/clipboard/clipboard.min.js"></script>
+<script src="s5a1_ts_intro_files/libs/quarto-html/quarto.js"></script>
+<script src="s5a1_ts_intro_files/libs/quarto-html/popper.min.js"></script>
+<script src="s5a1_ts_intro_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="s5a1_ts_intro_files/libs/quarto-html/anchor.min.js"></script>
+<link href="s5a1_ts_intro_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="s5a1_ts_intro_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="s5a1_ts_intro_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="s5a1_ts_intro_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="s5a1_ts_intro_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Temporally Dependent Data and Methods</h1>
+<p class="subtitle lead">An Introduction</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Send comments to: Tony T (tthrall) </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">21:09 Wed 4-Jun-2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    Introduce data examples in which successive observations are statistically dependent. Discuss corresponding data analysis methods. <br><br>
+  </div>
+</div>
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This technical note gives examples of data in which successive observations are statistically dependent and are typically indexed by time. Time series data sampled at regular intervals (daily stock prices, for example) are the most common case, followed by point process data representing the occurrence of events (earthquakes, for example) at random times.</p>
+<p>Statistical models of such data include parametric models expressed in the time domain and non-parametric models expressed in the Fourier frequency domain (number of cycles per unit of time).</p>
+<p>This note also comments on the detection of statistical dependence among successive observations and the modification of statistical tests and estimators for such data.</p>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<section id="example_topic" class="level3">
+<h3 class="anchored" data-anchor-id="example_topic">EXAMPLE_TOPIC</h3>
+<section id="description" class="level4">
+<h4 class="anchored" data-anchor-id="description">Description</h4>
+</section>
+<section id="questions-and-objectives" class="level4">
+<h4 class="anchored" data-anchor-id="questions-and-objectives">Questions and Objectives</h4>
+</section>
+</section>
+<section id="climate-change" class="level3">
+<h3 class="anchored" data-anchor-id="climate-change">Climate Change</h3>
+<section id="description-1" class="level4">
+<h4 class="anchored" data-anchor-id="description-1">Description</h4>
+<p>The <code>R</code> package <code>astsa</code> provides the following data sets related to the analysis of climate change.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Climate: selected data sets</caption>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 14%">
+<col style="width: 78%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">pkg</th>
+<th style="text-align: left;">ds</th>
+<th style="text-align: left;">title</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">astsa</td>
+<td style="text-align: left;">ENSO</td>
+<td style="text-align: left;">El Nino - Southern Oscillation Index</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">astsa</td>
+<td style="text-align: left;">gtemp.month</td>
+<td style="text-align: left;">Monthly global average surface temperatures by year</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">astsa</td>
+<td style="text-align: left;">gtemp_both</td>
+<td style="text-align: left;">Global mean land and open ocean temperature deviations, 1850-2023</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">astsa</td>
+<td style="text-align: left;">gtemp_land</td>
+<td style="text-align: left;">Global mean land temperature deviations, 1850-2023</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">astsa</td>
+<td style="text-align: left;">gtemp_ocean</td>
+<td style="text-align: left;">Global mean ocean temperature deviations, 1850-2023</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">astsa</td>
+<td style="text-align: left;">soi</td>
+<td style="text-align: left;">Southern Oscillation Index</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="questions-and-objectives-1" class="level4">
+<h4 class="anchored" data-anchor-id="questions-and-objectives-1">Questions and Objectives</h4>
+</section>
+</section>
+</section>
+<section id="data-analysis-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="data-analysis-objectives">Data Analysis Objectives</h2>
+</section>
+<section id="data-analysis-methods" class="level2">
+<h2 class="anchored" data-anchor-id="data-analysis-methods">Data Analysis Methods</h2>
+</section>
+<section id="detecting-observational-dependence" class="level2">
+<h2 class="anchored" data-anchor-id="detecting-observational-dependence">Detecting Observational Dependence</h2>
+</section>
+<section id="closing-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
+</section>
+<section id="glossary-of-math-symbols" class="level2">
+<h2 class="anchored" data-anchor-id="glossary-of-math-symbols">Glossary of Math Symbols</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Glossary of Mathematical Symbols (s)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">s</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">$\mathcal{B}$</td>
+<td style="text-align: left;">a Banach space (complete, normed, linear space of functions)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\mathcal{B}^*$</td>
+<td style="text-align: left;">dual space of bounded linear functionals defined on $\mathcal{B}$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\mathcal{C} (\mathbb{T})$</td>
+<td style="text-align: left;">Banach space of continuous functions defined on $\mathbb{T}$</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\mathcal{C}_m (\mathbb{T})$</td>
+<td style="text-align: left;">Subspace of functions having a continuous derivative of order $m$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\delta_\tau$</td>
+<td style="text-align: left;">Dirac delta functional: $\delta_\tau (f) = f (\tau)$</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\mathcal{D}_m (\mathbb{T})$</td>
+<td style="text-align: left;">dual of $\mathcal{C}_m (\mathbb{T})$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\mathcal{D}_n (\cdot)$</td>
+<td style="text-align: left;">Dirichlet kernel function</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\mathcal{F}$</td>
+<td style="text-align: left;">mapping of a function or functional to its Fourier coefficients</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\mathcal{F}^{-1}$</td>
+<td style="text-align: left;">mapping of Fourier coefficients to their function or functional</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$f (\theta)$</td>
+<td style="text-align: left;">a periodic function of a real value</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\hat{f} [\nu]$</td>
+<td style="text-align: left;">Fourier coefficient of function $f$ of index $\nu$</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\phi (\omega)$</td>
+<td style="text-align: left;">a function defined on the unit circle</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$F_n (\cdot)$</td>
+<td style="text-align: left;">Fejér kernel function</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$L_p (\mathbb{T})$</td>
+<td style="text-align: left;">functions whose p-th power is integrable</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\mathcal{l}_p$</td>
+<td style="text-align: left;">sequence of elements whose p-th power is summable</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\lambda (\cdot)$</td>
+<td style="text-align: left;">linear functional: linear, scalar-valued function defined on a linear space of functions</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\lambda_g (\cdot)$</td>
+<td style="text-align: left;">linear functional based on function g</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\lambda_\mu (\cdot)$</td>
+<td style="text-align: left;">linear functional based on measure $\mu$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\hat{\lambda} [\nu]$</td>
+<td style="text-align: left;">Fourier coefficient of linear functional $\lambda$ of index $\nu$</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\lambda_\mathbb{T}$</td>
+<td style="text-align: left;">Lebesgue measure on the unit circle scaled to yield unit total mass</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\mu (\cdot)$</td>
+<td style="text-align: left;">a complex-valued Borel measure</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\mu_c (\cdot)$</td>
+<td style="text-align: left;">the component of measure $\mu$ that is absolutely continuous with respect to Lebesgue measure</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\mu_d (\cdot)$</td>
+<td style="text-align: left;">the discrete component of measure $\mu$ concentrated on a countable set of atoms</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$| \mu | \; (\cdot)$</td>
+<td style="text-align: left;">non-negative measure: modulus of measure $\mu$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\mathcal{M} (\mathbb{T})$</td>
+<td style="text-align: left;">Banach space of totally finite Borel measures $\mu (\cdot)$</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\omega$</td>
+<td style="text-align: left;">a complex number of modulus 1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\omega_n$</td>
+<td style="text-align: left;">n-th primitive root of unity, $e^{2 \pi i / n}$</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\Omega$</td>
+<td style="text-align: left;">a square matrix having elements of the form $\omega_n^{\mu \; \nu}$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$(p, q)$</td>
+<td style="text-align: left;">conjugate Hölder exponents (having harmonic mean 2)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$S_n (f)$</td>
+<td style="text-align: left;">finite sum of Fourier terms approximating function $f (\cdot)$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$S_{n, w} (f)$</td>
+<td style="text-align: left;">finite weighted sum of Fourier terms approximating function $f (\cdot)$</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\tilde{\theta}$</td>
+<td style="text-align: left;">$\theta$ modulo $(- \pi, \pi]$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\mathbb{T}$</td>
+<td style="text-align: left;">the unit circle: complex numbers of modulus 1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$u_\nu (\cdot)$</td>
+<td style="text-align: left;">$e^{i \theta} \mapsto e^{i \nu \theta}$, the unit exponential function of index $\nu$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\lVert \cdot \rVert$</td>
+<td style="text-align: left;">norm of a function or linear functional</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">${\lVert \phi \rVert}_p$</td>
+<td style="text-align: left;">the p-norm of a function</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\left &lt; \phi, \eta \right &gt;$</td>
+<td style="text-align: left;">inner product of square-integrable functions</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<section id="books" class="level3">
+<h3 class="anchored" data-anchor-id="books">Books</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">[An Introduction to Harmonic Analysis (3e)](https://doi.org/10.1017/CBO9781139165372) by Yitzhak Katznelson</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[Harmonic Analysis (2e)](https://doi.org/10.1007/978-93-86279-47-7) by Henry Helson</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[Time Series (2e)](https://doi.org/10.1137/1.9780898719246) by David Brillinger</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="articles" class="level3">
+<h3 class="anchored" data-anchor-id="articles">Articles</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">[Cesàro summation](https://en.wikipedia.org/wiki/Cesàro_summation)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[Fast Fourier transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[Fejér kernel](https://en.wikipedia.org/wiki/Fejér_kernel)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[Gibbs phenomenon](https://en.wikipedia.org/wiki/Gibbs_phenomenon)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[Hann function](https://en.wikipedia.org/wiki/Hann_function)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[Hilbert space](https://en.wikipedia.org/wiki/Hilbert_space)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[Hölder's inequality](https://en.wikipedia.org/wiki/Hölder%27s_inequality)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[Wiener's lemma](https://en.wikipedia.org/wiki/Wiener%27s_lemma)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[Window function](https://en.wikipedia.org/wiki/Window_function)</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

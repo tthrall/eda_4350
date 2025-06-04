@@ -1,6 +1,0 @@
-"0","ja_word_ct |> "
-"0","  dplyr::slice_head(n = 10) |> "
-"0","  knitr::kable("
-"0","  caption = ""Jane Austen: 10 most common (non-stop) words"", "
-"0","  col.names = c(""word"", ""count"")"
-"0",")"

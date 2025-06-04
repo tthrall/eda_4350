@@ -1,8 +1,0 @@
-"0","part_1_review_exercises <- tibble::tribble("
-"0","  ~heading, ~prep, "
-"0","  ""Clarification Needed"",  10L, "
-"0","  ""Selection of Topics"",   15L, "
-"0","  ""Intended Participants"", 10L, "
-"0","  ""Learning Outcomes"",     15L, "
-"0","  ""Teaching Style"",        10L"
-"0",")"

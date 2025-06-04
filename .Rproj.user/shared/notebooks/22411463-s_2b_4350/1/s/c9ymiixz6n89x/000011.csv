@@ -1,5 +1,0 @@
-"0","ja_max_wd_per_book |> "
-"0","  knitr::kable("
-"0","    caption = ""Max tf-idf word per book"", "
-"0","    digits = 3"
-"0","  )"

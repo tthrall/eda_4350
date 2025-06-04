@@ -1,3 +1,0 @@
-"0","# # assign observations to km clusters"
-"0","college_km_ctrs <- college_z_scores |>"
-"0","  mutate(cluster = m_kmeans_ctrs$ cluster)"

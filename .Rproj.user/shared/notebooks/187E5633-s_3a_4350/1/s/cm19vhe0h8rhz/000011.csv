@@ -1,4 +1,0 @@
-"0","lit_digest_tbl |> knitr::kable("
-"0","  caption = ""Predicted % for FDR in 1936"", "
-"0","  col.names = c(""Source"", ""FDR predicted %"")"
-"0",")"

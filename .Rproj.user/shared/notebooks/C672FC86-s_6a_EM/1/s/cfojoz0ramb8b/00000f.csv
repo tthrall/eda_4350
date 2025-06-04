@@ -1,7 +1,0 @@
-"0","faithful_tbl <- datasets::faithful |> "
-"0","  tibble::as_tibble() |> "
-"0","  dplyr::rename("
-"0","    duration = eruptions, "
-"0","    delay    = waiting"
-"0","  ) |> "
-"0","  dplyr::select(delay, duration)"

@@ -1,8 +1,0 @@
-"0","hgwells_books <- tibble::tribble("
-"0","  ~id, ~title,"
-"0","    35L, ""The Time Machine"","
-"0","    36L, ""The War of the Worlds"","
-"0","  5230L, ""The Invisible Man"","
-"0","   159L, ""The Island of Doctor Moreau"""
-"0",")"
-"0","hgwells_books"

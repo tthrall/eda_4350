@@ -1,6 +1,0 @@
-"0","sf_tokens_xsw <- sf_token_tbl |> "
-"0","  anti_join("
-"0","    y  = tidytext::stop_words, "
-"0","    by = ""word"""
-"0","  )"
-"0","sf_tokens_xsw"

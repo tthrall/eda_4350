@@ -1,5 +1,0 @@
-"0","faithful_4 <- faithful_tbl |> "
-"0","  dplyr::mutate("
-"0","    delay_low     = delay    < median(delay), "
-"0","    duration_low  = duration < median(duration)"
-"0","  )"

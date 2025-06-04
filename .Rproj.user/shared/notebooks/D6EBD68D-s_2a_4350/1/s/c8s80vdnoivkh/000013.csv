@@ -1,5 +1,0 @@
-"0","college_moments |> knitr::kable("
-"0","  caption = ""Mean, SD, and CV = SD/Mean"", "
-"0","  col.names = c(""variable"", ""mean"", ""sd"", ""cv""), "
-"0","  digits = 1"
-"0",")"

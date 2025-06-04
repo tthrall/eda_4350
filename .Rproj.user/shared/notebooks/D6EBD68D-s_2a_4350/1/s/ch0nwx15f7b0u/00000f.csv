@@ -1,2 +1,0 @@
-"0","college <- ISLR2::College |> "
-"0","  as_tibble(rownames = ""college_name"")"

@@ -1,3 +1,0 @@
-"0","f_mu <- c(initial_est$delay_mean, initial_est$duration_mean) |> "
-"0","  matrix(nrow = 2, ncol = 2)"
-"0","colnames(f_mu) <- c(""delay"", ""duration"")"

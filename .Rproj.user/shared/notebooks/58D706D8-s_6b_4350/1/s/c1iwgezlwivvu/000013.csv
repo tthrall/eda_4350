@@ -1,5 +1,0 @@
-"0","part_1_review_exercises |> "
-"0","  knitr::kable("
-"0","    caption = ""Part 1 Review: Class Exercises"", "
-"0","    col.names = c(""heading"", ""prep (minutes)"")"
-"0","  )"

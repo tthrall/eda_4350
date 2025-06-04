@@ -1,0 +1,232 @@
+---
+title: "Temporally Dependent Data and Methods"
+subtitle: "An Introduction"
+author: 
+  - name: "Send comments to: Tony T (tthrall)"
+date: "`r format(Sys.time(), '%Y-%m-%d %H:%M', usetz = TRUE)`"
+output: 
+  html_document:
+    toc: true
+    df_print: paged
+    mathjax: default
+  word_document:
+    toc: true
+    df_print: tibble
+  pdf_document:
+    toc: true
+    df_print: tibble
+abstract: 
+  "Introduce data examples in which successive observations are statistically dependent. <br><br>"
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = FALSE, 
+  error   = FALSE, 
+  message = FALSE, 
+  warning = FALSE
+)
+```
+
+```{r cran_libraries}
+library(assertthat)
+library(astsa)
+library(here)
+library(knitr)
+library(latex2exp)
+library(tidyverse)
+library(tinytex)
+```
+
+```{r local_libraries}
+# library(ugrid)
+```
+
+```{r local_source}
+# gen_ds_tbl
+# compile a tibble that identifies data sets
+source(here("code", "gen_ds_tbl.R"))
+
+# get_ref_materials
+# enscapsulate reference materials as separate modules
+source(here("code", "get_ref_materials.R"))
+```
+
+```{r plotting_params}
+# grid-points in (-m pi, m pi), m = m_periods
+# x_vec <- u_vec * (m_periods * pi)
+```
+
+## Introduction
+
+This technical note gives examples of data in which successive observations are statistically dependent and are typically indexed by time.  Time series data sampled at regular intervals (daily stock prices, for example) are the most common case, followed by point process data representing the occurrence of events (earthquakes, for example) at random times.
+
+Statistical models of such data include parametric models expressed in the time domain and non-parametric models expressed in the Fourier frequency domain (number of cycles per unit of time).
+
+This note also comments on the detection of statistical dependence among successive observations and the modification of statistical tests and estimators for such data.
+
+## Examples
+
+```{r astsa_data_set_tbl}
+astsa_data_set_lst <- data(pakcage = "astsa")
+astsa_data_set_tbl <- 
+  astsa_data_set_lst $results [, 3:4] |> 
+  tibble::as_tibble()
+
+# write to file only as needed
+save_to_file <- FALSE
+if (save_to_file) {
+  # TSV
+  astsa_data_set_tbl |> 
+    readr::write_tsv(here(
+	  "data", "retain", "astsa_data_set_tbl.txt"
+	))
+  # RDS
+  astsa_data_set_tbl |> 
+    readr::write_rds(here(
+	  "data", "retain", "astsa_data_set_tbl.rds"
+	))
+}
+```
+
+### EXAMPLE_TOPIC
+
+#### Description
+
+#### Questions and Objectives
+
+### Climate Change
+
+```{r climate_ds_tbl}
+# names of relevant data sets from package astsa::
+climate_ds_names <- c(
+  "ENSO", "gtemp.month", "gtemp_both", 
+  "gtemp_land", "gtemp_ocean", "soi"
+)
+climate_ds_tbl <- gen_ds_tbl(
+  pkgs = "astsa", 
+  datasets = climate_ds_names)
+```
+
+#### Description
+
+The R package `astsa` provides the following data sets related to the analysis of climate change.
+
+```{r climate_ds_tbl__kable}
+climate_ds_tbl |> knitr::kable(
+  caption = "Climate: selected data sets"
+)
+```
+
+#### Questions and Objectives
+
+## Data Analysis Objectives
+
+## Data Analysis Methods
+
+## Detecting Observational Dependence
+
+## Closing Remarks
+
+
+## Glossary of Math Symbols
+
+```{r symbol_tbl}
+symbol_tbl <- get_symbol_tbl()
+```
+
+```{r symbol_tbl__save}
+# save file only when updated
+save_to_file <- FALSE
+if (save_to_file) {
+  # RDS format
+  symbol_tbl |> readr::write_rds(here::here(
+    "data", "retain", "symbol_tbl.rds"
+  ))
+  
+  # TSV format
+  symbol_tbl |> readr::write_tsv(here::here(
+    "data", "retain", "symbol_tbl.txt"
+  ))
+}
+```
+
+```{r symbol_tbl__kable}
+symbol_tbl |> 
+  dplyr::select(symbol, dscr) |> 
+  knitr::kable(
+    format = "html", 
+	escape = FALSE, 
+	caption = "Glossary of Mathematical Symbols (s)", 
+	col.names = c("s", "description")
+  ) 
+```
+
+## Resources
+
+### Books
+
+```{r books_tbl}
+books_tbl <- get_books_tbl() |> 
+  dplyr::arrange(title)
+```
+
+```{r books_tbl__save}
+# save file only when updated
+save_to_file <- FALSE
+if (save_to_file) {
+  # RDS format
+  books_tbl |> readr::write_rds(here::here(
+    "data", "retain", "books_tbl.rds"
+  ))
+  
+  # TSV format
+  books_tbl |> readr::write_tsv(here::here(
+    "data", "retain", "books_tbl.txt"
+  ))
+}
+```
+
+```{r books_tbl__kable}
+books_tbl |> 
+  list_links(a_idx = 3L) |> 
+  knitr::kable(
+    format    = "html", 
+	escape    = FALSE, 
+	col.names = ""
+  ) 
+```
+
+### Articles
+
+```{r articles_tbl}
+articles_tbl <- get_articles_tbl() |> 
+  dplyr::arrange(title)
+```
+
+```{r articles_tbl__save}
+# save file only when updated
+save_to_file <- FALSE
+if (save_to_file) {
+  # RDS format
+  articles_tbl |> readr::write_rds(here::here(
+    "data", "retain", "articles_tbl.rds"
+  ))
+  
+  # TSV format
+  articles_tbl |> readr::write_tsv(here::here(
+    "data", "retain", "articles_tbl.txt"
+  ))
+}
+```
+
+```{r articles_tbl__kable}
+articles_tbl |> 
+  list_links() |> 
+  knitr::kable(
+    format    = "html", 
+	escape    = FALSE, 
+	col.names = ""
+  ) 
+```

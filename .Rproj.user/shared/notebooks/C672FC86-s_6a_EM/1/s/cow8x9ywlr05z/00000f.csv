@@ -1,6 +1,0 @@
-"0","faithful_4_smy |> "
-"0","  dplyr::select(delay_low, duration_low, count:dd_cor) |> "
-"0","  knitr::kable("
-"0","    caption = ""Summary statistics for initial groups of data points"", "
-"0","    digits = 1"
-"0","  )"

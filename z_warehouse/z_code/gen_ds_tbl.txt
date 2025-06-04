@@ -1,0 +1,59 @@
+##### 
+### 
+#     gen_ds_tbl.R
+#     
+#     compile a tibble of data set names
+### 
+##### 
+
+### 
+#   gen_ds_tbl()
+#     
+#     compile a tibble of data set names
+#     
+#     "pkgs" notes
+#     1: named packages are assumed to installed
+#     2: length = 1 or else "datasets" length
+### 
+gen_ds_tbl <- function(
+  pkgs,    # <chr> package names
+  datasets # <chr> names of data sets
+) {
+  # initialize ds_tbl
+  ds_tbl <- tibble::tibble(
+    pkg = pkgs, 
+	ds  = datasets) |> 
+    dplyr::arrange(pkg, ds)
+  
+  # fetch data set title
+  ds_title_vec <- vector(mode = "character")
+  for (p in ds_tbl$ pkg |> unique()) {
+    # names of specified data sets within this package
+	ds_target_names <- ds_tbl |> 
+	  dplyr::filter(pkg == p) |> 
+	  dplyr::pull(ds)
+    
+	# tibble of all data sets within this package
+	pkg_lst <- data(package = p)
+	pkg_tbl <- pkg_lst$ results [, 3:4] |> 
+	  tibble::as_tibble()
+	
+	# sub-tibble of specified data sets
+	sub_tbl <- pkg_tbl |> 
+	  dplyr::filter(
+	    Item %in% ds_target_names)
+	
+	# update vector of ds titles
+	ds_title_vec <- c(ds_title_vec, sub_tbl$ Title)
+  }
+  
+  # append ds titles as new column in ds_tbl
+  ds_tbl <- ds_tbl |> 
+    dplyr::mutate(title = ds_title_vec)
+  
+  return(ds_tbl)
+}
+
+### 
+# EOF 
+### 

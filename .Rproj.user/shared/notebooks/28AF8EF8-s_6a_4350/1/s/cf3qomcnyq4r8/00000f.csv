@@ -1,6 +1,0 @@
-"0","jan_13_17_topics <- read_tsv("
-"0","  file = here(""data"", ""retain"", ""jan_13_17_topics.txt"")) |> "
-"0","  dplyr::mutate(dt_session = lubridate::dmy(dt_session)) |> "
-"0","  dplyr::mutate(across("
-"0","    .cols = c(idx_1, idx_2, idx_3, pg_doc), "
-"0","    .fns  = as.integer))"

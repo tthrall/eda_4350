@@ -1,4 +1,0 @@
-"0","# count the number of occurrences of each word"
-"0","# list largest counts first"
-"0","ja_word_ct <- ja_words_xsw |> "
-"0","  dplyr::count(word, sort = TRUE)"

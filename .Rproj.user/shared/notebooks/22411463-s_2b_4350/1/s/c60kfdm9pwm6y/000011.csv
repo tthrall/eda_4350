@@ -1,6 +1,0 @@
-"0","ja_strings_per_book <- austen_books() |> "
-"0","  summarise("
-"0","    .by = book, "
-"0","    n_strings = n()"
-"0","  )"
-"0","ja_strings_per_book"

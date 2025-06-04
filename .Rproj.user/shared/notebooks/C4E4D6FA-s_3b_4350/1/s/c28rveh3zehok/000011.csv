@@ -1,6 +1,0 @@
-"0","dpqr_tbl |> "
-"0","  filter(value == ""dbl"") |> "
-"0","  dplyr::select(- value) |> "
-"0","  knitr::kable("
-"0","    caption = ""Continuous Distributions from `stats`"""
-"0","  )"

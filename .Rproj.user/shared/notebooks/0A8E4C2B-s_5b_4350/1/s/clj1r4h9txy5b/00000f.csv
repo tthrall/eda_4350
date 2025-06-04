@@ -1,2 +1,0 @@
-"0","ocean_spec <- timeSeriesDataSets::gtemp_ocean_ts |> "
-"0","  stats::spec.pgram(spans = c(5, 5))"

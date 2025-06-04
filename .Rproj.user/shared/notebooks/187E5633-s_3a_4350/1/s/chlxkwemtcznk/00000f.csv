@@ -1,3 +1,0 @@
-"0","truman_dewey_tbl |> knitr::kable("
-"0","  caption = ""Predicted % per candidate in 1948"""
-"0",")"

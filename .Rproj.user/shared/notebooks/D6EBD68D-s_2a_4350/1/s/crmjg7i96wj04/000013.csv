@@ -1,4 +1,0 @@
-"0","college_vars_tbl |> knitr::kable("
-"0","  caption = ""US college variables (1995 issue of USNWR)"", "
-"0","  col.names = c(""variable"", ""description"")"
-"0",")"

@@ -1,6 +1,0 @@
-"0","initial_est |> "
-"0","  dplyr::select(z, count, delay_mean:dd_cor) |> "
-"0","  knitr::kable("
-"0","    caption = ""Initial parameter estimates"", "
-"0","    digits = 1"
-"0","  )"

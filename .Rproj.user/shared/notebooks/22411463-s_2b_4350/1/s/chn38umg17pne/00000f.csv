@@ -1,7 +1,0 @@
-"0","# save as text file just once"
-"0","save_file <- FALSE"
-"0","if (save_file) {"
-"0","  ap_topics |> write_tsv("
-"0","    here(""data"", ""retain"", ""ap_topics.txt"")"
-"0","  )"
-"0","}"

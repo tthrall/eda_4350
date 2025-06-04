@@ -1,4 +1,0 @@
-"0","NB10_wide |> knitr::kable("
-"0","  caption = ""NB10 (index, deficit)"", "
-"0","  col.names = rep(c(""index"", ""deficit""), 4)"
-"0",")"

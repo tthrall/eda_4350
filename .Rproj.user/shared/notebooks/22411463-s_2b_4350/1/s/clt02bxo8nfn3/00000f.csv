@@ -1,2 +1,0 @@
-"0","hgwells_word_ct <- hgwells_words |> "
-"0","  dplyr::count(word, sort = TRUE)"
