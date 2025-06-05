@@ -8,6 +8,7 @@ date-format: HH:mm ddd D-MMM-YYYY
 output:
   html_document:
     toc: true
+    toc-depth: 2
     df_print: paged
     mathjax: default
   word_document:
@@ -37,6 +38,7 @@ library(knitr)
 library(latex2exp)
 library(tidyverse)
 library(tinytex)
+library(xts)
 ```
 
 ```{r local_libraries}
@@ -49,7 +51,7 @@ library(tinytex)
 source(here("code", "gen_ds_tbl.R"))
 
 # get_ref_materials
-# enscapsulate reference materials as separate modules
+# encapsulate reference materials as separate modules
 source(here("code", "get_ref_materials.R"))
 ```
 
@@ -87,18 +89,36 @@ if (save_to_file) {
 }
 ```
 
-### EXAMPLE_TOPIC
+### JJ Quarterly Earnings
 
 #### Description
 
-#### Questions and Objectives
+The figures below are Johnson & Johnson quarterly earnings per share in US dollars from 1960 through 1980.  The second figure shows the same data on a $\log_e$ scale.  Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.
+
+```{r jj__plot}
+par(mfrow=2:1)
+
+g_jj <- astsa::tsplot(
+  jj, 
+  col=4, 
+  ylab="USD", 
+  type="o", 
+  main="Johnson & Johnson Quarterly Earnings per Share")
+
+g_jj_log <- astsa::tsplot(
+  jj, col=4, ylab="USD", type="o", log="y")
+```
+
+#### Context: Questions and Objectives
+
+Developing a statistical model of the time series can be regarded as a first step toward an economic understanding.  Based on that understanding, various interested parties then set company performance goals, make investment decisions, or include this company as an example in a larger research study.
 
 ### Climate Change
 
 ```{r climate_ds_tbl}
 # names of relevant data sets from package astsa::
 climate_ds_names <- c(
-  "ENSO", "gtemp.month", "gtemp_both",
+  "cardox", "ENSO", "gtemp.month", "gtemp_both", 
   "gtemp_land", "gtemp_ocean", "soi"
 )
 climate_ds_tbl <- select_ds_per_pkg(
@@ -106,9 +126,7 @@ climate_ds_tbl <- select_ds_per_pkg(
   datasets = climate_ds_names)
 ```
 
-#### Description
-
-The `R` package `astsa` provides the following data sets related to the analysis of climate change.
+Here are some of the data sets related to climate change from the `R` package `astsa`.
 
 ```{r climate_ds_tbl__kable}
 climate_ds_tbl |> knitr::kable(
@@ -116,7 +134,219 @@ climate_ds_tbl |> knitr::kable(
 )
 ```
 
-#### Questions and Objectives
+The figure below shows the time series `gtemp_land` and `gtemp_ocean`, annual temperature deviations (in ◦C) from respective averages for the period 1991-2020.  The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.
+
+```{r gtemp__plot}
+g_temp_lo <- astsa::tsplot(
+  cbind(gtemp_land, gtemp_ocean), 
+  spaghetti=TRUE, 
+  col=astsa.col(c(4,2),.7), 
+  pch=c(20,18), 
+  type="o", 
+  ylab="\u00B0C", 
+  main="Global Surface Temperature Anomalies", 
+  addLegend=TRUE, 
+  location="topleft", 
+  legend=c("Land Surface","Sea Surface")
+)
+```
+
+#### Context: Questions and Objectives
+
+The upward trend in the two temperature series during the latter part of the 20th century has been used as an argument for the climate change hypothesis.  Further data and information would be needed, of course, to estimate the contributions of natural and anthropogenic sources to the observed rise in temperature.
+
+### Speech Recording
+
+#### Description
+
+The figure below shows the `speech` data set from the `astsa` package, a recording of the utterance _aaahhh_.  Note the repetitive nature of the signal and the rather regular periodicities.  Also note the repetition of small wavelets.  The separation between packets is known as the _pitch period_ and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis.
+
+```{r speech__plot}
+g_speech <- astsa::tsplot(speech, col=4)
+arrows(658, 3850, 766, 3850, 
+       code=3, angle=90, length=.05, col=6)
+text(712, 4100, "pitch period", cex=.75)
+```
+
+#### Context: Questions and Objectives
+
+Computer recognition of speech is an active area of research and development.  In the current case one might seek to transcribe the signal above into the text string "aaahhh".  One approach would be a frequency based decomposition (spectral analysis) of the signal yielding a signature of the utterance that could be matched to one or more entries in a library of such signatures.
+
+###  Dow Jones Industrial Average
+
+#### Description
+
+The next figure shows the trading day closings and returns (percent change) of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
+
+```{r djia_return}
+# djia_return <- diff(log(djia$Close))
+
+djia_return <- 
+  astsa::djia$Close |> log() |> diff()
+```
+
+```{r djia__plot}
+par(mfrow=2:1)
+
+g_djia_close  <- plot(djia$Close, col=4, main="DJIA Close")
+
+g_djia_return <- plot(djia_return, col=4, main="DJIA Returns")
+
+g_djia_close
+g_djia_return
+```
+
+#### Context: Questions and Objectives
+
+The returns of the DJIA are typical of other assets. The mean function of the series appears to be stable with an average return of approximately zero.  Note, however, that highly volatile (variable) periods tend to be clustered together. That variability is both a symptom and cause of market uncertainty.  A challenge in the analysis of financial data is to forecast the volatility of future returns.
+
+###  El Niño and Fish Population
+
+#### Description
+
+The next figure shows the Southern Oscillation Index (SOI) and associated Recruitment (an index of the number of viable new fish).  Both series consist of 453 monthly values ranging over the years 1950–1987.
+
+The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.
+
+```{r soi__plot}
+par(mfrow=2:1)
+g_soi <- astsa::tsplot(soi, ylab="", main="Southern Oscillation Index", col=4)
+
+text(1970, .91, "COOL", col=5, font=4)
+text(1970, -.91, "WARM", col=6, font=4)
+
+g_rec <- astsa::tsplot(rec, ylab="", main="Recruitment", col=4)
+```
+
+#### Context: Questions and Objectives
+
+The processes that drive the periodicity of the two time series is of scientific interest.  Frequency decomposition of the time series may help to identify the underlying processes.
+
+### Predator–Prey Interactions
+
+#### Description
+
+One of the classic studies of predator–prey interactions is based on the record of Snowshoe hare and lynx pelts purchased by the Hudson’s Bay Company of Canada from 1821 to 1934.  While this is an indirect measure of predation, the assumption is that there is a direct relationship between the number of pelts collected and the number of hare and lynx in the wild.
+
+These predator–prey interactions often lead to cyclical patterns of predator and prey abundance shown in the next figure.
+
+```{r pred_prey__plot}
+g_hare_lynx <- tsplot(
+  cbind(Hare, Lynx), 
+  col=c(2,4), 
+  type="o", 
+  pch=c(0,2), 
+  ylab="Number", 
+  spaghetti=TRUE, 
+  addLegend=TRUE)
+
+mtext("(\u00D7 1000)", side=2, adj=1, line=1.5, cex=.8)
+```
+
+#### Context: Questions and Objectives
+
+The scientific understanding of predator-prey interactions, starting with the Lotka-Volterra model (1910-1926), marked the beginnings of mathematical biology, and has been extended to the analysis of economic competition.
+
+### fMRI Imaging
+
+#### Description
+
+The next figure shows fMRI data from various locations in the cortex, thalamus, and cerebellum; n = 128 points, one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).
+
+The data are from a 1997 study that used fMRI to examine pain perception in humans. Here we focus on five subjects whose hands were periodically brushed. The stimulus (represented as a square wave in the figure) was applied for 32 seconds and then stopped for 32 seconds so that the signal period is 64 seconds. The sampling rate was one observation every 2 seconds for 256 seconds (n = 128).
+
+The data are consecutive measures of blood oxygenation-level dependent (bold) signal intensity, which measures areas of activation in the brain. The series shown are from two areas each in the cortex, thalamus, and cerebellum and the values are averaged over subjects (these were evoked responses and all subjects were in phase).
+
+```{r fmri__plot}
+par(mfrow=c(3,1))
+
+x = ts(fmri1[,4:9], start=0, freq=32) # data
+
+u = ts(
+  rep(c(rep(.6,16), rep(-.6,16)), 4), 
+  start=0, 
+  freq=32)
+
+# stimulus signal
+names = c("Cortex","Thalamus","Cerebellum")
+
+g_fmri <- list()
+for (i in 1:3){
+  j = 2*i-1
+  g_fmri [[i]] <- astsa::tsplot(
+    x[,j:(j+1)], 
+    ylab="BOLD", xlab="", 
+    main=names[i], col=5:6, 
+    ylim=c(-.6,.6), lwd=2, xaxt="n", spaghetti=TRUE
+  )
+  
+  axis(seq(0,256,64), side=1, at=0:4)
+  
+  lines(u, type="s", col=gray(.3))
+}
+
+mtext("seconds", side=1, line=1.75, cex=.9)
+```
+
+#### Context: Questions and Objectives
+
+Note that the periodicities appear strongly in the motor cortex series and less so in the thalamus and cerebellum. The interest here is testing whether the various areas are responding differently to the stimulus.
+
+### Earthquakes and Explosions
+
+#### Description
+
+The next pair of figures show recordings (40 per second) at a Scandinavian seismic station of an earthquake and of a mining explosion.
+
+```{r eqexp__plot}
+g_eqexp <- astsa::tsplot(
+  cbind(EQ5,EXP6), 
+  ylab=c("Earthquake", "Explosion"), 
+  col=4
+)
+```
+
+#### Context: Questions and Objectives
+
+The general problem of interest is in distinguishing or discriminating between waveforms generated by earthquakes and those generated by explosions.
+
+### Old Faithful eruptions
+
+#### Description
+
+The figure below represents the duration in minutes of eruptions ("duration") and the minutes between eruptions ("delay")[^delay] of the "Old Faithful" geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.[^faithful_pkgs]
+
+[^delay]: "Delay" here refers to the length of time *preceding* the current eruption. The (`delay`, `duration`) variables are recorded in minutes.
+
+[^faithful_pkgs]: There are two prominent `R` packages representing the Old Faithful measurements during August, 1985. The `MASS::geyser` data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The `datasets::faithful` data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.
+
+The underlying data is a _point process_, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence.  Here the type of event is an eruption of the Old Faitful geyser.  In addition to the time of the eruption we have the duration of the eruption.
+
+```{r faithful_tbl}
+faithful_tbl <- datasets::faithful |> 
+  tibble::as_tibble() |> 
+  dplyr::rename(
+    duration = eruptions, 
+    delay    = waiting
+  ) |> 
+  dplyr::select(delay, duration)
+```
+
+```{r g_faithful_tbl}
+g_faithful_tbl <- faithful_tbl |> 
+  ggplot(mapping = aes(
+    x = delay, y = duration
+  )) + 
+  geom_point() + 
+  labs(title = "Old Faithful eruptions: delay and duration")
+g_faithful_tbl
+```
+
+#### Context: Questions and Objectives
+
+The figure shows two clusters of data points.  Old Faithful eruptions are conjectured to occur in 2 distinct temporal patterns due to the presence of an upper and lower chamber beneath the vertical column (tube) that forms the geyser.
+
+In this example, we have the goal of scientific understanding of a natural phenomenon, supported by statistical modeling.
 
 ## Data Analysis Objectives
 
@@ -126,9 +356,9 @@ climate_ds_tbl |> knitr::kable(
 
 ## Closing Remarks
 
+```{r symbol_tbl}
 ## Glossary of Math Symbols
 
-```{r symbol_tbl}
 symbol_tbl <- get_symbol_tbl()
 ```
 
@@ -149,14 +379,14 @@ if (save_to_file) {
 ```
 
 ```{r symbol_tbl__kable}
-symbol_tbl |>
-  dplyr::select(symbol, dscr) |>
-  knitr::kable(
-    format = "html",
-	escape = FALSE,
-	caption = "Glossary of Mathematical Symbols (s)",
-	col.names = c("s", "description")
-  )
+# symbol_tbl |>
+#   dplyr::select(symbol, dscr) |>
+#   knitr::kable(
+#     format = "html",
+# 	escape = FALSE,
+# 	caption = "Glossary of Mathematical Symbols (s)",
+# 	col.names = c("s", "description")
+#   )
 ```
 
 ## Resources
@@ -189,8 +419,8 @@ books_tbl |>
   list_links(a_idx = 3L) |>
   knitr::kable(
     format    = "html",
-	escape    = FALSE,
-	col.names = ""
+    escape    = FALSE,
+    col.names = ""
   )
 ```
 
@@ -222,7 +452,7 @@ articles_tbl |>
   list_links() |>
   knitr::kable(
     format    = "html",
-	escape    = FALSE,
-	col.names = ""
+    escape    = FALSE,
+    col.names = ""
   )
 ```

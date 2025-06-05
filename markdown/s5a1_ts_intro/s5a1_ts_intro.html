@@ -35,6 +35,35 @@ ul.task-list li input[type="checkbox"] {
 <link href="s5a1_ts_intro_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="s5a1_ts_intro_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -64,7 +93,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">21:09 Wed 4-Jun-2025</p>
+      <p class="date">17:54 Thu 5-Jun-2025</p>
     </div>
   </div>
   
@@ -90,20 +119,29 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="examples" class="level2">
 <h2 class="anchored" data-anchor-id="examples">Examples</h2>
-<section id="example_topic" class="level3">
-<h3 class="anchored" data-anchor-id="example_topic">EXAMPLE_TOPIC</h3>
+<section id="jj-quarterly-earnings" class="level3">
+<h3 class="anchored" data-anchor-id="jj-quarterly-earnings">JJ Quarterly Earnings</h3>
 <section id="description" class="level4">
 <h4 class="anchored" data-anchor-id="description">Description</h4>
+<p>The figures below are Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980. The second figure shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/jj__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="questions-and-objectives" class="level4">
-<h4 class="anchored" data-anchor-id="questions-and-objectives">Questions and Objectives</h4>
+<section id="context-questions-and-objectives" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives">Context: Questions and Objectives</h4>
+<p>Developing a statistical model of the time series can be regarded as a first step toward an economic understanding. Based on that understanding, various interested parties then set company performance goals, make investment decisions, or include this company as an example in a larger research study.</p>
 </section>
 </section>
 <section id="climate-change" class="level3">
 <h3 class="anchored" data-anchor-id="climate-change">Climate Change</h3>
-<section id="description-1" class="level4">
-<h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p>The <code>R</code> package <code>astsa</code> provides the following data sets related to the analysis of climate change.</p>
+<p>Here are some of the data sets related to climate change from the <code>R</code> package <code>astsa</code>.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -128,25 +166,30 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td style="text-align: left;">astsa</td>
+<td style="text-align: left;">cardox</td>
+<td style="text-align: left;">Monthly Carbon Dioxide Levels at Mauna Loa</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">astsa</td>
 <td style="text-align: left;">gtemp.month</td>
 <td style="text-align: left;">Monthly global average surface temperatures by year</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">astsa</td>
 <td style="text-align: left;">gtemp_both</td>
 <td style="text-align: left;">Global mean land and open ocean temperature deviations, 1850-2023</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">astsa</td>
 <td style="text-align: left;">gtemp_land</td>
 <td style="text-align: left;">Global mean land temperature deviations, 1850-2023</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">astsa</td>
 <td style="text-align: left;">gtemp_ocean</td>
 <td style="text-align: left;">Global mean ocean temperature deviations, 1850-2023</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">astsa</td>
 <td style="text-align: left;">soi</td>
 <td style="text-align: left;">Southern Oscillation Index</td>
@@ -155,9 +198,165 @@ ul.task-list li input[type="checkbox"] {
 </table>
 </div>
 </div>
+<p>The figure below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from respective averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/gtemp__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="context-questions-and-objectives-1" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-1">Context: Questions and Objectives</h4>
+<p>The upward trend in the two temperature series during the latter part of the 20th century has been used as an argument for the climate change hypothesis. Further data and information would be needed, of course, to estimate the contributions of natural and anthropogenic sources to the observed rise in temperature.</p>
 </section>
-<section id="questions-and-objectives-1" class="level4">
-<h4 class="anchored" data-anchor-id="questions-and-objectives-1">Questions and Objectives</h4>
+</section>
+<section id="speech-recording" class="level3">
+<h3 class="anchored" data-anchor-id="speech-recording">Speech Recording</h3>
+<section id="description-1" class="level4">
+<h4 class="anchored" data-anchor-id="description-1">Description</h4>
+<p>The figure below shows the <code>speech</code> data set from the <code>astsa</code> package, a recording of the utterance <em>aaahhh</em>. Note the repetitive nature of the signal and the rather regular periodicities. Also note the repetition of small wavelets. The separation between packets is known as the <em>pitch period</em> and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/speech__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-2" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-2">Context: Questions and Objectives</h4>
+<p>Computer recognition of speech is an active area of research and development. In the current case one might seek to transcribe the signal above into the text string “aaahhh”. One approach would be a frequency based decomposition (spectral analysis) of the signal yielding a signature of the utterance that could be matched to one or more entries in a library of such signatures.</p>
+</section>
+</section>
+<section id="dow-jones-industrial-average" class="level3">
+<h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
+<section id="description-2" class="level4">
+<h4 class="anchored" data-anchor-id="description-2">Description</h4>
+<p>The next figure shows the trading day closings and returns (percent change) of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/djia__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-3" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-3">Context: Questions and Objectives</h4>
+<p>The returns of the DJIA are typical of other assets. The mean function of the series appears to be stable with an average return of approximately zero. Note, however, that highly volatile (variable) periods tend to be clustered together. That variability is both a symptom and cause of market uncertainty. A challenge in the analysis of financial data is to forecast the volatility of future returns.</p>
+</section>
+</section>
+<section id="el-niño-and-fish-population" class="level3">
+<h3 class="anchored" data-anchor-id="el-niño-and-fish-population">El Niño and Fish Population</h3>
+<section id="description-3" class="level4">
+<h4 class="anchored" data-anchor-id="description-3">Description</h4>
+<p>The next figure shows the Southern Oscillation Index (SOI) and associated Recruitment (an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
+<p>The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/soi__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-4" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-4">Context: Questions and Objectives</h4>
+<p>The processes that drive the periodicity of the two time series is of scientific interest. Frequency decomposition of the time series may help to identify the underlying processes.</p>
+</section>
+</section>
+<section id="predatorprey-interactions" class="level3">
+<h3 class="anchored" data-anchor-id="predatorprey-interactions">Predator–Prey Interactions</h3>
+<section id="description-4" class="level4">
+<h4 class="anchored" data-anchor-id="description-4">Description</h4>
+<p>One of the classic studies of predator–prey interactions is based on the record of Snowshoe hare and lynx pelts purchased by the Hudson’s Bay Company of Canada from 1821 to 1934. While this is an indirect measure of predation, the assumption is that there is a direct relationship between the number of pelts collected and the number of hare and lynx in the wild.</p>
+<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance shown in the next figure.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/pred_prey__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-5" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-5">Context: Questions and Objectives</h4>
+<p>The scientific understanding of predator-prey interactions, starting with the Lotka-Volterra model (1910-1926), marked the beginnings of mathematical biology, and has been extended to the analysis of economic competition.</p>
+</section>
+</section>
+<section id="fmri-imaging" class="level3">
+<h3 class="anchored" data-anchor-id="fmri-imaging">fMRI Imaging</h3>
+<section id="description-5" class="level4">
+<h4 class="anchored" data-anchor-id="description-5">Description</h4>
+<p>The next figure shows fMRI data from various locations in the cortex, thalamus, and cerebellum; n = 128 points, one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).</p>
+<p>The data are from a 1997 study that used fMRI to examine pain perception in humans. Here we focus on five subjects whose hands were periodically brushed. The stimulus (represented as a square wave in the figure) was applied for 32 seconds and then stopped for 32 seconds so that the signal period is 64 seconds. The sampling rate was one observation every 2 seconds for 256 seconds (n = 128).</p>
+<p>The data are consecutive measures of blood oxygenation-level dependent (bold) signal intensity, which measures areas of activation in the brain. The series shown are from two areas each in the cortex, thalamus, and cerebellum and the values are averaged over subjects (these were evoked responses and all subjects were in phase).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/fmri__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-6" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-6">Context: Questions and Objectives</h4>
+<p>Note that the periodicities appear strongly in the motor cortex series and less so in the thalamus and cerebellum. The interest here is testing whether the various areas are responding differently to the stimulus.</p>
+</section>
+</section>
+<section id="earthquakes-and-explosions" class="level3">
+<h3 class="anchored" data-anchor-id="earthquakes-and-explosions">Earthquakes and Explosions</h3>
+<section id="description-6" class="level4">
+<h4 class="anchored" data-anchor-id="description-6">Description</h4>
+<p>The next pair of figures show recordings (40 per second) at a Scandinavian seismic station of an earthquake and of a mining explosion.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/eqexp__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-7" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-7">Context: Questions and Objectives</h4>
+<p>The general problem of interest is in distinguishing or discriminating between waveforms generated by earthquakes and those generated by explosions.</p>
+</section>
+</section>
+<section id="old-faithful-eruptions" class="level3">
+<h3 class="anchored" data-anchor-id="old-faithful-eruptions">Old Faithful eruptions</h3>
+<section id="description-7" class="level4">
+<h4 class="anchored" data-anchor-id="description-7">Description</h4>
+<p>The figure below represents the duration in minutes of eruptions (“duration”) and the minutes between eruptions (“delay”)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>The underlying data is a <em>point process</em>, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faitful geyser. In addition to the time of the eruption we have the duration of the eruption.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/g_faithful_tbl-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-8" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-8">Context: Questions and Objectives</h4>
+<p>The figure shows two clusters of data points. Old Faithful eruptions are conjectured to occur in 2 distinct temporal patterns due to the presence of an upper and lower chamber beneath the vertical column (tube) that forms the geyser.</p>
+<p>In this example, we have the goal of scientific understanding of a natural phenomenon, supported by statistical modeling.</p>
 </section>
 </section>
 </section>
@@ -173,174 +372,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
 </section>
-<section id="glossary-of-math-symbols" class="level2">
-<h2 class="anchored" data-anchor-id="glossary-of-math-symbols">Glossary of Math Symbols</h2>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Glossary of Mathematical Symbols (s)</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">s</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">$\mathcal{B}$</td>
-<td style="text-align: left;">a Banach space (complete, normed, linear space of functions)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\mathcal{B}^*$</td>
-<td style="text-align: left;">dual space of bounded linear functionals defined on $\mathcal{B}$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\mathcal{C} (\mathbb{T})$</td>
-<td style="text-align: left;">Banach space of continuous functions defined on $\mathbb{T}$</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\mathcal{C}_m (\mathbb{T})$</td>
-<td style="text-align: left;">Subspace of functions having a continuous derivative of order $m$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\delta_\tau$</td>
-<td style="text-align: left;">Dirac delta functional: $\delta_\tau (f) = f (\tau)$</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\mathcal{D}_m (\mathbb{T})$</td>
-<td style="text-align: left;">dual of $\mathcal{C}_m (\mathbb{T})$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\mathcal{D}_n (\cdot)$</td>
-<td style="text-align: left;">Dirichlet kernel function</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\mathcal{F}$</td>
-<td style="text-align: left;">mapping of a function or functional to its Fourier coefficients</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\mathcal{F}^{-1}$</td>
-<td style="text-align: left;">mapping of Fourier coefficients to their function or functional</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$f (\theta)$</td>
-<td style="text-align: left;">a periodic function of a real value</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\hat{f} [\nu]$</td>
-<td style="text-align: left;">Fourier coefficient of function $f$ of index $\nu$</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\phi (\omega)$</td>
-<td style="text-align: left;">a function defined on the unit circle</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$F_n (\cdot)$</td>
-<td style="text-align: left;">Fejér kernel function</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$L_p (\mathbb{T})$</td>
-<td style="text-align: left;">functions whose p-th power is integrable</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\mathcal{l}_p$</td>
-<td style="text-align: left;">sequence of elements whose p-th power is summable</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\lambda (\cdot)$</td>
-<td style="text-align: left;">linear functional: linear, scalar-valued function defined on a linear space of functions</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\lambda_g (\cdot)$</td>
-<td style="text-align: left;">linear functional based on function g</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\lambda_\mu (\cdot)$</td>
-<td style="text-align: left;">linear functional based on measure $\mu$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\hat{\lambda} [\nu]$</td>
-<td style="text-align: left;">Fourier coefficient of linear functional $\lambda$ of index $\nu$</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\lambda_\mathbb{T}$</td>
-<td style="text-align: left;">Lebesgue measure on the unit circle scaled to yield unit total mass</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\mu (\cdot)$</td>
-<td style="text-align: left;">a complex-valued Borel measure</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\mu_c (\cdot)$</td>
-<td style="text-align: left;">the component of measure $\mu$ that is absolutely continuous with respect to Lebesgue measure</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\mu_d (\cdot)$</td>
-<td style="text-align: left;">the discrete component of measure $\mu$ concentrated on a countable set of atoms</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$| \mu | \; (\cdot)$</td>
-<td style="text-align: left;">non-negative measure: modulus of measure $\mu$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\mathcal{M} (\mathbb{T})$</td>
-<td style="text-align: left;">Banach space of totally finite Borel measures $\mu (\cdot)$</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\omega$</td>
-<td style="text-align: left;">a complex number of modulus 1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\omega_n$</td>
-<td style="text-align: left;">n-th primitive root of unity, $e^{2 \pi i / n}$</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\Omega$</td>
-<td style="text-align: left;">a square matrix having elements of the form $\omega_n^{\mu \; \nu}$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$(p, q)$</td>
-<td style="text-align: left;">conjugate Hölder exponents (having harmonic mean 2)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$S_n (f)$</td>
-<td style="text-align: left;">finite sum of Fourier terms approximating function $f (\cdot)$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$S_{n, w} (f)$</td>
-<td style="text-align: left;">finite weighted sum of Fourier terms approximating function $f (\cdot)$</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\tilde{\theta}$</td>
-<td style="text-align: left;">$\theta$ modulo $(- \pi, \pi]$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\mathbb{T}$</td>
-<td style="text-align: left;">the unit circle: complex numbers of modulus 1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$u_\nu (\cdot)$</td>
-<td style="text-align: left;">$e^{i \theta} \mapsto e^{i \nu \theta}$, the unit exponential function of index $\nu$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\lVert \cdot \rVert$</td>
-<td style="text-align: left;">norm of a function or linear functional</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">${\lVert \phi \rVert}_p$</td>
-<td style="text-align: left;">the p-norm of a function</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\left &lt; \phi, \eta \right &gt;$</td>
-<td style="text-align: left;">inner product of square-integrable functions</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-</section>
 <section id="resources" class="level2">
 <h2 class="anchored" data-anchor-id="resources">Resources</h2>
 <section id="books" class="level3">
@@ -355,13 +386,10 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">[An Introduction to Harmonic Analysis (3e)](https://doi.org/10.1017/CBO9781139165372) by Yitzhak Katznelson</td>
+<td style="text-align: left;">[Time Series (2e)](https://doi.org/10.1137/1.9780898719246) by David Brillinger</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">[Harmonic Analysis (2e)](https://doi.org/10.1007/978-93-86279-47-7) by Henry Helson</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">[Time Series (2e)](https://doi.org/10.1137/1.9780898719246) by David Brillinger</td>
+<td style="text-align: left;">[Time Series Analysis and Its Applications: With R Examples (5e)](https://doi.org/10.1007/978-3-031-70584-7) by Robert Shumway and David Stoffer</td>
 </tr>
 </tbody>
 </table>
@@ -382,31 +410,10 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">[Cesàro summation](https://en.wikipedia.org/wiki/Cesàro_summation)</td>
+<td style="text-align: left;">[CRAN Task View: Time Series Analysis](https://cran.r-project.org/web/views/TimeSeries.html)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">[Fast Fourier transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">[Fejér kernel](https://en.wikipedia.org/wiki/Fejér_kernel)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">[Gibbs phenomenon](https://en.wikipedia.org/wiki/Gibbs_phenomenon)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">[Hann function](https://en.wikipedia.org/wiki/Hann_function)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">[Hilbert space](https://en.wikipedia.org/wiki/Hilbert_space)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">[Hölder's inequality](https://en.wikipedia.org/wiki/Hölder%27s_inequality)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">[Wiener's lemma](https://en.wikipedia.org/wiki/Wiener%27s_lemma)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">[Window function](https://en.wikipedia.org/wiki/Window_function)</td>
+<td style="text-align: left;">[Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa)</td>
 </tr>
 </tbody>
 </table>
@@ -417,7 +424,14 @@ ul.task-list li input[type="checkbox"] {
 </section>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>“Delay” here refers to the length of time <em>preceding</em> the current eruption. The (<code>delay</code>, <code>duration</code>) variables are recorded in minutes.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
