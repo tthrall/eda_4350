@@ -93,7 +93,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">17:54 Thu 5-Jun-2025</p>
+      <p class="date">12:19 Sat 7-Jun-2025</p>
     </div>
   </div>
   
@@ -117,18 +117,18 @@ window.Quarto = {
 <p>Statistical models of such data include parametric models expressed in the time domain and non-parametric models expressed in the Fourier frequency domain (number of cycles per unit of time).</p>
 <p>This note also comments on the detection of statistical dependence among successive observations and the modification of statistical tests and estimators for such data.</p>
 </section>
-<section id="examples" class="level2">
-<h2 class="anchored" data-anchor-id="examples">Examples</h2>
-<section id="jj-quarterly-earnings" class="level3">
-<h3 class="anchored" data-anchor-id="jj-quarterly-earnings">JJ Quarterly Earnings</h3>
+<section id="natural-science-examples" class="level2">
+<h2 class="anchored" data-anchor-id="natural-science-examples">Natural Science Examples</h2>
+<section id="sunspots-monthly-counts-1749---present" class="level3">
+<h3 class="anchored" data-anchor-id="sunspots-monthly-counts-1749---present">Sunspots: Monthly Counts, 1749 - Present</h3>
 <section id="description" class="level4">
 <h4 class="anchored" data-anchor-id="description">Description</h4>
-<p>The figures below are Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980. The second figure shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
+<p>The figure below shows <code>sunspot.month</code>, the number of sunspots per month in <code>R</code> package <code>datasets</code>. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="s5a1_ts_intro_files/figure-html/jj__plot-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="s5a1_ts_intro_files/figure-html/g_sunspots-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -136,7 +136,29 @@ window.Quarto = {
 </section>
 <section id="context-questions-and-objectives" class="level4">
 <h4 class="anchored" data-anchor-id="context-questions-and-objectives">Context: Questions and Objectives</h4>
-<p>Developing a statistical model of the time series can be regarded as a first step toward an economic understanding. Based on that understanding, various interested parties then set company performance goals, make investment decisions, or include this company as an example in a larger research study.</p>
+<p>As described in <a href="https://link.springer.com/article/10.1007/s11207-023-02136-3">Recalibration of the Sunspot-Number: Status Report | Solar Physics</a>, the record of sunspot numbers links past and present solar behavior, and is the primary input for reconstructions of total solar irradiance (TSI) for years before 1978.</p>
+</section>
+</section>
+<section id="old-faithful-eruptions" class="level3">
+<h3 class="anchored" data-anchor-id="old-faithful-eruptions">Old Faithful eruptions</h3>
+<section id="description-1" class="level4">
+<h4 class="anchored" data-anchor-id="description-1">Description</h4>
+<p>The figure below represents the duration in minutes of eruptions (“duration”) and the minutes between eruptions (“delay”)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>The data represent a <em>point process</em>, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faitful geyser. In addition to the time of the eruption we have the duration of the eruption.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/g_faithful_tbl-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-1" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-1">Context: Questions and Objectives</h4>
+<p>The figure shows two clusters of data points. Old Faithful eruptions are conjectured to occur in 2 distinct temporal patterns due to the presence of an upper and lower chamber beneath the vertical column (tube) that forms the geyser.</p>
+<p>In this example, we have the goal of scientific understanding of a natural phenomenon, supported by statistical modeling.</p>
 </section>
 </section>
 <section id="climate-change" class="level3">
@@ -198,6 +220,8 @@ window.Quarto = {
 </table>
 </div>
 </div>
+<section id="description-2" class="level4">
+<h4 class="anchored" data-anchor-id="description-2">Description</h4>
 <p>The figure below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from respective averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -208,49 +232,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<section id="context-questions-and-objectives-1" class="level4">
-<h4 class="anchored" data-anchor-id="context-questions-and-objectives-1">Context: Questions and Objectives</h4>
-<p>The upward trend in the two temperature series during the latter part of the 20th century has been used as an argument for the climate change hypothesis. Further data and information would be needed, of course, to estimate the contributions of natural and anthropogenic sources to the observed rise in temperature.</p>
-</section>
-</section>
-<section id="speech-recording" class="level3">
-<h3 class="anchored" data-anchor-id="speech-recording">Speech Recording</h3>
-<section id="description-1" class="level4">
-<h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p>The figure below shows the <code>speech</code> data set from the <code>astsa</code> package, a recording of the utterance <em>aaahhh</em>. Note the repetitive nature of the signal and the rather regular periodicities. Also note the repetition of small wavelets. The separation between packets is known as the <em>pitch period</em> and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="s5a1_ts_intro_files/figure-html/speech__plot-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
 <section id="context-questions-and-objectives-2" class="level4">
 <h4 class="anchored" data-anchor-id="context-questions-and-objectives-2">Context: Questions and Objectives</h4>
-<p>Computer recognition of speech is an active area of research and development. In the current case one might seek to transcribe the signal above into the text string “aaahhh”. One approach would be a frequency based decomposition (spectral analysis) of the signal yielding a signature of the utterance that could be matched to one or more entries in a library of such signatures.</p>
-</section>
-</section>
-<section id="dow-jones-industrial-average" class="level3">
-<h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<section id="description-2" class="level4">
-<h4 class="anchored" data-anchor-id="description-2">Description</h4>
-<p>The next figure shows the trading day closings and returns (percent change) of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="s5a1_ts_intro_files/figure-html/djia__plot-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="context-questions-and-objectives-3" class="level4">
-<h4 class="anchored" data-anchor-id="context-questions-and-objectives-3">Context: Questions and Objectives</h4>
-<p>The returns of the DJIA are typical of other assets. The mean function of the series appears to be stable with an average return of approximately zero. Note, however, that highly volatile (variable) periods tend to be clustered together. That variability is both a symptom and cause of market uncertainty. A challenge in the analysis of financial data is to forecast the volatility of future returns.</p>
+<p>The upward trend in the two temperature series during the latter part of the 20th century has been used as an argument for the climate change hypothesis. Further data and information would be needed, of course, to estimate the contributions of natural and anthropogenic sources to the observed rise in temperature.</p>
 </section>
 </section>
 <section id="el-niño-and-fish-population" class="level3">
@@ -269,16 +254,16 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="context-questions-and-objectives-4" class="level4">
-<h4 class="anchored" data-anchor-id="context-questions-and-objectives-4">Context: Questions and Objectives</h4>
-<p>The processes that drive the periodicity of the two time series is of scientific interest. Frequency decomposition of the time series may help to identify the underlying processes.</p>
+<section id="context-questions-and-objectives-3" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-3">Context: Questions and Objectives</h4>
+<p>The processes that drive the periodicity of the two time series is of scientific interest. Frequency decomposition of the time series may help to identify those underlying processes.</p>
 </section>
 </section>
 <section id="predatorprey-interactions" class="level3">
 <h3 class="anchored" data-anchor-id="predatorprey-interactions">Predator–Prey Interactions</h3>
 <section id="description-4" class="level4">
 <h4 class="anchored" data-anchor-id="description-4">Description</h4>
-<p>One of the classic studies of predator–prey interactions is based on the record of Snowshoe hare and lynx pelts purchased by the Hudson’s Bay Company of Canada from 1821 to 1934. While this is an indirect measure of predation, the assumption is that there is a direct relationship between the number of pelts collected and the number of hare and lynx in the wild.</p>
+<p>One of the classic studies of predator–prey interactions is based on the record of lynx and Snowshoe hare pelts purchased by the Hudson’s Bay Company of Canada from 1821 to 1934. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
 <p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance shown in the next figure.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -290,18 +275,64 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="context-questions-and-objectives-5" class="level4">
-<h4 class="anchored" data-anchor-id="context-questions-and-objectives-5">Context: Questions and Objectives</h4>
+<section id="context-questions-and-objectives-4" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-4">Context: Questions and Objectives</h4>
 <p>The scientific understanding of predator-prey interactions, starting with the Lotka-Volterra model (1910-1926), marked the beginnings of mathematical biology, and has been extended to the analysis of economic competition.</p>
 </section>
 </section>
-<section id="fmri-imaging" class="level3">
-<h3 class="anchored" data-anchor-id="fmri-imaging">fMRI Imaging</h3>
+</section>
+<section id="business-and-economic-examples" class="level2">
+<h2 class="anchored" data-anchor-id="business-and-economic-examples">Business and Economic Examples</h2>
+<section id="jj-quarterly-earnings" class="level3">
+<h3 class="anchored" data-anchor-id="jj-quarterly-earnings">JJ Quarterly Earnings</h3>
 <section id="description-5" class="level4">
 <h4 class="anchored" data-anchor-id="description-5">Description</h4>
+<p>The figures below are Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980. The second figure shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/jj__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-5" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-5">Context: Questions and Objectives</h4>
+<p>Developing a statistical model of the time series can be regarded as a first step toward an economic understanding. With that understanding, various interested parties can set company performance goals, make investment decisions, or use this company as an example in a larger research study.</p>
+</section>
+</section>
+<section id="dow-jones-industrial-average" class="level3">
+<h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
+<section id="description-6" class="level4">
+<h4 class="anchored" data-anchor-id="description-6">Description</h4>
+<p>The next figure shows the trading day closings and returns (percent change) of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/djia__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-6" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-6">Context: Questions and Objectives</h4>
+<p>The returns of the DJIA are typical of other assets. The mean function of the series appears to be stable with an average return of approximately zero. Of equal interest are highly volatile (variable) periods. That variability is both a symptom and cause of market uncertainty. A challenge in the analysis of financial data is to forecast the volatility of future returns.</p>
+</section>
+</section>
+</section>
+<section id="signal-processing-examples" class="level2">
+<h2 class="anchored" data-anchor-id="signal-processing-examples">Signal Processing Examples</h2>
+<section id="fmri-imaging" class="level3">
+<h3 class="anchored" data-anchor-id="fmri-imaging">fMRI Imaging</h3>
+<section id="description-7" class="level4">
+<h4 class="anchored" data-anchor-id="description-7">Description</h4>
 <p>The next figure shows fMRI data from various locations in the cortex, thalamus, and cerebellum; n = 128 points, one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).</p>
 <p>The data are from a 1997 study that used fMRI to examine pain perception in humans. Here we focus on five subjects whose hands were periodically brushed. The stimulus (represented as a square wave in the figure) was applied for 32 seconds and then stopped for 32 seconds so that the signal period is 64 seconds. The sampling rate was one observation every 2 seconds for 256 seconds (n = 128).</p>
-<p>The data are consecutive measures of blood oxygenation-level dependent (bold) signal intensity, which measures areas of activation in the brain. The series shown are from two areas each in the cortex, thalamus, and cerebellum and the values are averaged over subjects (these were evoked responses and all subjects were in phase).</p>
+<p>The data are consecutive measures of blood oxygenation-level dependent (BOLD) signal intensity, which measures areas of activation in the brain. The series shown are from two areas each in the cortex, thalamus, and cerebellum and the values are averaged over subjects (these were evoked responses and all subjects were in phase).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -312,15 +343,35 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="context-questions-and-objectives-6" class="level4">
-<h4 class="anchored" data-anchor-id="context-questions-and-objectives-6">Context: Questions and Objectives</h4>
-<p>Note that the periodicities appear strongly in the motor cortex series and less so in the thalamus and cerebellum. The interest here is testing whether the various areas are responding differently to the stimulus.</p>
+<section id="context-questions-and-objectives-7" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-7">Context: Questions and Objectives</h4>
+<p>Note that the periodicities appear strongly in the motor cortex series and less so in the thalamus and cerebellum. This experiment has been designed to test whether these distinct areas of the brain respond differently to the stimulus.</p>
+</section>
+</section>
+<section id="speech-recording" class="level3">
+<h3 class="anchored" data-anchor-id="speech-recording">Speech Recording</h3>
+<section id="description-8" class="level4">
+<h4 class="anchored" data-anchor-id="description-8">Description</h4>
+<p>The figure below shows the <code>speech</code> data set from the <code>astsa</code> package, a recording of the utterance <em>aaahhh</em>. Note the repetitive nature of the signal and the rather regular periodicities. Also note the repetition of small wavelets. The separation between wavelets is known as the <em>pitch period</em> and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/speech__plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-8" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-8">Context: Questions and Objectives</h4>
+<p>Computer recognition of speech is an active area of research and development. In the current case one might seek to transcribe the signal above into the text string “aaahhh”. One approach would be a frequency based decomposition (spectral analysis) of the signal yielding a signature of the utterance that could be matched to one or more entries in a library of such signatures.</p>
 </section>
 </section>
 <section id="earthquakes-and-explosions" class="level3">
 <h3 class="anchored" data-anchor-id="earthquakes-and-explosions">Earthquakes and Explosions</h3>
-<section id="description-6" class="level4">
-<h4 class="anchored" data-anchor-id="description-6">Description</h4>
+<section id="description-9" class="level4">
+<h4 class="anchored" data-anchor-id="description-9">Description</h4>
 <p>The next pair of figures show recordings (40 per second) at a Scandinavian seismic station of an earthquake and of a mining explosion.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -332,39 +383,14 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="context-questions-and-objectives-7" class="level4">
-<h4 class="anchored" data-anchor-id="context-questions-and-objectives-7">Context: Questions and Objectives</h4>
-<p>The general problem of interest is in distinguishing or discriminating between waveforms generated by earthquakes and those generated by explosions.</p>
-</section>
-</section>
-<section id="old-faithful-eruptions" class="level3">
-<h3 class="anchored" data-anchor-id="old-faithful-eruptions">Old Faithful eruptions</h3>
-<section id="description-7" class="level4">
-<h4 class="anchored" data-anchor-id="description-7">Description</h4>
-<p>The figure below represents the duration in minutes of eruptions (“duration”) and the minutes between eruptions (“delay”)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p>The underlying data is a <em>point process</em>, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faitful geyser. In addition to the time of the eruption we have the duration of the eruption.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="s5a1_ts_intro_files/figure-html/g_faithful_tbl-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="context-questions-and-objectives-8" class="level4">
-<h4 class="anchored" data-anchor-id="context-questions-and-objectives-8">Context: Questions and Objectives</h4>
-<p>The figure shows two clusters of data points. Old Faithful eruptions are conjectured to occur in 2 distinct temporal patterns due to the presence of an upper and lower chamber beneath the vertical column (tube) that forms the geyser.</p>
-<p>In this example, we have the goal of scientific understanding of a natural phenomenon, supported by statistical modeling.</p>
+<section id="context-questions-and-objectives-9" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-9">Context: Questions and Objectives</h4>
+<p>The general problem of interest is to distinguish between waveforms generated by earthquakes versus those generated by explosions.</p>
 </section>
 </section>
 </section>
-<section id="data-analysis-objectives" class="level2">
-<h2 class="anchored" data-anchor-id="data-analysis-objectives">Data Analysis Objectives</h2>
-</section>
-<section id="data-analysis-methods" class="level2">
-<h2 class="anchored" data-anchor-id="data-analysis-methods">Data Analysis Methods</h2>
+<section id="data-analysis-objectives-methods" class="level2">
+<h2 class="anchored" data-anchor-id="data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</h2>
 </section>
 <section id="detecting-observational-dependence" class="level2">
 <h2 class="anchored" data-anchor-id="detecting-observational-dependence">Detecting Observational Dependence</h2>
