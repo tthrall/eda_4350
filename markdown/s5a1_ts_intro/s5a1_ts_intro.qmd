@@ -1,6 +1,6 @@
 ---
-title: "Temporally Dependent Data and Methods"
-subtitle: "An Introduction"
+title: "Time Series Data Analysis"
+subtitle: "An Overview"
 author:
   - name: "Send comments to: Tony T (tthrall)"
 date: last-modified
