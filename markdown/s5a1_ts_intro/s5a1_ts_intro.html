@@ -93,7 +93,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15:02 Sat 7-Jun-2025</p>
+      <p class="date">17:44 Sat 7-Jun-2025</p>
     </div>
   </div>
   
@@ -263,8 +263,8 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="predatorprey-interactions">Predator–Prey Interactions</h3>
 <section id="description-4" class="level4">
 <h4 class="anchored" data-anchor-id="description-4">Description</h4>
-<p>One of the classic studies of predator–prey interactions is based on the record of lynx and Snowshoe hare pelts purchased by the Hudson’s Bay Company of Canada from 1821 to 1934. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
-<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance shown in the next figure.</p>
+<p>One of the classic studies of predator–prey interactions is based on the record of lynx and snowshoe hare pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
+<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in the next figure are thousands of pelts per year, for the years.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -391,6 +391,46 @@ window.Quarto = {
 </section>
 <section id="mathematical-framework" class="level2">
 <h2 class="anchored" data-anchor-id="mathematical-framework">Mathematical Framework</h2>
+<p>Statistical applications are often based on one or more arrays of data in which each row represents an observation and each column represents a variable of interest. Consider for example the predator-prey data previously shown.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 91 × 3
+     yr  hare  lynx
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1  1845  19.6  30.1
+2  1846  19.6  45.2
+3  1847  19.6  49.2
+4  1848  12.0  39.5
+5  1849  28.0  21.2
+# ℹ 86 more rows</code></pre>
+</div>
+</div>
+<p>The distinction of time series analysis is that observations are indexed by time, and are not assumed to be statistically independent. In time series analysis, we typically consider the data to be a realization of a random process of the following form.</p>
+<p><span class="math display">\[
+\begin{align}
+  X_\bullet (t) = (X_1 (t), \ldots, X_d (t))
+\end{align}
+\]</span></p>
+<p>In our example the number <span class="math inline">\(d\)</span> of data columns is two (<code>hare</code>, <code>lynx</code>), and the unit of time is one year. The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period.</p>
+<p><span class="math display">\[
+\begin{align}
+  t &amp;= t_0 + u &amp; \text{ with } u \in \{0, 1, \ldots, T-1 \}
+\end{align}
+\]</span></p>
+<p>The expected value of the random process is usually modeled as a constant over time, or in some cases as a linear function of time, with the possible addition of a seasonal component.</p>
+<p><span class="math display">\[
+\begin{align}
+  m_\bullet (t) &amp;= E \{ X_\bullet (t) \}
+\end{align}
+\]</span></p>
+<p>Subtracting off this mean function, the remaining residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is often assumed to be <em>second-order stationary</em>. That is, the covariance structure of the given random process is assumed to be the same as that of the process <span class="math inline">\(Y_\bullet (t) = X_\bullet (t + s)\)</span> for any shift <span class="math inline">\(s\)</span> in time of the given process. Based on this assumption one can estimate the auto-covariance function.</p>
+<p><span class="math display">\[
+\begin{align}
+  \gamma_{\bullet, \bullet} (u) &amp;= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\
+  \text{where} \\
+  \gamma_{a, b} (u) &amp;= Cov \{ X_a (t + u), X_b (t) \}
+\end{align}
+\]</span></p>
 </section>
 <section id="data-analysis-objectives-methods" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</h2>
