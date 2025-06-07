@@ -172,40 +172,50 @@ The figure below shows the time series `gtemp_land` and `gtemp_ocean`, annual te
 
 [^gt_dev]: The data source is [NOAA](https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/), who use the term "anomaly" rather than "deviation".  Further clarifications are pending.
 
-```{r gt_ref_land}
-# gtemp_land 
-#   check 1991-2020 average temperature
-gt_ref_land <- astsa::gtemp_land |> 
-  tsibble::as_tsibble() |> 
-  dplyr::filter(index >= 1991, index <= 2020)
+```{r tmp_lob}
+# join surface temperatures into multivariate ts
+tmp_lo <- cbind(
+  astsa::gtemp_land, 
+  astsa::gtemp_ocean)
+dimnames(tmp_lo) [[2]] <- c("land", "ocean")
 
-# gt_ref_land$value |> summary()
-  #  Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  # 0.360   0.815   1.120   1.194   1.570   2.500
+tmp_lob <- 
+  cbind(tmp_lo, astsa::gtemp_both)
+dimnames(tmp_lob) [[2]] <- c("land", "ocean", "both")
 ```
 
-```{r gt_ref_ocean}
-# gtemp_ocean 
-#   check 1991-2020 average temperature
-gt_ref_ocean <- astsa::gtemp_ocean |> 
-  tsibble::as_tsibble() |> 
-  dplyr::filter(index >= 1991, index <= 2020)
-
-# gt_ref_ocean$value |> summary()
- #   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
- # 0.2600  0.3700  0.4350  0.4777  0.5525  0.8300
+```{r ref_lob_tbl}
+# tmp_lob subset: 1991-2020
+ref_lob_tbl <- tmp_lob |> 
+  tibble::as_tibble() |> 
+  dplyr::mutate(yr = 1850:2023) |> 
+  dplyr::select(yr, land, ocean, both) |> 
+  dplyr::filter(yr >= 1991, yr <= 2020)
 ```
 
-```{r gt_ref_both}
-# gtemp_both 
-#   check 1991-2020 average temperature
-gt_ref_both <- astsa::gtemp_both |> 
-  tsibble::as_tsibble() |> 
-  dplyr::filter(index >= 1991, index <= 2020)
+```{r ref_lob_smy}
+# check average deviation for reference period 1991-2020
+land_smy_vec  <- ref_lob_tbl$ land  |> summary()
+ocean_smy_vec <- ref_lob_tbl$ ocean |> summary()
+both_smy_vec  <- ref_lob_tbl$ both  |> summary()
 
-# gt_ref_both$value |> summary()
-#    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#  0.3000  0.5175  0.6750  0.6993  0.8425  1.3500
+ref_lob_smy <- tibble::tibble(
+  stat  = c("min", "q_1", "mid", "avg", "q_3", "max"), 
+  land  = land_smy_vec, 
+  ocean = ocean_smy_vec, 
+  both  = both_smy_vec
+)
+
+# ref_lob_smy
+# # A tibble: 6 × 4
+#   stat  land     ocean     both     
+#   <chr> <table>  <table>   <table>  
+# 1 min   0.360000 0.2600000 0.3000000
+# 2 q_1   0.815000 0.3700000 0.5175000
+# 3 mid   1.120000 0.4350000 0.6750000
+# 4 avg   1.193667 0.4776667 0.6993333
+# 5 q_3   1.570000 0.5525000 0.8425000
+# 6 max   2.500000 0.8300000 1.3500000
 ```
 
 ```{r gtemp__plot}
@@ -454,7 +464,18 @@ $$
 \end{align}
 $$
 
-Subtracting off this mean function, the remaining residual random process, $X_\bullet (t) - m_\bullet (t)$ , is often assumed to be __second-order stationary__.  That is, the covariance structure of the given random process is assumed to be the same as that of the time-shifted process $Y_\bullet (t) = X_\bullet (t + s)$ for any shift $s$ in time.  Based on this assumption one can define and estimate the following auto-covariance function.
+Subtracting off this mean function, the remaining residual random process, $X_\bullet (t) - m_\bullet (t)$ , is often assumed to be __second-order stationary__.  That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new proces $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
+
+$$
+\begin{align}
+  Y_\bullet (t) &= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\ 
+  &= X_\bullet (t - s)
+\end{align}
+$$
+
+Here $\mathcal{B}$ denotes the _back-shift_ operator that shifts time by one unit, so that $\mathcal{B}^s$ shifts time by $s$ units.
+
+Assuming that $X_\bullet (\cdot)$ is second-order stationary, one can define and estimate the following auto-covariance function.
 
 $$
 \begin{align}
@@ -466,11 +487,13 @@ $$
 
 ## Operations on Time Series
 
-In the example above of Johnson and Johnson stock prices, we saw that a log transformation, $Y(t) = \log_e (X(t))$, could be more closely fit by a linear trend.  (We set aside for now consideration of such transformations on the variance of the time series.)
+The data transformations used on independent observations are applicable to time series data.  For example, in the case of Johnson and Johnson quarterly earnings, we saw that the transformed time series, $Y(t) = \log_e (X(t))$, could be more closely approximated by a linear trend.
 
-In addition to the data transformations used on independent observations, we often want to average or otherwise filter time series data with respect to time.
+In addition to the data transformations used on independent observations, we often want to average time series data over time.
 
-The figure below shows a 5-year moving average of the global temperature data previously shown.  This operation smooths out local fluctuations to show the overall trend more clearly.
+As an example, the figure below shows a 5-year moving average of the global temperature data previously shown.  This operation smooths out local fluctuations to show the overall trend more clearly.
+
+The moving average is an example of a linear filter.  XXX
 
 ```{r gt_lo}
 gt_lo <- cbind(

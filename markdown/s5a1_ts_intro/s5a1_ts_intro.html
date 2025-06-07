@@ -93,7 +93,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">20:12 Sat 7-Jun-2025</p>
+      <p class="date">23:06 Sat 7-Jun-2025</p>
     </div>
   </div>
   
@@ -423,7 +423,15 @@ window.Quarto = {
   m_\bullet (t) &amp;= E \{ X_\bullet (t) \}
 \end{align}
 \]</span></p>
-<p>Subtracting off this mean function, the remaining residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is often assumed to be <strong>second-order stationary</strong>. That is, the covariance structure of the given random process is assumed to be the same as that of the time-shifted process <span class="math inline">\(Y_\bullet (t) = X_\bullet (t + s)\)</span> for any shift <span class="math inline">\(s\)</span> in time. Based on this assumption one can define and estimate the following auto-covariance function.</p>
+<p>Subtracting off this mean function, the remaining residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is often assumed to be <strong>second-order stationary</strong>. That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new proces <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
+<p><span class="math display">\[
+\begin{align}
+  Y_\bullet (t) &amp;= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
+  &amp;= X_\bullet (t - s)
+\end{align}
+\]</span></p>
+<p>Here <span class="math inline">\(\mathcal{B}\)</span> denotes the <em>back-shift</em> operator that shifts time by one unit, so that <span class="math inline">\(\mathcal{B}^s\)</span> shifts time by <span class="math inline">\(s\)</span> units.</p>
+<p>Assuming that <span class="math inline">\(X_\bullet (\cdot)\)</span> is second-order stationary, one can define and estimate the following auto-covariance function.</p>
 <p><span class="math display">\[
 \begin{align}
   \gamma_{\bullet, \bullet} (u) &amp;= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\
@@ -434,9 +442,10 @@ window.Quarto = {
 </section>
 <section id="operations-on-time-series" class="level2">
 <h2 class="anchored" data-anchor-id="operations-on-time-series">Operations on Time Series</h2>
-<p>In the example above of Johnson and Johnson stock prices, we saw that a log transformation, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, could be more closely fit by a linear trend. (We set aside for now consideration of such transformations on the variance of the time series.)</p>
-<p>In addition to the data transformations used on independent observations, we often want to average or otherwise filter time series data with respect to time.</p>
-<p>The figure below shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.</p>
+<p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings, we saw that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, could be more closely approximated by a linear trend.</p>
+<p>In addition to the data transformations used on independent observations, we often want to average time series data over time.</p>
+<p>As an example, the figure below shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.</p>
+<p>The moving average is an example of a linear filter. XXX</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
