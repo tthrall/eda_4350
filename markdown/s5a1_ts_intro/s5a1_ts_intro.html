@@ -93,7 +93,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">17:44 Sat 7-Jun-2025</p>
+      <p class="date">20:12 Sat 7-Jun-2025</p>
     </div>
   </div>
   
@@ -222,7 +222,7 @@ window.Quarto = {
 </div>
 <section id="description-2" class="level4">
 <h4 class="anchored" data-anchor-id="description-2">Description</h4>
-<p>The figure below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from respective averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<p>The figure below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -307,7 +307,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
 <section id="description-6" class="level4">
 <h4 class="anchored" data-anchor-id="description-6">Description</h4>
-<p>The next figure shows the trading day closings and returns (percent change)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p>The next figure shows the trading day closings and returns (percent change)<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -423,7 +423,7 @@ window.Quarto = {
   m_\bullet (t) &amp;= E \{ X_\bullet (t) \}
 \end{align}
 \]</span></p>
-<p>Subtracting off this mean function, the remaining residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is often assumed to be <em>second-order stationary</em>. That is, the covariance structure of the given random process is assumed to be the same as that of the process <span class="math inline">\(Y_\bullet (t) = X_\bullet (t + s)\)</span> for any shift <span class="math inline">\(s\)</span> in time of the given process. Based on this assumption one can estimate the auto-covariance function.</p>
+<p>Subtracting off this mean function, the remaining residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is often assumed to be <strong>second-order stationary</strong>. That is, the covariance structure of the given random process is assumed to be the same as that of the time-shifted process <span class="math inline">\(Y_\bullet (t) = X_\bullet (t + s)\)</span> for any shift <span class="math inline">\(s\)</span> in time. Based on this assumption one can define and estimate the following auto-covariance function.</p>
 <p><span class="math display">\[
 \begin{align}
   \gamma_{\bullet, \bullet} (u) &amp;= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\
@@ -431,6 +431,21 @@ window.Quarto = {
   \gamma_{a, b} (u) &amp;= Cov \{ X_a (t + u), X_b (t) \}
 \end{align}
 \]</span></p>
+</section>
+<section id="operations-on-time-series" class="level2">
+<h2 class="anchored" data-anchor-id="operations-on-time-series">Operations on Time Series</h2>
+<p>In the example above of Johnson and Johnson stock prices, we saw that a log transformation, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, could be more closely fit by a linear trend. (We set aside for now consideration of such transformations on the variance of the time series.)</p>
+<p>In addition to the data transformations used on independent observations, we often want to average or otherwise filter time series data with respect to time.</p>
+<p>The figure below shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/gt_lo_ma5__tsplot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="data-analysis-objectives-methods" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</h2>
@@ -498,7 +513,8 @@ window.Quarto = {
 
 <ol>
 <li id="fn1"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>The return is here calculated as the <span class="math inline">\(log_e\)</span> applied to the current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The return is here calculated as the <span class="math inline">\(log_e\)</span> applied to the current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
