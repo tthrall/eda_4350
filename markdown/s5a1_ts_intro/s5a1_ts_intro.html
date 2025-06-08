@@ -93,7 +93,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">11:14 Sun 8-Jun-2025</p>
+      <p class="date">14:08 Sun 8-Jun-2025</p>
     </div>
   </div>
   
@@ -478,7 +478,7 @@ window.Quarto = {
   &amp;= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
 \end{align}
 \]</span></p>
-<p>where <span class="math inline">\(X_\bullet (\cdot)\)</span> is a two-component time series representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant filter, having the following general form.</p>
+<p>where <span class="math inline">\(X_\bullet (\cdot)\)</span> is a two-component time series representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant <em>filter</em>, having the following general form.</p>
 <p><span class="math display">\[
 \begin{align}
   Y_\bullet (t)
@@ -572,6 +572,9 @@ window.Quarto = {
 <tr class="even">
 <td style="text-align: left;">[Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa)</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">[R Tutorial | Stoffer’s GitHome](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer)</td>
+</tr>
 </tbody>
 </table>
 
@@ -579,6 +582,62 @@ window.Quarto = {
 </div>
 </div>
 </section>
+</section>
+<section id="glossary-of-math-symbols" class="level2">
+<h2 class="anchored" data-anchor-id="glossary-of-math-symbols">Glossary of Math Symbols</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Glossary of Mathematical Symbols (s)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">s</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">$a_{\bullet, \bullet} (u)$</td>
+<td style="text-align: left;">matrix of filter coefficients at time-shift $u$</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\mathcal{B}$</td>
+<td style="text-align: left;">back-shift operator</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\mathcal{D}$</td>
+<td style="text-align: left;">difference operator, $\mathcal{I} - \mathcal{B}$</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$\gamma_{\bullet, \bullet} (u)$</td>
+<td style="text-align: left;">auto-covariance matrix at time-shift $u$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\mathcal{I}$</td>
+<td style="text-align: left;">identity operator</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$m_\bullet (t)$</td>
+<td style="text-align: left;">$E \{ X_\bullet (t) \}$, expected value of $X_\bullet (t)$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$T$</td>
+<td style="text-align: left;">number of time series observations</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$t_0$</td>
+<td style="text-align: left;">initial time index of a time series data set</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$X_\bullet (t)$</td>
+<td style="text-align: left;">$(X_1 (t), \ldots, X_d (t))$, a multivariate random process</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
 </section>
 
 

@@ -185,7 +185,7 @@ dimnames(tmp_lob) [[2]] <- c("land", "ocean", "both")
 ```
 
 ```{r ref_lob_tbl}
-# tmp_lob subset: 1991-2020
+# tmp_lob subset: 1991-2020 reference period
 ref_lob_tbl <- tmp_lob |> 
   tibble::as_tibble() |> 
   dplyr::mutate(yr = 1850:2023) |> 
@@ -550,7 +550,7 @@ $$
 \end{align}
 $$
 
-where $X_\bullet (\cdot)$ is a two-component time series representing annual global averages of land and ocean temperatures.  This 5-year moving average is an example of a linear, time-invariant filter, having the following general form.
+where $X_\bullet (\cdot)$ is a two-component time series representing annual global averages of land and ocean temperatures.  This 5-year moving average is an example of a linear, time-invariant _filter_, having the following general form.
 
 $$
 \begin{align}
@@ -608,66 +608,46 @@ In signal-processing applications a linear, time-invariant filter $a_{\bullet, \
 
 ## Closing Remarks
 
-```{r symbol_tbl}
-## Glossary of Math Symbols
-
-symbol_tbl <- get_symbol_tbl()
-```
-
-```{r symbol_tbl__save}
-# save file only when updated
-save_to_file <- FALSE
-if (save_to_file) {
-  # RDS format
-  symbol_tbl |> readr::write_rds(here::here(
-    "data", "retain", "symbol_tbl.rds"
-  ))
-
-  # TSV format
-  symbol_tbl |> readr::write_tsv(here::here(
-    "data", "retain", "symbol_tbl.txt"
-  ))
-}
-```
-
-```{r symbol_tbl__kable}
-# symbol_tbl |>
-#   dplyr::select(symbol, dscr) |>
-#   knitr::kable(
-#     format = "html",
-# 	escape = FALSE,
-# 	caption = "Glossary of Mathematical Symbols (s)",
-# 	col.names = c("s", "description")
-#   )
-```
-
 ## Resources
 
 ### Books
 
-```{r books_tbl}
-books_tbl <- get_books_tbl() |>
+```{r s5a1_books_tbl}
+s5a1_books_tbl <- tibble::tibble(
+  title = c(
+    "Time Series (2e)",
+    "Time Series Analysis and Its Applications: With R Examples (5e)"
+  ),
+  link = c(
+    "https://doi.org/10.1137/1.9780898719246",
+    "https://doi.org/10.1007/978-3-031-70584-7"
+  ),
+  auth = c(
+    "David Brillinger",
+    "Robert Shumway and David Stoffer"
+  )
+) |>
   dplyr::arrange(title)
 ```
 
-```{r books_tbl__save}
+```{r s5a1_books_tbl__save}
 # save file only when updated
 save_to_file <- FALSE
 if (save_to_file) {
   # RDS format
-  books_tbl |> readr::write_rds(here::here(
-    "data", "retain", "books_tbl.rds"
+  s5a1_books_tbl |> readr::write_rds(here::here(
+    "data", "retain", "s5a1_books_tbl.rds"
   ))
 
   # TSV format
-  books_tbl |> readr::write_tsv(here::here(
-    "data", "retain", "books_tbl.txt"
+  s5a1_books_tbl |> readr::write_tsv(here::here(
+    "data", "retain", "s5a1_books_tbl.txt"
   ))
 }
 ```
 
-```{r books_tbl__kable}
-books_tbl |>
+```{r s5a1_books_tbl__kable}
+s5a1_books_tbl |> 
   list_links(a_idx = 3L) |>
   knitr::kable(
     format    = "html",
@@ -678,33 +658,114 @@ books_tbl |>
 
 ### Articles
 
-```{r articles_tbl}
-articles_tbl <- get_articles_tbl() |>
+```{r s5a1_articles_tbl}
+s5a1_articles_tbl <- tibble::tribble(
+  ~title, ~link,
+  "CRAN Task View: Time Series Analysis", 
+  "https://cran.r-project.org/web/views/TimeSeries.html",
+  
+  "Fun with asta", 
+  "https://github.com/nickpoison/astsa/tree/master/fun_with_astsa", 
+  
+  "R Tutorial | Stoffer’s GitHome", 
+  "https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer"
+) |>
   dplyr::arrange(title)
 ```
 
-```{r articles_tbl__save}
+```{r s5a1_articles_tbl__save}
 # save file only when updated
 save_to_file <- FALSE
 if (save_to_file) {
   # RDS format
-  articles_tbl |> readr::write_rds(here::here(
-    "data", "retain", "articles_tbl.rds"
+  s5a1_articles_tbl |> readr::write_rds(here::here(
+    "data", "retain", "s5a1_articles_tbl.rds"
   ))
 
   # TSV format
-  articles_tbl |> readr::write_tsv(here::here(
-    "data", "retain", "articles_tbl.txt"
+  s5a1_articles_tbl |> readr::write_tsv(here::here(
+    "data", "retain", "s5a1_articles_tbl.txt"
   ))
 }
 ```
 
-```{r articles_tbl__kable}
-articles_tbl |>
+```{r s5a1_articles_tbl__kable}
+s5a1_articles_tbl |>
   list_links() |>
   knitr::kable(
     format    = "html",
     escape    = FALSE,
     col.names = ""
+  )
+```
+
+## Glossary of Math Symbols
+
+```{r s5a1_symbol_tbl}
+s5a1_symbol_tbl <- tibble::tribble(
+  ~tag, ~symbol, ~dscr, 
+  
+  "a_u", 
+  "$a_{\\bullet, \\bullet} (u)$",
+  "matrix of filter coefficients at time-shift $u$", 
+  
+  "B", 
+  "$\\mathcal{B}$",
+  "back-shift operator", 
+  
+  "D", 
+  "$\\mathcal{D}$",
+  "difference operator, $\\mathcal{I} - \\mathcal{B}$", 
+  
+  "ACovF", 
+  "$\\gamma_{\\bullet, \\bullet} (u)$",
+  "auto-covariance matrix at time-shift $u$", 
+  
+  "I", 
+  "$\\mathcal{I}$",
+  "identity operator", 
+  
+  "m_vec", 
+  "$m_\\bullet (t)$",
+  "$E \\{ X_\\bullet (t) \\}$, expected value of $X_\\bullet (t)$",
+  
+  "T", 
+  "$T$",
+  "number of time series observations",
+  
+  "t_0", 
+  "$t_0$",
+  "initial time index of a time series data set",
+  
+  "X_vec", 
+  "$X_\\bullet (t)$",
+  "$(X_1 (t), \\ldots, X_d (t))$, a multivariate random process"
+)
+```
+
+```{r s5a1_symbol_tbl__save}
+# save file only when updated
+save_to_file <- FALSE
+if (save_to_file) {
+  # RDS format
+  s5a1_symbol_tbl |> readr::write_rds(here::here(
+    "data", "retain", "s5a1_symbol_tbl.rds"
+  ))
+
+  # TSV format
+  s5a1_symbol_tbl |> readr::write_tsv(here::here(
+    "data", "retain", "s5a1_symbol_tbl.txt"
+  ))
+}
+```
+
+```{r s5a1_symbol_tbl__kable}
+s5a1_symbol_tbl |>
+  dplyr::select(symbol, dscr) |>
+  knitr::kable(
+    format = "html",
+	escape = FALSE,
+	caption = "Glossary of Mathematical Symbols (s)",
+	col.names = c("s", "description")
   )
 ```
