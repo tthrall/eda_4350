@@ -93,7 +93,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">23:06 Sat 7-Jun-2025</p>
+      <p class="date">03:45 Sun 8-Jun-2025</p>
     </div>
   </div>
   
@@ -417,7 +417,7 @@ window.Quarto = {
   t &amp;= t_0 + u &amp; \text{ with } u \in \{0, 1, \ldots, T-1 \}
 \end{align}
 \]</span></p>
-<p>The expected value of the random process is usually modeled as a constant over time, or in some cases as a linear function of time, with the possible addition of a seasonal component.</p>
+<p>The expected value of the random process may be modeled by various functions of time: a constant, a linear trend, a seasonal component (periodic function), etc.</p>
 <p><span class="math display">\[
 \begin{align}
   m_\bullet (t) &amp;= E \{ X_\bullet (t) \}
@@ -430,13 +430,30 @@ window.Quarto = {
   &amp;= X_\bullet (t - s)
 \end{align}
 \]</span></p>
-<p>Here <span class="math inline">\(\mathcal{B}\)</span> denotes the <em>back-shift</em> operator that shifts time by one unit, so that <span class="math inline">\(\mathcal{B}^s\)</span> shifts time by <span class="math inline">\(s\)</span> units.</p>
-<p>Assuming that <span class="math inline">\(X_\bullet (\cdot)\)</span> is second-order stationary, one can define and estimate the following auto-covariance function.</p>
+<p>Here <span class="math inline">\(\mathcal{B}\)</span> denotes the <em>back-shift</em> operator that shifts time by one unit, so that <span class="math inline">\(\mathcal{B}^s\)</span> shifts time by <span class="math inline">\(s\)</span> units. Then second-order stationarity can be expressed as follows.</p>
+<p><span class="math display">\[
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \}
+  &amp;= Cov \{ Y_a (t + u), Y_b (t) \} \\
+  &amp;= Cov \{ X_a (t + u - s), X_b (t - s) \} \\
+  \\
+  &amp; \text{for all } s \in \mathbb{Z} \text{ and } a, b \in \{ 1, \ldots, d \}
+\end{align}
+\]</span></p>
+<p>Setting <span class="math inline">\(s = t\)</span> we have</p>
+<p><span class="math display">\[
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \}
+  &amp;= Cov \{ X_a (u), X_b (0) \}
+\end{align}
+\]</span> Consequently, second-order stationary enables one to define and estimate the following auto-covariance function.</p>
 <p><span class="math display">\[
 \begin{align}
   \gamma_{\bullet, \bullet} (u) &amp;= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\
+  \\
   \text{where} \\
-  \gamma_{a, b} (u) &amp;= Cov \{ X_a (t + u), X_b (t) \}
+  \gamma_{a, b} (u) &amp;= Cov \{ X_a (t + u), X_b (t) \} \\
+  &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
 \]</span></p>
 </section>

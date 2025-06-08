@@ -456,7 +456,7 @@ $$
 \end{align}
 $$
 
-The expected value of the random process is usually modeled as a constant over time, or in some cases as a linear function of time, with the possible addition of a seasonal component.
+The expected value of the random process may be modeled by various functions of time: a constant, a linear trend, a seasonal component (periodic function), etc.
 
 $$
 \begin{align}
@@ -473,15 +473,35 @@ $$
 \end{align}
 $$
 
-Here $\mathcal{B}$ denotes the _back-shift_ operator that shifts time by one unit, so that $\mathcal{B}^s$ shifts time by $s$ units.
+Here $\mathcal{B}$ denotes the _back-shift_ operator that shifts time by one unit, so that $\mathcal{B}^s$ shifts time by $s$ units.  Then second-order stationarity can be expressed as follows.
 
-Assuming that $X_\bullet (\cdot)$ is second-order stationary, one can define and estimate the following auto-covariance function.
+$$
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \} 
+  &= Cov \{ Y_a (t + u), Y_b (t) \} \\ 
+  &= Cov \{ X_a (t + u - s), X_b (t - s) \} \\ 
+  \\ 
+  & \text{for all } s \in \mathbb{Z} \text{ and } a, b \in \{ 1, \ldots, d \}
+\end{align}
+$$
+
+Setting $s = t$ we have 
+
+$$
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \} 
+  &= Cov \{ X_a (u), X_b (0) \} 
+\end{align}
+$$
+Consequently, second-order stationary enables one to define and estimate the following auto-covariance function.
 
 $$
 \begin{align}
   \gamma_{\bullet, \bullet} (u) &= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\ 
+  \\ 
   \text{where} \\
-  \gamma_{a, b} (u) &= Cov \{ X_a (t + u), X_b (t) \}
+  \gamma_{a, b} (u) &= Cov \{ X_a (t + u), X_b (t) \} \\
+  &= Cov \{ X_a (u), X_b (0) \} 
 \end{align}
 $$
 
