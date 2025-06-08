@@ -93,7 +93,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">14:08 Sun 8-Jun-2025</p>
+      <p class="date">18:25 Sun 8-Jun-2025</p>
     </div>
   </div>
   
@@ -423,7 +423,7 @@ window.Quarto = {
   m_\bullet (t) &amp;= E \{ X_\bullet (t) \}
 \end{align}
 \]</span></p>
-<p>Subtracting off this mean function, the remaining residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is often assumed to be <strong>second-order stationary</strong>. That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new proces <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
+<p>Subtracting off this mean function, the remaining residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is often assumed to be <strong>second-order stationary</strong>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new proces <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
 <p><span class="math display">\[
 \begin{align}
   Y_\bullet (t) &amp;= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
@@ -471,14 +471,14 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>In this case the 5-year moving average operation can be expressed as follows.</p>
+<p>In this case the 5-year moving average operation can be expressed as follows.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <p><span class="math display">\[
 \begin{align}
   Y_\bullet (t)
   &amp;= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
 \end{align}
 \]</span></p>
-<p>where <span class="math inline">\(X_\bullet (\cdot)\)</span> is a two-component time series representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant <em>filter</em>, having the following general form.</p>
+<p>Here <span class="math inline">\(X_\bullet (\cdot)\)</span> is a two-component random process representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant <em>filter</em>, having the following general form.</p>
 <p><span class="math display">\[
 \begin{align}
   Y_\bullet (t)
@@ -522,6 +522,41 @@ window.Quarto = {
 </section>
 <section id="data-analysis-objectives-methods" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</h2>
+<p>The aims and methods of data analysis can be categorized in various ways, for example, confirmatory data analysis and exploratory data analysis. For the moment we consider the complementary aims of decision support and scientific understanding.</p>
+<section id="decision-support" class="level3">
+<h3 class="anchored" data-anchor-id="decision-support">Decision Support</h3>
+<p>Financial management operates at markedly different time scales, from algorithms that act in real time to decisions to invest in multi-year projects. The financial stakes warrant substantial investment in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible. The particular application may determine the balance struck between precision and reliability.</p>
+<p>Time series models that support decisions (in any setting) are typically time-domain parametric models whose components may include data transformations along with filtering algorithms. We leave the description of such models for a separate technical note.</p>
+</section>
+<section id="scientific-understanding" class="level3">
+<h3 class="anchored" data-anchor-id="scientific-understanding">Scientific Understanding</h3>
+<p>Enhancing human understanding of natural and social phenomena can be gratifying in itself, but may also pertain directly or indirectly to human welfare. The natural sciences offer many examples of phenomena that are usefully decomposed by frequency-domain time series models. Again, description of these methods is left to a separate technical note.</p>
+</section>
+<section id="overlap" class="level3">
+<h3 class="anchored" data-anchor-id="overlap">Overlap</h3>
+<p>Of course societal decisions often require both action-oriented recommendations and scientific understanding of what is known and unknown pertaining to the decision. Decisions related to climate change are a leading example of this overlap.</p>
+<p>To illustrate, the pair of figures below show monthly <span class="math inline">\(CO_2\)</span> levels (ppm) taken at the Mauna Loa, Hawaii observatory (top) and a differencing of the data to remove trends (bottom).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/cardox_records-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The next figure shows a 5-year forecast based on a time-domain model (seasonal auto-regressive, moving-average model).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="s5a1_ts_intro_files/figure-html/cardox_forecast-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We leave the development of such models to a separate technical note. The point here is that such projections are both valued and scrutinized when offered as an argument for climate-related decisions.</p>
+</section>
 </section>
 <section id="detecting-observational-dependence" class="level2">
 <h2 class="anchored" data-anchor-id="detecting-observational-dependence">Detecting Observational Dependence</h2>
@@ -647,6 +682,8 @@ window.Quarto = {
 <li id="fn1"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>The return is here calculated as the <span class="math inline">\(log_e\)</span> applied to the current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The assumption of second-order stationarity suffices for most time series models used in practice, but in other cases one might need to assume <em>strict stationarity</em>, which means that all finite-dimensional distributions of the random process are unchanged by time shifts.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The example illustrates a simple moving average. More generally a weighted moving average may have non-negative coefficients that sum to unity.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

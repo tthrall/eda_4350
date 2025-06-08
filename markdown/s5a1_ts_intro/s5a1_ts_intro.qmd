@@ -464,7 +464,9 @@ $$
 \end{align}
 $$
 
-Subtracting off this mean function, the remaining residual random process, $X_\bullet (t) - m_\bullet (t)$ , is often assumed to be __second-order stationary__.  That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new proces $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
+Subtracting off this mean function, the remaining residual random process, $X_\bullet (t) - m_\bullet (t)$ , is often assumed to be __second-order stationary__.[^stationary]  That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new proces $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
+
+[^stationary]: The assumption of second-order stationarity suffices for most time series models used in practice, but in other cases one might need to assume _strict stationarity_, which means that all finite-dimensional distributions of the random process are unchanged by time shifts.
 
 $$
 \begin{align}
@@ -541,7 +543,9 @@ astsa::tsplot(
 )
 ```
 
-In this case the 5-year moving average operation can be expressed as follows.
+In this case the 5-year moving average operation can be expressed as follows.[^ma_5]
+
+[^ma_5]: The example illustrates a simple moving average.  More generally a weighted moving average may have non-negative coefficients that sum to unity.
 
 $$
 \begin{align}
@@ -550,7 +554,7 @@ $$
 \end{align}
 $$
 
-where $X_\bullet (\cdot)$ is a two-component time series representing annual global averages of land and ocean temperatures.  This 5-year moving average is an example of a linear, time-invariant _filter_, having the following general form.
+Here $X_\bullet (\cdot)$ is a two-component random process representing annual global averages of land and ocean temperatures.  This 5-year moving average is an example of a linear, time-invariant _filter_, having the following general form.
 
 $$
 \begin{align}
@@ -604,7 +608,62 @@ In signal-processing applications a linear, time-invariant filter $a_{\bullet, \
 
 ## Data Analysis Objectives & Methods
 
+The aims and methods of data analysis can be categorized in various ways, for example, confirmatory data analysis and exploratory data analysis.  For the moment we consider the complementary aims of decision support and scientific understanding.
+
+### Decision Support
+
+Financial management operates at markedly different time scales, from algorithms that act in real time to decisions to invest in multi-year projects.  The financial stakes warrant substantial investment in all aspects of the technology, including time series modeling.  To be useful the models must be as precise and as reliable as possible.  The particular application may determine the balance struck between precision and reliability.
+
+Time series models that support decisions (in any setting) are typically time-domain parametric models whose components may include data transformations along with filtering algorithms.  We leave the description of such models for a separate technical note.
+
+### Scientific Understanding
+
+Enhancing human understanding of natural and social phenomena can be gratifying in itself, but may also pertain directly or indirectly to human welfare.  The natural sciences offer many examples of phenomena that are usefully decomposed by frequency-domain time series models.  Again, description of these methods is left to a separate technical note.
+
+### Overlap
+
+Of course societal decisions often require both action-oriented recommendations and scientific understanding of what is known and unknown pertaining to the decision.  Decisions related to climate change are a leading example of this overlap.
+
+To illustrate, the pair of figures below show monthly $CO_2$ levels (ppm) taken at the Mauna Loa, Hawaii observatory (top) and a differencing of the data to remove trends (bottom).
+
+```{r cardox_records}
+par(mfrow=2:1)
+
+tsplot(
+  cardox, col = 4, ylab = bquote(CO[2]), 
+  main="Monthly Carbon Dioxide Readings - Mauna Loa Observatory"
+)
+
+tsplot(
+  diff(diff(cardox, 12)), col = 4, 
+  ylab = "diff(CO2, 2)"
+)
+```
+
+The next figure shows a 5-year forecast based on a time-domain model (seasonal auto-regressive, moving-average model).
+
+```{r cardox_forecast}
+cardox_forecast <- 
+  sarima.for(cardox, 60, 1,1,1, 0,1,1,12, col=4)
+
+abline(v=2023.17, lty=6)
+```
+
+We leave the development of such models to a separate technical note.  The point here is that such projections are both valued and scrutinized when offered as an argument for climate-related decisions.
+
 ## Detecting Observational Dependence
+
+```{r ess_demo}
+# TODO
+
+# Fit an AR(2) to the Recruitment series
+# u <- ar.mcmc(
+#   rec, porder = 2, n.iter = 1000, plot = FALSE
+# )
+
+# now calculate the effective sample size 
+# apply(u, 2, ESS)
+```
 
 ## Closing Remarks
 
