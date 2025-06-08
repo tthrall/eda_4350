@@ -93,7 +93,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">03:45 Sun 8-Jun-2025</p>
+      <p class="date">04:36 Sun 8-Jun-2025</p>
     </div>
   </div>
   
@@ -411,7 +411,7 @@ window.Quarto = {
   X_\bullet (t) = (X_1 (t), \ldots, X_d (t))
 \end{align}
 \]</span></p>
-<p>In our example the number <span class="math inline">\(d\)</span> of data columns is two (<code>hare</code>, <code>lynx</code>), and the unit of time is one year. The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period.</p>
+<p>In our example the number <span class="math inline">\(d\)</span> of data columns is two (<code>hare</code>, <code>lynx</code>), the unit of time is one year,, and the sampling frequency is once per year. The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period.</p>
 <p><span class="math display">\[
 \begin{align}
   t &amp;= t_0 + u &amp; \text{ with } u \in \{0, 1, \ldots, T-1 \}
@@ -446,7 +446,7 @@ window.Quarto = {
   Cov \{ X_a (t + u), X_b (t) \}
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
-\]</span> Consequently, second-order stationary enables one to define and estimate the following auto-covariance function.</p>
+\]</span> Consequently, second-order stationary enables one to define and estimate the following <em>auto-covariance</em> function.</p>
 <p><span class="math display">\[
 \begin{align}
   \gamma_{\bullet, \bullet} (u) &amp;= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\
@@ -462,7 +462,6 @@ window.Quarto = {
 <p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings, we saw that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, could be more closely approximated by a linear trend.</p>
 <p>In addition to the data transformations used on independent observations, we often want to average time series data over time.</p>
 <p>As an example, the figure below shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.</p>
-<p>The moving average is an example of a linear filter. XXX</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -472,6 +471,34 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<p>In this case the 5-year moving average operation can be expressed as follows.</p>
+<p><span class="math display">\[
+\begin{align}
+  Y_\bullet (t)
+  &amp;= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(X_\bullet (\cdot)\)</span> is a two-component time series representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant filter, having the following general form.</p>
+<p><span class="math display">\[
+\begin{align}
+  Y_\bullet (t)
+  &amp;= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\
+  &amp;= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u)
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> is a sequence of <span class="math inline">\(d \times d\)</span> matrices and <span class="math inline">\(*\)</span> denotes discrete convolution.</p>
+<p>The 5-year moving average above can be expressed as follows.</p>
+<p><span class="math display">\[
+\begin{align}
+  a_{\bullet, \bullet} (u) &amp;=
+    \begin{cases}
+      \frac{1}{5} I &amp; \text{ for } |u| \le 2 \\
+      0 &amp; \text{ for } |u| &gt; 2
+    \end{cases}
+\end{align}
+\]</span></p>
+<p>In signal-processing applications the linear, time-invariant filter <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> may be designed to extract certain types of signals that are contaminated by noise.</p>
+<p>A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a <em>low-pass</em> filter.</p>
 </section>
 <section id="data-analysis-objectives-methods" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</h2>

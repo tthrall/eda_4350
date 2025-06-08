@@ -448,7 +448,7 @@ $$
 \end{align}
 $$
 
-In our example the number $d$ of data columns is two (`hare`, `lynx`), and the unit of time is one year.  The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period.
+In our example the number $d$ of data columns is two (`hare`, `lynx`), the unit of time is one year,, and the sampling frequency is once per year.  The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period.
 
 $$
 \begin{align}
@@ -493,7 +493,7 @@ $$
   &= Cov \{ X_a (u), X_b (0) \} 
 \end{align}
 $$
-Consequently, second-order stationary enables one to define and estimate the following auto-covariance function.
+Consequently, second-order stationary enables one to define and estimate the following _auto-covariance_ function.
 
 $$
 \begin{align}
@@ -512,8 +512,6 @@ The data transformations used on independent observations are applicable to time
 In addition to the data transformations used on independent observations, we often want to average time series data over time.
 
 As an example, the figure below shows a 5-year moving average of the global temperature data previously shown.  This operation smooths out local fluctuations to show the overall trend more clearly.
-
-The moving average is an example of a linear filter.  XXX
 
 ```{r gt_lo}
 gt_lo <- cbind(
@@ -542,6 +540,43 @@ astsa::tsplot(
   legend=c("Land Surface","Sea Surface")
 )
 ```
+
+In this case the 5-year moving average operation can be expressed as follows.
+
+$$
+\begin{align}
+  Y_\bullet (t) 
+  &= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u) 
+\end{align}
+$$
+
+where $X_\bullet (\cdot)$ is a two-component time series representing annual global averages of land and ocean temperatures.  This 5-year moving average is an example of a linear, time-invariant filter, having the following general form.
+
+$$
+\begin{align}
+  Y_\bullet (t) 
+  &= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\ 
+  &= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u) 
+\end{align}
+$$
+
+where $a_{\bullet, \bullet} (\cdot)$ is a sequence of $d \times d$ matrices and $*$ denotes discrete convolution.
+
+The 5-year moving average above can be expressed as follows.
+
+$$
+\begin{align}
+  a_{\bullet, \bullet} (u) &= 
+    \begin{cases}
+      \frac{1}{5} I & \text{ for } |u| \le 2 \\ 
+      0 & \text{ for } |u| > 2
+    \end{cases}
+\end{align}
+$$
+
+In signal-processing applications the linear, time-invariant filter $a_{\bullet, \bullet} (\cdot)$ may be designed to extract certain types of signals that are contaminated by noise.
+
+A moving average operation smooths the time series on which it operates.  That is, it allows low-frequency components to pass, while diminishing high-frequency components.  Therefore the moving average operation is categorized as a _low-pass_ filter.
 
 ## Data Analysis Objectives & Methods
 
