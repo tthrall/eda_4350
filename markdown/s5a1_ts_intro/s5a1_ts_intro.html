@@ -93,7 +93,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">18:25 Sun 8-Jun-2025</p>
+      <p class="date">13:44 Mon 9-Jun-2025</p>
     </div>
   </div>
   
@@ -113,7 +113,7 @@ window.Quarto = {
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>This technical note gives examples of data in which successive observations are statistically dependent and are typically indexed by time. Time series data sampled at regular intervals (daily stock prices, for example) are the most common case, followed by point process data representing the occurrence of events (earthquakes, for example) at random times.</p>
+<p>This technical note gives examples of data in which successive observations are statistically dependent and are typically indexed by time.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Time series data sampled at regular intervals (daily stock prices, for example) are the most common case, followed by point process data representing the occurrence of events (earthquakes, for example) at random times.</p>
 <p>Statistical models of such data include parametric models expressed in the time domain and non-parametric models expressed in the Fourier frequency domain (number of cycles per unit of time).</p>
 <p>This note also comments on the detection of statistical dependence among successive observations and the modification of statistical tests and estimators for such data.</p>
 </section>
@@ -143,7 +143,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="old-faithful-eruptions">Old Faithful eruptions</h3>
 <section id="description-1" class="level4">
 <h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p>The figure below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
+<p>The figure below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
 <p>The data represent a <em>point process</em>, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faitful geyser. In addition to the time of the eruption we have the duration of the eruption.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -222,7 +222,7 @@ window.Quarto = {
 </div>
 <section id="description-2" class="level4">
 <h4 class="anchored" data-anchor-id="description-2">Description</h4>
-<p>The figure below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<p>The figure below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -307,7 +307,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
 <section id="description-6" class="level4">
 <h4 class="anchored" data-anchor-id="description-6">Description</h4>
-<p>The next figure shows the trading day closings and returns (percent change)<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p>The next figure shows the trading day closings and returns (percent change)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -423,7 +423,7 @@ window.Quarto = {
   m_\bullet (t) &amp;= E \{ X_\bullet (t) \}
 \end{align}
 \]</span></p>
-<p>Subtracting off this mean function, the remaining residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is often assumed to be <strong>second-order stationary</strong>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new proces <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
+<p>In an additive model (which is most common), the residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is assumed to be <strong>second-order stationary</strong>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new proces <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
 <p><span class="math display">\[
 \begin{align}
   Y_\bullet (t) &amp;= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
@@ -446,7 +446,7 @@ window.Quarto = {
   Cov \{ X_a (t + u), X_b (t) \}
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
-\]</span> Consequently, second-order stationary enables one to define and estimate the following <em>auto-covariance</em> function.</p>
+\]</span> Consequently, second-order stationarity enables one to define and estimate the following <em>auto-covariance</em> function.</p>
 <p><span class="math display">\[
 \begin{align}
   \gamma_{\bullet, \bullet} (u) &amp;= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\
@@ -471,7 +471,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>In this case the 5-year moving average operation can be expressed as follows.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>In this case the 5-year moving average operation can be expressed as follows.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 <p><span class="math display">\[
 \begin{align}
   Y_\bullet (t)
@@ -497,7 +497,8 @@ window.Quarto = {
     \end{cases}
 \end{align}
 \]</span></p>
-<p>As noted above, the moving average operation can help to reveal and thus model the trend in the process, <span class="math inline">\(m_\bullet (t)\)</span>. Forming the residual series <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> is called “de-trending”. If the trend is linear, an alternative is to form differences of the current observation minus its predecessor. This is an application of the “differencing” operator <span class="math inline">\(\mathcal{D} = \mathcal{I} - \mathcal{B}\)</span>.</p>
+<p>As noted above, the moving average operation can help to reveal and thus model the trend in the process, <span class="math inline">\(m_\bullet (t)\)</span>. Forming the residual series <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> is called “de-trending”.</p>
+<p>Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the “differencing” operator <span class="math inline">\(\mathcal{D} = \mathcal{I} - \mathcal{B}\)</span>.</p>
 <p><span class="math display">\[
 \begin{align}
   Y_\bullet (t)
@@ -522,10 +523,10 @@ window.Quarto = {
 </section>
 <section id="data-analysis-objectives-methods" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</h2>
-<p>The aims and methods of data analysis can be categorized in various ways, for example, confirmatory data analysis and exploratory data analysis. For the moment we consider the complementary aims of decision support and scientific understanding.</p>
+<p>There are a number of ways to categorize types of data analysis. One important distinction is between confirmatory and exploratory data analysis. For present purposes we consider the complementary aims of decision support and scientific understanding.</p>
 <section id="decision-support" class="level3">
 <h3 class="anchored" data-anchor-id="decision-support">Decision Support</h3>
-<p>Financial management operates at markedly different time scales, from algorithms that act in real time to decisions to invest in multi-year projects. The financial stakes warrant substantial investment in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible. The particular application may determine the balance struck between precision and reliability.</p>
+<p>Decisions are often made via complex human interactions that are difficult to represent formally. Financial transactions, however, are easier to record and model. Financial management operates at markedly different time scales. At one extreme, consider algorithms that respond in real time to changing market valuations. At the other extreme we have decisions pertaining to multi-year projects. The financial stakes warrant substantial investment in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).</p>
 <p>Time series models that support decisions (in any setting) are typically time-domain parametric models whose components may include data transformations along with filtering algorithms. We leave the description of such models for a separate technical note.</p>
 </section>
 <section id="scientific-understanding" class="level3">
@@ -545,7 +546,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The next figure shows a 5-year forecast based on a time-domain model (seasonal auto-regressive, moving-average model).</p>
+<p>The next figure shows a 5-year forecast based on a time-domain model (a seasonal auto-regressive, moving-average model).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -555,7 +556,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We leave the development of such models to a separate technical note. The point here is that such projections are both valued and scrutinized when offered as an argument for climate-related decisions.</p>
+<p>We leave the development of such models to a separate technical note. The point here is that such forecasts are both valued and scrutinized when when presented to support climate-related decisions.</p>
 </section>
 </section>
 <section id="detecting-observational-dependence" class="level2">
@@ -679,11 +680,12 @@ window.Quarto = {
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>The return is here calculated as the <span class="math inline">\(log_e\)</span> applied to the current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>The assumption of second-order stationarity suffices for most time series models used in practice, but in other cases one might need to assume <em>strict stationarity</em>, which means that all finite-dimensional distributions of the random process are unchanged by time shifts.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>The example illustrates a simple moving average. More generally a weighted moving average may have non-negative coefficients that sum to unity.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>In rare cases time series methods are applied to data indexed not by time but rather by some other measure, e.g.&nbsp;distance. See for example, D.J. Thompson (1977) “Spectrum Estimation Techniques for Characterization and Development of WT4 Waveguide” <a href="https://doi.org/10.1002/j.1538-7305.1977.tb00591.x" class="uri">https://doi.org/10.1002/j.1538-7305.1977.tb00591.x</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The return is here calculated as the <span class="math inline">\(log_e\)</span> applied to the current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of <em>strict stationarity</em>. This means that for any finite set of times <span class="math inline">\((t_1, \ldots, t_K)\)</span> and any time-shift <span class="math inline">\(s\)</span>, the joint probability distribution of <span class="math inline">\((X_\bullet (t_1), \ldots, X_\bullet (t_K))\)</span> is identical to that of <span class="math inline">\((X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))\)</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The example illustrates a simple moving average. More generally a weighted moving average may have non-negative coefficients that sum to unity.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

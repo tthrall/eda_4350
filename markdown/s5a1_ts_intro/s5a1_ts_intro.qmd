@@ -84,7 +84,9 @@ if (save_to_file) {
 
 ## Introduction
 
-This technical note gives examples of data in which successive observations are statistically dependent and are typically indexed by time. Time series data sampled at regular intervals (daily stock prices, for example) are the most common case, followed by point process data representing the occurrence of events (earthquakes, for example) at random times.
+This technical note gives examples of data in which successive observations are statistically dependent and are typically indexed by time.[^time_index] Time series data sampled at regular intervals (daily stock prices, for example) are the most common case, followed by point process data representing the occurrence of events (earthquakes, for example) at random times.
+
+[^time_index]: In rare cases time series methods are applied  to data indexed not by time but rather by some other measure, e.g. distance.  See for example, D.J. Thompson (1977) "Spectrum Estimation Techniques for Characterization and Development of WT4 Waveguide" <https://doi.org/10.1002/j.1538-7305.1977.tb00591.x>
 
 Statistical models of such data include parametric models expressed in the time domain and non-parametric models expressed in the Fourier frequency domain (number of cycles per unit of time).
 
@@ -464,9 +466,9 @@ $$
 \end{align}
 $$
 
-Subtracting off this mean function, the remaining residual random process, $X_\bullet (t) - m_\bullet (t)$ , is often assumed to be __second-order stationary__.[^stationary]  That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new proces $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
+In an additive model (which is most common), the residual random process, $X_\bullet (t) - m_\bullet (t)$ , is assumed to be __second-order stationary__.[^stationary]  That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new proces $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
 
-[^stationary]: The assumption of second-order stationarity suffices for most time series models used in practice, but in other cases one might need to assume _strict stationarity_, which means that all finite-dimensional distributions of the random process are unchanged by time shifts.
+[^stationary]: The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of _strict stationarity_.  This means that for any finite set of times $(t_1, \ldots, t_K)$ and any time-shift $s$, the joint probability distribution of $(X_\bullet (t_1), \ldots, X_\bullet (t_K))$ is identical to that of $(X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))$.
 
 $$
 \begin{align}
@@ -495,7 +497,7 @@ $$
   &= Cov \{ X_a (u), X_b (0) \} 
 \end{align}
 $$
-Consequently, second-order stationary enables one to define and estimate the following _auto-covariance_ function.
+Consequently, second-order stationarity enables one to define and estimate the following _auto-covariance_ function.
 
 $$
 \begin{align}
@@ -578,7 +580,9 @@ $$
 \end{align}
 $$
 
-As noted above, the moving average operation can help to reveal and thus model the trend in the process, $m_\bullet (t)$.  Forming the residual series $X_\bullet (t) - m_\bullet (t)$ is called "de-trending".  If the trend is linear, an alternative is to form differences of the current observation minus its predecessor.  This is an application of the "differencing" operator $\mathcal{D} = \mathcal{I} - \mathcal{B}$.
+As noted above, the moving average operation can help to reveal and thus model the trend in the process, $m_\bullet (t)$.  Forming the residual series $X_\bullet (t) - m_\bullet (t)$ is called "de-trending".
+
+Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor.  This is an application of the "differencing" operator $\mathcal{D} = \mathcal{I} - \mathcal{B}$.
 
 $$
 \begin{align}
@@ -608,11 +612,11 @@ In signal-processing applications a linear, time-invariant filter $a_{\bullet, \
 
 ## Data Analysis Objectives & Methods
 
-The aims and methods of data analysis can be categorized in various ways, for example, confirmatory data analysis and exploratory data analysis.  For the moment we consider the complementary aims of decision support and scientific understanding.
+There are a number of ways to categorize types of data analysis.  One important distinction is between confirmatory and exploratory data analysis.  For present purposes we consider the complementary aims of decision support and scientific understanding.
 
 ### Decision Support
 
-Financial management operates at markedly different time scales, from algorithms that act in real time to decisions to invest in multi-year projects.  The financial stakes warrant substantial investment in all aspects of the technology, including time series modeling.  To be useful the models must be as precise and as reliable as possible.  The particular application may determine the balance struck between precision and reliability.
+Decisions are often made via complex human interactions that are difficult to represent formally.  Financial transactions, however, are easier to record and model.  Financial management operates at markedly different time scales.  At one extreme, consider algorithms that respond in real time to changing market valuations.  At the other extreme we have decisions pertaining to multi-year projects.  The financial stakes warrant substantial investment in all aspects of the technology, including time series modeling.  To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).
 
 Time series models that support decisions (in any setting) are typically time-domain parametric models whose components may include data transformations along with filtering algorithms.  We leave the description of such models for a separate technical note.
 
@@ -640,7 +644,7 @@ tsplot(
 )
 ```
 
-The next figure shows a 5-year forecast based on a time-domain model (seasonal auto-regressive, moving-average model).
+The next figure shows a 5-year forecast based on a time-domain model (a seasonal auto-regressive, moving-average model).
 
 ```{r cardox_forecast}
 cardox_forecast <- 
@@ -649,7 +653,7 @@ cardox_forecast <-
 abline(v=2023.17, lty=6)
 ```
 
-We leave the development of such models to a separate technical note.  The point here is that such projections are both valued and scrutinized when offered as an argument for climate-related decisions.
+We leave the development of such models to a separate technical note.  The point here is that such forecasts are both valued and scrutinized when when presented to support climate-related decisions.
 
 ## Detecting Observational Dependence
 
