@@ -509,6 +509,18 @@ $$
 \end{align}
 $$
 
+The auto-covariance function is often rescaled to yield the _autocorrelation_ function $\rho_{\bullet, \bullet}(\cdot)$.
+
+$$
+\begin{align}
+\rho_{\bullet, \bullet} (u) &= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\ 
+  \\ 
+  \text{where} \\
+  \rho_{a, b} &= cor \{ X_a (u), X_b (0) \} \\ 
+  &= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
+\end{align}
+$$
+
 ## Operations on Time Series
 
 The data transformations used on independent observations are applicable to time series data.  For example, in the case of Johnson and Johnson quarterly earnings, we saw that the transformed time series, $Y(t) = \log_e (X(t))$, could be more closely approximated by a linear trend.
@@ -655,7 +667,15 @@ abline(v=2023.17, lty=6)
 
 We leave the development of such models to a separate technical note.  The point here is that such forecasts are both valued and scrutinized when when presented to support climate-related decisions.
 
-## Detecting Observational Dependence
+## Detecting Serial Correlation
+
+The process of building a statistical model (time series or not) is typically cyclic: examining data (or model residuals); conjecturing a statistical model (or model refinement); fitting the conjectured model; and examining the model residuals.
+
+In time series analysis, an initial review of the data might include a test for serial correlation (autocorrelation).  That is, one can check for correlation of $X_\bullet (t)$ with $X_\bullet (t - s)$ at several lags $s$.  If the data do appear to be auto-correlated, one might proceed to build a time series model.  If the residuals of that model also appear to be auto-correlated or to exhibit some trend, one might seek to refine the model until the model residuals appear to be free of trend and autocorrelation.
+
+There are several statistical tests for autocorrelation.  One of the most widely used is the Ljung-Box test available in `R` as the function `stats::Box.test()` in which one specifies the maximal lag to be checked.
+
+In the frequency domain, the variation exhibited in the data is decomposed into the variation from groups of sinusoidal functions, each group corresponding to a frequency band.  From this perspective the absence of autocorrelation corresponds to each band contributing the same proportion of variance, a phenomenon called "white noise".  A test for such white noise is available in `R` as the function `hwwntest::bartlettB()`.
 
 ```{r ess_demo}
 # TODO
@@ -724,14 +744,26 @@ s5a1_books_tbl |>
 ```{r s5a1_articles_tbl}
 s5a1_articles_tbl <- tibble::tribble(
   ~title, ~link,
+  "Bartlett's test - Wikipedia", 
+  "https://en.wikipedia.org/wiki/Bartlett%27s_test",
+  
   "CRAN Task View: Time Series Analysis", 
   "https://cran.r-project.org/web/views/TimeSeries.html",
   
   "Fun with asta", 
   "https://github.com/nickpoison/astsa/tree/master/fun_with_astsa", 
   
+  "hwwntest: Tests of White Noise using Wavelets", 
+  "https://cran.r-project.org/web/packages/hwwntest/index.html", 
+  
+  "Ljung–Box test - Wikipedia", 
+  "https://en.wikipedia.org/wiki/Ljung%E2%80%93Box_test",
+  
   "R Tutorial | Stoffer’s GitHome", 
-  "https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer"
+  "https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer", 
+  
+  "Some remarks on the analysis of time-series (Bartlett, 1967)", 
+  "https://doi.org/10.1093/biomet/54.1-2.25"
 ) |>
   dplyr::arrange(title)
 ```
