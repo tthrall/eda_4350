@@ -93,7 +93,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">20:42 Mon 9-Jun-2025</p>
+      <p class="date">17:01 Tue 10-Jun-2025</p>
     </div>
   </div>
   
@@ -536,7 +536,7 @@ window.Quarto = {
 <p>There are a number of ways to categorize types of data analysis. One important distinction is between confirmatory and exploratory data analysis. For present purposes we consider the complementary aims of decision support and scientific understanding.</p>
 <section id="decision-support" class="level3">
 <h3 class="anchored" data-anchor-id="decision-support">Decision Support</h3>
-<p>Decisions are often made via complex human interactions that are difficult to represent formally. Financial transactions, however, are easier to record and model. Financial management operates at markedly different time scales. At one extreme, consider algorithms that respond in real time to changing market valuations. At the other extreme we have decisions pertaining to multi-year projects. The financial stakes warrant substantial investment in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).</p>
+<p>Decisions are often made via complex human interactions that are difficult to represent formally. Financial transactions, however, are easier to record and model. Financial management operates at markedly different time scales. At one extreme, consider algorithms that respond in real time to changing market valuations. At the other extreme we have decisions pertaining to multi-year projects. The financial stakes warrant substantial investment, which has fuelled steady advancement in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).</p>
 <p>Time series models that support decisions (in any setting) are typically time-domain parametric models whose components may include data transformations along with filtering algorithms. We leave the description of such models for a separate technical note.</p>
 </section>
 <section id="scientific-understanding" class="level3">
@@ -566,18 +566,138 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We leave the development of such models to a separate technical note. The point here is that such forecasts are both valued and scrutinized when when presented to support climate-related decisions.</p>
+<p>We leave the development of such models to a separate technical note. The point here is that such forecasts are both valued and scrutinized when presented to support climate-related decisions.</p>
 </section>
 </section>
 <section id="detecting-serial-correlation" class="level2">
 <h2 class="anchored" data-anchor-id="detecting-serial-correlation">Detecting Serial Correlation</h2>
 <p>The process of building a statistical model (time series or not) is typically cyclic: examining data (or model residuals); conjecturing a statistical model (or model refinement); fitting the conjectured model; and examining the model residuals.</p>
-<p>In time series analysis, an initial review of the data might include a test for serial correlation (autocorrelation). That is, one can check for correlation of <span class="math inline">\(X_\bullet (t)\)</span> and <span class="math inline">\(X_\bullet (t - s)\)</span> at several lags <span class="math inline">\(s\)</span>. If the data do appear to be auto-correlated, one might proceed to build a time series model. If the residuals of that model also appear to be auto-correlated or to exhibit some trend, one might seek to refine the model until the model residuals appear to be free of trend and autocorrelation.</p>
+<p>In time series analysis, an initial review of the data might include a test for serial correlation (autocorrelation). That is, one can check for correlation of <span class="math inline">\(X_\bullet (t)\)</span> with <span class="math inline">\(X_\bullet (t - s)\)</span> at several lags <span class="math inline">\(s\)</span>. If the data do appear to be auto-correlated, one might proceed to build a time series model. If the residuals of that model also appear to be auto-correlated or to exhibit some trend, one might seek to refine the model until the model residuals appear to be free of trend and autocorrelation.</p>
+<section id="statistical-tests" class="level3">
+<h3 class="anchored" data-anchor-id="statistical-tests">Statistical Tests</h3>
 <p>There are several statistical tests for autocorrelation. One of the most widely used is the Ljung-Box test available in <code>R</code> as the function <code>stats::Box.test()</code> in which one specifies the maximal lag to be checked.</p>
 <p>In the frequency domain, the variation exhibited in the data is decomposed into the variation from groups of sinusoidal functions, each group corresponding to a frequency band. From this perspective the absence of autocorrelation corresponds to each band contributing the same proportion of variance, a phenomenon called “white noise”. A test for such white noise is available in <code>R</code> as the function <code>hwwntest::bartlettB()</code>.</p>
 </section>
+<section id="autocorrelation-and-estimator-variance" class="level3">
+<h3 class="anchored" data-anchor-id="autocorrelation-and-estimator-variance">Autocorrelation and Estimator Variance</h3>
+<p>The presence of autocorrelation in the data requires adjustment of the usual variance calculations designed for data in which observations are statistically independent. Here’s an example.</p>
+<p>Suppose that <span class="math inline">\(W(t)\)</span> is a white noise process of independent and identically distributed (“iid”) random variables, and that <span class="math inline">\(X(\cdot)\)</span> is the following filtered version of <span class="math inline">\(W(\cdot)\)</span>.</p>
+<p><span class="math display">\[
+\begin{align}
+  X(t) &amp;= W(t) + \theta \; W(t-1) \\
+  \\
+  &amp; \text{where } -1 &lt; \theta &lt; 1
+\end{align}
+\]</span></p>
+<p>Then <span class="math inline">\(X(\cdot)\)</span> is an example of a moving average random process. In the theory of such processes one usually assumes that <span class="math inline">\(X(\cdot)\)</span> is observed for some interval of time <span class="math inline">\((t_0, \ldots, t_0 + T - 1)\)</span> and that <span class="math inline">\(W(\cdot)\)</span> is not observed. But for present purposes suppose that this is a simulation study in which both <span class="math inline">\(X(t)\)</span> and <span class="math inline">\(W(\cdot)\)</span> are generated over the same time interval and that the values of all parameters are known, including the population means, the population variances, and <span class="math inline">\(\theta\)</span>.</p>
+<p>Let’s focus on the calculation of the sample mean and its variance. For <span class="math inline">\(W(\cdot)\)</span> we have the following familiar formulas for the sum of observed values.</p>
+<p><span class="math display">\[
+\begin{align}
+  S_{W, T} &amp;= \sum_{t = t_0}^{t_0 + T -1} W(t) \\
+  E \left \{ S_{W, T} \right \} &amp;= T \times E \left \{ W(t_0) \right \}  \\
+  &amp;= T \times \mu_W \\
+  Var \left \{ S_{W, T} \right \} &amp;= T \times Var \left \{ W(t_0) \right \}  \\
+  &amp;= T \times \sigma_W^2
+\end{align}
+\]</span></p>
+<p>The sample mean is derived from the sample sum.</p>
+<p><span class="math display">\[
+\begin{align}
+  \hat{\mu}_W &amp;= \frac{S_{W, T}}{T} \\
+  \\
+  E \left \{ \hat{\mu}_W \right \}
+  &amp;= \frac{E \left \{ S_{W, T} \right \}}{T} \\
+  &amp;= \mu_W \\
+  \\
+  Var \left \{ \hat{\mu}_W \right \}
+  &amp;= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\
+  &amp;= \frac{ \sigma_W^2 }{T}
+\end{align}
+\]</span></p>
+<p>The mean and variance of <span class="math inline">\(X(t)\)</span> can be expressed as respective functions of the mean and variance of <span class="math inline">\(Z(t)\)</span>.</p>
+<p><span class="math display">\[
+\begin{align}
+  \mu_X &amp;= (1 +\theta) \; \mu_Z \\
+  \sigma_X^2 &amp;= (1 +\theta^2) \; \sigma_Z^2
+\end{align}
+\]</span></p>
+<p>The variance formula for the sample sum, <span class="math inline">\(S_{X, T}\)</span>, differs from that of <span class="math inline">\(S_{Z, T}\)</span>, because <span class="math inline">\(X(\cdot)\)</span> is auto-correlated. The auto-covariance function is</p>
+<p><span class="math display">\[
+\begin{align}
+  \gamma_X (u) &amp;= Cov \left ( X(t + u), X(t) \right ) \\
+  &amp;=
+  \begin{cases}
+    (1 +\theta^2) \; \sigma_Z^2 &amp; \text{ for } u = 0 \\
+    \theta \; \sigma_Z^2 &amp; \text{ for } u = \pm 1 \\
+    0 &amp; \text{ for } |u| &gt; 1
+  \end{cases}
+\end{align}
+\]</span></p>
+<p>The auto-correlation function is thus<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<p><span class="math display">\[
+\begin{align}
+  \rho_X (u) &amp;= cor \left ( X(t + u), X(t) \right ) \\
+  &amp;=
+  \begin{cases}
+    1 &amp; \text{ for } u = 0 \\
+    \frac{\theta}{1 +\theta^2} &amp; \text{ for } u = \pm 1 \\
+    0 &amp; \text{ for } |u| &gt; 1
+  \end{cases}
+\end{align}
+\]</span></p>
+<p>Therefore</p>
+<p><span class="math display">\[
+\begin{align}
+  Var \left \{ S_{X, T} \right \}
+  &amp;= Cov \left ( \sum_{s = t_0}^{t_0 + T - 1} X(s), \; \sum_{t = t_0}^{t_0 + T - 1} X(t)  \right ) \\
+  &amp;= \sum_{s = t_0}^{t_0 + T - 1} \sum_{y = t_0}^{t_0 + T - 1}
+  Cov \left ( X(s), X(t) \right ) \\
+  &amp;= \sum_{s = t_0}^{t_0 + T - 1} \sum_{y = t_0}^{t_0 + T - 1}
+  \gamma_X (s - t) \\
+  &amp;= \sum_{u = -T + 1}^{T - 1} (T - |u|) \; \gamma_X (u) \\
+  &amp;= T \; \gamma_X (0) + 2 (T - 1) \; \gamma_X (1) \\
+  &amp;= T \; \sigma_X^2 \; \left ( 1 + 2 \; (1 - \frac{1}{T}) \; \rho_X (1) \right ) \\
+  &amp;= T \; \sigma_X^2 \; \left ( 1 + 2 \; (1 - \frac{1}{T}) \; \frac{\theta}{1 +\theta^2} \right ) \\
+  &amp;= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2}
+  - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
+\end{align}
+\]</span></p>
+<p>That is, ignoring the autocorrelation of <span class="math inline">\(X(\cdot)\)</span> would lead to erroneous calculations of the variance of <span class="math inline">\(S_{X, T}\)</span> and <span class="math inline">\(\hat{\mu}_X\)</span>.</p>
+</section>
+<section id="effective-sample-size-ess" class="level3">
+<h3 class="anchored" data-anchor-id="effective-sample-size-ess">Effective Sample Size (ESS)</h3>
+<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws required to produce the same variance of the resulting sample mean as that of the auto-correlated case.</p>
+<p><span class="math display">\[
+\begin{align}
+  \frac{\sigma_X^2}{N_d} &amp;= Var \left \{ \hat{\mu}_X \right \} \\
+  &amp;= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
+\end{align}
+\]</span></p>
+<p>Equivalently</p>
+<p><span class="math display">\[
+\begin{align}
+  N_d &amp;= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
+\end{align}
+\]</span></p>
+<p>In our moving average example this yields</p>
+<p><span class="math display">\[
+\begin{align}
+  N_d &amp;= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} } \\
+  &amp;\sim
+  \begin{cases}
+    T \; \frac{1 +\theta^2}{(1 + \theta)^2}
+      &amp; \text{ as } T \rightarrow \infty \\  
+    T^2  &amp; \text{ as } \theta \rightarrow -1
+  \end{cases}
+\end{align}
+\]</span></p>
+<p>As <span class="math inline">\(\theta\)</span> increases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> decreases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T/2\)</span>. In the other direction, as <span class="math inline">\(\theta\)</span> decreases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(-1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> increases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T^2\)</span>.</p>
+<p>The point here is that care must be taken when calculating the variance of estimators derived from time series data. This is a known issue addressed by available software.</p>
+</section>
+</section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
+<p>This technical note is intended as an overview of time series analysis based on the textbook cited below by Shumway and Stoffer, along with the supporting <code>R</code> package <code>astsa</code>. The reader should feel free to select the presented examples of greatest interest, skipping others to save time. Time-domain and frequency-domain methods are mentioned only in the broadest terms, leaving details for other presentations.</p>
 </section>
 <section id="resources" class="level2">
 <h2 class="anchored" data-anchor-id="resources">Resources</h2>
@@ -687,6 +807,22 @@ window.Quarto = {
 <td style="text-align: left;">number of time series observations</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">$\mu_X$</td>
+<td style="text-align: left;">the expected value of random variable $X (t_0)$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$N_d$</td>
+<td style="text-align: left;">number of independent draws (effective sample size)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$S_{X, T}$</td>
+<td style="text-align: left;">the sample sum of T observations of $X (t)$</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$\sigma_X^2$</td>
+<td style="text-align: left;">the variance of random variable $X (t_0)$</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">$t_0$</td>
 <td style="text-align: left;">initial time index of a time series data set</td>
 </tr>
@@ -709,9 +845,11 @@ window.Quarto = {
 <li id="fn1"><p>In rare cases time series methods are applied to data indexed not by time but rather by some other measure, e.g.&nbsp;distance. See for example, D.J. Thompson (1977) “Spectrum Estimation Techniques for Characterization and Development of WT4 Waveguide” <a href="https://doi.org/10.1002/j.1538-7305.1977.tb00591.x" class="uri">https://doi.org/10.1002/j.1538-7305.1977.tb00591.x</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>The return is here calculated as the <span class="math inline">\(log_e\)</span> applied to the current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio, current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of <em>strict stationarity</em>. This means that for any finite set of times <span class="math inline">\((t_1, \ldots, t_K)\)</span> and any time-shift <span class="math inline">\(s\)</span>, the joint probability distribution of <span class="math inline">\((X_\bullet (t_1), \ldots, X_\bullet (t_K))\)</span> is identical to that of <span class="math inline">\((X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))\)</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>The example illustrates a simple moving average. More generally a weighted moving average may have non-negative coefficients that sum to unity.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

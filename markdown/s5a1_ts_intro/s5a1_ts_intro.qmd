@@ -318,7 +318,7 @@ Developing a statistical model of the time series can be regarded as a first ste
 
 The next figure shows the trading day closings and returns (percent change)[^djia_return] of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
 
-[^djia_return]: The return is here calculated as the $log_e$ applied to the current day's closing price divided by that of the preceding day.  The median value is about 6 basis points.
+[^djia_return]: The return is here calculated as $log_e$ of the ratio, current day's closing price divided by that of the preceding day.  The median value is about 6 basis points.
 
 ```{r djia__plot}
 # log-ratio of successive closing values
@@ -628,7 +628,7 @@ There are a number of ways to categorize types of data analysis.  One important 
 
 ### Decision Support
 
-Decisions are often made via complex human interactions that are difficult to represent formally.  Financial transactions, however, are easier to record and model.  Financial management operates at markedly different time scales.  At one extreme, consider algorithms that respond in real time to changing market valuations.  At the other extreme we have decisions pertaining to multi-year projects.  The financial stakes warrant substantial investment in all aspects of the technology, including time series modeling.  To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).
+Decisions are often made via complex human interactions that are difficult to represent formally.  Financial transactions, however, are easier to record and model.  Financial management operates at markedly different time scales.  At one extreme, consider algorithms that respond in real time to changing market valuations.  At the other extreme we have decisions pertaining to multi-year projects.  The financial stakes warrant substantial investment, which has fuelled steady advancement in all aspects of the technology, including time series modeling.  To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).
 
 Time series models that support decisions (in any setting) are typically time-domain parametric models whose components may include data transformations along with filtering algorithms.  We leave the description of such models for a separate technical note.
 
@@ -660,12 +660,15 @@ The next figure shows a 5-year forecast based on a time-domain model (a seasonal
 
 ```{r cardox_forecast}
 cardox_forecast <- 
-  sarima.for(cardox, 60, 1,1,1, 0,1,1,12, col=4)
+  sarima.for(
+    cardox, 60, 1,1,1, 0,1,1,12, 
+    col=4, ylab = bquote(CO[2])
+  )
 
 abline(v=2023.17, lty=6)
 ```
 
-We leave the development of such models to a separate technical note.  The point here is that such forecasts are both valued and scrutinized when when presented to support climate-related decisions.
+We leave the development of such models to a separate technical note.  The point here is that such forecasts are both valued and scrutinized when presented to support climate-related decisions.
 
 ## Detecting Serial Correlation
 
@@ -673,23 +676,158 @@ The process of building a statistical model (time series or not) is typically cy
 
 In time series analysis, an initial review of the data might include a test for serial correlation (autocorrelation).  That is, one can check for correlation of $X_\bullet (t)$ with $X_\bullet (t - s)$ at several lags $s$.  If the data do appear to be auto-correlated, one might proceed to build a time series model.  If the residuals of that model also appear to be auto-correlated or to exhibit some trend, one might seek to refine the model until the model residuals appear to be free of trend and autocorrelation.
 
+### Statistical Tests
+
 There are several statistical tests for autocorrelation.  One of the most widely used is the Ljung-Box test available in `R` as the function `stats::Box.test()` in which one specifies the maximal lag to be checked.
 
 In the frequency domain, the variation exhibited in the data is decomposed into the variation from groups of sinusoidal functions, each group corresponding to a frequency band.  From this perspective the absence of autocorrelation corresponds to each band contributing the same proportion of variance, a phenomenon called "white noise".  A test for such white noise is available in `R` as the function `hwwntest::bartlettB()`.
 
-```{r ess_demo}
-# TODO
+### Autocorrelation and Estimator Variance
 
-# Fit an AR(2) to the Recruitment series
-# u <- ar.mcmc(
-#   rec, porder = 2, n.iter = 1000, plot = FALSE
-# )
+The presence of autocorrelation in the data requires adjustment of the usual variance calculations designed for data in which observations are statistically independent.  Here's an example.
 
-# now calculate the effective sample size 
-# apply(u, 2, ESS)
-```
+Suppose that $W(t)$ is a white noise process of independent and identically distributed ("iid") random variables, and that $X(\cdot)$ is the following filtered version of $W(\cdot)$.
+
+$$
+\begin{align}
+  X(t) &= W(t) + \theta \; W(t-1) \\ 
+  \\ 
+  & \text{where } -1 < \theta < 1
+\end{align}
+$$
+
+Then $X(\cdot)$ is an example of a moving average random process.  In the theory of such processes one usually assumes that $X(\cdot)$ is observed for some interval of time $(t_0, \ldots, t_0 + T - 1)$ and that $W(\cdot)$ is not observed.  But for present purposes suppose that this is a simulation study in which both $X(t)$ and $W(\cdot)$ are generated over the same time interval and that the values of all parameters are known, including the population means, the population variances, and $\theta$.
+
+Let's focus on the calculation of the sample mean and its variance.  For $W(\cdot)$ we have the following familiar formulas for the sum of observed values.
+
+$$
+\begin{align}
+  S_{W, T} &= \sum_{t = t_0}^{t_0 + T -1} W(t) \\ 
+  E \left \{ S_{W, T} \right \} &= T \times E \left \{ W(t_0) \right \}  \\ 
+  &= T \times \mu_W \\ 
+  Var \left \{ S_{W, T} \right \} &= T \times Var \left \{ W(t_0) \right \}  \\ 
+  &= T \times \sigma_W^2
+\end{align}
+$$
+
+The sample mean is derived from the sample sum.
+
+$$
+\begin{align}
+  \hat{\mu}_W &= \frac{S_{W, T}}{T} \\ 
+  \\ 
+  E \left \{ \hat{\mu}_W \right \} 
+  &= \frac{E \left \{ S_{W, T} \right \}}{T} \\ 
+  &= \mu_W \\ 
+  \\ 
+  Var \left \{ \hat{\mu}_W \right \} 
+  &= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\ 
+  &= \frac{ \sigma_W^2 }{T}
+\end{align}
+$$
+
+The mean and variance of $X(t)$ can be expressed as respective functions of the mean and variance of $Z(t)$.
+
+$$
+\begin{align}
+  \mu_X &= (1 +\theta) \; \mu_Z \\ 
+  \sigma_X^2 &= (1 +\theta^2) \; \sigma_Z^2
+\end{align}
+$$
+
+The variance formula for the sample sum, $S_{X, T}$, differs from that of $S_{Z, T}$, because $X(\cdot)$ is auto-correlated.  The auto-covariance function is 
+
+$$
+\begin{align}
+  \gamma_X (u) &= Cov \left ( X(t + u), X(t) \right ) \\ 
+  &= 
+  \begin{cases}
+    (1 +\theta^2) \; \sigma_Z^2 & \text{ for } u = 0 \\ 
+    \theta \; \sigma_Z^2 & \text{ for } u = \pm 1 \\ 
+    0 & \text{ for } |u| > 1 
+  \end{cases}
+\end{align}
+$$
+
+The auto-correlation function is thus[^rho_ma_1] 
+
+$$
+\begin{align}
+  \rho_X (u) &= cor \left ( X(t + u), X(t) \right ) \\ 
+  &= 
+  \begin{cases}
+    1 & \text{ for } u = 0 \\ 
+    \frac{\theta}{1 +\theta^2} & \text{ for } u = \pm 1 \\ 
+    0 & \text{ for } |u| > 1 
+  \end{cases}
+\end{align}
+$$
+
+[^rho_ma_1]: Note that $\rho_X (1)$ is restricted to the interval $(-0.5, 0.5)$, since we have restricted $\theta$ to the interval $(-1, 1)$.
+
+Therefore 
+
+$$
+\begin{align}
+  Var \left \{ S_{X, T} \right \} 
+  &= Cov \left ( \sum_{s = t_0}^{t_0 + T - 1} X(s), \; \sum_{t = t_0}^{t_0 + T - 1} X(t)  \right ) \\ 
+  &= \sum_{s = t_0}^{t_0 + T - 1} \sum_{y = t_0}^{t_0 + T - 1} 
+  Cov \left ( X(s), X(t) \right ) \\ 
+  &= \sum_{s = t_0}^{t_0 + T - 1} \sum_{y = t_0}^{t_0 + T - 1} 
+  \gamma_X (s - t) \\ 
+  &= \sum_{u = -T + 1}^{T - 1} (T - |u|) \; \gamma_X (u) \\ 
+  &= T \; \gamma_X (0) + 2 (T - 1) \; \gamma_X (1) \\ 
+  &= T \; \sigma_X^2 \; \left ( 1 + 2 \; (1 - \frac{1}{T}) \; \rho_X (1) \right ) \\ 
+  &= T \; \sigma_X^2 \; \left ( 1 + 2 \; (1 - \frac{1}{T}) \; \frac{\theta}{1 +\theta^2} \right ) \\ 
+  &= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2} 
+  - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
+\end{align}
+$$
+
+That is, ignoring the autocorrelation of $X(\cdot)$ would lead to erroneous calculations of the variance of $S_{X, T}$ and $\hat{\mu}_X$.
+
+### Effective Sample Size (ESS)
+
+The magnitude of such erroneous calculations can be represented by a quantity called the _effective sample size_ (ESS).  The calculation of ESS varies with application[^astsa_ESS], but here's the basic idea in the present context.  Consider a finite sequence of _independent_ draws from the distribution of the random variable $X(t_0)$, thereby producing a sample of independent observations.  Define the effective sample size, $N_d$, to be the number of draws required to produce the same variance of the resulting sample mean as that of the auto-correlated case.
+
+[^astsa_ESS]: The `R` package `astsa` provides function `ESS()`.
+
+$$
+\begin{align}
+  \frac{\sigma_X^2}{N_d} &= Var \left \{ \hat{\mu}_X \right \} \\ 
+  &= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
+\end{align}
+$$
+
+Equivalently 
+
+$$
+\begin{align}
+  N_d &= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
+\end{align}
+$$
+
+In our moving average example this yields 
+
+$$
+\begin{align}
+  N_d &= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} } \\ 
+  &\sim 
+  \begin{cases}
+    T \; \frac{1 +\theta^2}{(1 + \theta)^2} 
+      & \text{ as } T \rightarrow \infty \\  
+    T^2  & \text{ as } \theta \rightarrow -1
+  \end{cases}
+\end{align}
+$$
+
+As $\theta$ increases from $0$ towards $1$ the matching number of independent draws $N_d$ decreases from $T$ towards $T/2$.  In the other direction, as $\theta$ decreases from $0$ towards $-1$ the matching number of independent draws $N_d$ increases from $T$ towards $T^2$.
+
+The point here is that care must be taken when calculating the variance of estimators derived from time series data.  This is a known issue addressed by available software. 
 
 ## Closing Remarks
+
+This technical note is intended as an overview of time series analysis based on the textbook cited below by Shumway and Stoffer, along with the supporting `R` package `astsa`.  The reader should feel free to select the presented examples of greatest interest, skipping others to save time.  Time-domain and frequency-domain methods are mentioned only in the broadest terms, leaving details for other presentations.
 
 ## Resources
 
@@ -827,6 +965,22 @@ s5a1_symbol_tbl <- tibble::tribble(
   "T", 
   "$T$",
   "number of time series observations",
+  
+  "mu_X", 
+  "$\\mu_X$",
+  "the expected value of random variable $X (t_0)$",
+  
+  "N_d", 
+  "$N_d$",
+  "number of independent draws (effective sample size)",
+  
+  "S_X_T", 
+  "$S_{X, T}$",
+  "the sample sum of T observations of $X (t)$",
+  
+  "sig2_X", 
+  "$\\sigma_X^2$",
+  "the variance of random variable $X (t_0)$",
   
   "t_0", 
   "$t_0$",
