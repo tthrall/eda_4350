@@ -21,7 +21,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="s5a_ts_intro_files/libs/clipboard/clipboard.min.js"></script>
@@ -74,17 +94,42 @@ window.Quarto = {
   <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
-  <ul class="collapse">
+  <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#natural-science-examples" id="toc-natural-science-examples" class="nav-link" data-scroll-target="#natural-science-examples">Natural Science Examples</a></li>
-  <li><a href="#business-and-economic-examples" id="toc-business-and-economic-examples" class="nav-link" data-scroll-target="#business-and-economic-examples">Business and Economic Examples</a></li>
-  <li><a href="#signal-processing-examples" id="toc-signal-processing-examples" class="nav-link" data-scroll-target="#signal-processing-examples">Signal Processing Examples</a></li>
+  <li><a href="#natural-science-examples" id="toc-natural-science-examples" class="nav-link" data-scroll-target="#natural-science-examples">Natural Science Examples</a>
+  <ul class="collapse">
+  <li><a href="#sunspots-monthly-counts-1749---present" id="toc-sunspots-monthly-counts-1749---present" class="nav-link" data-scroll-target="#sunspots-monthly-counts-1749---present">Sunspots: Monthly Counts, 1749 - Present</a></li>
+  <li><a href="#old-faithful-eruptions" id="toc-old-faithful-eruptions" class="nav-link" data-scroll-target="#old-faithful-eruptions">Old Faithful eruptions</a></li>
+  <li><a href="#climate-change" id="toc-climate-change" class="nav-link" data-scroll-target="#climate-change">Climate Change</a></li>
+  <li><a href="#el-niño-and-fish-population" id="toc-el-niño-and-fish-population" class="nav-link" data-scroll-target="#el-niño-and-fish-population">El Niño and Fish Population</a></li>
+  <li><a href="#predatorprey-interactions" id="toc-predatorprey-interactions" class="nav-link" data-scroll-target="#predatorprey-interactions">Predator–Prey Interactions</a></li>
+  </ul></li>
+  <li><a href="#business-and-economic-examples" id="toc-business-and-economic-examples" class="nav-link" data-scroll-target="#business-and-economic-examples">Business and Economic Examples</a>
+  <ul class="collapse">
+  <li><a href="#jj-quarterly-earnings" id="toc-jj-quarterly-earnings" class="nav-link" data-scroll-target="#jj-quarterly-earnings">JJ Quarterly Earnings</a></li>
+  <li><a href="#dow-jones-industrial-average" id="toc-dow-jones-industrial-average" class="nav-link" data-scroll-target="#dow-jones-industrial-average">Dow Jones Industrial Average</a></li>
+  </ul></li>
+  <li><a href="#signal-processing-examples" id="toc-signal-processing-examples" class="nav-link" data-scroll-target="#signal-processing-examples">Signal Processing Examples</a>
+  <ul class="collapse">
+  <li><a href="#fmri-imaging" id="toc-fmri-imaging" class="nav-link" data-scroll-target="#fmri-imaging">fMRI Imaging</a></li>
+  <li><a href="#speech-recording" id="toc-speech-recording" class="nav-link" data-scroll-target="#speech-recording">Speech Recording</a></li>
+  <li><a href="#earthquakes-and-explosions" id="toc-earthquakes-and-explosions" class="nav-link" data-scroll-target="#earthquakes-and-explosions">Earthquakes and Explosions</a></li>
+  </ul></li>
   <li><a href="#mathematical-framework" id="toc-mathematical-framework" class="nav-link" data-scroll-target="#mathematical-framework">Mathematical Framework</a></li>
   <li><a href="#operations-on-time-series" id="toc-operations-on-time-series" class="nav-link" data-scroll-target="#operations-on-time-series">Operations on Time Series</a></li>
-  <li><a href="#data-analysis-objectives-methods" id="toc-data-analysis-objectives-methods" class="nav-link" data-scroll-target="#data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</a></li>
-  <li><a href="#detecting-serial-correlation" id="toc-detecting-serial-correlation" class="nav-link" data-scroll-target="#detecting-serial-correlation">Detecting Serial Correlation</a></li>
+  <li><a href="#data-analysis-objectives-methods" id="toc-data-analysis-objectives-methods" class="nav-link" data-scroll-target="#data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</a>
+  <ul class="collapse">
+  <li><a href="#decision-support" id="toc-decision-support" class="nav-link" data-scroll-target="#decision-support">Decision Support</a></li>
+  <li><a href="#scientific-understanding" id="toc-scientific-understanding" class="nav-link" data-scroll-target="#scientific-understanding">Scientific Understanding</a></li>
+  <li><a href="#overlap" id="toc-overlap" class="nav-link" data-scroll-target="#overlap">Overlap</a></li>
+  </ul></li>
+  <li><a href="#detecting-serial-correlation" id="toc-detecting-serial-correlation" class="nav-link" data-scroll-target="#detecting-serial-correlation">Detecting Serial Correlation</a>
+  <ul class="collapse">
+  <li><a href="#statistical-tests" id="toc-statistical-tests" class="nav-link" data-scroll-target="#statistical-tests">Statistical Tests</a></li>
+  <li><a href="#autocorrelation-and-estimator-variance" id="toc-autocorrelation-and-estimator-variance" class="nav-link" data-scroll-target="#autocorrelation-and-estimator-variance">Autocorrelation and Estimator Variance</a></li>
+  <li><a href="#effective-sample-size-ess" id="toc-effective-sample-size-ess" class="nav-link" data-scroll-target="#effective-sample-size-ess">Effective Sample Size (ESS)</a></li>
+  </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
-  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
   <li><a href="#glossary-of-math-symbols" id="toc-glossary-of-math-symbols" class="nav-link" data-scroll-target="#glossary-of-math-symbols">Glossary of Math Symbols</a></li>
   </ul>
 </nav>
@@ -111,7 +156,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">16:16 Wed 11-Jun-2025</p>
+      <p class="date">21:39 Wed 11-Jun-2025</p>
     </div>
   </div>
   
@@ -132,8 +177,9 @@ window.Quarto = {
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>This technical note gives examples of data in which successive observations are statistically dependent and are typically indexed by time.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Time series data sampled at regular intervals (daily stock prices, for example) are the most common case, followed by point process data representing the occurrence of events (earthquakes, for example) at random times.</p>
+<p>Nearly all of the time series examples presented here are from the selected textbook <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025</a>)</span> supported by <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.</p>
 <p>Statistical models of such data include parametric models expressed in the time domain and non-parametric models expressed in the Fourier frequency domain (number of cycles per unit of time).</p>
-<p>This note also comments on the detection of statistical dependence among successive observations and the modification of statistical tests and estimators for such data.</p>
+<p>This note also comments on the <em>detection</em> of statistical dependence among successive observations and the modification of statistical tests and estimators for such data.</p>
 </section>
 <section id="natural-science-examples" class="level2">
 <h2 class="anchored" data-anchor-id="natural-science-examples">Natural Science Examples</h2>
@@ -162,7 +208,7 @@ window.Quarto = {
 <section id="description-1" class="level4">
 <h4 class="anchored" data-anchor-id="description-1">Description</h4>
 <p>The figure below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
-<p>The data represent a <em>point process</em>, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faitful geyser. In addition to the time of the eruption we have the duration of the eruption.</p>
+<p>The data represent a <em>point process</em>, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faithful geyser. In addition to the time of the eruption we have the duration of the eruption.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -260,7 +306,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="el-niño-and-fish-population">El Niño and Fish Population</h3>
 <section id="description-3" class="level4">
 <h4 class="anchored" data-anchor-id="description-3">Description</h4>
-<p>The next figure shows the Southern Oscillation Index (SOI) and associated Recruitment (an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
+<p>The next figure shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
 <p>The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -281,7 +327,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="predatorprey-interactions">Predator–Prey Interactions</h3>
 <section id="description-4" class="level4">
 <h4 class="anchored" data-anchor-id="description-4">Description</h4>
-<p>One of the classic studies of predator–prey interactions is based on the record of lynx and snowshoe hare pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
+<p>One of the classic studies of predator–prey interactions is based on the record of lynx (<code>astsa::Lynx</code>) and snowshoe hare (<code>astsa::Hare</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
 <p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in the next figure are thousands of pelts per year.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -305,7 +351,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="jj-quarterly-earnings">JJ Quarterly Earnings</h3>
 <section id="description-5" class="level4">
 <h4 class="anchored" data-anchor-id="description-5">Description</h4>
-<p>The figures below are Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980. The second figure shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
+<p>The figures below are Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980 (<code>astsa::jj</code>). The second figure shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -325,7 +371,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
 <section id="description-6" class="level4">
 <h4 class="anchored" data-anchor-id="description-6">Description</h4>
-<p>The next figure shows the trading day closings and returns (percent change)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p>The next figure shows the trading day closings and returns (percent change)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -348,7 +394,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="fmri-imaging">fMRI Imaging</h3>
 <section id="description-7" class="level4">
 <h4 class="anchored" data-anchor-id="description-7">Description</h4>
-<p>The next figure shows fMRI data from various locations in the cortex, thalamus, and cerebellum; n = 128 points, one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).</p>
+<p>The next figure shows fMRI data (<code>astsa::fmri1</code>) from various locations in the cortex, thalamus, and cerebellum; n = 128 points, with one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).</p>
 <p>The data are from a 1997 study that used fMRI to examine pain perception in humans. Here we focus on five subjects whose hands were periodically brushed. The stimulus (represented as a square wave in the figure) was applied for 32 seconds and then stopped for 32 seconds so that the signal period is 64 seconds. The sampling rate was one observation every 2 seconds for 256 seconds (n = 128).</p>
 <p>The data are consecutive measures of blood oxygenation-level dependent (BOLD) signal intensity, which measures areas of activation in the brain. The series shown are from two locations each in the cortex, thalamus, and cerebellum and the values are averaged over subjects (these were evoked responses and all subjects were in phase).</p>
 <div class="cell">
@@ -390,7 +436,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="earthquakes-and-explosions">Earthquakes and Explosions</h3>
 <section id="description-9" class="level4">
 <h4 class="anchored" data-anchor-id="description-9">Description</h4>
-<p>The next pair of figures show recordings (40 per second) at a Scandinavian seismic station of an earthquake and of a mining explosion.</p>
+<p>The next pair of figures show recordings (40 per second) at a Scandinavian seismic station of an earthquake (<code>astsa::EQ5</code>) and of a mining explosion (<code>astsa::EXP6</code>).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -429,7 +475,7 @@ window.Quarto = {
   X_\bullet (t) = (X_1 (t), \ldots, X_d (t))
 \end{align}
 \]</span></p>
-<p>In our example the number <span class="math inline">\(d\)</span> of data columns is two (<code>hare</code>, <code>lynx</code>), the unit of time is one year,, and the sampling frequency is once per year. The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period.</p>
+<p>In our example the number <span class="math inline">\(d\)</span> of data columns is two (<code>hare</code>, <code>lynx</code>), the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period.</p>
 <p><span class="math display">\[
 \begin{align}
   t &amp;= t_0 + u &amp; \text{ with } u \in \{0, 1, \ldots, T-1 \}
@@ -551,7 +597,7 @@ window.Quarto = {
 </section>
 <section id="data-analysis-objectives-methods" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</h2>
-<p>There are a number of ways to categorize types of data analysis. One important distinction is between confirmatory and exploratory data analysis. For present purposes we consider the complementary aims of decision support and scientific understanding.</p>
+<p>There are a number of ways to categorize types of data analysis. For example, the distinction between confirmatory and exploratory data analysis has been widely discussed over several decades. But for present purposes we consider the complementary aims of decision support and scientific understanding.</p>
 <section id="decision-support" class="level3">
 <h3 class="anchored" data-anchor-id="decision-support">Decision Support</h3>
 <p>Decisions are often made via complex human interactions that are difficult to represent formally. Financial transactions, however, are easier to record and model. Financial management operates at markedly different time scales. At one extreme, consider algorithms that respond in real time to changing market valuations. At the other extreme we have decisions pertaining to multi-year projects. The financial stakes warrant substantial investment, which has fuelled steady advancement in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).</p>
@@ -594,7 +640,7 @@ window.Quarto = {
 <section id="statistical-tests" class="level3">
 <h3 class="anchored" data-anchor-id="statistical-tests">Statistical Tests</h3>
 <p>There are several statistical tests for autocorrelation. One of the most widely used is the Ljung-Box test available in <code>R</code> as the function <code>stats::Box.test()</code> in which one specifies the maximal lag to be checked.</p>
-<p>In the frequency domain, the variation exhibited in the data is decomposed into the variation from groups of sinusoidal functions, each group corresponding to a frequency band. From this perspective the absence of autocorrelation corresponds to each band contributing the same proportion of variance, a phenomenon called “white noise”. A test for such white noise is available in <code>R</code> as the function <code>hwwntest::bartlettB()</code>.</p>
+<p>In the frequency domain, the variation exhibited in the data is decomposed into the variation from groups of sinusoidal functions, each group corresponding to a frequency band. From this perspective the absence of autocorrelation corresponds to each band contributing the same proportion of variance, a phenomenon called “white noise”. A test for such white noise is available in <code>R</code> as the function <code>hwwntest::bartlettB()</code><span class="citation" data-cites="hwwntest">(<a href="#ref-hwwntest" role="doc-biblioref">Savchev and Nason 2023</a>)</span>.</p>
 </section>
 <section id="autocorrelation-and-estimator-variance" class="level3">
 <h3 class="anchored" data-anchor-id="autocorrelation-and-estimator-variance">Autocorrelation and Estimator Variance</h3>
@@ -680,7 +726,7 @@ window.Quarto = {
   - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
 \end{align}
 \]</span></p>
-<p>That is, ignoring the autocorrelation of <span class="math inline">\(X(\cdot)\)</span> would lead to erroneous calculations of the variance of <span class="math inline">\(S_{X, T}\)</span> and <span class="math inline">\(\hat{\mu}_X\)</span>.</p>
+<p>In short, ignoring the autocorrelation of <span class="math inline">\(X(\cdot)\)</span> would lead to erroneous calculations of the variance of <span class="math inline">\(S_{X, T}\)</span> and <span class="math inline">\(\hat{\mu}_X\)</span>.</p>
 </section>
 <section id="effective-sample-size-ess" class="level3">
 <h3 class="anchored" data-anchor-id="effective-sample-size-ess">Effective Sample Size (ESS)</h3>
@@ -715,73 +761,10 @@ window.Quarto = {
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
-<p>This technical note is intended as an overview of time series analysis based on the textbook cited below by Shumway and Stoffer, along with the supporting <code>R</code> package <code>astsa</code>. The reader should feel free to select the presented examples of greatest interest, skipping others to save time. Time-domain and frequency-domain methods are mentioned only in the broadest terms, leaving details for other presentations.</p>
-</section>
-<section id="resources" class="level2">
-<h2 class="anchored" data-anchor-id="resources">Resources</h2>
-<section id="books" class="level3">
-<h3 class="anchored" data-anchor-id="books">Books</h3>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">[Time Series (2e)](https://doi.org/10.1137/1.9780898719246) by David Brillinger</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">[Time Series Analysis and Its Applications: With R Examples (5e)](https://doi.org/10.1007/978-3-031-70584-7) by Robert Shumway and David Stoffer</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-</section>
-<section id="articles" class="level3">
-<h3 class="anchored" data-anchor-id="articles">Articles</h3>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">[Bartlett's test - Wikipedia](https://en.wikipedia.org/wiki/Bartlett%27s_test)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">[CRAN Task View: Time Series Analysis](https://cran.r-project.org/web/views/TimeSeries.html)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">[Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">[Ljung–Box test - Wikipedia](https://en.wikipedia.org/wiki/Ljung%E2%80%93Box_test)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">[R Tutorial | Stoffer’s GitHome](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">[Some remarks on the analysis of time-series (Bartlett, 1967)](https://doi.org/10.1093/biomet/54.1-2.25)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">[hwwntest: Tests of White Noise using Wavelets](https://cran.r-project.org/web/packages/hwwntest/index.html)</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-</section>
+<p>This technical note is intended as an overview of time series analysis based on the textbook <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025</a>)</span> cited below along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>. The reader should feel free to select the presented examples of greatest interest, skipping others to save time.</p>
+<p>In this note, time-domain and frequency-domain methods are mentioned only in the broadest terms, leaving details for other presentations.</p>
+<p>For a more comprehensive listing of relevant <code>R</code> packages see the time series task view available from <a href="https://cran.r-project.org/web/views/TimeSeries.html">CRAN</a>, the Comprehensive R Archive Network.</p>
+<p>See <a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> for a more detailed introduction to the topics presented here. And see <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a> for an introduction to <code>R</code> package <code>astsa</code>.</p>
 </section>
 <section id="glossary-of-math-symbols" class="level2">
 <h2 class="anchored" data-anchor-id="glossary-of-math-symbols">Glossary of Math Symbols</h2>
@@ -854,18 +837,35 @@ window.Quarto = {
 
 </div>
 </div>
+
 </section>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-hwwntest" class="csl-entry" role="listitem">
+Savchev, Delyan, and Guy Nason. 2023. <span>“Hwwntest: Tests of White Noise Using Wavelets.”</span> <a href="https://doi.org/10.32614/CRAN.package.hwwntest">https://doi.org/10.32614/CRAN.package.hwwntest</a>.
+</div>
+<div id="ref-shumway2025" class="csl-entry" role="listitem">
+Shumway, Robert H., and David S. Stoffer. 2025. <em>Time Series Analysis and Its Applications</em>. Springer Nature Switzerland. <a href="https://doi.org/10.1007/978-3-031-70584-7">https://doi.org/10.1007/978-3-031-70584-7</a>.
+</div>
+<div id="ref-astsa" class="csl-entry" role="listitem">
+Stoffer, David. 2025. <span>“Astsa: Applied Statistical Time Series Analysis.”</span> <a href="https://doi.org/10.32614/CRAN.package.astsa">https://doi.org/10.32614/CRAN.package.astsa</a>.
+</div>
+<div id="ref-thomson1977" class="csl-entry" role="listitem">
+Thomson, David J. 1977. <span>“Spectrum Estimation Techniques for Characterization and Development of WT4 Waveguide-I.”</span> <em>Bell System Technical Journal</em> 56 (9): 1769–1815. <a href="https://doi.org/10.1002/j.1538-7305.1977.tb00591.x">https://doi.org/10.1002/j.1538-7305.1977.tb00591.x</a>.
+</div>
+<div id="ref-MASS" class="csl-entry" role="listitem">
+Venables, W. N., and B. D. Ripley. 2002. <span>“Modern Applied Statistics with s.”</span> <a href="https://www.stats.ox.ac.uk/pub/MASS4/">https://www.stats.ox.ac.uk/pub/MASS4/</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>In rare cases time series methods are applied to data indexed not by time but rather by some other measure, e.g.&nbsp;distance. See for example, D.J. Thompson (1977) “Spectrum Estimation Techniques for Characterization and Development of WT4 Waveguide” <a href="https://doi.org/10.1002/j.1538-7305.1977.tb00591.x" class="uri">https://doi.org/10.1002/j.1538-7305.1977.tb00591.x</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>In rare cases time series methods are applied to data indexed not by time but rather by some other measure, e.g.&nbsp;distance. See for example <span class="citation" data-cites="thomson1977">(<a href="#ref-thomson1977" role="doc-biblioref">Thomson 1977</a>)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations <span class="citation" data-cites="MASS">(<a href="#ref-MASS" role="doc-biblioref">Venables and Ripley 2002</a>)</span> includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio, current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of <em>strict stationarity</em>. This means that for any finite set of times <span class="math inline">\((t_1, \ldots, t_K)\)</span> and any time-shift <span class="math inline">\(s\)</span>, the joint probability distribution of <span class="math inline">\((X_\bullet (t_1), \ldots, X_\bullet (t_K))\)</span> is identical to that of <span class="math inline">\((X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))\)</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>The example illustrates a simple moving average. More generally a weighted moving average may have non-negative coefficients that sum to unity.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters a sequence of uncorrelated error terms.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>

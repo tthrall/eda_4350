@@ -1,0 +1,8 @@
+title	link
+Bartlett's test - Wikipedia	https://en.wikipedia.org/wiki/Bartlett%27s_test
+CRAN Task View: Time Series Analysis	https://cran.r-project.org/web/views/TimeSeries.html
+Fun with asta	https://github.com/nickpoison/astsa/tree/master/fun_with_astsa
+Ljung–Box test - Wikipedia	https://en.wikipedia.org/wiki/Ljung%E2%80%93Box_test
+R Tutorial | Stoffer’s GitHome	https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer
+Some remarks on the analysis of time-series (Bartlett, 1967)	https://doi.org/10.1093/biomet/54.1-2.25
+hwwntest: Tests of White Noise using Wavelets	https://cran.r-project.org/web/packages/hwwntest/index.html

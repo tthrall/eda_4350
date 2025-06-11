@@ -6,12 +6,13 @@ author:
 date: last-modified
 date-format: HH:mm ddd D-MMM-YYYY
 toc: true
-toc-depth: 2
+toc-depth: 3
 format:
   html:
     code: true
 abstract:
   "Introduce data examples in which successive observations are statistically dependent.  Discuss corresponding data analysis methods.  <br><br>"
+bibliography: references.bib
 ---
 
 ```{r}
@@ -91,11 +92,13 @@ if (save_to_file) {
 
 This technical note gives examples of data in which successive observations are statistically dependent and are typically indexed by time.[^1] Time series data sampled at regular intervals (daily stock prices, for example) are the most common case, followed by point process data representing the occurrence of events (earthquakes, for example) at random times.
 
-[^1]: In rare cases time series methods are applied to data indexed not by time but rather by some other measure, e.g. distance. See for example, D.J. Thompson (1977) "Spectrum Estimation Techniques for Characterization and Development of WT4 Waveguide" <https://doi.org/10.1002/j.1538-7305.1977.tb00591.x>
+[^1]: In rare cases time series methods are applied to data indexed not by time but rather by some other measure, e.g. distance. See for example [@thomson1977].
+
+Nearly all of the time series examples presented here are from the selected textbook [@shumway2025] supported by `R` package `astsa` [@astsa].
 
 Statistical models of such data include parametric models expressed in the time domain and non-parametric models expressed in the Fourier frequency domain (number of cycles per unit of time).
 
-This note also comments on the detection of statistical dependence among successive observations and the modification of statistical tests and estimators for such data.
+This note also comments on the *detection* of statistical dependence among successive observations and the modification of statistical tests and estimators for such data.
 
 ## Natural Science Examples
 
@@ -124,9 +127,9 @@ As described in [Recalibration of the Sunspot-Number: Status Report \| Solar Phy
 
 The figure below represents eruptions of the "Old Faithful" geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.[^2] The `delay` variable denotes the number of minutes since the previous eruption and the `duration` variable denotes the duration of the eruption, again in minutes.
 
-[^2]: There are two prominent `R` packages representing the Old Faithful measurements during August, 1985. The `MASS::geyser` data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The `datasets::faithful` data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.
+[^2]: There are two prominent `R` packages representing the Old Faithful measurements during August, 1985. The `MASS::geyser` data set of 299 observations [@MASS] includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The `datasets::faithful` data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.
 
-The data represent a *point process*, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faitful geyser. In addition to the time of the eruption we have the duration of the eruption.
+The data represent a *point process*, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faithful geyser. In addition to the time of the eruption we have the duration of the eruption.
 
 ```{r}
 #| label: faithful_tbl
@@ -266,7 +269,7 @@ The upward trend in the two temperature series during the latter part of the 20t
 
 #### Description
 
-The next figure shows the Southern Oscillation Index (SOI) and associated Recruitment (an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.
+The next figure shows the Southern Oscillation Index (SOI, `astsa::soi`) and associated Recruitment (`astsa::rec`), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.
 
 The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.
 
@@ -290,7 +293,7 @@ The processes that drive the periodicity of the two time series are of scientifi
 
 #### Description
 
-One of the classic studies of predator–prey interactions is based on the record of lynx and snowshoe hare pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.
+One of the classic studies of predator–prey interactions is based on the record of lynx (`astsa::Lynx`) and snowshoe hare (`astsa::Hare`) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.
 
 These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in the next figure are thousands of pelts per year.
 
@@ -319,7 +322,7 @@ The scientific understanding of predator-prey interactions, starting with the Lo
 
 #### Description
 
-The figures below are Johnson & Johnson quarterly earnings per share in US dollars from 1960 through 1980. The second figure shows the same data on a $\log_e$ scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.
+The figures below are Johnson & Johnson quarterly earnings per share in US dollars from 1960 through 1980 (`astsa::jj`). The second figure shows the same data on a $\log_e$ scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.
 
 ```{r}
 #| label: jj__plot
@@ -345,9 +348,9 @@ Developing a statistical model of the time series can be regarded as a first ste
 
 #### Description
 
-The next figure shows the trading day closings and returns (percent change)[^4] of the Dow Jones Industrial Average (DJIA) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
+The next figure shows the trading day closings and returns (percent change)[^4] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
 
-[^4]: The return is here calculated as $log_e$ of the ratio, current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
+[^4]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
 
 ```{r}
 #| label: djia__plot
@@ -373,7 +376,7 @@ The returns of the DJIA are typical of other assets. The mean function of the se
 
 #### Description
 
-The next figure shows fMRI data from various locations in the cortex, thalamus, and cerebellum; n = 128 points, one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).
+The next figure shows fMRI data (`astsa::fmri1`) from various locations in the cortex, thalamus, and cerebellum; n = 128 points, with one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).
 
 The data are from a 1997 study that used fMRI to examine pain perception in humans. Here we focus on five subjects whose hands were periodically brushed. The stimulus (represented as a square wave in the figure) was applied for 32 seconds and then stopped for 32 seconds so that the signal period is 64 seconds. The sampling rate was one observation every 2 seconds for 256 seconds (n = 128).
 
@@ -446,7 +449,7 @@ Computer recognition of speech is an active area of research and development. In
 
 #### Description
 
-The next pair of figures show recordings (40 per second) at a Scandinavian seismic station of an earthquake and of a mining explosion.
+The next pair of figures show recordings (40 per second) at a Scandinavian seismic station of an earthquake (`astsa::EQ5`) and of a mining explosion (`astsa::EXP6`).
 
 ```{r}
 #| label: eqexp__plot
@@ -491,7 +494,7 @@ $$
 \end{align}
 $$
 
-In our example the number $d$ of data columns is two (`hare`, `lynx`), the unit of time is one year,, and the sampling frequency is once per year. The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period.
+In our example the number $d$ of data columns is two (`hare`, `lynx`), the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period.
 
 $$
 \begin{align}
@@ -605,7 +608,7 @@ astsa::tsplot(
 
 In this case the 5-year moving average operation can be expressed as follows.[^6]
 
-[^6]: The example illustrates a simple moving average. More generally a weighted moving average may have non-negative coefficients that sum to unity.
+[^6]: The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term "moving average" is also used more broadly to mean a component of a time series model that filters a sequence of uncorrelated error terms.
 
 $$
 \begin{align}
@@ -670,7 +673,7 @@ In signal-processing applications a linear, time-invariant filter $a_{\bullet, \
 
 ## Data Analysis Objectives & Methods
 
-There are a number of ways to categorize types of data analysis. One important distinction is between confirmatory and exploratory data analysis. For present purposes we consider the complementary aims of decision support and scientific understanding.
+There are a number of ways to categorize types of data analysis. For example, the distinction between confirmatory and exploratory data analysis has been widely discussed over several decades. But for present purposes we consider the complementary aims of decision support and scientific understanding.
 
 ### Decision Support
 
@@ -730,7 +733,7 @@ In time series analysis, an initial review of the data might include a test for 
 
 There are several statistical tests for autocorrelation. One of the most widely used is the Ljung-Box test available in `R` as the function `stats::Box.test()` in which one specifies the maximal lag to be checked.
 
-In the frequency domain, the variation exhibited in the data is decomposed into the variation from groups of sinusoidal functions, each group corresponding to a frequency band. From this perspective the absence of autocorrelation corresponds to each band contributing the same proportion of variance, a phenomenon called "white noise". A test for such white noise is available in `R` as the function `hwwntest::bartlettB()`.
+In the frequency domain, the variation exhibited in the data is decomposed into the variation from groups of sinusoidal functions, each group corresponding to a frequency band. From this perspective the absence of autocorrelation corresponds to each band contributing the same proportion of variance, a phenomenon called "white noise". A test for such white noise is available in `R` as the function `hwwntest::bartlettB()`[@hwwntest].
 
 ### Autocorrelation and Estimator Variance
 
@@ -834,7 +837,7 @@ $$
 \end{align}
 $$
 
-That is, ignoring the autocorrelation of $X(\cdot)$ would lead to erroneous calculations of the variance of $S_{X, T}$ and $\hat{\mu}_X$.
+In short, ignoring the autocorrelation of $X(\cdot)$ would lead to erroneous calculations of the variance of $S_{X, T}$ and $\hat{\mu}_X$.
 
 ### Effective Sample Size (ESS)
 
@@ -877,11 +880,13 @@ The point here is that care must be taken when calculating the variance of estim
 
 ## Closing Remarks
 
-This technical note is intended as an overview of time series analysis based on the textbook cited below by Shumway and Stoffer, along with the supporting `R` package `astsa`. The reader should feel free to select the presented examples of greatest interest, skipping others to save time. Time-domain and frequency-domain methods are mentioned only in the broadest terms, leaving details for other presentations.
+This technical note is intended as an overview of time series analysis based on the textbook [@shumway2025] cited below along with the supporting `R` package `astsa` [@astsa]. The reader should feel free to select the presented examples of greatest interest, skipping others to save time.
 
-## Resources
+In this note, time-domain and frequency-domain methods are mentioned only in the broadest terms, leaving details for other presentations.
 
-### Books
+For a more comprehensive listing of relevant `R` packages see the time series task view available from [CRAN](https://cran.r-project.org/web/views/TimeSeries.html), the Comprehensive R Archive Network.
+
+See [Regression and Time Series Primer](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer) for a more detailed introduction to the topics presented here.  And see [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa) for an introduction to `R` package `astsa`.
 
 ```{r}
 #| label: s5a_books_tbl
@@ -909,20 +914,16 @@ s5a_books_tbl <- tibble::tibble(
 # save file only when updated
 save_to_file <- FALSE
 if (save_to_file) {
-  # RDS format
-  s5a_books_tbl |> readr::write_rds(here::here(
-    "data", "retain", "s5a_books_tbl.rds"
-  ))
-
   # TSV format
   s5a_books_tbl |> readr::write_tsv(here::here(
-    "data", "retain", "s5a_books_tbl.txt"
+    "markdown", "s5a_ts_intro", "s5a_books_tbl.txt"
   ))
 }
 ```
 
 ```{r}
 #| label: s5a_books_tbl__kable
+#| eval: false
 
 s5a_books_tbl |> 
   list_links(a_idx = 3L) |>
@@ -933,7 +934,6 @@ s5a_books_tbl |>
   )
 ```
 
-### Articles
 
 ```{r}
 #| label: s5a_articles_tbl
@@ -970,20 +970,16 @@ s5a_articles_tbl <- tibble::tribble(
 # save file only when updated
 save_to_file <- FALSE
 if (save_to_file) {
-  # RDS format
-  s5a_articles_tbl |> readr::write_rds(here::here(
-    "data", "retain", "s5a_articles_tbl.rds"
-  ))
-
   # TSV format
   s5a_articles_tbl |> readr::write_tsv(here::here(
-    "data", "retain", "s5a_articles_tbl.txt"
+    "markdown", "s5a_ts_intro", "s5a_articles_tbl.txt"
   ))
 }
 ```
 
 ```{r}
 #| label: s5a_articles_tbl__kable
+#| eval: false
 
 s5a_articles_tbl |>
   list_links() |>
