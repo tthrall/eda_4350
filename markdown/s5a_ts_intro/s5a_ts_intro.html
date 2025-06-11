@@ -70,7 +70,24 @@ window.Quarto = {
 <body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#natural-science-examples" id="toc-natural-science-examples" class="nav-link" data-scroll-target="#natural-science-examples">Natural Science Examples</a></li>
+  <li><a href="#business-and-economic-examples" id="toc-business-and-economic-examples" class="nav-link" data-scroll-target="#business-and-economic-examples">Business and Economic Examples</a></li>
+  <li><a href="#signal-processing-examples" id="toc-signal-processing-examples" class="nav-link" data-scroll-target="#signal-processing-examples">Signal Processing Examples</a></li>
+  <li><a href="#mathematical-framework" id="toc-mathematical-framework" class="nav-link" data-scroll-target="#mathematical-framework">Mathematical Framework</a></li>
+  <li><a href="#operations-on-time-series" id="toc-operations-on-time-series" class="nav-link" data-scroll-target="#operations-on-time-series">Operations on Time Series</a></li>
+  <li><a href="#data-analysis-objectives-methods" id="toc-data-analysis-objectives-methods" class="nav-link" data-scroll-target="#data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</a></li>
+  <li><a href="#detecting-serial-correlation" id="toc-detecting-serial-correlation" class="nav-link" data-scroll-target="#detecting-serial-correlation">Detecting Serial Correlation</a></li>
+  <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
+  <li><a href="#glossary-of-math-symbols" id="toc-glossary-of-math-symbols" class="nav-link" data-scroll-target="#glossary-of-math-symbols">Glossary of Math Symbols</a></li>
+  </ul>
+</nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -94,7 +111,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">14:58 Wed 11-Jun-2025</p>
+      <p class="date">16:16 Wed 11-Jun-2025</p>
     </div>
   </div>
   
@@ -111,23 +128,7 @@ window.Quarto = {
 
 </header>
 
-<nav id="TOC" role="doc-toc">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#introduction" id="toc-introduction">Introduction</a></li>
-  <li><a href="#natural-science-examples" id="toc-natural-science-examples">Natural Science Examples</a></li>
-  <li><a href="#business-and-economic-examples" id="toc-business-and-economic-examples">Business and Economic Examples</a></li>
-  <li><a href="#signal-processing-examples" id="toc-signal-processing-examples">Signal Processing Examples</a></li>
-  <li><a href="#mathematical-framework" id="toc-mathematical-framework">Mathematical Framework</a></li>
-  <li><a href="#operations-on-time-series" id="toc-operations-on-time-series">Operations on Time Series</a></li>
-  <li><a href="#data-analysis-objectives-methods" id="toc-data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</a></li>
-  <li><a href="#detecting-serial-correlation" id="toc-detecting-serial-correlation">Detecting Serial Correlation</a></li>
-  <li><a href="#closing-remarks" id="toc-closing-remarks">Closing Remarks</a></li>
-  <li><a href="#resources" id="toc-resources">Resources</a></li>
-  <li><a href="#glossary-of-math-symbols" id="toc-glossary-of-math-symbols">Glossary of Math Symbols</a></li>
-  </ul>
-</nav>
+
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>This technical note gives examples of data in which successive observations are statistically dependent and are typically indexed by time.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Time series data sampled at regular intervals (daily stock prices, for example) are the most common case, followed by point process data representing the occurrence of events (earthquakes, for example) at random times.</p>
@@ -273,7 +274,7 @@ window.Quarto = {
 </section>
 <section id="context-questions-and-objectives-3" class="level4">
 <h4 class="anchored" data-anchor-id="context-questions-and-objectives-3">Context: Questions and Objectives</h4>
-<p>The processes that drive the periodicity of the two time series is of scientific interest. Frequency decomposition of the time series may help to identify those underlying processes.</p>
+<p>The processes that drive the periodicity of the two time series are of scientific interest. Frequency decomposition of the time series may help to identify those underlying processes.</p>
 </section>
 </section>
 <section id="predatorprey-interactions" class="level3">
@@ -281,7 +282,7 @@ window.Quarto = {
 <section id="description-4" class="level4">
 <h4 class="anchored" data-anchor-id="description-4">Description</h4>
 <p>One of the classic studies of predator–prey interactions is based on the record of lynx and snowshoe hare pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
-<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in the next figure are thousands of pelts per year, for the years.</p>
+<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in the next figure are thousands of pelts per year.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>

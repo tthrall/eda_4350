@@ -7,22 +7,17 @@ date: last-modified
 date-format: HH:mm ddd D-MMM-YYYY
 toc: true
 toc-depth: 2
-toc-location: body
-output:
-  html_document:
-    df_print: paged
-    mathjax: default
-  word_document:
-    toc: true
-    df_print: tibble
-  pdf_document:
-    toc: true
-    df_print: tibble
+format:
+  html:
+    code: true
 abstract:
   "Introduce data examples in which successive observations are statistically dependent.  Discuss corresponding data analysis methods.  <br><br>"
 ---
 
-```{r setup, include=FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
   echo    = FALSE,
   error   = FALSE,
@@ -31,7 +26,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r cran_libraries}
+```{r}
+#| label: cran_libraries
+
 library(assertthat)
 library(astsa)
 library(here)
@@ -44,11 +41,15 @@ library(tsibbledata)
 library(xts)
 ```
 
-```{r local_libraries}
+```{r}
+#| label: local_libraries
+
 # library(ugrid)
 ```
 
-```{r local_source}
+```{r}
+#| label: local_source
+
 # gen_ds_tbl
 # compile a tibble that identifies data sets
 source(here("code", "gen_ds_tbl.R"))
@@ -58,12 +59,16 @@ source(here("code", "gen_ds_tbl.R"))
 source(here("code", "get_ref_materials.R"))
 ```
 
-```{r plotting_params}
+```{r}
+#| label: plotting_params
+
 # grid-points in (-m pi, m pi), m = m_periods
 # x_vec <- u_vec * (m_periods * pi)
 ```
 
-```{r astsa_data_set_tbl}
+```{r}
+#| label: astsa_data_set_tbl
+
 astsa_data_set_tbl <- get_all_ds_per_pkg(pkgs = "astsa")
 
 # write to file only as needed
@@ -100,7 +105,9 @@ This note also comments on the detection of statistical dependence among success
 
 The figure below shows `sunspot.month`, the number of sunspots per month in `R` package `datasets`. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.
 
-```{r g_sunspots}
+```{r}
+#| label: g_sunspots
+
 g_sunspots <- astsa::tsplot(
   x = datasets::sunspot.month, 
   ylab = "sunspot count", 
@@ -121,7 +128,9 @@ The figure below represents eruptions of the "Old Faithful" geyser in Yellowston
 
 The data represent a *point process*, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faitful geyser. In addition to the time of the eruption we have the duration of the eruption.
 
-```{r faithful_tbl}
+```{r}
+#| label: faithful_tbl
+
 faithful_tbl <- datasets::faithful |> 
   tibble::as_tibble() |> 
   dplyr::rename(
@@ -131,7 +140,9 @@ faithful_tbl <- datasets::faithful |>
   dplyr::select(delay, duration)
 ```
 
-```{r g_faithful_tbl}
+```{r}
+#| label: g_faithful_tbl
+
 g_faithful_tbl <- faithful_tbl |> 
   ggplot(mapping = aes(
     x = delay, y = duration
@@ -149,7 +160,9 @@ In this example, we have the goal of scientific understanding of a natural pheno
 
 ### Climate Change
 
-```{r climate_ds_tbl}
+```{r}
+#| label: climate_ds_tbl
+
 # names of relevant data sets from package astsa::
 climate_ds_names <- c(
   "cardox", "ENSO", "gtemp.month", "gtemp_both", 
@@ -162,7 +175,9 @@ climate_ds_tbl <- select_ds_per_pkg(
 
 Here are some of the data sets related to climate change from the `R` package `astsa`.
 
-```{r climate_ds_tbl__kable}
+```{r}
+#| label: climate_ds_tbl__kable
+
 climate_ds_tbl |> knitr::kable(
   caption = "Climate: selected data sets"
 )
@@ -174,7 +189,9 @@ The figure below shows the time series `gtemp_land` and `gtemp_ocean`, annual te
 
 [^3]: The data source is [NOAA](https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/), who use the term "anomaly" rather than "deviation". Further clarifications are pending.
 
-```{r tmp_lob}
+```{r}
+#| label: tmp_lob
+
 # join surface temperatures into multivariate ts
 tmp_lo <- cbind(
   astsa::gtemp_land, 
@@ -186,7 +203,9 @@ tmp_lob <-
 dimnames(tmp_lob) [[2]] <- c("land", "ocean", "both")
 ```
 
-```{r ref_lob_tbl}
+```{r}
+#| label: ref_lob_tbl
+
 # tmp_lob subset: 1991-2020 reference period
 ref_lob_tbl <- tmp_lob |> 
   tibble::as_tibble() |> 
@@ -195,7 +214,9 @@ ref_lob_tbl <- tmp_lob |>
   dplyr::filter(yr >= 1991, yr <= 2020)
 ```
 
-```{r ref_lob_smy}
+```{r}
+#| label: ref_lob_smy
+
 # check average deviation for reference period 1991-2020
 land_smy_vec  <- ref_lob_tbl$ land  |> summary()
 ocean_smy_vec <- ref_lob_tbl$ ocean |> summary()
@@ -220,7 +241,9 @@ ref_lob_smy <- tibble::tibble(
 # 6 max   2.500000 0.8300000 1.3500000
 ```
 
-```{r gtemp__plot}
+```{r}
+#| label: gtemp__plot
+
 g_temp_lo <- astsa::tsplot(
   cbind(gtemp_land, gtemp_ocean), 
   spaghetti=TRUE, 
@@ -247,7 +270,9 @@ The next figure shows the Southern Oscillation Index (SOI) and associated Recrui
 
 The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.
 
-```{r soi__plot}
+```{r}
+#| label: soi__plot
+
 par(mfrow=2:1)
 g_soi <- astsa::tsplot(soi, ylab="", main="Southern Oscillation Index", col=4)
 
@@ -259,7 +284,7 @@ g_rec <- astsa::tsplot(rec, ylab="", main="Recruitment", col=4)
 
 #### Context: Questions and Objectives
 
-The processes that drive the periodicity of the two time series is of scientific interest. Frequency decomposition of the time series may help to identify those underlying processes.
+The processes that drive the periodicity of the two time series are of scientific interest. Frequency decomposition of the time series may help to identify those underlying processes.
 
 ### Predator–Prey Interactions
 
@@ -267,9 +292,11 @@ The processes that drive the periodicity of the two time series is of scientific
 
 One of the classic studies of predator–prey interactions is based on the record of lynx and snowshoe hare pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.
 
-These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in the next figure are thousands of pelts per year, for the years.
+These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in the next figure are thousands of pelts per year.
 
-```{r pred_prey__plot}
+```{r}
+#| label: pred_prey__plot
+
 g_hare_lynx <- tsplot(
   cbind(Hare, Lynx), 
   col=c(2,4), 
@@ -294,7 +321,9 @@ The scientific understanding of predator-prey interactions, starting with the Lo
 
 The figures below are Johnson & Johnson quarterly earnings per share in US dollars from 1960 through 1980. The second figure shows the same data on a $\log_e$ scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.
 
-```{r jj__plot}
+```{r}
+#| label: jj__plot
+
 par(mfrow=2:1)
 
 g_jj <- astsa::tsplot(
@@ -320,7 +349,9 @@ The next figure shows the trading day closings and returns (percent change)[^4] 
 
 [^4]: The return is here calculated as $log_e$ of the ratio, current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
 
-```{r djia__plot}
+```{r}
+#| label: djia__plot
+
 # log-ratio of successive closing values
 djia_return <- 
   astsa::djia $Close |> log() |> diff()
@@ -348,7 +379,9 @@ The data are from a 1997 study that used fMRI to examine pain perception in huma
 
 The data are consecutive measures of blood oxygenation-level dependent (BOLD) signal intensity, which measures areas of activation in the brain. The series shown are from two locations each in the cortex, thalamus, and cerebellum and the values are averaged over subjects (these were evoked responses and all subjects were in phase).
 
-```{r fmri__plot}
+```{r}
+#| label: fmri__plot
+
 par(mfrow=c(3,1))
 
 # fMRI response data
@@ -396,7 +429,9 @@ Note that the periodicities appear strongly in the motor cortex series and less 
 
 The figure below shows the `speech` data set from the `astsa` package, a recording of the utterance *aaahhh*. Note the repetitive nature of the signal and the rather regular periodicities. Also note the repetition of small wavelets. The separation between wavelets is known as the *pitch period* and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis.
 
-```{r speech__plot}
+```{r}
+#| label: speech__plot
+
 g_speech <- astsa::tsplot(speech, col=4)
 arrows(658, 3850, 766, 3850, 
        code=3, angle=90, length=.05, col=6)
@@ -413,7 +448,9 @@ Computer recognition of speech is an active area of research and development. In
 
 The next pair of figures show recordings (40 per second) at a Scandinavian seismic station of an earthquake and of a mining explosion.
 
-```{r eqexp__plot}
+```{r}
+#| label: eqexp__plot
+
 g_eqexp <- astsa::tsplot(
   cbind(EQ5,EXP6), 
   ylab=c("Earthquake", "Explosion"), 
@@ -429,7 +466,9 @@ The general problem of interest is to distinguish between waveforms generated by
 
 Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the predator-prey data previously shown.
 
-```{r hl_pelts}
+```{r}
+#| label: hl_pelts
+
 hl_pelts <- tsibbledata::pelt |> 
   dplyr::rename(yr = Year, hare = Hare, lynx = Lynx) |> 
   dplyr::mutate(across(
@@ -438,7 +477,9 @@ hl_pelts <- tsibbledata::pelt |>
   ))
 ```
 
-```{r hl_pelts__print}
+```{r}
+#| label: hl_pelts__print
+
 hl_pelts |> as_tibble() |> print(n = 5)
 ```
 
@@ -528,19 +569,25 @@ In addition to the data transformations used on independent observations, we oft
 
 As an example, the figure below shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.
 
-```{r gt_lo}
+```{r}
+#| label: gt_lo
+
 gt_lo <- cbind(
   astsa::gtemp_land, astsa::gtemp_ocean)
 names(gt_lo) <- c("land", "ocean")
 ```
 
-```{r gt_lo_ma5}
+```{r}
+#| label: gt_lo_ma5
+
 gt_lo_ma5 <- gt_lo |> 
   stats::filter(filter = rep(1/5, 5))
 names(gt_lo_ma5) <- c("land", "ocean")
 ```
 
-```{r gt_lo_ma5__tsplot}
+```{r}
+#| label: gt_lo_ma5__tsplot
+
 astsa::tsplot(
   gt_lo_ma5, 
   ncolm = 2, 
@@ -641,7 +688,9 @@ Of course societal decisions often require both action-oriented recommendations 
 
 To illustrate, the pair of figures below show monthly $CO_2$ levels (ppm) taken at the Mauna Loa, Hawaii observatory (top) and a differencing of the data to remove trends (bottom).
 
-```{r cardox_records}
+```{r}
+#| label: cardox_records
+
 par(mfrow=2:1)
 
 tsplot(
@@ -657,7 +706,9 @@ tsplot(
 
 The next figure shows a 5-year forecast based on a time-domain model (a seasonal auto-regressive, moving-average model).
 
-```{r cardox_forecast}
+```{r}
+#| label: cardox_forecast
+
 cardox_forecast <- 
   sarima.for(
     cardox, 60, 1,1,1, 0,1,1,12, 
@@ -832,8 +883,10 @@ This technical note is intended as an overview of time series analysis based on 
 
 ### Books
 
-```{r s5a1_books_tbl}
-s5a1_books_tbl <- tibble::tibble(
+```{r}
+#| label: s5a_books_tbl
+
+s5a_books_tbl <- tibble::tibble(
   title = c(
     "Time Series (2e)",
     "Time Series Analysis and Its Applications: With R Examples (5e)"
@@ -850,24 +903,28 @@ s5a1_books_tbl <- tibble::tibble(
   dplyr::arrange(title)
 ```
 
-```{r s5a1_books_tbl__save}
+```{r}
+#| label: s5a_books_tbl__save
+
 # save file only when updated
 save_to_file <- FALSE
 if (save_to_file) {
   # RDS format
-  s5a1_books_tbl |> readr::write_rds(here::here(
-    "data", "retain", "s5a1_books_tbl.rds"
+  s5a_books_tbl |> readr::write_rds(here::here(
+    "data", "retain", "s5a_books_tbl.rds"
   ))
 
   # TSV format
-  s5a1_books_tbl |> readr::write_tsv(here::here(
-    "data", "retain", "s5a1_books_tbl.txt"
+  s5a_books_tbl |> readr::write_tsv(here::here(
+    "data", "retain", "s5a_books_tbl.txt"
   ))
 }
 ```
 
-```{r s5a1_books_tbl__kable}
-s5a1_books_tbl |> 
+```{r}
+#| label: s5a_books_tbl__kable
+
+s5a_books_tbl |> 
   list_links(a_idx = 3L) |>
   knitr::kable(
     format    = "html",
@@ -878,8 +935,10 @@ s5a1_books_tbl |>
 
 ### Articles
 
-```{r s5a1_articles_tbl}
-s5a1_articles_tbl <- tibble::tribble(
+```{r}
+#| label: s5a_articles_tbl
+
+s5a_articles_tbl <- tibble::tribble(
   ~title, ~link,
   "Bartlett's test - Wikipedia", 
   "https://en.wikipedia.org/wiki/Bartlett%27s_test",
@@ -905,24 +964,28 @@ s5a1_articles_tbl <- tibble::tribble(
   dplyr::arrange(title)
 ```
 
-```{r s5a1_articles_tbl__save}
+```{r}
+#| label: s5a_articles_tbl__save
+
 # save file only when updated
 save_to_file <- FALSE
 if (save_to_file) {
   # RDS format
-  s5a1_articles_tbl |> readr::write_rds(here::here(
-    "data", "retain", "s5a1_articles_tbl.rds"
+  s5a_articles_tbl |> readr::write_rds(here::here(
+    "data", "retain", "s5a_articles_tbl.rds"
   ))
 
   # TSV format
-  s5a1_articles_tbl |> readr::write_tsv(here::here(
-    "data", "retain", "s5a1_articles_tbl.txt"
+  s5a_articles_tbl |> readr::write_tsv(here::here(
+    "data", "retain", "s5a_articles_tbl.txt"
   ))
 }
 ```
 
-```{r s5a1_articles_tbl__kable}
-s5a1_articles_tbl |>
+```{r}
+#| label: s5a_articles_tbl__kable
+
+s5a_articles_tbl |>
   list_links() |>
   knitr::kable(
     format    = "html",
@@ -933,8 +996,10 @@ s5a1_articles_tbl |>
 
 ## Glossary of Math Symbols
 
-```{r s5a1_symbol_tbl}
-s5a1_symbol_tbl <- tibble::tribble(
+```{r}
+#| label: s5a_symbol_tbl
+
+s5a_symbol_tbl <- tibble::tribble(
   ~tag, ~symbol, ~dscr, 
   
   "a_u", 
@@ -991,24 +1056,28 @@ s5a1_symbol_tbl <- tibble::tribble(
 )
 ```
 
-```{r s5a1_symbol_tbl__save}
+```{r}
+#| label: s5a_symbol_tbl__save
+
 # save file only when updated
 save_to_file <- FALSE
 if (save_to_file) {
   # RDS format
-  s5a1_symbol_tbl |> readr::write_rds(here::here(
-    "data", "retain", "s5a1_symbol_tbl.rds"
+  s5a_symbol_tbl |> readr::write_rds(here::here(
+    "data", "retain", "s5a_symbol_tbl.rds"
   ))
 
   # TSV format
-  s5a1_symbol_tbl |> readr::write_tsv(here::here(
-    "data", "retain", "s5a1_symbol_tbl.txt"
+  s5a_symbol_tbl |> readr::write_tsv(here::here(
+    "data", "retain", "s5a_symbol_tbl.txt"
   ))
 }
 ```
 
-```{r s5a1_symbol_tbl__kable}
-s5a1_symbol_tbl |>
+```{r}
+#| label: s5a_symbol_tbl__kable
+
+s5a_symbol_tbl |>
   dplyr::select(symbol, dscr) |>
   knitr::kable(
     format = "html",
