@@ -5,11 +5,11 @@ author:
   - name: "Send comments to: Tony T (tthrall)"
 date: last-modified
 date-format: HH:mm ddd D-MMM-YYYY
+toc: true
+toc-depth: 2
+toc-location: body
 output:
   html_document:
-    toc: true
-    toc-depth: 2
-    toc-location: body
     df_print: paged
     mathjax: default
   word_document:
