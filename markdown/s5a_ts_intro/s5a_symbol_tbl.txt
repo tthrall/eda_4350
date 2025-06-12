@@ -1,0 +1,14 @@
+tag	symbol	dscr
+a_u	$a_{\bullet, \bullet} (u)$	matrix of filter coefficients at time-shift $u$
+B	$\mathcal{B}$	back-shift operator
+D	$\mathcal{D}$	difference operator, $\mathcal{I} - \mathcal{B}$
+ACovF	$\gamma_{\bullet, \bullet} (u)$	auto-covariance matrix at time-shift $u$
+I	$\mathcal{I}$	identity operator
+m_vec	$m_\bullet (t)$	$E \{ X_\bullet (t) \}$, expected value of $X_\bullet (t)$
+T	$T$	number of time series observations
+mu_X	$\mu_X$	the expected value of random variable $X (t_0)$
+N_d	$N_d$	number of independent draws (effective sample size)
+S_X_T	$S_{X, T}$	the sample sum of T observations of $X (t)$
+sig2_X	$\sigma_X^2$	the variance of random variable $X (t_0)$
+t_0	$t_0$	initial time index of a time series data set
+X_vec	$X_\bullet (t)$	$(X_1 (t), \ldots, X_d (t))$, a multivariate random process

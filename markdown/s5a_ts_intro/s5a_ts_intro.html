@@ -131,6 +131,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#glossary-of-math-symbols" id="toc-glossary-of-math-symbols" class="nav-link" data-scroll-target="#glossary-of-math-symbols">Glossary of Math Symbols</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
 </div>
@@ -156,7 +157,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">21:39 Wed 11-Jun-2025</p>
+      <p class="date">06:50 Thu 12-Jun-2025</p>
     </div>
   </div>
   
@@ -768,75 +769,57 @@ window.Quarto = {
 </section>
 <section id="glossary-of-math-symbols" class="level2">
 <h2 class="anchored" data-anchor-id="glossary-of-math-symbols">Glossary of Math Symbols</h2>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Glossary of Mathematical Symbols (s)</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">s</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">$a_{\bullet, \bullet} (u)$</td>
-<td style="text-align: left;">matrix of filter coefficients at time-shift $u$</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\mathcal{B}$</td>
-<td style="text-align: left;">back-shift operator</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\mathcal{D}$</td>
-<td style="text-align: left;">difference operator, $\mathcal{I} - \mathcal{B}$</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\gamma_{\bullet, \bullet} (u)$</td>
-<td style="text-align: left;">auto-covariance matrix at time-shift $u$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\mathcal{I}$</td>
-<td style="text-align: left;">identity operator</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$m_\bullet (t)$</td>
-<td style="text-align: left;">$E \{ X_\bullet (t) \}$, expected value of $X_\bullet (t)$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$T$</td>
-<td style="text-align: left;">number of time series observations</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$\mu_X$</td>
-<td style="text-align: left;">the expected value of random variable $X (t_0)$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$N_d$</td>
-<td style="text-align: left;">number of independent draws (effective sample size)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$S_{X, T}$</td>
-<td style="text-align: left;">the sample sum of T observations of $X (t)$</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$\sigma_X^2$</td>
-<td style="text-align: left;">the variance of random variable $X (t_0)$</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">$t_0$</td>
-<td style="text-align: left;">initial time index of a time series data set</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">$X_\bullet (t)$</td>
-<td style="text-align: left;">$(X_1 (t), \ldots, X_d (t))$, a multivariate random process</td>
-</tr>
-</tbody>
-</table>
+<p>$$ <span class="math display">\[\begin{align}
 
+  {a_{\bullet, \bullet} (u)}
+    \quad &amp; \quad \text{matrix of filter coefficients at time-shift } u \\
+    
+  \mathcal{B}
+     \quad &amp; \quad \text{back-shift operator } \\
+     
+  \mathcal{D}
+     \quad &amp; \quad \text{difference operator } \mathcal{I - B} \\
+     
+  \gamma_{\bullet, \bullet} (u)
+     \quad &amp; \quad \text{auto-covariance matrix at time-shift } u \\
+     
+  \mathcal{I}
+     \quad &amp; \quad \text{identity operator } \\
+     
+  m_\bullet (t)
+     \quad &amp; \quad E \{ X_\bullet (t) \} \text{, expected value of } X_\bullet (t) \\
+     
+  \mu_X
+     \quad &amp; \quad E\{ X (t_0) \} \text{, expected value of } X (t_0) \\
+     
+  \hat{\mu} _X
+     \quad &amp; \quad \text{sample mean, } S_{X, T} / T \\
+     
+  N_d
+     \quad &amp; \quad \text{number of independent draws (effective sample size) } \\
+     
+  \rho_{\bullet, \bullet} (u)
+     \quad &amp; \quad \text{auto-correlation matrix at time-shift } u \\
+     
+  S_{X, T}
+     \quad &amp; \quad \text{the sample sum of T observations of } X (\cdot) \\
+     
+  \sigma_X^2
+     \quad &amp; \quad Var \{ X (t_0) \} \text{, variance of } X (t_0) \\
+     
+  T
+     \quad &amp; \quad \text{number of time series observations } \\
+     
+  t_0
+     \quad &amp; \quad \text{initial time index of time series observations } \\
+     
+  X_\bullet (t)
+     \quad &amp; \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process }
+     
+\end{align}\]</span> $$</p>
+</section>
+<section id="references" class="level2 unnumbered">
 
-</div>
-</div>
 
 </section>
 
