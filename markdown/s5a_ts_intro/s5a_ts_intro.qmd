@@ -10,6 +10,9 @@ toc-depth: 3
 format:
   html:
     code: true
+params:
+  file_id: "s5a"
+  file_prefix: "s5a_ts_intro"
 abstract:
   "Introduce data examples in which successive observations are statistically dependent.  Discuss corresponding data analysis methods.  <br><br>"
 bibliography: s5a_references.bib
@@ -71,6 +74,11 @@ source(here("code", "get_ref_materials.R"))
 #| label: astsa_data_set_tbl
 
 astsa_data_set_tbl <- get_all_ds_per_pkg(pkgs = "astsa")
+```
+
+```{r}
+#| label: astsa_data_set_tb__save
+#| eval: false
 
 # write to file only as needed
 save_to_file <- FALSE
@@ -106,10 +114,11 @@ This note also comments on the *detection* of statistical dependence among succe
 
 #### Description
 
-The figure below shows `sunspot.month`, the number of sunspots per month in `R` package `datasets`. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.
+@fig-sunspots below shows `sunspot.month`, the number of sunspots per month in `R` package `datasets`. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.
 
 ```{r}
-#| label: g_sunspots
+#| label: fig-sunspots
+#| fig-cap: "Sunspots: monthly count"
 
 g_sunspots <- astsa::tsplot(
   x = datasets::sunspot.month, 
@@ -125,7 +134,7 @@ As described in [Recalibration of the Sunspot-Number: Status Report \| Solar Phy
 
 #### Description
 
-The figure below represents eruptions of the "Old Faithful" geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.[^2] The `delay` variable denotes the number of minutes since the previous eruption and the `duration` variable denotes the duration of the eruption, again in minutes.
+@fig-faithful below represents eruptions of the "Old Faithful" geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.[^2] The `delay` variable denotes the number of minutes since the previous eruption and the `duration` variable denotes the duration of the eruption, again in minutes.
 
 [^2]: There are two prominent `R` packages representing the Old Faithful measurements during August, 1985. The `MASS::geyser` data set of 299 observations [@MASS] includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The `datasets::faithful` data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.
 
@@ -144,7 +153,8 @@ faithful_tbl <- datasets::faithful |>
 ```
 
 ```{r}
-#| label: g_faithful_tbl
+#| label: fig-faithful
+#| fig-cap: "Old Faithful eruptions: delay and duration"
 
 g_faithful_tbl <- faithful_tbl |> 
   ggplot(mapping = aes(
@@ -188,7 +198,7 @@ climate_ds_tbl |> knitr::kable(
 
 #### Description
 
-The figure below shows the time series `gtemp_land` and `gtemp_ocean`, annual temperature deviations (in ◦C) from averages for the period 1991-2020.[^3] The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.
+@fig-gtemp-lo below shows the time series `gtemp_land` and `gtemp_ocean`, annual temperature deviations (in ◦C) from averages for the period 1991-2020.[^3] The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.
 
 [^3]: The data source is [NOAA](https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/), who use the term "anomaly" rather than "deviation". Further clarifications are pending.
 
@@ -245,7 +255,8 @@ ref_lob_smy <- tibble::tibble(
 ```
 
 ```{r}
-#| label: gtemp__plot
+#| label: fig-gtemp-lo
+#| fig-cap: "Deviations in global surface temperatures"
 
 g_temp_lo <- astsa::tsplot(
   cbind(gtemp_land, gtemp_ocean), 
@@ -269,12 +280,13 @@ The upward trend in the two temperature series during the latter part of the 20t
 
 #### Description
 
-The next figure shows the Southern Oscillation Index (SOI, `astsa::soi`) and associated Recruitment (`astsa::rec`), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.
+@fig-soi shows the Southern Oscillation Index (SOI, `astsa::soi`) and associated Recruitment (`astsa::rec`), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.
 
 The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.
 
 ```{r}
-#| label: soi__plot
+#| label: fig-soi
+#| fig-cap: "Southern Oscillation Index and fish recruitment"
 
 par(mfrow=2:1)
 g_soi <- astsa::tsplot(soi, ylab="", main="Southern Oscillation Index", col=4)
@@ -295,10 +307,11 @@ The processes that drive the periodicity of the two time series are of scientifi
 
 One of the classic studies of predator–prey interactions is based on the record of lynx (`astsa::Lynx`) and snowshoe hare (`astsa::Hare`) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.
 
-These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in the next figure are thousands of pelts per year.
+These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in @fig-pred-prey are thousands of pelts per year.
 
 ```{r}
-#| label: pred_prey__plot
+#| label: fig-pred-prey
+#| fig-cap: "Hare and lynx: purchased pelts"
 
 g_hare_lynx <- tsplot(
   cbind(Hare, Lynx), 
@@ -322,10 +335,11 @@ The scientific understanding of predator-prey interactions, starting with the Lo
 
 #### Description
 
-The figures below are Johnson & Johnson quarterly earnings per share in US dollars from 1960 through 1980 (`astsa::jj`). The second figure shows the same data on a $\log_e$ scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.
+@fig-jj below shows Johnson & Johnson quarterly earnings per share in US dollars from 1960 through 1980 (`astsa::jj`). The bottom panel shows the same data on a $\log_e$ scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.
 
 ```{r}
-#| label: jj__plot
+#| label: fig-jj
+#| fig-cap: "J&J: earnings per share at linear and log scales"
 
 par(mfrow=2:1)
 
@@ -333,8 +347,7 @@ g_jj <- astsa::tsplot(
   jj, 
   col=4, 
   ylab="USD", 
-  type="o", 
-  main="Johnson & Johnson Quarterly Earnings per Share")
+  type="o")
 
 g_jj_log <- astsa::tsplot(
   jj, col=4, ylab="USD", type="o", log="y")
@@ -348,12 +361,13 @@ Developing a statistical model of the time series can be regarded as a first ste
 
 #### Description
 
-The next figure shows the trading day closings and returns (percent change)[^4] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
+@fig-djia shows the trading day closings and returns (percent change)[^4] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
 
 [^4]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
 
 ```{r}
-#| label: djia__plot
+#| label: fig-djia
+#| fig-cap: "Dow Jones Industrial Average"
 
 # log-ratio of successive closing values
 djia_return <- 
@@ -376,14 +390,15 @@ The returns of the DJIA are typical of other assets. The mean function of the se
 
 #### Description
 
-The next figure shows fMRI data (`astsa::fmri1`) from various locations in the cortex, thalamus, and cerebellum; n = 128 points, with one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).
+@fig-fmri shows fMRI data (`astsa::fmri1`) from 2 locations in each of the cortex, thalamus, and cerebellum regions of the brain; n = 128 points, with one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).
 
 The data are from a 1997 study that used fMRI to examine pain perception in humans. Here we focus on five subjects whose hands were periodically brushed. The stimulus (represented as a square wave in the figure) was applied for 32 seconds and then stopped for 32 seconds so that the signal period is 64 seconds. The sampling rate was one observation every 2 seconds for 256 seconds (n = 128).
 
-The data are consecutive measures of blood oxygenation-level dependent (BOLD) signal intensity, which measures areas of activation in the brain. The series shown are from two locations each in the cortex, thalamus, and cerebellum and the values are averaged over subjects (these were evoked responses and all subjects were in phase).
+The data are consecutive measures of blood oxygenation-level dependent (BOLD) signal intensity, which measures areas of activation in the brain. The series shown are from two locations each in the cortex, thalamus, and cerebellum and the values are averaged over subjects. These were evoked responses and all subjects were in phase.
 
 ```{r}
-#| label: fmri__plot
+#| label: fig-fmri
+#| fig-cap: "Evoked response per brain region"
 
 par(mfrow=c(3,1))
 
@@ -430,10 +445,11 @@ Note that the periodicities appear strongly in the motor cortex series and less 
 
 #### Description
 
-The figure below shows the `speech` data set from the `astsa` package, a recording of the utterance *aaahhh*. Note the repetitive nature of the signal and the rather regular periodicities. Also note the repetition of small wavelets. The separation between wavelets is known as the *pitch period* and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis.
+@fig-speech below shows the `speech` data set from the `astsa` package, a recording of the utterance *aaahhh*. Note the repetitive nature of the signal and the rather regular periodicities. Also note the repetition of small wavelets. The separation between wavelets is known as the *pitch period* and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis.
 
 ```{r}
-#| label: speech__plot
+#| label: fig-speech
+#| fig-cap: "Utterance 'aaahhh' sampled at 10 Hz"
 
 g_speech <- astsa::tsplot(speech, col=4)
 arrows(658, 3850, 766, 3850, 
@@ -449,10 +465,11 @@ Computer recognition of speech is an active area of research and development. In
 
 #### Description
 
-The next pair of figures show recordings (40 per second) at a Scandinavian seismic station of an earthquake (`astsa::EQ5`) and of a mining explosion (`astsa::EXP6`).
+@fig-eqexp shows recordings (40 per second) at a Scandinavian seismic station of an earthquake (`astsa::EQ5`) and of a mining explosion (`astsa::EXP6`).
 
 ```{r}
-#| label: eqexp__plot
+#| label: fig-eqexp
+#| fig-cap: "Earthquake and explosion sampled at 40 Hz"
 
 g_eqexp <- astsa::tsplot(
   cbind(EQ5,EXP6), 
@@ -463,7 +480,7 @@ g_eqexp <- astsa::tsplot(
 
 #### Context: Questions and Objectives
 
-The general problem of interest is to distinguish between waveforms generated by earthquakes versus those generated by explosions.
+The general problem of interest is to distinguish between wave-forms generated by earthquakes versus those generated by explosions.
 
 ## Mathematical Framework
 
@@ -570,7 +587,7 @@ The data transformations used on independent observations are applicable to time
 
 In addition to the data transformations used on independent observations, we often want to average time series data over time.
 
-As an example, the figure below shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.
+As an example, @fig-gt-lo-ma5 shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.
 
 ```{r}
 #| label: gt_lo
@@ -589,7 +606,8 @@ names(gt_lo_ma5) <- c("land", "ocean")
 ```
 
 ```{r}
-#| label: gt_lo_ma5__tsplot
+#| label: fig-gt-lo-ma5
+#| fig-cap: "Global temperatures: 5-year moving average"
 
 astsa::tsplot(
   gt_lo_ma5, 
@@ -689,10 +707,11 @@ Enhancing human understanding of natural and social phenomena can be gratifying 
 
 Of course societal decisions often require both action-oriented recommendations and scientific understanding of what is known and unknown pertaining to the decision. Decisions related to climate change are a leading example of this overlap.
 
-To illustrate, the pair of figures below show monthly $CO_2$ levels (ppm) taken at the Mauna Loa, Hawaii observatory (top) and a differencing of the data to remove trends (bottom).
+To illustrate, @fig-cardox-records below shows monthly $CO_2$ levels (ppm) taken at the Mauna Loa, Hawaii observatory (top) and a second-order differencing of the data to remove trends (bottom).
 
 ```{r}
-#| label: cardox_records
+#| label: fig-cardox-records
+#| fig-cap: "$CO_2$: Mauna Loa, monthly readings"
 
 par(mfrow=2:1)
 
@@ -703,14 +722,15 @@ tsplot(
 
 tsplot(
   diff(diff(cardox, 12)), col = 4, 
-  ylab = "diff(CO2, 2)"
+  ylab = "diff( CO2, 2 )"
 )
 ```
 
-The next figure shows a 5-year forecast based on a time-domain model (a seasonal auto-regressive, moving-average model).
+@fig-cardox-forecast shows a 5-year forecast based on a time-domain model (a seasonal auto-regressive, moving-average model).
 
 ```{r}
-#| label: cardox_forecast
+#| label: fig-cardox-forecast
+#| fig-cap: "$CO_2$: Mauna Loa, monthly forecast"
 
 cardox_forecast <- 
   sarima.for(
@@ -841,7 +861,7 @@ In short, ignoring the autocorrelation of $X(\cdot)$ would lead to erroneous cal
 
 ### Effective Sample Size (ESS)
 
-The magnitude of such erroneous calculations can be represented by a quantity called the *effective sample size* (ESS). The calculation of ESS varies with application[^8], but here's the basic idea in the present context. Consider a finite sequence of *independent* draws from the distribution of the random variable $X(t_0)$, thereby producing a sample of independent observations. Define the effective sample size, $N_d$, to be the number of draws required to produce the same variance of the resulting sample mean as that of the auto-correlated case.
+The magnitude of such erroneous calculations can be represented by a quantity called the *effective sample size* (ESS). The calculation of ESS varies with application[^8], but here's the basic idea in the present context. Consider a finite sequence of *independent* draws from the distribution of the random variable $X(t_0)$, thereby producing a sample of independent observations. Define the effective sample size, $N_d$, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.
 
 [^8]: The `R` package `astsa` provides function `ESS()`.
 
@@ -1078,8 +1098,7 @@ s5a_symbol_tbl |>
   )
 ```
 
-$$
-\begin{align}
+\$\$ \begin{align}
 
   {a_{\bullet, \bullet} (u)} 
     \quad & \quad \text{matrix of filter coefficients at time-shift } u \\ 
@@ -1126,7 +1145,6 @@ $$
   X_\bullet (t) 
      \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } 
      
-\end{align}
-$$
+\end{align} \$\$
 
 ## References
