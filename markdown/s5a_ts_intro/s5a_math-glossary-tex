@@ -1,0 +1,52 @@
+
+$$
+\begin{align}
+
+  {a_{\bullet, \bullet} (u)}
+    \quad & \quad \text{matrix of filter coefficients at time-shift } u \\
+
+  \mathcal{B}
+     \quad & \quad \text{back-shift operator } \\
+
+  \mathcal{D}
+     \quad & \quad \text{difference operator } \mathcal{I - B} \\
+
+  \gamma_{\bullet, \bullet} (u)
+     \quad & \quad \text{auto-covariance matrix at time-shift } u \\
+
+  \mathcal{I}
+     \quad & \quad \text{identity operator } \\
+
+  m_\bullet (t)
+     \quad & \quad E \{ X_\bullet (t) \} \text{, expected value of } X_\bullet (t) \\
+
+  \mu_X
+     \quad & \quad E\{ X (t_0) \} \text{, expected value of } X (t_0) \\
+
+  \hat{\mu} _X
+     \quad & \quad \text{sample mean, } S_{X, T} / T \\
+
+  N_d
+     \quad & \quad \text{number of independent draws (effective sample size) } \\
+
+  \rho_{\bullet, \bullet} (u)
+     \quad & \quad \text{auto-correlation matrix at time-shift } u \\
+
+  S_{X, T}
+     \quad & \quad \text{the sample sum of T observations of } X (\cdot) \\
+
+  \sigma_X^2
+     \quad & \quad Var \{ X (t_0) \} \text{, variance of } X (t_0) \\
+
+  T
+     \quad & \quad \text{number of time series observations } \\
+
+  t_0
+     \quad & \quad \text{initial time index of time series observations } \\
+
+  X_\bullet (t)
+     \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process }
+
+\end{align}
+$$
+
