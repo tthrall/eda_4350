@@ -608,7 +608,7 @@ astsa::tsplot(
 
 In this case the 5-year moving average operation can be expressed as follows.[^6]
 
-[^6]: The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term "moving average" is also used more broadly to mean a component of a time series model that filters a sequence of uncorrelated error terms.
+[^6]: The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term "moving average" is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.
 
 $$
 \begin{align}
@@ -677,7 +677,7 @@ There are a number of ways to categorize types of data analysis. For example, th
 
 ### Decision Support
 
-Decisions are often made via complex human interactions that are difficult to represent formally. Financial transactions, however, are easier to record and model. Financial management operates at markedly different time scales. At one extreme, consider algorithms that respond in real time to changing market valuations. At the other extreme we have decisions pertaining to multi-year projects. The financial stakes warrant substantial investment, which has fuelled steady advancement in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).
+Decisions are often made via complex human interactions that are difficult to represent formally. Financial transactions, however, are easier to record and model. Financial management operates at markedly different time scales. At one extreme, consider algorithms that respond in real time to changing market valuations. At the other extreme we have decisions pertaining to multi-year projects. The financial stakes warrant substantial investment, which has fueled steady advancement in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).
 
 Time series models that support decisions (in any setting) are typically time-domain parametric models whose components may include data transformations along with filtering algorithms. We leave the description of such models for a separate technical note.
 
@@ -721,7 +721,7 @@ cardox_forecast <-
 abline(v=2023.17, lty=6)
 ```
 
-We leave the development of such models to a separate technical note. The point here is that such forecasts are both valued and scrutinized when presented to support climate-related decisions.
+We leave the development of such models to a separate technical note. The point here is that such forecasts, when presented to support high-stakes societal decisions, are both valued for their precision and scrutinized as to their scientific reliability.
 
 ## Detecting Serial Correlation
 
@@ -731,7 +731,7 @@ In time series analysis, an initial review of the data might include a test for 
 
 ### Statistical Tests
 
-There are several statistical tests for autocorrelation. One of the most widely used is the Ljung-Box test available in `R` as the function `stats::Box.test()` in which one specifies the maximal lag to be checked.
+There are several statistical tests for autocorrelation. One of the most widely used is the Ljung-Box test[@ljung1978] available in `R` as the function `stats::Box.test()` in which one specifies the maximal lag to be checked.
 
 In the frequency domain, the variation exhibited in the data is decomposed into the variation from groups of sinusoidal functions, each group corresponding to a frequency band. From this perspective the absence of autocorrelation corresponds to each band contributing the same proportion of variance, a phenomenon called "white noise". A test for such white noise is available in `R` as the function `hwwntest::bartlettB()`[@hwwntest].
 
@@ -886,7 +886,7 @@ In this note, time-domain and frequency-domain methods are mentioned only in the
 
 For a more comprehensive listing of relevant `R` packages see the time series task view available from [CRAN](https://cran.r-project.org/web/views/TimeSeries.html), the Comprehensive R Archive Network.
 
-See [Regression and Time Series Primer](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer) for a more detailed introduction to the topics presented here.  And see [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa) for an introduction to `R` package `astsa`.
+See [Regression and Time Series Primer](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer) for a more detailed introduction to the topics presented here. And see [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa) for an introduction to `R` package `astsa`.
 
 ```{r}
 #| label: s5a_books_tbl
@@ -933,7 +933,6 @@ s5a_books_tbl |>
     col.names = ""
   )
 ```
-
 
 ```{r}
 #| label: s5a_articles_tbl
@@ -1079,7 +1078,6 @@ s5a_symbol_tbl |>
   )
 ```
 
-
 $$
 \begin{align}
 
@@ -1131,4 +1129,4 @@ $$
 \end{align}
 $$
 
-## References 
+## References

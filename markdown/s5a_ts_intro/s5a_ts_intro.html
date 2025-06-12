@@ -157,7 +157,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">06:50 Thu 12-Jun-2025</p>
+      <p class="date">07:39 Thu 12-Jun-2025</p>
     </div>
   </div>
   
@@ -601,7 +601,7 @@ window.Quarto = {
 <p>There are a number of ways to categorize types of data analysis. For example, the distinction between confirmatory and exploratory data analysis has been widely discussed over several decades. But for present purposes we consider the complementary aims of decision support and scientific understanding.</p>
 <section id="decision-support" class="level3">
 <h3 class="anchored" data-anchor-id="decision-support">Decision Support</h3>
-<p>Decisions are often made via complex human interactions that are difficult to represent formally. Financial transactions, however, are easier to record and model. Financial management operates at markedly different time scales. At one extreme, consider algorithms that respond in real time to changing market valuations. At the other extreme we have decisions pertaining to multi-year projects. The financial stakes warrant substantial investment, which has fuelled steady advancement in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).</p>
+<p>Decisions are often made via complex human interactions that are difficult to represent formally. Financial transactions, however, are easier to record and model. Financial management operates at markedly different time scales. At one extreme, consider algorithms that respond in real time to changing market valuations. At the other extreme we have decisions pertaining to multi-year projects. The financial stakes warrant substantial investment, which has fueled steady advancement in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).</p>
 <p>Time series models that support decisions (in any setting) are typically time-domain parametric models whose components may include data transformations along with filtering algorithms. We leave the description of such models for a separate technical note.</p>
 </section>
 <section id="scientific-understanding" class="level3">
@@ -631,7 +631,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We leave the development of such models to a separate technical note. The point here is that such forecasts are both valued and scrutinized when presented to support climate-related decisions.</p>
+<p>We leave the development of such models to a separate technical note. The point here is that such forecasts, when presented to support high-stakes societal decisions, are both valued for their precision and scrutinized as to their scientific reliability.</p>
 </section>
 </section>
 <section id="detecting-serial-correlation" class="level2">
@@ -640,7 +640,7 @@ window.Quarto = {
 <p>In time series analysis, an initial review of the data might include a test for serial correlation (autocorrelation). That is, one can check for correlation of <span class="math inline">\(X_\bullet (t)\)</span> with <span class="math inline">\(X_\bullet (t - s)\)</span> at several lags <span class="math inline">\(s\)</span>. If the data do appear to be auto-correlated, one might proceed to build a time series model. If the residuals of that model also appear to be auto-correlated or to exhibit some trend, one might seek to refine the model until the model residuals appear to be free of trend and autocorrelation.</p>
 <section id="statistical-tests" class="level3">
 <h3 class="anchored" data-anchor-id="statistical-tests">Statistical Tests</h3>
-<p>There are several statistical tests for autocorrelation. One of the most widely used is the Ljung-Box test available in <code>R</code> as the function <code>stats::Box.test()</code> in which one specifies the maximal lag to be checked.</p>
+<p>There are several statistical tests for autocorrelation. One of the most widely used is the Ljung-Box test<span class="citation" data-cites="ljung1978">(<a href="#ref-ljung1978" role="doc-biblioref">Ljung and Box 1978</a>)</span> available in <code>R</code> as the function <code>stats::Box.test()</code> in which one specifies the maximal lag to be checked.</p>
 <p>In the frequency domain, the variation exhibited in the data is decomposed into the variation from groups of sinusoidal functions, each group corresponding to a frequency band. From this perspective the absence of autocorrelation corresponds to each band contributing the same proportion of variance, a phenomenon called “white noise”. A test for such white noise is available in <code>R</code> as the function <code>hwwntest::bartlettB()</code><span class="citation" data-cites="hwwntest">(<a href="#ref-hwwntest" role="doc-biblioref">Savchev and Nason 2023</a>)</span>.</p>
 </section>
 <section id="autocorrelation-and-estimator-variance" class="level3">
@@ -825,6 +825,9 @@ window.Quarto = {
 
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-ljung1978" class="csl-entry" role="listitem">
+Ljung, G. M., and G. E. P. Box. 1978. <span>“On a Measure of Lack of Fit in Time Series Models.”</span> <em>Biometrika</em> 65 (2): 297–303. <a href="https://doi.org/10.1093/biomet/65.2.297">https://doi.org/10.1093/biomet/65.2.297</a>.
+</div>
 <div id="ref-hwwntest" class="csl-entry" role="listitem">
 Savchev, Delyan, and Guy Nason. 2023. <span>“Hwwntest: Tests of White Noise Using Wavelets.”</span> <a href="https://doi.org/10.32614/CRAN.package.hwwntest">https://doi.org/10.32614/CRAN.package.hwwntest</a>.
 </div>
@@ -848,7 +851,7 @@ Venables, W. N., and B. D. Ripley. 2002. <span>“Modern Applied Statistics with
 <li id="fn3"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of <em>strict stationarity</em>. This means that for any finite set of times <span class="math inline">\((t_1, \ldots, t_K)\)</span> and any time-shift <span class="math inline">\(s\)</span>, the joint probability distribution of <span class="math inline">\((X_\bullet (t_1), \ldots, X_\bullet (t_K))\)</span> is identical to that of <span class="math inline">\((X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))\)</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters a sequence of uncorrelated error terms.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
