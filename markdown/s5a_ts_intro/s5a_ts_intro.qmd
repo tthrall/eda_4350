@@ -12,7 +12,7 @@ format:
     code: true
 abstract:
   "Introduce data examples in which successive observations are statistically dependent.  Discuss corresponding data analysis methods.  <br><br>"
-bibliography: references.bib
+bibliography: s5a_references.bib
 ---
 
 ```{r}
