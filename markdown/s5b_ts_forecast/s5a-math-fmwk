@@ -1,0 +1,103 @@
+
+
+## Mathematical Framework
+
+Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the predator-prey data previously shown.
+
+```{r}
+#| label: hl_pelts
+
+hl_pelts <- tsibbledata::pelt |>
+  dplyr::rename(yr = Year, hare = Hare, lynx = Lynx) |>
+  dplyr::mutate(across(
+    .cols = c(hare, lynx),
+    .fns  = ~ .x/1000
+  ))
+```
+
+```{r}
+#| label: hl_pelts__print
+
+hl_pelts |> as_tibble() |> print(n = 5)
+```
+
+The distinction of time series analysis is that observations are indexed by time, and are not assumed to be statistically independent. In time series analysis, we typically consider the data to be a realization of a random process of the following form.
+
+$$
+\begin{align}
+  X_\bullet (t) = (X_1 (t), \ldots, X_d (t))
+\end{align}
+$$
+
+In our example the number $d$ of data columns is two (`hare`, `lynx`), the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period.
+
+$$
+\begin{align}
+  t &= t_0 + u & \text{ with } u \in \{0, 1, \ldots, T-1 \}
+\end{align}
+$$
+
+The expected value of the random process may be modeled by various functions of time: a constant, a linear trend, a seasonal component (periodic function), etc.
+
+$$
+\begin{align}
+  m_\bullet (t) &= E \{ X_\bullet (t) \}
+\end{align}
+$$
+
+In an additive model (which is most common), the residual random process, $X_\bullet (t) - m_\bullet (t)$ , is assumed to be **second-order stationary**.[^5] That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new proces $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
+
+[^5]: The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of *strict stationarity*. This means that for any finite set of times $(t_1, \ldots, t_K)$ and any time-shift $s$, the joint probability distribution of $(X_\bullet (t_1), \ldots, X_\bullet (t_K))$ is identical to that of $(X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))$.
+
+$$
+\begin{align}
+  Y_\bullet (t) &= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
+  &= X_\bullet (t - s)
+\end{align}
+$$
+
+Here $\mathcal{B}$ denotes the *back-shift* operator that shifts time by one unit, so that $\mathcal{B}^s$ (that is, $s$ repeated applications of $\mathcal{B}$) shifts time by $s$ units. Then second-order stationarity can be expressed as follows.
+
+$$
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \}
+  &= Cov \{ Y_a (t + u), Y_b (t) \} \\
+  &= Cov \{ X_a (t + u - s), X_b (t - s) \} \\
+  \\
+  & \text{for all } s \in \mathbb{Z} \text{ and } a, b \in \{ 1, \ldots, d \}
+\end{align}
+$$
+
+Setting $s = t$ we have
+
+$$
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \}
+  &= Cov \{ X_a (u), X_b (0) \}
+\end{align}
+$$
+
+Consequently, second-order stationarity enables one to define and estimate the following *auto-covariance* function.
+
+$$
+\begin{align}
+  \gamma_{\bullet, \bullet} (u) &= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\
+  \\
+  \text{where} \\
+  \gamma_{a, b} (u) &= Cov \{ X_a (t + u), X_b (t) \} \\
+  &= Cov \{ X_a (u), X_b (0) \}
+\end{align}
+$$
+
+The auto-covariance function is often rescaled to yield the *autocorrelation* function $\rho_{\bullet, \bullet}(\cdot)$.
+
+$$
+\begin{align}
+\rho_{\bullet, \bullet} (u) &= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\
+  \\
+  \text{where} \\
+  \rho_{a, b} &= cor \{ X_a (u), X_b (0) \} \\
+  &= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
+\end{align}
+$$
+

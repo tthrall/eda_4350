@@ -49,5 +49,8 @@
   },
   "markdown/s5a_ts_intro/s5a_ts_intro.qmd": {
     "s5a_ts_intro.html": "c276cb4f"
+  },
+  "markdown/s5b_ts_forecast/s5b_ts_forecast.qmd": {
+    "s5b_ts_forecast.html": "8f2e11a3"
   }
 }
