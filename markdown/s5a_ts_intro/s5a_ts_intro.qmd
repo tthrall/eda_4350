@@ -509,7 +509,7 @@ $$
 \begin{align}
   X_\bullet (t) = (X_1 (t), \ldots, X_d (t))
 \end{align}
-$$
+$$ {#eq-X-bullet}
 
 In our example the number $d$ of data columns is two (`hare`, `lynx`), the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period.
 
@@ -525,7 +525,7 @@ $$
 \begin{align}
   m_\bullet (t) &= E \{ X_\bullet (t) \}
 \end{align}
-$$
+$$ {#eq-m-bullet}
 
 In an additive model (which is most common), the residual random process, $X_\bullet (t) - m_\bullet (t)$ , is assumed to be **second-order stationary**.[^5] That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new proces $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
 
@@ -536,7 +536,7 @@ $$
   Y_\bullet (t) &= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\ 
   &= X_\bullet (t - s)
 \end{align}
-$$
+$$ {#eq-shift-operator}
 
 Here $\mathcal{B}$ denotes the *back-shift* operator that shifts time by one unit, so that $\mathcal{B}^s$ (that is, $s$ repeated applications of $\mathcal{B}$) shifts time by $s$ units. Then second-order stationarity can be expressed as follows.
 
@@ -557,7 +557,9 @@ $$
   Cov \{ X_a (t + u), X_b (t) \} 
   &= Cov \{ X_a (u), X_b (0) \} 
 \end{align}
-$$ Consequently, second-order stationarity enables one to define and estimate the following *auto-covariance* function.
+$$ {#eq-stationarity-2}
+
+Consequently, second-order stationarity enables one to define and estimate the following *auto-covariance* function.
 
 $$
 \begin{align}
@@ -567,7 +569,7 @@ $$
   \gamma_{a, b} (u) &= Cov \{ X_a (t + u), X_b (t) \} \\
   &= Cov \{ X_a (u), X_b (0) \} 
 \end{align}
-$$
+$$ {#eq-auto-cov}
 
 The auto-covariance function is often rescaled to yield the *autocorrelation* function $\rho_{\bullet, \bullet}(\cdot)$.
 
@@ -579,7 +581,7 @@ $$
   \rho_{a, b} &= cor \{ X_a (u), X_b (0) \} \\ 
   &= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
-$$
+$$ {#eq-auto-cor}
 
 ## Operations on Time Series
 
@@ -633,7 +635,7 @@ $$
   Y_\bullet (t) 
   &= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u) 
 \end{align}
-$$
+$$ {#eq-ma-5}
 
 Here $X_\bullet (\cdot)$ is a two-component random process representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant *filter*, having the following general form.
 
@@ -643,7 +645,7 @@ $$
   &= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\ 
   &= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u) 
 \end{align}
-$$
+$$ {#eq-filter}
 
 where $a_{\bullet, \bullet} (\cdot)$ is a sequence of $d \times d$ matrices and $*$ denotes discrete convolution.
 
@@ -657,7 +659,7 @@ $$
       0 & \text{ for } |u| > 2
     \end{cases}
 \end{align}
-$$
+$$ {#eq-ma-5-filter}
 
 As noted above, the moving average operation can help to reveal and thus model the trend in the process, $m_\bullet (t)$. Forming the residual series $X_\bullet (t) - m_\bullet (t)$ is called "de-trending".
 
@@ -670,7 +672,7 @@ $$
   &= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\ 
   &= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
 \end{align}
-$$
+$$ {#eq-diff-operator}
 
 In the DJIA stock index example, returns were defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here's the differencing operator $\mathcal{D}$ in the filtering format.
 
@@ -683,7 +685,7 @@ $$
       0  & \text{ otherwise }
     \end{cases}
 \end{align}
-$$
+$$ {#eq-diff-filter}
 
 A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a *low-pass* filter. The differencing operator can be categorized as a *high-pass* filter.
 
@@ -767,7 +769,7 @@ $$
   \\ 
   & \text{where } -1 < \theta < 1
 \end{align}
-$$
+$$ {#eq-ma-1-model}
 
 Then $X(\cdot)$ is an example of a moving average random process. In the theory of such processes one usually assumes that $X(\cdot)$ is observed for some interval of time $(t_0, \ldots, t_0 + T - 1)$ and that $W(\cdot)$ is not observed. But for present purposes suppose that this is a simulation study in which both $X(t)$ and $W(\cdot)$ are generated over the same time interval and that the values of all parameters are known, including the population means, the population variances, and $\theta$.
 
@@ -781,7 +783,7 @@ $$
   Var \left \{ S_{W, T} \right \} &= T \times Var \left \{ W(t_0) \right \}  \\ 
   &= T \times \sigma_W^2
 \end{align}
-$$
+$$ {#eq-ev-sum-uncorrelated}
 
 The sample mean is derived from the sample sum.
 
@@ -797,7 +799,7 @@ $$
   &= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\ 
   &= \frac{ \sigma_W^2 }{T}
 \end{align}
-$$
+$$ {#eq-ev-avg-uncorrelated}
 
 The mean and variance of $X(t)$ can be expressed as respective functions of the mean and variance of $Z(t)$.
 
@@ -806,7 +808,7 @@ $$
   \mu_X &= (1 +\theta) \; \mu_Z \\ 
   \sigma_X^2 &= (1 +\theta^2) \; \sigma_Z^2
 \end{align}
-$$
+$$ {#eq-ev-ma-1-model}
 
 The variance formula for the sample sum, $S_{X, T}$, differs from that of $S_{Z, T}$, because $X(\cdot)$ is auto-correlated. The auto-covariance function is
 
@@ -820,7 +822,7 @@ $$
     0 & \text{ for } |u| > 1 
   \end{cases}
 \end{align}
-$$
+$$ {#eq-auto-cov-ma-1-model}
 
 The auto-correlation function is thus[^7]
 
@@ -836,7 +838,7 @@ $$
     0 & \text{ for } |u| > 1 
   \end{cases}
 \end{align}
-$$
+$$ {#eq-auto-cor-ma-1-model}
 
 Therefore
 
@@ -855,7 +857,7 @@ $$
   &= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2} 
   - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
 \end{align}
-$$
+$$ {#eq-var-sum-ma-1-model}
 
 In short, ignoring the autocorrelation of $X(\cdot)$ would lead to erroneous calculations of the variance of $S_{X, T}$ and $\hat{\mu}_X$.
 
@@ -870,7 +872,7 @@ $$
   \frac{\sigma_X^2}{N_d} &= Var \left \{ \hat{\mu}_X \right \} \\ 
   &= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
 \end{align}
-$$
+$$ {#eq-ess-criterion}
 
 Equivalently
 
@@ -878,7 +880,7 @@ $$
 \begin{align}
   N_d &= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
 \end{align}
-$$
+$$ {#eq-ess-definition}
 
 In our moving average example this yields
 
@@ -892,7 +894,7 @@ $$
     T^2  & \text{ as } \theta \rightarrow -1
   \end{cases}
 \end{align}
-$$
+$$ {#eq-ess-limit-ma-1-model}
 
 As $\theta$ increases from $0$ towards $1$ the matching number of independent draws $N_d$ decreases from $T$ towards $T/2$. In the other direction, as $\theta$ decreases from $0$ towards $-1$ the matching number of independent draws $N_d$ increases from $T$ towards $T^2$.
 
