@@ -1098,7 +1098,8 @@ s5a_symbol_tbl |>
   )
 ```
 
-\$\$ \begin{align}
+$$
+\begin{align}
 
   {a_{\bullet, \bullet} (u)} 
     \quad & \quad \text{matrix of filter coefficients at time-shift } u \\ 
@@ -1145,6 +1146,7 @@ s5a_symbol_tbl |>
   X_\bullet (t) 
      \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } 
      
-\end{align} \$\$
+\end{align}
+$$
 
 ## References
