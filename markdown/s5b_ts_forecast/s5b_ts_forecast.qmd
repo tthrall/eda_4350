@@ -219,13 +219,13 @@ One might continue this cycle until the model residuals seem to be reasonably fr
 
 ### Covariates and Trend
 
-Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables. 
+Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables.
 
 #### Covariates and Trend may Suffice
 
-Consider, for example, the cardiovascular mortality data @fig-cmort, where mortality is modeled as a response to temperature and the level of particulate matter.  In this example we can formulate the expected value of mortality[^m_t_X] in the following terms.
+Consider, for example, the cardiovascular mortality data @fig-cmort, where mortality is modeled as a response to temperature and the level of particulate matter. In this example we can formulate the expected value of mortality[^2] in the following terms.
 
-[^m_t_X]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
+[^2]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
 
 $$
 \begin{align}
@@ -253,11 +253,11 @@ $$
 \end{align}
 $$
 
-The point here is that the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$.  Once the mean level is accounted for, the residual series $W(t) = X_1 - m(t, X_{2:3}(t))$ is modeled as a series free of auto-correlation.  This seems reasonable, since $X_1(t)$ counts the number of arguably independent events (cardiovascular deaths) in each week.
+The point here is that the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 - m(t, X_{2:3}(t))$ is modeled as a series free of auto-correlation. This seems reasonable, since $X_1(t)$ counts the number of arguably independent events (cardiovascular deaths) in each week.
 
 #### Auto-correlation may Persist
 
-We now consider a contrasting example: the size of the fish population in response to the El Niño weather pattern (@fig-soi).  
+We now consider a contrasting example: the size of the fish population in response to the El Niño weather pattern (@fig-soi).
 
 #### El Niño and Fish Population
 
@@ -295,9 +295,9 @@ As described in [Recalibration of the Sunspot-Number: Status Report \| Solar Phy
 
 #### Description
 
-@fig-faithful below represents eruptions of the "Old Faithful" geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.[^2] The `delay` variable denotes the number of minutes since the previous eruption and the `duration` variable denotes the duration of the eruption, again in minutes.
+@fig-faithful below represents eruptions of the "Old Faithful" geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.[^3] The `delay` variable denotes the number of minutes since the previous eruption and the `duration` variable denotes the duration of the eruption, again in minutes.
 
-[^2]: There are two prominent `R` packages representing the Old Faithful measurements during August, 1985. The `MASS::geyser` data set of 299 observations [@MASS] includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The `datasets::faithful` data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.
+[^3]: There are two prominent `R` packages representing the Old Faithful measurements during August, 1985. The `MASS::geyser` data set of 299 observations [@MASS] includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The `datasets::faithful` data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.
 
 The data represent a *point process*, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faithful geyser. In addition to the time of the eruption we have the duration of the eruption.
 
@@ -359,9 +359,9 @@ climate_ds_tbl |> knitr::kable(
 
 #### Description
 
-@fig-gtemp-lo below shows the time series `gtemp_land` and `gtemp_ocean`, annual temperature deviations (in ◦C) from averages for the period 1991-2020.[^3] The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.
+@fig-gtemp-lo below shows the time series `gtemp_land` and `gtemp_ocean`, annual temperature deviations (in ◦C) from averages for the period 1991-2020.[^4] The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.
 
-[^3]: The data source is [NOAA](https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/), who use the term "anomaly" rather than "deviation". Further clarifications are pending.
+[^4]: The data source is [NOAA](https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/), who use the term "anomaly" rather than "deviation". Further clarifications are pending.
 
 ```{r}
 #| label: tmp_lob
@@ -522,9 +522,9 @@ Developing a statistical model of the time series can be regarded as a first ste
 
 #### Description
 
-@fig-djia shows the trading day closings and returns (percent change)[^4] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
+@fig-djia shows the trading day closings and returns (percent change)[^5] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
 
-[^4]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
+[^5]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
 
 ```{r}
 #| label: fig-djia
@@ -686,9 +686,9 @@ astsa::tsplot(
 )
 ```
 
-In this case the 5-year moving average operation can be expressed as follows.[^5]
+In this case the 5-year moving average operation can be expressed as follows.[^6]
 
-[^5]: The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term "moving average" is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.
+[^6]: The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term "moving average" is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.
 
 $$
 \begin{align}
@@ -884,9 +884,9 @@ $$
 \end{align}
 $$ {#eq-auto-cov-ma-1-model}
 
-The auto-correlation function is thus[^6]
+The auto-correlation function is thus[^7]
 
-[^6]: Note that $\rho_X (1)$ is restricted to the interval $(-0.5, 0.5)$, since we have restricted $\theta$ to the interval $(-1, 1)$.
+[^7]: Note that $\rho_X (1)$ is restricted to the interval $(-0.5, 0.5)$, since we have restricted $\theta$ to the interval $(-1, 1)$.
 
 $$
 \begin{align}
@@ -923,9 +923,9 @@ In short, ignoring the autocorrelation of $X(\cdot)$ would lead to erroneous cal
 
 ### Effective Sample Size (ESS)
 
-The magnitude of such erroneous calculations can be represented by a quantity called the *effective sample size* (ESS). The calculation of ESS varies with application[^7], but here's the basic idea in the present context. Consider a finite sequence of *independent* draws from the distribution of the random variable $X(t_0)$, thereby producing a sample of independent observations. Define the effective sample size, $N_d$, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.
+The magnitude of such erroneous calculations can be represented by a quantity called the *effective sample size* (ESS). The calculation of ESS varies with application[^8], but here's the basic idea in the present context. Consider a finite sequence of *independent* draws from the distribution of the random variable $X(t_0)$, thereby producing a sample of independent observations. Define the effective sample size, $N_d$, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.
 
-[^7]: The `R` package `astsa` provides function `ESS()`.
+[^8]: The `R` package `astsa` provides function `ESS()`.
 
 $$
 \begin{align}
@@ -1160,7 +1160,8 @@ s5a_symbol_tbl |>
   )
 ```
 
-\$\$ \begin{align}
+$$
+\begin{align}
 
   {a_{\bullet, \bullet} (u)} 
     \quad & \quad \text{matrix of filter coefficients at time-shift } u \\ 
@@ -1207,7 +1208,8 @@ s5a_symbol_tbl |>
   X_\bullet (t) 
      \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } 
      
-\end{align} \$\$
+\end{align}
+$$
 
 ## Appendix B: Data Examples
 
