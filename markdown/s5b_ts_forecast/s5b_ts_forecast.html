@@ -99,7 +99,7 @@ window.Quarto = {
   <li><a href="#mathematical-framework" id="toc-mathematical-framework" class="nav-link" data-scroll-target="#mathematical-framework">Mathematical Framework</a></li>
   <li><a href="#model-components" id="toc-model-components" class="nav-link" data-scroll-target="#model-components">Model Components</a>
   <ul class="collapse">
-  <li><a href="#trend-linear-seasonal-other" id="toc-trend-linear-seasonal-other" class="nav-link" data-scroll-target="#trend-linear-seasonal-other">Trend: linear, seasonal, other</a></li>
+  <li><a href="#covariates-and-trend" id="toc-covariates-and-trend" class="nav-link" data-scroll-target="#covariates-and-trend">Covariates and Trend</a></li>
   <li><a href="#auto-regression-ar" id="toc-auto-regression-ar" class="nav-link" data-scroll-target="#auto-regression-ar">Auto-regression (AR)</a></li>
   <li><a href="#moving-average-ma" id="toc-moving-average-ma" class="nav-link" data-scroll-target="#moving-average-ma">Moving Average (MA)</a></li>
   <li><a href="#assembling-components" id="toc-assembling-components" class="nav-link" data-scroll-target="#assembling-components">Assembling Components</a></li>
@@ -137,8 +137,13 @@ window.Quarto = {
   <li><a href="#effective-sample-size-ess" id="toc-effective-sample-size-ess" class="nav-link" data-scroll-target="#effective-sample-size-ess">Effective Sample Size (ESS)</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
-  <li><a href="#glossary-of-math-symbols" id="toc-glossary-of-math-symbols" class="nav-link" data-scroll-target="#glossary-of-math-symbols">Glossary of Math Symbols</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#appendix-a-glossary-of-math-symbols" id="toc-appendix-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#appendix-a-glossary-of-math-symbols">Appendix A: Glossary of Math Symbols</a></li>
+  <li><a href="#appendix-b-data-examples" id="toc-appendix-b-data-examples" class="nav-link" data-scroll-target="#appendix-b-data-examples">Appendix B: Data Examples</a>
+  <ul class="collapse">
+  <li><a href="#cardiovascular-mortality-in-los-angeles" id="toc-cardiovascular-mortality-in-los-angeles" class="nav-link" data-scroll-target="#cardiovascular-mortality-in-los-angeles">Cardiovascular Mortality in Los Angeles</a></li>
+  <li><a href="#el-niño-and-fish-population-1" id="toc-el-niño-and-fish-population-1" class="nav-link" data-scroll-target="#el-niño-and-fish-population-1">El Niño and Fish Population</a></li>
+  </ul></li>
+  <li><a href="#appendix-c-references" id="toc-appendix-c-references" class="nav-link" data-scroll-target="#appendix-c-references">Appendix C: References</a></li>
   </ul>
 </nav>
 </div>
@@ -164,7 +169,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">18:55 Thu 12-Jun-2025</p>
+      <p class="date">08:14 Sat 14-Jun-2025</p>
     </div>
   </div>
   
@@ -174,7 +179,7 @@ window.Quarto = {
 <div>
   <div class="abstract">
     <div class="block-title">Abstract</div>
-    Introduce the components of time domain models and the forecasts of time series that such models enable. <br><br>
+    Introduce the components of time domain models and the forecasting that such models enable. <br><br>
   </div>
 </div>
 
@@ -210,13 +215,13 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 </div>
 </figure>
 </div>
-<p>The distinction of time series analysis is that observations are indexed by time, and are not assumed to be statistically independent. In time series analysis, we typically consider the data to be a realization of a random process of the following form.</p>
+<p>The distinction of time series analysis is that observations are indexed by time, and are not assumed to be statistically independent. Time series data are typically viewed as a realization of a random process of the following form.</p>
 <p><span id="eq-X-bullet"><span class="math display">\[
 \begin{align}
   X_\bullet (t) = (X_1 (t), \ldots, X_d (t))
 \end{align}
 \tag{1}\]</span></span></p>
-<p>If the number of data columns is two or greater <span class="math inline">\((d \ge 2)\)</span>, the process is said to be multivariate. Otherwise, if <span class="math inline">\(d = 1\)</span> the process is said to be univariate, and we the notation is simplified to <span class="math inline">\(X (t)\)</span>.</p>
+<p>If the number of data columns is two or greater <span class="math inline">\((d \ge 2)\)</span>, the process is said to be multivariate. Otherwise, if <span class="math inline">\(d = 1\)</span> the process is said to be univariate, and the notation is simplified to <span class="math inline">\(X (t)\)</span>.</p>
 <p>In our example there are two data columns (<code>hare</code>, <code>lynx</code>), so that <span class="math inline">\(d = 2\)</span>, the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period.</p>
 <p><span class="math display">\[
 \begin{align}
@@ -263,7 +268,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
 \tag{5}\]</span></span></p>
-<p>The auto-covariance function is often re-scaled to yield the <em>autocorrelation</em> function <span class="math inline">\(\rho_{\bullet, \bullet}(\cdot)\)</span>.</p>
+<p>The auto-covariance function is often re-scaled to yield the <em>autocorrelation (ACF)</em> function <span class="math inline">\(\rho_{\bullet, \bullet}(\cdot)\)</span>.</p>
 <p><span id="eq-auto-cor"><span class="math display">\[
 \begin{align}
 \rho_{\bullet, \bullet} (u) &amp;= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\
@@ -284,8 +289,37 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 <li>examine model residuals</li>
 </ul>
 <p>One might continue this cycle until the model residuals seem to be reasonably free of trend and auto-correlation.</p>
-<section id="trend-linear-seasonal-other" class="level3">
-<h3 class="anchored" data-anchor-id="trend-linear-seasonal-other">Trend: linear, seasonal, other</h3>
+<section id="covariates-and-trend" class="level3">
+<h3 class="anchored" data-anchor-id="covariates-and-trend">Covariates and Trend</h3>
+<p>Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables.</p>
+<p>Consider, for example, the cardiovascular mortality data <a href="#fig-cmort" class="quarto-xref">Figure&nbsp;14</a>, where mortality is modeled as a response to temperature and the level of particulate matter. In this example we can formulate the expected value of mortality<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> in the following terms.</p>
+<p><span class="math display">\[
+\begin{align}
+  m(t, X_{2:3}(t))
+    &amp;= E \left \{ X_1(t) \; | \; X_2(t), \; X_3(t) \; \right \}
+\end{align}
+\]</span> where</p>
+<p><span class="math display">\[
+\begin{align}
+  X_1(t) = M(t) &amp;= \text{mortality count in week } t \\
+    X_2(t) = T(t) &amp;= \text{temperature } (^\circ F) \text{ in week } t \\
+    X_3(t) = P(t) &amp;= \text{level of particulate matter in week } t
+\end{align}
+\]</span></p>
+<p>Each of the three components of <span class="math inline">\(X_\bullet (t)\)</span> exhibits an annual periodicity, as one might expect. In the textbook <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 55</a>)</span> the authors initially propose a model for <span class="math inline">\(X_1(t)\)</span> of the following form.</p>
+<p><span class="math display">\[
+\begin{align}
+  X_1(t) &amp;= m(t, X_{2:3}(t)) + W(t)\\
+   \\
+    \text{ where } \\
+    \\
+    W(t) &amp;= \text{an uncorrelated ("white noise") series} \\
+    \\
+    m(t, X_{2:3}(t)) &amp;= \beta_0 + f(t) + \beta_2 X_2(t) + \beta_3 X_3(t) \\
+\end{align}
+\]</span></p>
+<p>According to this model the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 - m(t, X_{2:3}(t))\)</span> is modeled as a series free of auto-correlation.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> This assumption seems plausible, since <span class="math inline">\(X_1(t)\)</span> counts the number of arguably independent events (cardiovascular deaths) in each week.</p>
+<p>Later in the text (page n) the authors refine this initial model. After examining the autocorrelation function (ACF) of <span class="math inline">\(W(t)\)</span>, they relabel this residual series as <span class="math inline">\(Y(t)\)</span> for which they develop an auto-correlated model.</p>
 </section>
 <section id="auto-regression-ar" class="level3">
 <h3 class="anchored" data-anchor-id="auto-regression-ar">Auto-regression (AR)</h3>
@@ -328,7 +362,7 @@ Figure&nbsp;1: Sunspots: monthly count
 <h3 class="anchored" data-anchor-id="old-faithful-eruptions">Old Faithful eruptions</h3>
 <section id="description-1" class="level4">
 <h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p><a href="#fig-faithful" class="quarto-xref">Figure&nbsp;2</a> below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
+<p><a href="#fig-faithful" class="quarto-xref">Figure&nbsp;2</a> below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
 <p>The data represent a <em>point process</em>, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faithful geyser. In addition to the time of the eruption we have the duration of the eruption.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -412,7 +446,7 @@ Figure&nbsp;2: Old Faithful eruptions: delay and duration
 </div>
 <section id="description-2" class="level4">
 <h4 class="anchored" data-anchor-id="description-2">Description</h4>
-<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;3</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;3</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-gtemp-lo" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -437,16 +471,16 @@ Figure&nbsp;3: Deviations in global surface temperatures
 <h3 class="anchored" data-anchor-id="el-niño-and-fish-population">El Niño and Fish Population</h3>
 <section id="description-3" class="level4">
 <h4 class="anchored" data-anchor-id="description-3">Description</h4>
-<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;4</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
+<p><a href="#fig-soi-s5a" class="quarto-xref">Figure&nbsp;4</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
 <p>The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-soi" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-soi-s5a" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-soi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="s5b_ts_forecast_files/figure-html/fig-soi-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-soi-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-soi-s5a-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-soi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-soi-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: Southern Oscillation Index and fish recruitment
 </figcaption>
 </figure>
@@ -517,7 +551,7 @@ Figure&nbsp;6: J&amp;J: earnings per share at linear and log scales
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
 <section id="description-6" class="level4">
 <h4 class="anchored" data-anchor-id="description-6">Description</h4>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;7</a> shows the trading day closings and returns (percent change)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;7</a> shows the trading day closings and returns (percent change)<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -638,7 +672,7 @@ Figure&nbsp;11: Global temperatures: 5-year moving average
 </div>
 </div>
 </div>
-<p>In this case the 5-year moving average operation can be expressed as follows.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>In this case the 5-year moving average operation can be expressed as follows.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
 <p><span id="eq-ma-5"><span class="math display">\[
 \begin{align}
   Y_\bullet (t)
@@ -800,7 +834,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \end{cases}
 \end{align}
 \tag{16}\]</span></span></p>
-<p>The auto-correlation function is thus<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>The auto-correlation function is thus<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
 <p><span id="eq-auto-cor-ma-1-model"><span class="math display">\[
 \begin{align}
   \rho_X (u) &amp;= cor \left ( X(t + u), X(t) \right ) \\
@@ -833,7 +867,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
 </section>
 <section id="effective-sample-size-ess" class="level3">
 <h3 class="anchored" data-anchor-id="effective-sample-size-ess">Effective Sample Size (ESS)</h3>
-<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.</p>
+<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.</p>
 <p><span id="eq-ess-criterion"><span class="math display">\[
 \begin{align}
   \frac{\sigma_X^2}{N_d} &amp;= Var \left \{ \hat{\mu}_X \right \} \\
@@ -869,8 +903,8 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
 <p>For a more comprehensive listing of relevant <code>R</code> packages see the time series task view available from <a href="https://cran.r-project.org/web/views/TimeSeries.html">CRAN</a>, the Comprehensive R Archive Network.</p>
 <p>See <a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> for a more detailed introduction to the topics presented here. And see <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a> for an introduction to <code>R</code> package <code>astsa</code>.</p>
 </section>
-<section id="glossary-of-math-symbols" class="level2">
-<h2 class="anchored" data-anchor-id="glossary-of-math-symbols">Glossary of Math Symbols</h2>
+<section id="appendix-a-glossary-of-math-symbols" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-a-glossary-of-math-symbols">Appendix A: Glossary of Math Symbols</h2>
 <p>$$ <span class="math display">\[\begin{align}
 
   {a_{\bullet, \bullet} (u)}
@@ -920,21 +954,64 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
      
 \end{align}\]</span> $$</p>
 </section>
-<section id="references" class="level2 unnumbered">
+<section id="appendix-b-data-examples" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-b-data-examples">Appendix B: Data Examples</h2>
+<section id="cardiovascular-mortality-in-los-angeles" class="level3">
+<h3 class="anchored" data-anchor-id="cardiovascular-mortality-in-los-angeles">Cardiovascular Mortality in Los Angeles</h3>
+<p><a href="#fig-cmort" class="quarto-xref">Figure&nbsp;14</a> shows data from a study <span class="citation" data-cites="shumway1988">(<a href="#ref-shumway1988" role="doc-biblioref">R. H. Shumway, Azari, and Pawitan 1988</a>)</span> of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-cmort" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cmort-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-cmort-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cmort-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Weekly levels of mortality, temperature, and particulates in Los Angeles
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="el-niño-and-fish-population-1" class="level3">
+<h3 class="anchored" data-anchor-id="el-niño-and-fish-population-1">El Niño and Fish Population</h3>
+<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;15</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
+<p>The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-soi" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-soi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-soi-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-soi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Southern Oscillation Index and fish recruitment
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="appendix-c-references" class="level2 unnumbered">
 
 
 </section>
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Appendix C: References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-ljung1978" class="csl-entry" role="listitem">
 Ljung, G. M., and G. E. P. Box. 1978. <span>“On a Measure of Lack of Fit in Time Series Models.”</span> <em>Biometrika</em> 65 (2): 297–303. <a href="https://doi.org/10.1093/biomet/65.2.297">https://doi.org/10.1093/biomet/65.2.297</a>.
 </div>
 <div id="ref-hwwntest" class="csl-entry" role="listitem">
 Savchev, Delyan, and Guy Nason. 2023. <span>“Hwwntest: Tests of White Noise Using Wavelets.”</span> <a href="https://doi.org/10.32614/CRAN.package.hwwntest">https://doi.org/10.32614/CRAN.package.hwwntest</a>.
 </div>
+<div id="ref-shumway1988" class="csl-entry" role="listitem">
+Shumway, R. H., A. S. Azari, and Y. Pawitan. 1988. <span>“Modeling Mortality Fluctuations in Los Angeles as Functions of Pollution and Weather Effects.”</span> <em>Environmental Research</em> 45 (2): 224–41. <a href="https://doi.org/10.1016/s0013-9351(88)80049-5">https://doi.org/10.1016/s0013-9351(88)80049-5</a>.
+</div>
 <div id="ref-shumway2025" class="csl-entry" role="listitem">
-Shumway, Robert H., and David S. Stoffer. 2025. <em>Time Series Analysis and Its Applications</em>. Springer Nature Switzerland. <a href="https://doi.org/10.1007/978-3-031-70584-7">https://doi.org/10.1007/978-3-031-70584-7</a>.
+Shumway, and Stoffer. 2025. <em>Time Series Analysis and Its Applications</em>. Springer Nature Switzerland. <a href="https://doi.org/10.1007/978-3-031-70584-7">https://doi.org/10.1007/978-3-031-70584-7</a>.
 </div>
 <div id="ref-astsa" class="csl-entry" role="listitem">
 Stoffer, David. 2025. <span>“Astsa: Applied Statistical Time Series Analysis.”</span> <a href="https://doi.org/10.32614/CRAN.package.astsa">https://doi.org/10.32614/CRAN.package.astsa</a>.
@@ -946,12 +1023,14 @@ Venables, W. N., and B. D. Ripley. 2002. <span>“Modern Applied Statistics with
 
 <ol>
 <li id="fn1"><p>The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of <em>strict stationarity</em>. This means that for any finite set of times <span class="math inline">\((t_1, \ldots, t_K)\)</span> and any time-shift <span class="math inline">\(s\)</span>, the joint probability distribution of <span class="math inline">\((X_\bullet (t_1), \ldots, X_\bullet (t_K))\)</span> is identical to that of <span class="math inline">\((X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))\)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations <span class="citation" data-cites="MASS">(<a href="#ref-MASS" role="doc-biblioref">Venables and Ripley 2002</a>)</span> includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The authors consider various forms for the function <span class="math inline">\(f(t)\)</span>: a linear function, a quadratic function, or a locally smoothed version of <span class="math inline">\(X_1(t)\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The authors generally use the notation <span class="math inline">\(W(t)\)</span> to signify white noise, an uncorrelated stationary random process having mean 0. Moreover, the authors typically reserve this notation to signify an uncorrelated stationary <em>Gaussian</em> process, that is, a process of independent and identically distributed normal variables having mean 0.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations <span class="citation" data-cites="MASS">(<a href="#ref-MASS" role="doc-biblioref">Venables and Ripley 2002</a>)</span> includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

@@ -14,7 +14,7 @@ params:
   file_id: "s5b"
   file_prefix: "s5b_ts_forecast"
 abstract:
-  "Introduce the components of time domain models and the forecasts of time series that such models enable.  <br><br>"
+  "Introduce the components of time domain models and the forecasting that such models enable.  <br><br>"
 bibliography: s5b_references.bib
 ---
 
@@ -221,25 +221,25 @@ One might continue this cycle until the model residuals seem to be reasonably fr
 
 Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables.
 
-#### Covariates and Trend may Suffice
-
-Consider, for example, the cardiovascular mortality data @fig-cmort, where mortality is modeled as a response to temperature and the level of particulate matter. In this example we can formulate the expected value of mortality[^2] in the following terms.
-
-[^2]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
+Consider, for example, the cardiovascular mortality data shown in @fig-cmort, where mortality is modeled as a response to temperature and the level of particulate matter. In this example we can formulate the expected value of mortality in the following terms.
 
 $$
 \begin{align}
   m(t, X_{2:3}(t)) 
-    &= E \left \{ X_1(t) \; | \; X_2(t), \; X_3(t) \; \right \} \\ 
-   \\ 
-    \text{ where } \\ 
-    X_1(t) &= \text{mortality count in week } t \\ 
-    X_2(t) &= \text{temperature } (F^\circ) \text{ in week } t \\ 
-    X_3(t) &= \text{level of particulate matter in week } t \\ 
+    &= E \left \{ X_1(t) \; | \; X_2(t), \; X_3(t) \; \right \}
+\end{align}
+$$
+where 
+
+$$
+\begin{align}
+  X_1(t) = M(t) &= \text{mortality count in week } t \\ 
+    X_2(t) = T(t) &= \text{temperature } (^\circ F) \text{ in week } t \\ 
+    X_3(t) = P(t) &= \text{level of particulate matter in week } t 
 \end{align}
 $$
 
-Each of the three components of $X_\bullet (t)$ exhibits an annual periodicity, as one might expect. In the textbook [@shumway2025, page 55] the authors arrive at a model for $X_1(t)$ of the following form.
+Each of the three components of $X_\bullet (t)$ exhibits an annual periodicity, as one might expect. In the textbook [@shumway2025, page 55] the authors initially propose a model for $X_1(t)$ of the following form.
 
 $$
 \begin{align}
@@ -247,21 +247,19 @@ $$
    \\ 
     \text{ where } \\ 
     \\ 
-    W(t) &= \text{an uncorrelated ("white noise") series} \\ 
-    \\ 
     m(t, X_{2:3}(t)) &= \beta_0 + f(t) + \beta_2 X_2(t) + \beta_3 X_3(t) \\ 
+    \\ 
+    W(t) &= \text{an uncorrelated ("white noise") series}
 \end{align}
 $$
 
-The point here is that the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 - m(t, X_{2:3}(t))$ is modeled as a series free of auto-correlation. This seems reasonable, since $X_1(t)$ counts the number of arguably independent events (cardiovascular deaths) in each week.
+According to this model[^cmort_trend] the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 - m(t, X_{2:3}(t))$ is modeled as a series free of auto-correlation.[^white_noise] This assumption seems plausible, since $X_1(t)$ counts the number of arguably independent events (cardiovascular deaths) in each week.
 
-#### Auto-correlation may Persist
+[^cmort_trend]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
 
-We now consider a contrasting example: the size of the fish population in response to the El Niño weather pattern (@fig-soi).
+[^white_noise]: The authors generally use the notation $W(t)$ to signify white noise, an uncorrelated stationary random process having mean 0.  Moreover, the authors typically reserve this notation to signify an uncorrelated stationary _Gaussian_ process, that is, a process of independent and identically distributed normal variables having mean 0.
 
-#### El Niño and Fish Population
-
-XXX
+Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled $W(t)$), they develop an auto-correlated ($AR(2)$) model.
 
 ### Auto-regression (AR)
 
@@ -441,12 +439,12 @@ The upward trend in the two temperature series during the latter part of the 20t
 
 #### Description
 
-@fig-soi shows the Southern Oscillation Index (SOI, `astsa::soi`) and associated Recruitment (`astsa::rec`), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.
+@fig-soi-s5a shows the Southern Oscillation Index (SOI, `astsa::soi`) and associated Recruitment (`astsa::rec`), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.
 
 The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.
 
 ```{r}
-#| label: fig-soi
+#| label: fig-soi-s5a
 #| fig-cap: "Southern Oscillation Index and fish recruitment"
 
 par(mfrow=2:1)
@@ -1219,7 +1217,7 @@ $$
 
 ```{r}
 #| label: fig-cmort
-#| fig-cap: "Cardiovascular Mortality per Week in Los Angeles"
+#| fig-cap: "Weekly levels of mortality, temperature, and particulates in Los Angeles"
 
 par(mfrow = c(3,1))
 
