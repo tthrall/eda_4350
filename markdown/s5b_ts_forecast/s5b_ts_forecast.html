@@ -148,6 +148,8 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#hare-and-lynx-populations" id="toc-hare-and-lynx-populations" class="nav-link" data-scroll-target="#hare-and-lynx-populations">Hare and Lynx Populations</a></li>
   <li><a href="#jj-quarterly-earnings-1" id="toc-jj-quarterly-earnings-1" class="nav-link" data-scroll-target="#jj-quarterly-earnings-1">JJ Quarterly Earnings</a></li>
+  <li><a href="#global-temperatures" id="toc-global-temperatures" class="nav-link" data-scroll-target="#global-temperatures">Global Temperatures</a></li>
+  <li><a href="#dow-jones-industrial-average-1" id="toc-dow-jones-industrial-average-1" class="nav-link" data-scroll-target="#dow-jones-industrial-average-1">Dow Jones Industrial Average</a></li>
   <li><a href="#cardiovascular-mortality-in-los-angeles" id="toc-cardiovascular-mortality-in-los-angeles" class="nav-link" data-scroll-target="#cardiovascular-mortality-in-los-angeles">Cardiovascular Mortality in Los Angeles</a></li>
   <li><a href="#el-niño-and-fish-population-1" id="toc-el-niño-and-fish-population-1" class="nav-link" data-scroll-target="#el-niño-and-fish-population-1">El Niño and Fish Population</a></li>
   </ul></li>
@@ -177,7 +179,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15:18 Sat 14-Jun-2025</p>
+      <p class="date">17:38 Sat 14-Jun-2025</p>
     </div>
   </div>
   
@@ -204,7 +206,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="mathematical-framework">Mathematical Framework</h2>
 <section id="data-derived-from-a-random-process" class="level3">
 <h3 class="anchored" data-anchor-id="data-derived-from-a-random-process">Data derived from a random process</h3>
-<p>Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (<a href="#tbl-hl-pelts" class="quarto-xref">Table&nbsp;1</a> and <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;14</a> ), based on the record of snowshoe hare (<code>astsa::Hare</code>) and lynx (<code>astsa::Lynx</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.</p>
+<p>Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (<a href="#tbl-hl-pelts" class="quarto-xref">Table&nbsp;1</a> and <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;14</a>), based on the record of snowshoe hare (<code>astsa::Hare</code>) and lynx (<code>astsa::Lynx</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.</p>
 <div id="tbl-hl-pelts" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-hl-pelts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -363,9 +365,9 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 </section>
 <section id="operations-on-time-series" class="level2">
 <h2 class="anchored" data-anchor-id="operations-on-time-series">Operations on Time Series</h2>
-<p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings, we saw that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, could be more closely approximated by a linear trend.</p>
+<p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings (<a href="#fig-jj" class="quarto-xref">Figure&nbsp;15</a>), we see that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, can be more closely approximated by a linear trend.</p>
 <p>In addition to the data transformations used on independent observations, we often want to average time series data over time.</p>
-<p>As an example, <a href="#fig-gt-lo-ma5" class="quarto-xref">Figure&nbsp;1</a> shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.</p>
+<p>As an example, <a href="#fig-gt-lo-ma5" class="quarto-xref">Figure&nbsp;1</a> shows a 5-year moving average of global temperature data (<a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;16</a>). This operation smooths out local fluctuations to show the overall trend more clearly.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-gt-lo-ma5" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -416,7 +418,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
 \end{align}
 \tag{17}\]</span></span></p>
-<p>In the DJIA stock index example, returns were defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here’s the differencing operator <span class="math inline">\(\mathcal{D}\)</span> in the filtering format.</p>
+<p>For example, consider the DJIA stock index (<a href="#fig-djia" class="quarto-xref">Figure&nbsp;17</a>). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here’s the differencing operator <span class="math inline">\(\mathcal{D}\)</span> in the filtering format.</p>
 <p><span id="eq-diff-filter"><span class="math display">\[
 \begin{align}
   a_{\bullet, \bullet} (u) &amp;=
@@ -443,7 +445,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="covariates-and-trend" class="level3">
 <h3 class="anchored" data-anchor-id="covariates-and-trend">Covariates and Trend</h3>
 <p>Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables.</p>
-<p>Consider, for example, the cardiovascular mortality data shown in <a href="#fig-cmort" class="quarto-xref">Figure&nbsp;16</a>, where mortality is modeled as a response to temperature and the level of particulate matter. In this example we can formulate the expected value of mortality in the following terms.</p>
+<p>Consider, for example, the cardiovascular mortality data shown in <a href="#fig-cmort" class="quarto-xref">Figure&nbsp;18</a>, where mortality is modeled as a response to temperature and the level of particulate matter. In this example we can formulate the expected value of mortality in the following terms.</p>
 <p><span class="math display">\[
 \begin{align}
   m(t, X_{2:3}(t))
@@ -598,15 +600,15 @@ Figure&nbsp;3: Old Faithful eruptions: delay and duration
 </div>
 <section id="description-2" class="level4">
 <h4 class="anchored" data-anchor-id="description-2">Description</h4>
-<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;4</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;16</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-gtemp-lo" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-gtemp-lo-s5a" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-gtemp-lo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="s5b_ts_forecast_files/figure-html/fig-gtemp-lo-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-gtemp-lo-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-gtemp-lo-s5a-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gtemp-lo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gtemp-lo-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: Deviations in global surface temperatures
 </figcaption>
 </figure>
@@ -703,15 +705,15 @@ Figure&nbsp;7: J&amp;J: earnings per share at linear and log scales
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
 <section id="description-6" class="level4">
 <h4 class="anchored" data-anchor-id="description-6">Description</h4>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;8</a> shows the trading day closings and returns (percent change)<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;17</a> shows the trading day closings and returns (percent change)<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-djia-s5a" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-djia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="s5b_ts_forecast_files/figure-html/fig-djia-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-djia-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-djia-s5a-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-djia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-djia-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8: Dow Jones Industrial Average
 </figcaption>
 </figure>
@@ -1076,9 +1078,45 @@ Figure&nbsp;15: J&amp;J: earnings per share at linear and log scales
 </div>
 </div>
 </section>
+<section id="global-temperatures" class="level3">
+<h3 class="anchored" data-anchor-id="global-temperatures">Global Temperatures</h3>
+<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;16</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-gtemp-lo" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gtemp-lo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-gtemp-lo-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gtemp-lo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: Deviations in global surface temperatures
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="dow-jones-industrial-average-1" class="level3">
+<h3 class="anchored" data-anchor-id="dow-jones-industrial-average-1">Dow Jones Industrial Average</h3>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;17</a> shows the trading day closings and returns (percent change)<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-djia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-djia-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-djia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: Dow Jones Industrial Average
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
 <section id="cardiovascular-mortality-in-los-angeles" class="level3">
 <h3 class="anchored" data-anchor-id="cardiovascular-mortality-in-los-angeles">Cardiovascular Mortality in Los Angeles</h3>
-<p><a href="#fig-cmort" class="quarto-xref">Figure&nbsp;16</a> shows data from a study <span class="citation" data-cites="shumway1988">(<a href="#ref-shumway1988" role="doc-biblioref">R. H. Shumway, Azari, and Pawitan 1988</a>)</span> of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.</p>
+<p><a href="#fig-cmort" class="quarto-xref">Figure&nbsp;18</a> shows data from a study <span class="citation" data-cites="shumway1988">(<a href="#ref-shumway1988" role="doc-biblioref">R. H. Shumway, Azari, and Pawitan 1988</a>)</span> of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-cmort" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1087,7 +1125,7 @@ Figure&nbsp;15: J&amp;J: earnings per share at linear and log scales
 <img src="s5b_ts_forecast_files/figure-html/fig-cmort-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cmort-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;16: Weekly levels of mortality, temperature, and particulates in Los Angeles
+Figure&nbsp;18: Weekly levels of mortality, temperature, and particulates in Los Angeles
 </figcaption>
 </figure>
 </div>
@@ -1096,7 +1134,7 @@ Figure&nbsp;16: Weekly levels of mortality, temperature, and particulates in Los
 </section>
 <section id="el-niño-and-fish-population-1" class="level3">
 <h3 class="anchored" data-anchor-id="el-niño-and-fish-population-1">El Niño and Fish Population</h3>
-<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;17</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
+<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;19</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
 <p>The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -1106,7 +1144,7 @@ Figure&nbsp;16: Weekly levels of mortality, temperature, and particulates in Los
 <img src="s5b_ts_forecast_files/figure-html/fig-soi-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-soi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;17: Southern Oscillation Index and fish recruitment
+Figure&nbsp;19: Southern Oscillation Index and fish recruitment
 </figcaption>
 </figure>
 </div>
@@ -1154,6 +1192,7 @@ Venables, W. N., and B. D. Ripley. 2002. <span>“Modern Applied Statistics with
 <li id="fn10"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn11"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn12"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

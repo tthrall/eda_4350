@@ -106,7 +106,7 @@ Nearly all of the time series examples presented here are from the selected text
 
 ### Data derived from a random process
 
-Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (@tbl-hl-pelts and @fig-pred-prey ), based on the record of snowshoe hare (`astsa::Hare`) and lynx (`astsa::Lynx`) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.
+Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (@tbl-hl-pelts and @fig-pred-prey), based on the record of snowshoe hare (`astsa::Hare`) and lynx (`astsa::Lynx`) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.
 
 ```{r}
 #| label: hl_pelts
@@ -302,11 +302,11 @@ $$ {#eq-DL-algo}
 
 ## Operations on Time Series
 
-The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings, we saw that the transformed time series, $Y(t) = \log_e (X(t))$, could be more closely approximated by a linear trend.
+The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings (@fig-jj), we see that the transformed time series, $Y(t) = \log_e (X(t))$, can be more closely approximated by a linear trend.
 
 In addition to the data transformations used on independent observations, we often want to average time series data over time.
 
-As an example, @fig-gt-lo-ma5 shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.
+As an example, @fig-gt-lo-ma5 shows a 5-year moving average of global temperature data (@fig-gtemp-lo). This operation smooths out local fluctuations to show the overall trend more clearly.
 
 ```{r}
 #| label: gt_lo
@@ -391,7 +391,7 @@ $$
 \end{align}
 $$ {#eq-diff-operator}
 
-In the DJIA stock index example, returns were defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here's the differencing operator $\mathcal{D}$ in the filtering format.
+For example, consider the DJIA stock index (@fig-djia).  Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here's the differencing operator $\mathcal{D}$ in the filtering format.
 
 $$
 \begin{align}
@@ -566,7 +566,7 @@ climate_ds_tbl |> knitr::kable(
 [^4]: The data source is [NOAA](https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/), who use the term "anomaly" rather than "deviation". Further clarifications are pending.
 
 ```{r}
-#| label: tmp_lob
+#| label: tmp_lob_s5a
 
 # join surface temperatures into multivariate ts
 tmp_lo <- cbind(
@@ -580,7 +580,7 @@ dimnames(tmp_lob) [[2]] <- c("land", "ocean", "both")
 ```
 
 ```{r}
-#| label: ref_lob_tbl
+#| label: ref_lob_tbl_s5a
 
 # tmp_lob subset: 1991-2020 reference period
 ref_lob_tbl <- tmp_lob |> 
@@ -591,7 +591,7 @@ ref_lob_tbl <- tmp_lob |>
 ```
 
 ```{r}
-#| label: ref_lob_smy
+#| label: ref_lob_smy_s5a
 
 # check average deviation for reference period 1991-2020
 land_smy_vec  <- ref_lob_tbl$ land  |> summary()
@@ -618,7 +618,7 @@ ref_lob_smy <- tibble::tibble(
 ```
 
 ```{r}
-#| label: fig-gtemp-lo
+#| label: fig-gtemp-lo-s5a
 #| fig-cap: "Deviations in global surface temperatures"
 
 g_temp_lo <- astsa::tsplot(
@@ -729,7 +729,7 @@ Developing a statistical model of the time series can be regarded as a first ste
 [^5]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
 
 ```{r}
-#| label: fig-djia
+#| label: fig-djia-s5a
 #| fig-cap: "Dow Jones Industrial Average"
 
 # log-ratio of successive closing values
@@ -1347,6 +1347,49 @@ g_jj <- astsa::tsplot(
 
 g_jj_log <- astsa::tsplot(
   jj, col=4, ylab="USD", type="o", log="y")
+```
+
+### Global Temperatures
+
+@fig-gtemp-lo below shows the time series `gtemp_land` and `gtemp_ocean`, annual temperature deviations (in ◦C) from averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.
+
+```{r}
+#| label: fig-gtemp-lo
+#| fig-cap: "Deviations in global surface temperatures"
+
+g_temp_lo <- astsa::tsplot(
+  cbind(gtemp_land, gtemp_ocean), 
+  spaghetti=TRUE, 
+  col=astsa.col(c(4,2),.7), 
+  pch=c(20,18), 
+  type="o", 
+  ylab="\u00B0C", 
+  main="Global Surface Temperature Deviations", 
+  addLegend=TRUE, 
+  location="topleft", 
+  legend=c("Land Surface","Sea Surface")
+)
+```
+
+### Dow Jones Industrial Average
+
+@fig-djia shows the trading day closings and returns (percent change)[^5] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
+
+[^5]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
+
+```{r}
+#| label: fig-djia
+#| fig-cap: "Dow Jones Industrial Average"
+
+# log-ratio of successive closing values
+djia_return <- 
+  astsa::djia $Close |> log() |> diff()
+
+par(mfrow=2:1)
+
+plot(djia$Close, col=4, main="DJIA Close")
+
+plot(djia_return, col=4, main="DJIA Returns")
 ```
 
 ### Cardiovascular Mortality in Los Angeles
