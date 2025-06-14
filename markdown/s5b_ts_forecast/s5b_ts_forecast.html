@@ -96,7 +96,14 @@ window.Quarto = {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#mathematical-framework" id="toc-mathematical-framework" class="nav-link" data-scroll-target="#mathematical-framework">Mathematical Framework</a></li>
+  <li><a href="#mathematical-framework" id="toc-mathematical-framework" class="nav-link" data-scroll-target="#mathematical-framework">Mathematical Framework</a>
+  <ul class="collapse">
+  <li><a href="#data-derived-from-a-random-process" id="toc-data-derived-from-a-random-process" class="nav-link" data-scroll-target="#data-derived-from-a-random-process">Data derived from a random process</a></li>
+  <li><a href="#stationarity" id="toc-stationarity" class="nav-link" data-scroll-target="#stationarity">Stationarity</a></li>
+  <li><a href="#acf-auto-correlation-function" id="toc-acf-auto-correlation-function" class="nav-link" data-scroll-target="#acf-auto-correlation-function">ACF: auto-correlation function</a></li>
+  <li><a href="#pacf-partial-auto-correlation-function" id="toc-pacf-partial-auto-correlation-function" class="nav-link" data-scroll-target="#pacf-partial-auto-correlation-function">PACF: partial auto-correlation function</a></li>
+  </ul></li>
+  <li><a href="#operations-on-time-series" id="toc-operations-on-time-series" class="nav-link" data-scroll-target="#operations-on-time-series">Operations on Time Series</a></li>
   <li><a href="#model-components" id="toc-model-components" class="nav-link" data-scroll-target="#model-components">Model Components</a>
   <ul class="collapse">
   <li><a href="#covariates-and-trend" id="toc-covariates-and-trend" class="nav-link" data-scroll-target="#covariates-and-trend">Covariates and Trend</a></li>
@@ -123,7 +130,6 @@ window.Quarto = {
   <li><a href="#speech-recording" id="toc-speech-recording" class="nav-link" data-scroll-target="#speech-recording">Speech Recording</a></li>
   <li><a href="#earthquakes-and-explosions" id="toc-earthquakes-and-explosions" class="nav-link" data-scroll-target="#earthquakes-and-explosions">Earthquakes and Explosions</a></li>
   </ul></li>
-  <li><a href="#operations-on-time-series" id="toc-operations-on-time-series" class="nav-link" data-scroll-target="#operations-on-time-series">Operations on Time Series</a></li>
   <li><a href="#data-analysis-objectives-methods" id="toc-data-analysis-objectives-methods" class="nav-link" data-scroll-target="#data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</a>
   <ul class="collapse">
   <li><a href="#decision-support" id="toc-decision-support" class="nav-link" data-scroll-target="#decision-support">Decision Support</a></li>
@@ -140,6 +146,8 @@ window.Quarto = {
   <li><a href="#appendix-a-glossary-of-math-symbols" id="toc-appendix-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#appendix-a-glossary-of-math-symbols">Appendix A: Glossary of Math Symbols</a></li>
   <li><a href="#appendix-b-data-examples" id="toc-appendix-b-data-examples" class="nav-link" data-scroll-target="#appendix-b-data-examples">Appendix B: Data Examples</a>
   <ul class="collapse">
+  <li><a href="#hare-and-lynx-populations" id="toc-hare-and-lynx-populations" class="nav-link" data-scroll-target="#hare-and-lynx-populations">Hare and Lynx Populations</a></li>
+  <li><a href="#jj-quarterly-earnings-1" id="toc-jj-quarterly-earnings-1" class="nav-link" data-scroll-target="#jj-quarterly-earnings-1">JJ Quarterly Earnings</a></li>
   <li><a href="#cardiovascular-mortality-in-los-angeles" id="toc-cardiovascular-mortality-in-los-angeles" class="nav-link" data-scroll-target="#cardiovascular-mortality-in-los-angeles">Cardiovascular Mortality in Los Angeles</a></li>
   <li><a href="#el-niño-and-fish-population-1" id="toc-el-niño-and-fish-population-1" class="nav-link" data-scroll-target="#el-niño-and-fish-population-1">El Niño and Fish Population</a></li>
   </ul></li>
@@ -169,7 +177,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">08:14 Sat 14-Jun-2025</p>
+      <p class="date">14:40 Sat 14-Jun-2025</p>
     </div>
   </div>
   
@@ -194,7 +202,9 @@ window.Quarto = {
 </section>
 <section id="mathematical-framework" class="level2">
 <h2 class="anchored" data-anchor-id="mathematical-framework">Mathematical Framework</h2>
-<p>Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (<a href="#tbl-hl-pelts" class="quarto-xref">Table&nbsp;1</a>), based on the record of snowshoe hare (<code>astsa::Hare</code>) and lynx (<code>astsa::Lynx</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.</p>
+<section id="data-derived-from-a-random-process" class="level3">
+<h3 class="anchored" data-anchor-id="data-derived-from-a-random-process">Data derived from a random process</h3>
+<p>Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (<a href="#tbl-hl-pelts" class="quarto-xref">Table&nbsp;1</a> and <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;14</a> ), based on the record of snowshoe hare (<code>astsa::Hare</code>) and lynx (<code>astsa::Lynx</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.</p>
 <div id="tbl-hl-pelts" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-hl-pelts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -215,10 +225,10 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 </div>
 </figure>
 </div>
-<p>The distinction of time series analysis is that observations are indexed by time, and are not assumed to be statistically independent. Time series data are typically viewed as a realization of a random process of the following form.</p>
+<p>The distinction of time series analysis is that observations are indexed by time, and are not assumed to be statistically independent. Instead, time series data are typically modeled as a realization of a random process of the following form.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p><span id="eq-X-bullet"><span class="math display">\[
 \begin{align}
-  X_\bullet (t) = (X_1 (t), \ldots, X_d (t))
+  X_\bullet (t) = (X_1 (t), \ldots, X_d (t)) \in \mathbb{R}^d
 \end{align}
 \tag{1}\]</span></span></p>
 <p>If the number of data columns is two or greater <span class="math inline">\((d \ge 2)\)</span>, the process is said to be multivariate. Otherwise, if <span class="math inline">\(d = 1\)</span> the process is said to be univariate, and the notation is simplified to <span class="math inline">\(X (t)\)</span>.</p>
@@ -234,7 +244,10 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   m_\bullet (t) &amp;= E \{ X_\bullet (t) \}
 \end{align}
 \tag{2}\]</span></span></p>
-<p>In an additive model (which is most common), the residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is assumed to be <strong>second-order stationary</strong>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new process <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
+</section>
+<section id="stationarity" class="level3">
+<h3 class="anchored" data-anchor-id="stationarity">Stationarity</h3>
+<p>In an additive model (which is most common), the residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is assumed to be <strong>second-order stationary</strong>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new process <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
 <p><span id="eq-shift-operator"><span class="math display">\[
 \begin{align}
   Y_\bullet (t) &amp;= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
@@ -251,7 +264,10 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   &amp; \text{for all } s \in \mathbb{Z} \text{ and } a, b \in \{ 1, \ldots, d \}
 \end{align}
 \]</span></p>
-<p>Setting <span class="math inline">\(s = t\)</span> we have</p>
+</section>
+<section id="acf-auto-correlation-function" class="level3">
+<h3 class="anchored" data-anchor-id="acf-auto-correlation-function">ACF: auto-correlation function</h3>
+<p>Setting <span class="math inline">\(s = t\)</span> in the last expression we have</p>
 <p><span id="eq-stationarity-2"><span class="math display">\[
 \begin{align}
   Cov \{ X_a (t + u), X_b (t) \}
@@ -268,16 +284,151 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
 \tag{5}\]</span></span></p>
+<p>Although <span class="math inline">\(\gamma_{\bullet, \bullet} (u)\)</span> is a symmetric matrix at <span class="math inline">\(u = 0\)</span>, it is not generally symmetric at <span class="math inline">\(u \ne 0\)</span>. The symmetry relation we do have is that matrix <span class="math inline">\(\gamma_{\bullet, \bullet} (-u)\)</span> is the transpose of matrix <span class="math inline">\(\gamma_{\bullet, \bullet} (u)\)</span>.</p>
+<p><span id="eq-auto-cov-symmetry"><span class="math display">\[
+\begin{align}
+  \gamma_{a, b} (-u) &amp;= Cov \{ X_a (t - u), X_b (t) \} \\
+  &amp;= Cov \{ X_a (t), X_b (t + u) \}  \\
+  &amp;= Cov \{ X_b (t + u), X_a (t) \}   \\
+  &amp;= \gamma_{b, a} (u)
+\end{align}
+\tag{6}\]</span></span></p>
+<p>Consequently, the time-reversed process <span class="math inline">\(Y_\bullet (t) = X_\bullet (-t)\)</span> has the same auto-covariance structure as the original process, allowing for this matrix transposition.</p>
 <p>The auto-covariance function is often re-scaled to yield the <em>autocorrelation (ACF)</em> function <span class="math inline">\(\rho_{\bullet, \bullet}(\cdot)\)</span>.</p>
 <p><span id="eq-auto-cor"><span class="math display">\[
 \begin{align}
 \rho_{\bullet, \bullet} (u) &amp;= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\
   \\
   \text{where} \\
-  \rho_{a, b} &amp;= cor \{ X_a (u), X_b (0) \} \\
+  \rho_{a, b} (u) &amp;= cor \{ X_a (u), X_b (0) \} \\
   &amp;= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
-\tag{6}\]</span></span></p>
+\tag{7}\]</span></span></p>
+</section>
+<section id="pacf-partial-auto-correlation-function" class="level3">
+<h3 class="anchored" data-anchor-id="pacf-partial-auto-correlation-function">PACF: partial auto-correlation function</h3>
+<p>Going further, the <em>partial auto-correlation function (PACF)</em> is a useful diagnostic tool. Here’s the idea <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 108</a>)</span>. Recall that if <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, and <span class="math inline">\(Z_\bullet = \{Z_1, \ldots, Z_k\}\)</span> are random variables, then the conditional correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is obtained by first regressing <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> on <span class="math inline">\(Z_\bullet\)</span> to obtain predictors <span class="math inline">\(\hat{X}\)</span> and <span class="math inline">\(\hat{Y}\)</span>.</p>
+<p><span id="eq-X-Y-given-Z"><span class="math display">\[
+\begin{align}
+  \hat{X} &amp;= E(X \; | \; Z_\bullet) \\
+  \hat{Y} &amp;= E(Y \; | \; Z_\bullet)
+\end{align}
+\tag{8}\]</span></span></p>
+<p>If <span class="math inline">\(X, Y, Z_\bullet\)</span> have a joint normal distribution, then the conditional expectations above are linear combinations of the components of <span class="math inline">\(Z_\bullet\)</span>. The <em>partial</em> correlation is defined by setting <span class="math inline">\(\hat{X}, \hat{Y}\)</span> equal to the linear combinations that minimize mean squared error.</p>
+<p>Then the partial correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is the correlation between the respective <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> residuals, as follows.</p>
+<p><span id="eq-cor-X-Y-given-Z"><span class="math display">\[
+\begin{align}
+  \rho_{X, Y | Z_\bullet} &amp;= cor \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
+\end{align}
+\tag{9}\]</span></span></p>
+<p>In the time series context the PACF is defined with reference to a univariate, stationary Gaussian process, <span class="math inline">\(\mathcal{N}(t)\)</span>, having zero mean. Unlike the white noise process <span class="math inline">\(W(t)\)</span>, we do not assume <span class="math inline">\(\mathcal{N}(t)\)</span> to be free of auto-correlation. Recall that for a univariate process the auto-covariance and auto-correlation functions are even, e.g., <span class="math inline">\(\rho (-u) = \rho (u)\)</span>.</p>
+<p>At lags <span class="math inline">\(|u| \le 1\)</span> the partial auto-correlation is defined as the auto-correlation <span class="math inline">\(\rho (u)\)</span>. For <span class="math inline">\(u &gt; 1\)</span> the PACF is defined to be the correlation between <span class="math inline">\(\mathcal{N}(t + u)\)</span> and <span class="math inline">\(\mathcal{N}(t)\)</span> conditioned on the intervening variables <span class="math inline">\(\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)\)</span>. The calculations are as follows.</p>
+<p><span id="eq-N-given-past"><span class="math display">\[
+\begin{align}
+   \hat{\mathcal{N}}(t + u)
+   &amp;= E \left ( \mathcal{N}(t + u) \;
+     | \; \mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1) \right ) \\
+   &amp;= \beta_1 \mathcal{N}(t + u - 1) + \cdots
+     + \beta_{u-1} \mathcal{N}(t + 1)
+\end{align}
+\tag{10}\]</span></span></p>
+<p><span id="eq-N-given-future"><span class="math display">\[
+\begin{align}
+   \hat{\mathcal{N}}(t)
+   &amp;= E \left ( \mathcal{N}(t) \;
+     | \; \mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1) \right ) \\
+   &amp;= \beta_1 \mathcal{N}(t + 1) + \cdots
+     + \beta_{u-1} \mathcal{N}(t + u - 1)
+\end{align}
+\tag{11}\]</span></span></p>
+<p>The conditional expectation is linear in the conditioning variables thanks to the assumption that <span class="math inline">\(\mathcal{N}(t)\)</span> is a Gaussian process having zero mean. More generally, in the non-Gaussian case, the linear combination (not the conditional expectation) is retained in the definition and is defined by the least-squares criterion.</p>
+<p>The coefficients in the linear combination are shared by <span class="math inline">\(\hat{\mathcal{N}}(t)\)</span> and <span class="math inline">\(\hat{\mathcal{N}}(t + u)\)</span> but are applied in reverse order. This is because the time-reversed process <span class="math inline">\(\mathcal{N}(-t)\)</span> has the same auto-covariance structure as the original process <span class="math inline">\(\mathcal{N}(t)\)</span>.</p>
+<p>The partial auto-correlation function is now defined as the correlation of the residual variables:</p>
+<p><span id="eq-pacf-defn"><span class="math display">\[
+\begin{align}
+  \rho (u | u) &amp;= cor \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t) \right)
+\end{align}
+\tag{12}\]</span></span></p>
+<p>The calculation of the PACF can be based on the recursive Durbin-Levinson algorithm <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 115</a>)</span>.</p>
+<p><span id="eq-DL-algo"><span class="math display">\[
+\begin{align}
+  \rho (u | u) &amp;= \frac{\rho(u) - \sum_{\nu = 1}^{u - 1} \rho(u-1 | \nu) \;  \rho(u-\nu) }{1 - \sum_{\nu = 1}^{u - 1} \rho(u-1 | \nu) \;  \rho(\nu) } \\
+  \\
+  \text{where} \\
+  \\
+  \rho (u | \nu) &amp;= \rho (u-1 | \nu) \; - \; \rho (u | u) \; \rho (u-1 | u-\nu)
+\end{align}
+\tag{13}\]</span></span></p>
+</section>
+</section>
+<section id="operations-on-time-series" class="level2">
+<h2 class="anchored" data-anchor-id="operations-on-time-series">Operations on Time Series</h2>
+<p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings, we saw that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, could be more closely approximated by a linear trend.</p>
+<p>In addition to the data transformations used on independent observations, we often want to average time series data over time.</p>
+<p>As an example, <a href="#fig-gt-lo-ma5" class="quarto-xref">Figure&nbsp;1</a> shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-gt-lo-ma5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gt-lo-ma5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-gt-lo-ma5-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gt-lo-ma5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Global temperatures: 5-year moving average
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In this case the 5-year moving average operation can be expressed as follows.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p><span id="eq-ma-5"><span class="math display">\[
+\begin{align}
+  Y_\bullet (t)
+  &amp;= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
+\end{align}
+\tag{14}\]</span></span></p>
+<p>Here <span class="math inline">\(X_\bullet (\cdot)\)</span> is a two-component random process representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant <em>filter</em>, having the following general form.</p>
+<p><span id="eq-filter"><span class="math display">\[
+\begin{align}
+  Y_\bullet (t)
+  &amp;= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\
+  &amp;= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u)
+\end{align}
+\tag{15}\]</span></span></p>
+<p>where <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> is a sequence of <span class="math inline">\(d \times d\)</span> matrices and <span class="math inline">\(*\)</span> denotes discrete convolution.</p>
+<p>For example, here’s the 5-year moving average above expressed in this format.</p>
+<p><span id="eq-ma-5-filter"><span class="math display">\[
+\begin{align}
+  a_{\bullet, \bullet} (u) &amp;=
+    \begin{cases}
+      \frac{1}{5} I &amp; \text{ for } |u| \le 2 \\
+      0 &amp; \text{ for } |u| &gt; 2
+    \end{cases}
+\end{align}
+\tag{16}\]</span></span></p>
+<p>As noted above, the moving average operation can help to reveal and thus model the trend in the process, <span class="math inline">\(m_\bullet (t)\)</span>. Forming the residual series <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> is called “de-trending”.</p>
+<p>Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the “differencing” operator <span class="math inline">\(\mathcal{D} = \mathcal{I} - \mathcal{B}\)</span>.</p>
+<p><span id="eq-diff-operator"><span class="math display">\[
+\begin{align}
+  Y_\bullet (t)
+  &amp;= X_\bullet (t)  - X_\bullet (t - 1) \\
+  &amp;= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\
+  &amp;= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
+\end{align}
+\tag{17}\]</span></span></p>
+<p>In the DJIA stock index example, returns were defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here’s the differencing operator <span class="math inline">\(\mathcal{D}\)</span> in the filtering format.</p>
+<p><span id="eq-diff-filter"><span class="math display">\[
+\begin{align}
+  a_{\bullet, \bullet} (u) &amp;=
+    \begin{cases}
+      I  &amp; \text{ for } u = 0 \\
+      -I &amp; \text{ for } u = 1 \\
+      0  &amp; \text{ otherwise }
+    \end{cases}
+\end{align}
+\tag{18}\]</span></span></p>
+<p>A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a <em>low-pass</em> filter. The differencing operator can be categorized as a <em>high-pass</em> filter.</p>
+<p>In signal-processing applications a linear, time-invariant filter <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> may be designed to extract certain types of signals that are contaminated by noise.</p>
 </section>
 <section id="model-components" class="level2">
 <h2 class="anchored" data-anchor-id="model-components">Model Components</h2>
@@ -292,7 +443,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 <section id="covariates-and-trend" class="level3">
 <h3 class="anchored" data-anchor-id="covariates-and-trend">Covariates and Trend</h3>
 <p>Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables.</p>
-<p>Consider, for example, the cardiovascular mortality data <a href="#fig-cmort" class="quarto-xref">Figure&nbsp;14</a>, where mortality is modeled as a response to temperature and the level of particulate matter. In this example we can formulate the expected value of mortality<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> in the following terms.</p>
+<p>Consider, for example, the cardiovascular mortality data shown in <a href="#fig-cmort" class="quarto-xref">Figure&nbsp;16</a>, where mortality is modeled as a response to temperature and the level of particulate matter. In this example we can formulate the expected value of mortality in the following terms.</p>
 <p><span class="math display">\[
 \begin{align}
   m(t, X_{2:3}(t))
@@ -313,13 +464,14 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
    \\
     \text{ where } \\
     \\
-    W(t) &amp;= \text{an uncorrelated ("white noise") series} \\
-    \\
     m(t, X_{2:3}(t)) &amp;= \beta_0 + f(t) + \beta_2 X_2(t) + \beta_3 X_3(t) \\
+    \\
+    W(t) &amp;= \text{an uncorrelated ("white noise") series}
 \end{align}
 \]</span></p>
-<p>According to this model the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 - m(t, X_{2:3}(t))\)</span> is modeled as a series free of auto-correlation.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> This assumption seems plausible, since <span class="math inline">\(X_1(t)\)</span> counts the number of arguably independent events (cardiovascular deaths) in each week.</p>
-<p>Later in the text (page n) the authors refine this initial model. After examining the autocorrelation function (ACF) of <span class="math inline">\(W(t)\)</span>, they relabel this residual series as <span class="math inline">\(Y(t)\)</span> for which they develop an auto-correlated model.</p>
+<p>According to this model<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 - m(t, X_{2:3}(t))\)</span> is modeled as a series free of auto-correlation.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> This assumption seems plausible, since <span class="math inline">\(X_1(t)\)</span> counts the number of arguably independent events (cardiovascular deaths) in each week.</p>
+<p>Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled <span class="math inline">\(W(t)\)</span>), they develop an auto-correlated (<span class="math inline">\(AR(2)\)</span>) model.</p>
+<p>This is an example of the cyclic model-building process previously outlined. A model is developed, examined, and revised.</p>
 </section>
 <section id="auto-regression-ar" class="level3">
 <h3 class="anchored" data-anchor-id="auto-regression-ar">Auto-regression (AR)</h3>
@@ -337,7 +489,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 <h3 class="anchored" data-anchor-id="sunspots-monthly-counts-1749---present">Sunspots: Monthly Counts, 1749 - Present</h3>
 <section id="description" class="level4">
 <h4 class="anchored" data-anchor-id="description">Description</h4>
-<p><a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;1</a> below shows <code>sunspot.month</code>, the number of sunspots per month in <code>R</code> package <code>datasets</code>. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.</p>
+<p><a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;2</a> below shows <code>sunspot.month</code>, the number of sunspots per month in <code>R</code> package <code>datasets</code>. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-sunspots" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -346,7 +498,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 <img src="s5b_ts_forecast_files/figure-html/fig-sunspots-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sunspots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Sunspots: monthly count
+Figure&nbsp;2: Sunspots: monthly count
 </figcaption>
 </figure>
 </div>
@@ -362,7 +514,7 @@ Figure&nbsp;1: Sunspots: monthly count
 <h3 class="anchored" data-anchor-id="old-faithful-eruptions">Old Faithful eruptions</h3>
 <section id="description-1" class="level4">
 <h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p><a href="#fig-faithful" class="quarto-xref">Figure&nbsp;2</a> below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
+<p><a href="#fig-faithful" class="quarto-xref">Figure&nbsp;3</a> below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
 <p>The data represent a <em>point process</em>, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faithful geyser. In addition to the time of the eruption we have the duration of the eruption.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -372,7 +524,7 @@ Figure&nbsp;1: Sunspots: monthly count
 <img src="s5b_ts_forecast_files/figure-html/fig-faithful-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-faithful-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Old Faithful eruptions: delay and duration
+Figure&nbsp;3: Old Faithful eruptions: delay and duration
 </figcaption>
 </figure>
 </div>
@@ -446,7 +598,7 @@ Figure&nbsp;2: Old Faithful eruptions: delay and duration
 </div>
 <section id="description-2" class="level4">
 <h4 class="anchored" data-anchor-id="description-2">Description</h4>
-<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;3</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;4</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-gtemp-lo" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -455,7 +607,7 @@ Figure&nbsp;2: Old Faithful eruptions: delay and duration
 <img src="s5b_ts_forecast_files/figure-html/fig-gtemp-lo-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gtemp-lo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Deviations in global surface temperatures
+Figure&nbsp;4: Deviations in global surface temperatures
 </figcaption>
 </figure>
 </div>
@@ -471,7 +623,7 @@ Figure&nbsp;3: Deviations in global surface temperatures
 <h3 class="anchored" data-anchor-id="el-niño-and-fish-population">El Niño and Fish Population</h3>
 <section id="description-3" class="level4">
 <h4 class="anchored" data-anchor-id="description-3">Description</h4>
-<p><a href="#fig-soi-s5a" class="quarto-xref">Figure&nbsp;4</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
+<p><a href="#fig-soi-s5a" class="quarto-xref">Figure&nbsp;5</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
 <p>The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -481,7 +633,7 @@ Figure&nbsp;3: Deviations in global surface temperatures
 <img src="s5b_ts_forecast_files/figure-html/fig-soi-s5a-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-soi-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Southern Oscillation Index and fish recruitment
+Figure&nbsp;5: Southern Oscillation Index and fish recruitment
 </figcaption>
 </figure>
 </div>
@@ -498,16 +650,16 @@ Figure&nbsp;4: Southern Oscillation Index and fish recruitment
 <section id="description-4" class="level4">
 <h4 class="anchored" data-anchor-id="description-4">Description</h4>
 <p>One of the classic studies of predator–prey interactions is based on the record of lynx (<code>astsa::Lynx</code>) and snowshoe hare (<code>astsa::Hare</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
-<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;5</a> are thousands of pelts per year.</p>
+<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;14</a> are thousands of pelts per year.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-pred-prey" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-pred-prey-s5a" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-pred-prey-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="s5b_ts_forecast_files/figure-html/fig-pred-prey-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-pred-prey-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-pred-prey-s5a-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pred-prey-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Hare and lynx: purchased pelts
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pred-prey-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Hare and lynx: purchased pelts
 </figcaption>
 </figure>
 </div>
@@ -526,16 +678,16 @@ Figure&nbsp;5: Hare and lynx: purchased pelts
 <h3 class="anchored" data-anchor-id="jj-quarterly-earnings">JJ Quarterly Earnings</h3>
 <section id="description-5" class="level4">
 <h4 class="anchored" data-anchor-id="description-5">Description</h4>
-<p><a href="#fig-jj" class="quarto-xref">Figure&nbsp;6</a> below shows Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980 (<code>astsa::jj</code>). The bottom panel shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
+<p><a href="#fig-jj" class="quarto-xref">Figure&nbsp;15</a> below shows Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980 (<code>astsa::jj</code>). The bottom panel shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-jj" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-jj-s5a" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-jj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="s5b_ts_forecast_files/figure-html/fig-jj-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-jj-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-jj-s5a-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-jj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: J&amp;J: earnings per share at linear and log scales
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-jj-s5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: J&amp;J: earnings per share at linear and log scales
 </figcaption>
 </figure>
 </div>
@@ -551,7 +703,7 @@ Figure&nbsp;6: J&amp;J: earnings per share at linear and log scales
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
 <section id="description-6" class="level4">
 <h4 class="anchored" data-anchor-id="description-6">Description</h4>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;7</a> shows the trading day closings and returns (percent change)<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;8</a> shows the trading day closings and returns (percent change)<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -560,7 +712,7 @@ Figure&nbsp;6: J&amp;J: earnings per share at linear and log scales
 <img src="s5b_ts_forecast_files/figure-html/fig-djia-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-djia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Dow Jones Industrial Average
+Figure&nbsp;8: Dow Jones Industrial Average
 </figcaption>
 </figure>
 </div>
@@ -579,7 +731,7 @@ Figure&nbsp;7: Dow Jones Industrial Average
 <h3 class="anchored" data-anchor-id="fmri-imaging">fMRI Imaging</h3>
 <section id="description-7" class="level4">
 <h4 class="anchored" data-anchor-id="description-7">Description</h4>
-<p><a href="#fig-fmri" class="quarto-xref">Figure&nbsp;8</a> shows fMRI data (<code>astsa::fmri1</code>) from 2 locations in each of the cortex, thalamus, and cerebellum regions of the brain; n = 128 points, with one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).</p>
+<p><a href="#fig-fmri" class="quarto-xref">Figure&nbsp;9</a> shows fMRI data (<code>astsa::fmri1</code>) from 2 locations in each of the cortex, thalamus, and cerebellum regions of the brain; n = 128 points, with one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).</p>
 <p>The data are from a 1997 study that used fMRI to examine pain perception in humans. Here we focus on five subjects whose hands were periodically brushed. The stimulus (represented as a square wave in the figure) was applied for 32 seconds and then stopped for 32 seconds so that the signal period is 64 seconds. The sampling rate was one observation every 2 seconds for 256 seconds (n = 128).</p>
 <p>The data are consecutive measures of blood oxygenation-level dependent (BOLD) signal intensity, which measures areas of activation in the brain. The series shown are from two locations each in the cortex, thalamus, and cerebellum and the values are averaged over subjects. These were evoked responses and all subjects were in phase.</p>
 <div class="cell">
@@ -590,7 +742,7 @@ Figure&nbsp;7: Dow Jones Industrial Average
 <img src="s5b_ts_forecast_files/figure-html/fig-fmri-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fmri-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Evoked response per brain region
+Figure&nbsp;9: Evoked response per brain region
 </figcaption>
 </figure>
 </div>
@@ -606,7 +758,7 @@ Figure&nbsp;8: Evoked response per brain region
 <h3 class="anchored" data-anchor-id="speech-recording">Speech Recording</h3>
 <section id="description-8" class="level4">
 <h4 class="anchored" data-anchor-id="description-8">Description</h4>
-<p><a href="#fig-speech" class="quarto-xref">Figure&nbsp;9</a> below shows the <code>speech</code> data set from the <code>astsa</code> package, a recording of the utterance <em>aaahhh</em>. Note the repetitive nature of the signal and the rather regular periodicities. Also note the repetition of small wavelets. The separation between wavelets is known as the <em>pitch period</em> and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis.</p>
+<p><a href="#fig-speech" class="quarto-xref">Figure&nbsp;10</a> below shows the <code>speech</code> data set from the <code>astsa</code> package, a recording of the utterance <em>aaahhh</em>. Note the repetitive nature of the signal and the rather regular periodicities. Also note the repetition of small wavelets. The separation between wavelets is known as the <em>pitch period</em> and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-speech" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -615,7 +767,7 @@ Figure&nbsp;8: Evoked response per brain region
 <img src="s5b_ts_forecast_files/figure-html/fig-speech-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-speech-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Utterance ‘aaahhh’ sampled at 10 Hz
+Figure&nbsp;10: Utterance ‘aaahhh’ sampled at 10 Hz
 </figcaption>
 </figure>
 </div>
@@ -631,7 +783,7 @@ Figure&nbsp;9: Utterance ‘aaahhh’ sampled at 10 Hz
 <h3 class="anchored" data-anchor-id="earthquakes-and-explosions">Earthquakes and Explosions</h3>
 <section id="description-9" class="level4">
 <h4 class="anchored" data-anchor-id="description-9">Description</h4>
-<p><a href="#fig-eqexp" class="quarto-xref">Figure&nbsp;10</a> shows recordings (40 per second) at a Scandinavian seismic station of an earthquake (<code>astsa::EQ5</code>) and of a mining explosion (<code>astsa::EXP6</code>).</p>
+<p><a href="#fig-eqexp" class="quarto-xref">Figure&nbsp;11</a> shows recordings (40 per second) at a Scandinavian seismic station of an earthquake (<code>astsa::EQ5</code>) and of a mining explosion (<code>astsa::EXP6</code>).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-eqexp" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -640,7 +792,7 @@ Figure&nbsp;9: Utterance ‘aaahhh’ sampled at 10 Hz
 <img src="s5b_ts_forecast_files/figure-html/fig-eqexp-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eqexp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: Earthquake and explosion sampled at 40 Hz
+Figure&nbsp;11: Earthquake and explosion sampled at 40 Hz
 </figcaption>
 </figure>
 </div>
@@ -652,75 +804,6 @@ Figure&nbsp;10: Earthquake and explosion sampled at 40 Hz
 <p>The general problem of interest is to distinguish between wave-forms generated by earthquakes versus those generated by explosions.</p>
 </section>
 </section>
-</section>
-<section id="operations-on-time-series" class="level2">
-<h2 class="anchored" data-anchor-id="operations-on-time-series">Operations on Time Series</h2>
-<p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings, we saw that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, could be more closely approximated by a linear trend.</p>
-<p>In addition to the data transformations used on independent observations, we often want to average time series data over time.</p>
-<p>As an example, <a href="#fig-gt-lo-ma5" class="quarto-xref">Figure&nbsp;11</a> shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div id="fig-gt-lo-ma5" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-gt-lo-ma5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="s5b_ts_forecast_files/figure-html/fig-gt-lo-ma5-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gt-lo-ma5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11: Global temperatures: 5-year moving average
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>In this case the 5-year moving average operation can be expressed as follows.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
-<p><span id="eq-ma-5"><span class="math display">\[
-\begin{align}
-  Y_\bullet (t)
-  &amp;= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
-\end{align}
-\tag{7}\]</span></span></p>
-<p>Here <span class="math inline">\(X_\bullet (\cdot)\)</span> is a two-component random process representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant <em>filter</em>, having the following general form.</p>
-<p><span id="eq-filter"><span class="math display">\[
-\begin{align}
-  Y_\bullet (t)
-  &amp;= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\
-  &amp;= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u)
-\end{align}
-\tag{8}\]</span></span></p>
-<p>where <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> is a sequence of <span class="math inline">\(d \times d\)</span> matrices and <span class="math inline">\(*\)</span> denotes discrete convolution.</p>
-<p>For example, here’s the 5-year moving average above expressed in this format.</p>
-<p><span id="eq-ma-5-filter"><span class="math display">\[
-\begin{align}
-  a_{\bullet, \bullet} (u) &amp;=
-    \begin{cases}
-      \frac{1}{5} I &amp; \text{ for } |u| \le 2 \\
-      0 &amp; \text{ for } |u| &gt; 2
-    \end{cases}
-\end{align}
-\tag{9}\]</span></span></p>
-<p>As noted above, the moving average operation can help to reveal and thus model the trend in the process, <span class="math inline">\(m_\bullet (t)\)</span>. Forming the residual series <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> is called “de-trending”.</p>
-<p>Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the “differencing” operator <span class="math inline">\(\mathcal{D} = \mathcal{I} - \mathcal{B}\)</span>.</p>
-<p><span id="eq-diff-operator"><span class="math display">\[
-\begin{align}
-  Y_\bullet (t)
-  &amp;= X_\bullet (t)  - X_\bullet (t - 1) \\
-  &amp;= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\
-  &amp;= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
-\end{align}
-\tag{10}\]</span></span></p>
-<p>In the DJIA stock index example, returns were defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here’s the differencing operator <span class="math inline">\(\mathcal{D}\)</span> in the filtering format.</p>
-<p><span id="eq-diff-filter"><span class="math display">\[
-\begin{align}
-  a_{\bullet, \bullet} (u) &amp;=
-    \begin{cases}
-      I  &amp; \text{ for } u = 0 \\
-      -I &amp; \text{ for } u = 1 \\
-      0  &amp; \text{ otherwise }
-    \end{cases}
-\end{align}
-\tag{11}\]</span></span></p>
-<p>A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a <em>low-pass</em> filter. The differencing operator can be categorized as a <em>high-pass</em> filter.</p>
-<p>In signal-processing applications a linear, time-invariant filter <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> may be designed to extract certain types of signals that are contaminated by noise.</p>
 </section>
 <section id="data-analysis-objectives-methods" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-objectives-methods">Data Analysis Objectives &amp; Methods</h2>
@@ -789,7 +872,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \\
   &amp; \text{where } -1 &lt; \theta &lt; 1
 \end{align}
-\tag{12}\]</span></span></p>
+\tag{19}\]</span></span></p>
 <p>Then <span class="math inline">\(X(\cdot)\)</span> is an example of a moving average random process. In the theory of such processes one usually assumes that <span class="math inline">\(X(\cdot)\)</span> is observed for some interval of time <span class="math inline">\((t_0, \ldots, t_0 + T - 1)\)</span> and that <span class="math inline">\(W(\cdot)\)</span> is not observed. But for present purposes suppose that this is a simulation study in which both <span class="math inline">\(X(t)\)</span> and <span class="math inline">\(W(\cdot)\)</span> are generated over the same time interval and that the values of all parameters are known, including the population means, the population variances, and <span class="math inline">\(\theta\)</span>.</p>
 <p>Let’s focus on the calculation of the sample mean and its variance. For <span class="math inline">\(W(\cdot)\)</span> we have the following familiar formulas for the sum of observed values.</p>
 <p><span id="eq-ev-sum-uncorrelated"><span class="math display">\[
@@ -800,7 +883,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   Var \left \{ S_{W, T} \right \} &amp;= T \times Var \left \{ W(t_0) \right \}  \\
   &amp;= T \times \sigma_W^2
 \end{align}
-\tag{13}\]</span></span></p>
+\tag{20}\]</span></span></p>
 <p>The sample mean is derived from the sample sum.</p>
 <p><span id="eq-ev-avg-uncorrelated"><span class="math display">\[
 \begin{align}
@@ -814,14 +897,14 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\
   &amp;= \frac{ \sigma_W^2 }{T}
 \end{align}
-\tag{14}\]</span></span></p>
+\tag{21}\]</span></span></p>
 <p>The mean and variance of <span class="math inline">\(X(t)\)</span> can be expressed as respective functions of the mean and variance of <span class="math inline">\(Z(t)\)</span>.</p>
 <p><span id="eq-ev-ma-1-model"><span class="math display">\[
 \begin{align}
   \mu_X &amp;= (1 +\theta) \; \mu_Z \\
   \sigma_X^2 &amp;= (1 +\theta^2) \; \sigma_Z^2
 \end{align}
-\tag{15}\]</span></span></p>
+\tag{22}\]</span></span></p>
 <p>The variance formula for the sample sum, <span class="math inline">\(S_{X, T}\)</span>, differs from that of <span class="math inline">\(S_{Z, T}\)</span>, because <span class="math inline">\(X(\cdot)\)</span> is auto-correlated. The auto-covariance function is</p>
 <p><span id="eq-auto-cov-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -833,8 +916,8 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{16}\]</span></span></p>
-<p>The auto-correlation function is thus<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+\tag{23}\]</span></span></p>
+<p>The auto-correlation function is thus<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
 <p><span id="eq-auto-cor-ma-1-model"><span class="math display">\[
 \begin{align}
   \rho_X (u) &amp;= cor \left ( X(t + u), X(t) \right ) \\
@@ -845,7 +928,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{17}\]</span></span></p>
+\tag{24}\]</span></span></p>
 <p>Therefore</p>
 <p><span id="eq-var-sum-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -862,24 +945,24 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2}
   - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
 \end{align}
-\tag{18}\]</span></span></p>
+\tag{25}\]</span></span></p>
 <p>In short, ignoring the autocorrelation of <span class="math inline">\(X(\cdot)\)</span> would lead to erroneous calculations of the variance of <span class="math inline">\(S_{X, T}\)</span> and <span class="math inline">\(\hat{\mu}_X\)</span>.</p>
 </section>
 <section id="effective-sample-size-ess" class="level3">
 <h3 class="anchored" data-anchor-id="effective-sample-size-ess">Effective Sample Size (ESS)</h3>
-<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.</p>
+<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.</p>
 <p><span id="eq-ess-criterion"><span class="math display">\[
 \begin{align}
   \frac{\sigma_X^2}{N_d} &amp;= Var \left \{ \hat{\mu}_X \right \} \\
   &amp;= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
 \end{align}
-\tag{19}\]</span></span></p>
+\tag{26}\]</span></span></p>
 <p>Equivalently</p>
 <p><span id="eq-ess-definition"><span class="math display">\[
 \begin{align}
   N_d &amp;= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
 \end{align}
-\tag{20}\]</span></span></p>
+\tag{27}\]</span></span></p>
 <p>In our moving average example this yields</p>
 <p><span id="eq-ess-limit-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -891,7 +974,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     T^2  &amp; \text{ as } \theta \rightarrow -1
   \end{cases}
 \end{align}
-\tag{21}\]</span></span></p>
+\tag{28}\]</span></span></p>
 <p>As <span class="math inline">\(\theta\)</span> increases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> decreases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T/2\)</span>. In the other direction, as <span class="math inline">\(\theta\)</span> decreases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(-1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> increases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T^2\)</span>.</p>
 <p>The point here is that care must be taken when calculating the variance of estimators derived from time series data. This is a known issue addressed by available software.</p>
 </section>
@@ -956,9 +1039,46 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
 </section>
 <section id="appendix-b-data-examples" class="level2">
 <h2 class="anchored" data-anchor-id="appendix-b-data-examples">Appendix B: Data Examples</h2>
+<section id="hare-and-lynx-populations" class="level3">
+<h3 class="anchored" data-anchor-id="hare-and-lynx-populations">Hare and Lynx Populations</h3>
+<p>One of the classic studies of predator–prey interactions is based on the record of lynx (<code>astsa::Lynx</code>) and snowshoe hare (<code>astsa::Hare</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
+<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;14</a> are thousands of pelts per year.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pred-prey" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pred-prey-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-pred-prey-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pred-prey-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Hare and lynx: purchased pelts
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="jj-quarterly-earnings-1" class="level3">
+<h3 class="anchored" data-anchor-id="jj-quarterly-earnings-1">JJ Quarterly Earnings</h3>
+<p><a href="#fig-jj" class="quarto-xref">Figure&nbsp;15</a> below shows Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980 (<code>astsa::jj</code>). The bottom panel shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-jj" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-jj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-jj-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-jj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: J&amp;J: earnings per share at linear and log scales
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
 <section id="cardiovascular-mortality-in-los-angeles" class="level3">
 <h3 class="anchored" data-anchor-id="cardiovascular-mortality-in-los-angeles">Cardiovascular Mortality in Los Angeles</h3>
-<p><a href="#fig-cmort" class="quarto-xref">Figure&nbsp;14</a> shows data from a study <span class="citation" data-cites="shumway1988">(<a href="#ref-shumway1988" role="doc-biblioref">R. H. Shumway, Azari, and Pawitan 1988</a>)</span> of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.</p>
+<p><a href="#fig-cmort" class="quarto-xref">Figure&nbsp;16</a> shows data from a study <span class="citation" data-cites="shumway1988">(<a href="#ref-shumway1988" role="doc-biblioref">R. H. Shumway, Azari, and Pawitan 1988</a>)</span> of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-cmort" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -967,7 +1087,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
 <img src="s5b_ts_forecast_files/figure-html/fig-cmort-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cmort-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14: Weekly levels of mortality, temperature, and particulates in Los Angeles
+Figure&nbsp;16: Weekly levels of mortality, temperature, and particulates in Los Angeles
 </figcaption>
 </figure>
 </div>
@@ -976,7 +1096,7 @@ Figure&nbsp;14: Weekly levels of mortality, temperature, and particulates in Los
 </section>
 <section id="el-niño-and-fish-population-1" class="level3">
 <h3 class="anchored" data-anchor-id="el-niño-and-fish-population-1">El Niño and Fish Population</h3>
-<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;15</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
+<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;17</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
 <p>The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -986,7 +1106,7 @@ Figure&nbsp;14: Weekly levels of mortality, temperature, and particulates in Los
 <img src="s5b_ts_forecast_files/figure-html/fig-soi-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-soi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15: Southern Oscillation Index and fish recruitment
+Figure&nbsp;17: Southern Oscillation Index and fish recruitment
 </figcaption>
 </figure>
 </div>
@@ -1022,15 +1142,16 @@ Venables, W. N., and B. D. Ripley. 2002. <span>“Modern Applied Statistics with
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of <em>strict stationarity</em>. This means that for any finite set of times <span class="math inline">\((t_1, \ldots, t_K)\)</span> and any time-shift <span class="math inline">\(s\)</span>, the joint probability distribution of <span class="math inline">\((X_\bullet (t_1), \ldots, X_\bullet (t_K))\)</span> is identical to that of <span class="math inline">\((X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))\)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>The authors consider various forms for the function <span class="math inline">\(f(t)\)</span>: a linear function, a quadratic function, or a locally smoothed version of <span class="math inline">\(X_1(t)\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>The authors generally use the notation <span class="math inline">\(W(t)\)</span> to signify white noise, an uncorrelated stationary random process having mean 0. Moreover, the authors typically reserve this notation to signify an uncorrelated stationary <em>Gaussian</em> process, that is, a process of independent and identically distributed normal variables having mean 0.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations <span class="citation" data-cites="MASS">(<a href="#ref-MASS" role="doc-biblioref">Venables and Ripley 2002</a>)</span> includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>We assume the components of <span class="math inline">\(X_\bullet(t)\)</span> to be real-valued, unless stated otherwise.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of <em>strict stationarity</em>. This means that for any finite set of times <span class="math inline">\((t_1, \ldots, t_K)\)</span> and any time-shift <span class="math inline">\(s\)</span>, the joint probability distribution of <span class="math inline">\((X_\bullet (t_1), \ldots, X_\bullet (t_K))\)</span> is identical to that of <span class="math inline">\((X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The authors consider various forms for the function <span class="math inline">\(f(t)\)</span>: a linear function, a quadratic function, or a locally smoothed version of <span class="math inline">\(X_1(t)\)</span>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The authors generally use the notation <span class="math inline">\(W(t)\)</span> to signify white noise, an uncorrelated stationary random process having mean 0. Moreover, the authors typically reserve this notation to signify an uncorrelated stationary <em>Gaussian</em> process, that is, a process of independent and identically distributed (“iid”) normal variables having mean 0.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations <span class="citation" data-cites="MASS">(<a href="#ref-MASS" role="doc-biblioref">Venables and Ripley 2002</a>)</span> includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

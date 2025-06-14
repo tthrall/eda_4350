@@ -104,7 +104,9 @@ Nearly all of the time series examples presented here are from the selected text
 
 ## Mathematical Framework
 
-Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (@tbl-hl-pelts), based on the record of snowshoe hare (`astsa::Hare`) and lynx (`astsa::Lynx`) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.
+### Data derived from a random process
+
+Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (@tbl-hl-pelts and @fig-pred-prey ), based on the record of snowshoe hare (`astsa::Hare`) and lynx (`astsa::Lynx`) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.
 
 ```{r}
 #| label: hl_pelts
@@ -124,13 +126,15 @@ hl_pelts <- tsibbledata::pelt |>
 hl_pelts |> as_tibble() |> print(n = 5)
 ```
 
-The distinction of time series analysis is that observations are indexed by time, and are not assumed to be statistically independent. Time series data are typically viewed as a realization of a random process of the following form.
+The distinction of time series analysis is that observations are indexed by time, and are not assumed to be statistically independent. Instead, time series data are typically modeled as a realization of a random process of the following form.[^real_valued]
 
 $$
 \begin{align}
-  X_\bullet (t) = (X_1 (t), \ldots, X_d (t))
+  X_\bullet (t) = (X_1 (t), \ldots, X_d (t)) \in \mathbb{R}^d
 \end{align}
 $$ {#eq-X-bullet}
+
+[^real_valued]: We assume the components of $X_\bullet(t)$ to be real-valued, unless stated otherwise.
 
 If the number of data columns is two or greater $(d \ge 2)$, the process is said to be multivariate. Otherwise, if $d = 1$ the process is said to be univariate, and the notation is simplified to $X (t)$.
 
@@ -149,6 +153,8 @@ $$
   m_\bullet (t) &= E \{ X_\bullet (t) \}
 \end{align}
 $$ {#eq-m-bullet}
+
+### Stationarity
 
 In an additive model (which is most common), the residual random process, $X_\bullet (t) - m_\bullet (t)$ , is assumed to be **second-order stationary**.[^1] That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new process $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
 
@@ -173,7 +179,9 @@ $$
 \end{align}
 $$
 
-Setting $s = t$ we have
+### ACF: auto-correlation function
+
+Setting $s = t$ in the last expression we have
 
 $$
 \begin{align}
@@ -194,6 +202,19 @@ $$
 \end{align}
 $$ {#eq-auto-cov}
 
+Although $\gamma_{\bullet, \bullet} (u)$ is a symmetric matrix at $u = 0$, it is not generally symmetric at $u \ne 0$. The symmetry relation we do have is that matrix $\gamma_{\bullet, \bullet} (-u)$ is the transpose of matrix $\gamma_{\bullet, \bullet} (u)$.
+
+$$
+\begin{align}
+  \gamma_{a, b} (-u) &= Cov \{ X_a (t - u), X_b (t) \} \\
+  &= Cov \{ X_a (t), X_b (t + u) \}  \\
+  &= Cov \{ X_b (t + u), X_a (t) \}   \\
+  &= \gamma_{b, a} (u)
+\end{align}
+$$ {#eq-auto-cov-symmetry}
+
+Consequently, the time-reversed process $Y_\bullet (t) = X_\bullet (-t)$ has the same auto-covariance structure as the original process, allowing for this matrix transposition.
+
 The auto-covariance function is often re-scaled to yield the *autocorrelation (ACF)* function $\rho_{\bullet, \bullet}(\cdot)$.
 
 $$
@@ -201,10 +222,187 @@ $$
 \rho_{\bullet, \bullet} (u) &= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\ 
   \\ 
   \text{where} \\
-  \rho_{a, b} &= cor \{ X_a (u), X_b (0) \} \\ 
+  \rho_{a, b} (u) &= cor \{ X_a (u), X_b (0) \} \\ 
   &= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
 $$ {#eq-auto-cor}
+
+### PACF: partial auto-correlation function
+
+Going further, the _partial auto-correlation function (PACF)_ is a useful diagnostic tool.  Here's the idea [@shumway2025, page 108].  Recall that if $X$, $Y$, and $Z_\bullet = \{Z_1, \ldots, Z_k\}$ are random variables, then the conditional correlation between $X$ and $Y$ given $Z_\bullet$ is obtained by first regressing $X$ and $Y$ on $Z_\bullet$ to obtain predictors $\hat{X}$ and $\hat{Y}$.
+
+$$
+\begin{align}
+  \hat{X} &= E(X \; | \; Z_\bullet) \\ 
+  \hat{Y} &= E(Y \; | \; Z_\bullet)
+\end{align}
+$$ {#eq-X-Y-given-Z}
+
+If $X, Y, Z_\bullet$ have a joint normal distribution, then the conditional expectations above are linear combinations of the components of $Z_\bullet$.  The _partial_ correlation is defined by setting $\hat{X}, \hat{Y}$ equal to the linear combinations that minimize mean squared error.
+
+Then the partial correlation between $X$ and $Y$ given $Z_\bullet$ is the correlation between the respective $X$ and $Y$ residuals, as follows.
+
+$$
+\begin{align}
+  \rho_{X, Y | Z_\bullet} &= cor \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
+\end{align}
+$$ {#eq-cor-X-Y-given-Z}
+
+In the time series context the PACF is defined with reference to a univariate, stationary Gaussian process, $\mathcal{N}(t)$, having zero mean.  Unlike the white noise process $W(t)$, we do not assume $\mathcal{N}(t)$ to be free of auto-correlation.  Recall that for a univariate process the auto-covariance and auto-correlation functions are even, e.g., $\rho (-u) = \rho (u)$.
+
+At lags $|u| \le 1$ the partial auto-correlation is defined as the auto-correlation $\rho (u)$.  For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$.  The calculations are as follows.
+
+$$
+\begin{align}
+   \hat{\mathcal{N}}(t + u) 
+   &= E \left ( \mathcal{N}(t + u) \; 
+     | \; \mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1) \right ) \\ 
+   &= \beta_1 \mathcal{N}(t + u - 1) + \cdots 
+     + \beta_{u-1} \mathcal{N}(t + 1)
+\end{align}
+$$ {#eq-N-given-past}
+
+$$
+\begin{align}
+   \hat{\mathcal{N}}(t) 
+   &= E \left ( \mathcal{N}(t) \; 
+     | \; \mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1) \right ) \\ 
+   &= \beta_1 \mathcal{N}(t + 1) + \cdots 
+     + \beta_{u-1} \mathcal{N}(t + u - 1)
+\end{align}
+$$ {#eq-N-given-future}
+
+The conditional expectation is linear in the conditioning variables thanks to the assumption that $\mathcal{N}(t)$ is a Gaussian process having zero mean.  More generally, in the non-Gaussian case, the linear combination (not the conditional expectation) is retained in the definition and is defined by the least-squares criterion.
+
+The coefficients in the linear combination are shared by $\hat{\mathcal{N}}(t)$ and $\hat{\mathcal{N}}(t + u)$ but are applied in reverse order.  This is because the time-reversed process $\mathcal{N}(-t)$ has the same auto-covariance structure as the original process $\mathcal{N}(t)$.
+
+The partial auto-correlation function is now defined as the correlation of the residual variables:
+
+$$
+\begin{align}
+  \rho (u | u) &= cor \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t) \right)
+\end{align}
+$$ {#eq-pacf-defn}
+
+The calculation of the PACF can be based on the recursive Durbin-Levinson algorithm [@shumway2025, page 115].
+
+$$
+\begin{align}
+  \rho (u | u) &= \frac{\rho(u) - \sum_{\nu = 1}^{u - 1} \rho(u-1 | \nu) \;  \rho(u-\nu) }{1 - \sum_{\nu = 1}^{u - 1} \rho(u-1 | \nu) \;  \rho(\nu) } \\ 
+  \\
+  \text{where} \\ 
+  \\ 
+  \rho (u | \nu) &= \rho (u-1 | \nu) \; - \; \rho (u | u) \; \rho (u-1 | u-\nu) 
+\end{align}
+$$ {#eq-DL-algo}
+
+## Operations on Time Series
+
+The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings, we saw that the transformed time series, $Y(t) = \log_e (X(t))$, could be more closely approximated by a linear trend.
+
+In addition to the data transformations used on independent observations, we often want to average time series data over time.
+
+As an example, @fig-gt-lo-ma5 shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.
+
+```{r}
+#| label: gt_lo
+
+gt_lo <- cbind(
+  astsa::gtemp_land, astsa::gtemp_ocean)
+names(gt_lo) <- c("land", "ocean")
+```
+
+```{r}
+#| label: gt_lo_ma5
+
+gt_lo_ma5 <- gt_lo |> 
+  stats::filter(filter = rep(1/5, 5))
+names(gt_lo_ma5) <- c("land", "ocean")
+```
+
+```{r}
+#| label: fig-gt-lo-ma5
+#| fig-cap: "Global temperatures: 5-year moving average"
+
+astsa::tsplot(
+  gt_lo_ma5, 
+  ncolm = 2, 
+  spaghetti=TRUE, 
+  col=astsa.col(c(4,2),.7), 
+  pch=c(20,18), 
+  type="o", 
+  ylab="\u00B0C", 
+  main="Temperature Deviations (5-year avg)", 
+  addLegend=TRUE, 
+  location="topleft", 
+  legend=c("Land Surface","Sea Surface")
+)
+```
+
+In this case the 5-year moving average operation can be expressed as follows.[^6]
+
+[^6]: The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term "moving average" is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.
+
+$$
+\begin{align}
+  Y_\bullet (t) 
+  &= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u) 
+\end{align}
+$$ {#eq-ma-5}
+
+Here $X_\bullet (\cdot)$ is a two-component random process representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant *filter*, having the following general form.
+
+$$
+\begin{align}
+  Y_\bullet (t) 
+  &= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\ 
+  &= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u) 
+\end{align}
+$$ {#eq-filter}
+
+where $a_{\bullet, \bullet} (\cdot)$ is a sequence of $d \times d$ matrices and $*$ denotes discrete convolution.
+
+For example, here's the 5-year moving average above expressed in this format.
+
+$$
+\begin{align}
+  a_{\bullet, \bullet} (u) &= 
+    \begin{cases}
+      \frac{1}{5} I & \text{ for } |u| \le 2 \\ 
+      0 & \text{ for } |u| > 2
+    \end{cases}
+\end{align}
+$$ {#eq-ma-5-filter}
+
+As noted above, the moving average operation can help to reveal and thus model the trend in the process, $m_\bullet (t)$. Forming the residual series $X_\bullet (t) - m_\bullet (t)$ is called "de-trending".
+
+Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the "differencing" operator $\mathcal{D} = \mathcal{I} - \mathcal{B}$.
+
+$$
+\begin{align}
+  Y_\bullet (t) 
+  &= X_\bullet (t)  - X_\bullet (t - 1) \\ 
+  &= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\ 
+  &= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
+\end{align}
+$$ {#eq-diff-operator}
+
+In the DJIA stock index example, returns were defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here's the differencing operator $\mathcal{D}$ in the filtering format.
+
+$$
+\begin{align}
+  a_{\bullet, \bullet} (u) &= 
+    \begin{cases}
+      I  & \text{ for } u = 0 \\ 
+      -I & \text{ for } u = 1 \\ 
+      0  & \text{ otherwise }
+    \end{cases}
+\end{align}
+$$ {#eq-diff-filter}
+
+A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a *low-pass* filter. The differencing operator can be categorized as a *high-pass* filter.
+
+In signal-processing applications a linear, time-invariant filter $a_{\bullet, \bullet} (\cdot)$ may be designed to extract certain types of signals that are contaminated by noise.
 
 ## Model Components
 
@@ -257,9 +455,11 @@ According to this model[^cmort_trend] the pattern over time of $X_1(t)$ is captu
 
 [^cmort_trend]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
 
-[^white_noise]: The authors generally use the notation $W(t)$ to signify white noise, an uncorrelated stationary random process having mean 0.  Moreover, the authors typically reserve this notation to signify an uncorrelated stationary _Gaussian_ process, that is, a process of independent and identically distributed normal variables having mean 0.
+[^white_noise]: The authors generally use the notation $W(t)$ to signify white noise, an uncorrelated stationary random process having mean 0.  Moreover, the authors typically reserve this notation to signify an uncorrelated stationary _Gaussian_ process, that is, a process of independent and identically distributed ("iid") normal variables having mean 0.
 
 Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled $W(t)$), they develop an auto-correlated ($AR(2)$) model.
+
+This is an example of the cyclic model-building process previously outlined.  A model is developed, examined, and revised.
 
 ### Auto-regression (AR)
 
@@ -469,7 +669,7 @@ One of the classic studies of predator–prey interactions is based on the recor
 These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in @fig-pred-prey are thousands of pelts per year.
 
 ```{r}
-#| label: fig-pred-prey
+#| label: fig-pred-prey-s5a
 #| fig-cap: "Hare and lynx: purchased pelts"
 
 g_hare_lynx <- tsplot(
@@ -497,7 +697,7 @@ The scientific understanding of predator-prey interactions, starting with the Lo
 @fig-jj below shows Johnson & Johnson quarterly earnings per share in US dollars from 1960 through 1980 (`astsa::jj`). The bottom panel shows the same data on a $\log_e$ scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.
 
 ```{r}
-#| label: fig-jj
+#| label: fig-jj-s5a
 #| fig-cap: "J&J: earnings per share at linear and log scales"
 
 par(mfrow=2:1)
@@ -640,114 +840,6 @@ g_eqexp <- astsa::tsplot(
 #### Context: Questions and Objectives
 
 The general problem of interest is to distinguish between wave-forms generated by earthquakes versus those generated by explosions.
-
-## Operations on Time Series
-
-The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings, we saw that the transformed time series, $Y(t) = \log_e (X(t))$, could be more closely approximated by a linear trend.
-
-In addition to the data transformations used on independent observations, we often want to average time series data over time.
-
-As an example, @fig-gt-lo-ma5 shows a 5-year moving average of the global temperature data previously shown. This operation smooths out local fluctuations to show the overall trend more clearly.
-
-```{r}
-#| label: gt_lo
-
-gt_lo <- cbind(
-  astsa::gtemp_land, astsa::gtemp_ocean)
-names(gt_lo) <- c("land", "ocean")
-```
-
-```{r}
-#| label: gt_lo_ma5
-
-gt_lo_ma5 <- gt_lo |> 
-  stats::filter(filter = rep(1/5, 5))
-names(gt_lo_ma5) <- c("land", "ocean")
-```
-
-```{r}
-#| label: fig-gt-lo-ma5
-#| fig-cap: "Global temperatures: 5-year moving average"
-
-astsa::tsplot(
-  gt_lo_ma5, 
-  ncolm = 2, 
-  spaghetti=TRUE, 
-  col=astsa.col(c(4,2),.7), 
-  pch=c(20,18), 
-  type="o", 
-  ylab="\u00B0C", 
-  main="Temperature Deviations (5-year avg)", 
-  addLegend=TRUE, 
-  location="topleft", 
-  legend=c("Land Surface","Sea Surface")
-)
-```
-
-In this case the 5-year moving average operation can be expressed as follows.[^6]
-
-[^6]: The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term "moving average" is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.
-
-$$
-\begin{align}
-  Y_\bullet (t) 
-  &= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u) 
-\end{align}
-$$ {#eq-ma-5}
-
-Here $X_\bullet (\cdot)$ is a two-component random process representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant *filter*, having the following general form.
-
-$$
-\begin{align}
-  Y_\bullet (t) 
-  &= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\ 
-  &= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u) 
-\end{align}
-$$ {#eq-filter}
-
-where $a_{\bullet, \bullet} (\cdot)$ is a sequence of $d \times d$ matrices and $*$ denotes discrete convolution.
-
-For example, here's the 5-year moving average above expressed in this format.
-
-$$
-\begin{align}
-  a_{\bullet, \bullet} (u) &= 
-    \begin{cases}
-      \frac{1}{5} I & \text{ for } |u| \le 2 \\ 
-      0 & \text{ for } |u| > 2
-    \end{cases}
-\end{align}
-$$ {#eq-ma-5-filter}
-
-As noted above, the moving average operation can help to reveal and thus model the trend in the process, $m_\bullet (t)$. Forming the residual series $X_\bullet (t) - m_\bullet (t)$ is called "de-trending".
-
-Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the "differencing" operator $\mathcal{D} = \mathcal{I} - \mathcal{B}$.
-
-$$
-\begin{align}
-  Y_\bullet (t) 
-  &= X_\bullet (t)  - X_\bullet (t - 1) \\ 
-  &= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\ 
-  &= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
-\end{align}
-$$ {#eq-diff-operator}
-
-In the DJIA stock index example, returns were defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here's the differencing operator $\mathcal{D}$ in the filtering format.
-
-$$
-\begin{align}
-  a_{\bullet, \bullet} (u) &= 
-    \begin{cases}
-      I  & \text{ for } u = 0 \\ 
-      -I & \text{ for } u = 1 \\ 
-      0  & \text{ otherwise }
-    \end{cases}
-\end{align}
-$$ {#eq-diff-filter}
-
-A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a *low-pass* filter. The differencing operator can be categorized as a *high-pass* filter.
-
-In signal-processing applications a linear, time-invariant filter $a_{\bullet, \bullet} (\cdot)$ may be designed to extract certain types of signals that are contaminated by noise.
 
 ## Data Analysis Objectives & Methods
 
@@ -1210,6 +1302,48 @@ $$
 $$
 
 ## Appendix B: Data Examples
+
+### Hare and Lynx Populations
+
+One of the classic studies of predator–prey interactions is based on the record of lynx (`astsa::Lynx`) and snowshoe hare (`astsa::Hare`) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.
+
+These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in @fig-pred-prey are thousands of pelts per year.
+
+```{r}
+#| label: fig-pred-prey
+#| fig-cap: "Hare and lynx: purchased pelts"
+
+g_hare_lynx <- tsplot(
+  cbind(Hare, Lynx), 
+  col=c(2,4), 
+  type="o", 
+  pch=c(0,2), 
+  ylab="Number", 
+  spaghetti=TRUE, 
+  addLegend=TRUE)
+
+mtext("(\u00D7 1000)", side=2, adj=1, line=1.5, cex=.8)
+```
+
+### JJ Quarterly Earnings
+
+@fig-jj below shows Johnson & Johnson quarterly earnings per share in US dollars from 1960 through 1980 (`astsa::jj`). The bottom panel shows the same data on a $\log_e$ scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.
+
+```{r}
+#| label: fig-jj
+#| fig-cap: "J&J: earnings per share at linear and log scales"
+
+par(mfrow=2:1)
+
+g_jj <- astsa::tsplot(
+  jj, 
+  col=4, 
+  ylab="USD", 
+  type="o")
+
+g_jj_log <- astsa::tsplot(
+  jj, col=4, ylab="USD", type="o", log="y")
+```
 
 ### Cardiovascular Mortality in Los Angeles
 
