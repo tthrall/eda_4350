@@ -471,11 +471,26 @@ Auto-regressive models are based on the idea that the current value of the serie
 
 $$
 \begin{align}
-  X(t) &= \sum_{\nu = 1}^p \phi_\nu X(t-\nu) \; + \; W(t)
+  X(t) &= \alpha \; + \; \sum_{\nu = 1}^p \phi_\nu X(t-\nu) \; + \; W(t) \\ 
+  \text{where } \\ 
+  \alpha &= \mu_X \; - \; \mu_X \; \sum_{\nu = 1}^p \phi_\nu 
 \end{align}
-$$
+$$ {#eq-AR-sum}
 
-where $W(t)$ again denotes a residual "white noise" stationary process: free of autocorrelation and having zero mean.  (Even more, $W(t)$ is often assumed to be a sequence of independent and identically distributed, or "iid", normal variates having zero mean.)
+and where $W(t)$ again denotes a residual "white noise" stationary process: free of autocorrelation and having zero mean.  (Even more, $W(t)$ is often assumed to be a sequence of independent and identically distributed, or "iid", normal variates having zero mean.)
+
+Equivalently, using the back-shift operator $\mathcal{B}$ the $AR(p)$ model can be expressed as follows.  
+
+$$
+\begin{align}
+  \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) &= W(t) \\ 
+  \\ 
+  \text{where } \\
+  \phi (\mathcal{B}) &= \mathcal{I} \; - \; \sum_{\nu = 1}^p \phi_\nu \mathcal{B}^\nu
+\end{align}
+$$ {#eq-AR-bs-poly}
+
+The polynomial $\phi(\cdot)$ applied to the back-shift operator $\mathcal{B}$ is an _auto-regressive operator of order $p$_.
 
 ### Moving Average (MA)
 

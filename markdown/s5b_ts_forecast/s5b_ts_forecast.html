@@ -179,7 +179,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">20:30 Sat 14-Jun-2025</p>
+      <p class="date">22:59 Sat 14-Jun-2025</p>
     </div>
   </div>
   
@@ -478,12 +478,24 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="auto-regression-ar" class="level3">
 <h3 class="anchored" data-anchor-id="auto-regression-ar">Auto-regression (AR)</h3>
 <p>Auto-regressive models are based on the idea that the current value of the series, <span class="math inline">\(X(t)\)</span>, can be approximated, or forecast, as a function of <span class="math inline">\(p\)</span> past values, <span class="math inline">\(X(t−1), X(t−2), \ldots, X(t−p)\)</span>, which leads to the following definition of an auto-regressive model of order <span class="math inline">\(p\)</span>, abbreviated as <span class="math inline">\(AR(p)\)</span>.</p>
-<p><span class="math display">\[
+<p><span id="eq-AR-sum"><span class="math display">\[
 \begin{align}
-  X(t) &amp;= \sum_{\nu = 1}^p \phi_\nu X(t-\nu) \; + \; W(t)
+  X(t) &amp;= \alpha \; + \; \sum_{\nu = 1}^p \phi_\nu X(t-\nu) \; + \; W(t) \\
+  \text{where } \\
+  \alpha &amp;= \mu_X \; - \; \mu_X \; \sum_{\nu = 1}^p \phi_\nu
 \end{align}
-\]</span></p>
-<p>where <span class="math inline">\(W(t)\)</span> again denotes a residual “white noise” stationary process: free of autocorrelation and having zero mean. (Even more, <span class="math inline">\(W(t)\)</span> is often assumed to be a sequence of independent and identically distributed, or “iid”, normal variates having zero mean.)</p>
+\tag{19}\]</span></span></p>
+<p>and where <span class="math inline">\(W(t)\)</span> again denotes a residual “white noise” stationary process: free of autocorrelation and having zero mean. (Even more, <span class="math inline">\(W(t)\)</span> is often assumed to be a sequence of independent and identically distributed, or “iid”, normal variates having zero mean.)</p>
+<p>Equivalently, using the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> the <span class="math inline">\(AR(p)\)</span> model can be expressed as follows.</p>
+<p><span id="eq-AR-bs-poly"><span class="math display">\[
+\begin{align}
+  \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) &amp;= W(t) \\
+  \\
+  \text{where } \\
+  \phi (\mathcal{B}) &amp;= \mathcal{I} \; - \; \sum_{\nu = 1}^p \phi_\nu \mathcal{B}^\nu
+\end{align}
+\tag{20}\]</span></span></p>
+<p>The polynomial <span class="math inline">\(\phi(\cdot)\)</span> applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> is an <em>auto-regressive operator of order <span class="math inline">\(p\)</span></em>.</p>
 </section>
 <section id="moving-average-ma" class="level3">
 <h3 class="anchored" data-anchor-id="moving-average-ma">Moving Average (MA)</h3>
@@ -881,7 +893,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \\
   &amp; \text{where } -1 &lt; \theta &lt; 1
 \end{align}
-\tag{19}\]</span></span></p>
+\tag{21}\]</span></span></p>
 <p>Then <span class="math inline">\(X(\cdot)\)</span> is an example of a moving average random process. In the theory of such processes one usually assumes that <span class="math inline">\(X(\cdot)\)</span> is observed for some interval of time <span class="math inline">\((t_0, \ldots, t_0 + T - 1)\)</span> and that <span class="math inline">\(W(\cdot)\)</span> is not observed. But for present purposes suppose that this is a simulation study in which both <span class="math inline">\(X(t)\)</span> and <span class="math inline">\(W(\cdot)\)</span> are generated over the same time interval and that the values of all parameters are known, including the population means, the population variances, and <span class="math inline">\(\theta\)</span>.</p>
 <p>Let’s focus on the calculation of the sample mean and its variance. For <span class="math inline">\(W(\cdot)\)</span> we have the following familiar formulas for the sum of observed values.</p>
 <p><span id="eq-ev-sum-uncorrelated"><span class="math display">\[
@@ -892,7 +904,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   Var \left \{ S_{W, T} \right \} &amp;= T \times Var \left \{ W(t_0) \right \}  \\
   &amp;= T \times \sigma_W^2
 \end{align}
-\tag{20}\]</span></span></p>
+\tag{22}\]</span></span></p>
 <p>The sample mean is derived from the sample sum.</p>
 <p><span id="eq-ev-avg-uncorrelated"><span class="math display">\[
 \begin{align}
@@ -906,14 +918,14 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\
   &amp;= \frac{ \sigma_W^2 }{T}
 \end{align}
-\tag{21}\]</span></span></p>
+\tag{23}\]</span></span></p>
 <p>The mean and variance of <span class="math inline">\(X(t)\)</span> can be expressed as respective functions of the mean and variance of <span class="math inline">\(Z(t)\)</span>.</p>
 <p><span id="eq-ev-ma-1-model"><span class="math display">\[
 \begin{align}
   \mu_X &amp;= (1 +\theta) \; \mu_Z \\
   \sigma_X^2 &amp;= (1 +\theta^2) \; \sigma_Z^2
 \end{align}
-\tag{22}\]</span></span></p>
+\tag{24}\]</span></span></p>
 <p>The variance formula for the sample sum, <span class="math inline">\(S_{X, T}\)</span>, differs from that of <span class="math inline">\(S_{Z, T}\)</span>, because <span class="math inline">\(X(\cdot)\)</span> is autocorrelated. The auto-covariance function is</p>
 <p><span id="eq-auto-cov-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -925,7 +937,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{23}\]</span></span></p>
+\tag{25}\]</span></span></p>
 <p>The autocorrelation function is thus<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
 <p><span id="eq-auto-cor-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -937,7 +949,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{24}\]</span></span></p>
+\tag{26}\]</span></span></p>
 <p>Therefore</p>
 <p><span id="eq-var-sum-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -954,7 +966,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2}
   - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
 \end{align}
-\tag{25}\]</span></span></p>
+\tag{27}\]</span></span></p>
 <p>In short, ignoring the autocorrelation of <span class="math inline">\(X(\cdot)\)</span> would lead to erroneous calculations of the variance of <span class="math inline">\(S_{X, T}\)</span> and <span class="math inline">\(\hat{\mu}_X\)</span>.</p>
 </section>
 <section id="effective-sample-size-ess" class="level3">
@@ -965,13 +977,13 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \frac{\sigma_X^2}{N_d} &amp;= Var \left \{ \hat{\mu}_X \right \} \\
   &amp;= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
 \end{align}
-\tag{26}\]</span></span></p>
+\tag{28}\]</span></span></p>
 <p>Equivalently</p>
 <p><span id="eq-ess-definition"><span class="math display">\[
 \begin{align}
   N_d &amp;= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
 \end{align}
-\tag{27}\]</span></span></p>
+\tag{29}\]</span></span></p>
 <p>In our moving average example this yields</p>
 <p><span id="eq-ess-limit-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -983,7 +995,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     T^2  &amp; \text{ as } \theta \rightarrow -1
   \end{cases}
 \end{align}
-\tag{28}\]</span></span></p>
+\tag{30}\]</span></span></p>
 <p>As <span class="math inline">\(\theta\)</span> increases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> decreases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T/2\)</span>. In the other direction, as <span class="math inline">\(\theta\)</span> decreases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(-1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> increases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T^2\)</span>.</p>
 <p>The point here is that care must be taken when calculating the variance of estimators derived from time series data. This is a known issue addressed by available software.</p>
 </section>
