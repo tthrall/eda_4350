@@ -177,7 +177,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">14:40 Sat 14-Jun-2025</p>
+      <p class="date">15:18 Sat 14-Jun-2025</p>
     </div>
   </div>
   
@@ -307,21 +307,21 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 </section>
 <section id="pacf-partial-auto-correlation-function" class="level3">
 <h3 class="anchored" data-anchor-id="pacf-partial-auto-correlation-function">PACF: partial auto-correlation function</h3>
-<p>Going further, the <em>partial auto-correlation function (PACF)</em> is a useful diagnostic tool. Here’s the idea <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 108</a>)</span>. Recall that if <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, and <span class="math inline">\(Z_\bullet = \{Z_1, \ldots, Z_k\}\)</span> are random variables, then the conditional correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is obtained by first regressing <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> on <span class="math inline">\(Z_\bullet\)</span> to obtain predictors <span class="math inline">\(\hat{X}\)</span> and <span class="math inline">\(\hat{Y}\)</span>.</p>
+<p>Going further, the <em>partial auto-correlation function (PACF)</em> is a useful diagnostic tool. Here’s the idea <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 108</a>)</span>. Recall that if <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, and <span class="math inline">\(Z_\bullet = \{Z_1, \ldots, Z_k\}\)</span> are random variables, then the conditional correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is obtained by first regressing <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> on <span class="math inline">\(Z_\bullet\)</span> to obtain predictors <span class="math inline">\(\hat{X}\)</span> and <span class="math inline">\(\hat{Y}\)</span>. If <span class="math inline">\(X, Y, Z_\bullet\)</span> have a joint normal distribution, we have</p>
 <p><span id="eq-X-Y-given-Z"><span class="math display">\[
 \begin{align}
   \hat{X} &amp;= E(X \; | \; Z_\bullet) \\
   \hat{Y} &amp;= E(Y \; | \; Z_\bullet)
 \end{align}
 \tag{8}\]</span></span></p>
-<p>If <span class="math inline">\(X, Y, Z_\bullet\)</span> have a joint normal distribution, then the conditional expectations above are linear combinations of the components of <span class="math inline">\(Z_\bullet\)</span>. The <em>partial</em> correlation is defined by setting <span class="math inline">\(\hat{X}, \hat{Y}\)</span> equal to the linear combinations that minimize mean squared error.</p>
+<p>which are linear combinations of the components of <span class="math inline">\(Z_\bullet\)</span>. More generally, <span class="math inline">\(\hat{X}, \hat{Y}\)</span> are defined as the linear combinations of <span class="math inline">\(Z_\bullet\)</span> that minimize mean squared error.</p>
 <p>Then the partial correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is the correlation between the respective <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> residuals, as follows.</p>
 <p><span id="eq-cor-X-Y-given-Z"><span class="math display">\[
 \begin{align}
-  \rho_{X, Y | Z_\bullet} &amp;= cor \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
+  \rho_{X, Y \bullet Z_\bullet} &amp;= cor \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
 \end{align}
 \tag{9}\]</span></span></p>
-<p>In the time series context the PACF is defined with reference to a univariate, stationary Gaussian process, <span class="math inline">\(\mathcal{N}(t)\)</span>, having zero mean. Unlike the white noise process <span class="math inline">\(W(t)\)</span>, we do not assume <span class="math inline">\(\mathcal{N}(t)\)</span> to be free of auto-correlation. Recall that for a univariate process the auto-covariance and auto-correlation functions are even, e.g., <span class="math inline">\(\rho (-u) = \rho (u)\)</span>.</p>
+<p>In the time series context the PACF is defined with reference to a univariate, stationary Gaussian process, <span class="math inline">\(\mathcal{N}(t)\)</span>, having zero mean.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
 <p>At lags <span class="math inline">\(|u| \le 1\)</span> the partial auto-correlation is defined as the auto-correlation <span class="math inline">\(\rho (u)\)</span>. For <span class="math inline">\(u &gt; 1\)</span> the PACF is defined to be the correlation between <span class="math inline">\(\mathcal{N}(t + u)\)</span> and <span class="math inline">\(\mathcal{N}(t)\)</span> conditioned on the intervening variables <span class="math inline">\(\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)\)</span>. The calculations are as follows.</p>
 <p><span id="eq-N-given-past"><span class="math display">\[
 \begin{align}
@@ -342,7 +342,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \end{align}
 \tag{11}\]</span></span></p>
 <p>The conditional expectation is linear in the conditioning variables thanks to the assumption that <span class="math inline">\(\mathcal{N}(t)\)</span> is a Gaussian process having zero mean. More generally, in the non-Gaussian case, the linear combination (not the conditional expectation) is retained in the definition and is defined by the least-squares criterion.</p>
-<p>The coefficients in the linear combination are shared by <span class="math inline">\(\hat{\mathcal{N}}(t)\)</span> and <span class="math inline">\(\hat{\mathcal{N}}(t + u)\)</span> but are applied in reverse order. This is because the time-reversed process <span class="math inline">\(\mathcal{N}(-t)\)</span> has the same auto-covariance structure as the original process <span class="math inline">\(\mathcal{N}(t)\)</span>.</p>
+<p>The coefficients in the linear combination are shared by <span class="math inline">\(\hat{\mathcal{N}}(t)\)</span> and <span class="math inline">\(\hat{\mathcal{N}}(t + u)\)</span> but are applied in reverse order. This is because the time-reversed process <span class="math inline">\(\mathcal{N}(-t)\)</span> has the same auto-covariance structure as the original process <span class="math inline">\(\mathcal{N}(t)\)</span>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 <p>The partial auto-correlation function is now defined as the correlation of the residual variables:</p>
 <p><span id="eq-pacf-defn"><span class="math display">\[
 \begin{align}
@@ -380,7 +380,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </div>
 </div>
 </div>
-<p>In this case the 5-year moving average operation can be expressed as follows.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>In this case the 5-year moving average operation can be expressed as follows.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <p><span id="eq-ma-5"><span class="math display">\[
 \begin{align}
   Y_\bullet (t)
@@ -469,7 +469,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
     W(t) &amp;= \text{an uncorrelated ("white noise") series}
 \end{align}
 \]</span></p>
-<p>According to this model<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 - m(t, X_{2:3}(t))\)</span> is modeled as a series free of auto-correlation.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> This assumption seems plausible, since <span class="math inline">\(X_1(t)\)</span> counts the number of arguably independent events (cardiovascular deaths) in each week.</p>
+<p>According to this model<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 - m(t, X_{2:3}(t))\)</span> is modeled as a series free of auto-correlation.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> This assumption seems plausible, since <span class="math inline">\(X_1(t)\)</span> counts the number of arguably independent events (cardiovascular deaths) in each week.</p>
 <p>Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled <span class="math inline">\(W(t)\)</span>), they develop an auto-correlated (<span class="math inline">\(AR(2)\)</span>) model.</p>
 <p>This is an example of the cyclic model-building process previously outlined. A model is developed, examined, and revised.</p>
 </section>
@@ -514,7 +514,7 @@ Figure&nbsp;2: Sunspots: monthly count
 <h3 class="anchored" data-anchor-id="old-faithful-eruptions">Old Faithful eruptions</h3>
 <section id="description-1" class="level4">
 <h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p><a href="#fig-faithful" class="quarto-xref">Figure&nbsp;3</a> below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
+<p><a href="#fig-faithful" class="quarto-xref">Figure&nbsp;3</a> below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
 <p>The data represent a <em>point process</em>, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faithful geyser. In addition to the time of the eruption we have the duration of the eruption.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -598,7 +598,7 @@ Figure&nbsp;3: Old Faithful eruptions: delay and duration
 </div>
 <section id="description-2" class="level4">
 <h4 class="anchored" data-anchor-id="description-2">Description</h4>
-<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;4</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;4</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-gtemp-lo" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -703,7 +703,7 @@ Figure&nbsp;7: J&amp;J: earnings per share at linear and log scales
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
 <section id="description-6" class="level4">
 <h4 class="anchored" data-anchor-id="description-6">Description</h4>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;8</a> shows the trading day closings and returns (percent change)<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;8</a> shows the trading day closings and returns (percent change)<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -917,7 +917,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \end{cases}
 \end{align}
 \tag{23}\]</span></span></p>
-<p>The auto-correlation function is thus<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<p>The auto-correlation function is thus<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
 <p><span id="eq-auto-cor-ma-1-model"><span class="math display">\[
 \begin{align}
   \rho_X (u) &amp;= cor \left ( X(t + u), X(t) \right ) \\
@@ -950,7 +950,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
 </section>
 <section id="effective-sample-size-ess" class="level3">
 <h3 class="anchored" data-anchor-id="effective-sample-size-ess">Effective Sample Size (ESS)</h3>
-<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.</p>
+<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.</p>
 <p><span id="eq-ess-criterion"><span class="math display">\[
 \begin{align}
   \frac{\sigma_X^2}{N_d} &amp;= Var \left \{ \hat{\mu}_X \right \} \\
@@ -1144,14 +1144,16 @@ Venables, W. N., and B. D. Ripley. 2002. <span>“Modern Applied Statistics with
 <ol>
 <li id="fn1"><p>We assume the components of <span class="math inline">\(X_\bullet(t)\)</span> to be real-valued, unless stated otherwise.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of <em>strict stationarity</em>. This means that for any finite set of times <span class="math inline">\((t_1, \ldots, t_K)\)</span> and any time-shift <span class="math inline">\(s\)</span>, the joint probability distribution of <span class="math inline">\((X_\bullet (t_1), \ldots, X_\bullet (t_K))\)</span> is identical to that of <span class="math inline">\((X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>The authors consider various forms for the function <span class="math inline">\(f(t)\)</span>: a linear function, a quadratic function, or a locally smoothed version of <span class="math inline">\(X_1(t)\)</span>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>The authors generally use the notation <span class="math inline">\(W(t)\)</span> to signify white noise, an uncorrelated stationary random process having mean 0. Moreover, the authors typically reserve this notation to signify an uncorrelated stationary <em>Gaussian</em> process, that is, a process of independent and identically distributed (“iid”) normal variables having mean 0.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations <span class="citation" data-cites="MASS">(<a href="#ref-MASS" role="doc-biblioref">Venables and Ripley 2002</a>)</span> includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn10"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>That is, we assume that <span class="math inline">\(\mathcal{N}(t)\)</span> is a stationary, mean-zero, auto-correlated process such that for any set of distinct time indices <span class="math inline">\(t_1, \ldots, t_K\)</span> the joint probability distribtuion of <span class="math inline">\((\mathcal{N}(t_1), \ldots), \mathcal{N}(t_K)\)</span> is multivariate normal.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Recall that for a univariate process the auto-covariance and auto-correlation functions are even, e.g., <span class="math inline">\(\rho (-u) = \rho (u)\)</span>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The authors consider various forms for the function <span class="math inline">\(f(t)\)</span>: a linear function, a quadratic function, or a locally smoothed version of <span class="math inline">\(X_1(t)\)</span>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>The authors generally use the notation <span class="math inline">\(W(t)\)</span> to signify white noise, an uncorrelated stationary random process having mean 0. Moreover, the authors typically reserve this notation to signify an uncorrelated stationary <em>Gaussian</em> process, that is, a process of independent and identically distributed (“iid”) normal variables having mean 0.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations <span class="citation" data-cites="MASS">(<a href="#ref-MASS" role="doc-biblioref">Venables and Ripley 2002</a>)</span> includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

@@ -229,7 +229,7 @@ $$ {#eq-auto-cor}
 
 ### PACF: partial auto-correlation function
 
-Going further, the _partial auto-correlation function (PACF)_ is a useful diagnostic tool.  Here's the idea [@shumway2025, page 108].  Recall that if $X$, $Y$, and $Z_\bullet = \{Z_1, \ldots, Z_k\}$ are random variables, then the conditional correlation between $X$ and $Y$ given $Z_\bullet$ is obtained by first regressing $X$ and $Y$ on $Z_\bullet$ to obtain predictors $\hat{X}$ and $\hat{Y}$.
+Going further, the _partial auto-correlation function (PACF)_ is a useful diagnostic tool.  Here's the idea [@shumway2025, page 108].  Recall that if $X$, $Y$, and $Z_\bullet = \{Z_1, \ldots, Z_k\}$ are random variables, then the conditional correlation between $X$ and $Y$ given $Z_\bullet$ is obtained by first regressing $X$ and $Y$ on $Z_\bullet$ to obtain predictors $\hat{X}$ and $\hat{Y}$.  If $X, Y, Z_\bullet$ have a joint normal distribution, we have
 
 $$
 \begin{align}
@@ -238,17 +238,19 @@ $$
 \end{align}
 $$ {#eq-X-Y-given-Z}
 
-If $X, Y, Z_\bullet$ have a joint normal distribution, then the conditional expectations above are linear combinations of the components of $Z_\bullet$.  The _partial_ correlation is defined by setting $\hat{X}, \hat{Y}$ equal to the linear combinations that minimize mean squared error.
+which are linear combinations of the components of $Z_\bullet$.  More generally, $\hat{X}, \hat{Y}$ are defined as the linear combinations of $Z_\bullet$ that minimize mean squared error.
 
 Then the partial correlation between $X$ and $Y$ given $Z_\bullet$ is the correlation between the respective $X$ and $Y$ residuals, as follows.
 
 $$
 \begin{align}
-  \rho_{X, Y | Z_\bullet} &= cor \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
+  \rho_{X, Y \bullet Z_\bullet} &= cor \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
 \end{align}
 $$ {#eq-cor-X-Y-given-Z}
 
-In the time series context the PACF is defined with reference to a univariate, stationary Gaussian process, $\mathcal{N}(t)$, having zero mean.  Unlike the white noise process $W(t)$, we do not assume $\mathcal{N}(t)$ to be free of auto-correlation.  Recall that for a univariate process the auto-covariance and auto-correlation functions are even, e.g., $\rho (-u) = \rho (u)$.
+In the time series context the PACF is defined with reference to a univariate, stationary Gaussian process, $\mathcal{N}(t)$, having zero mean.[^gauss_proc].
+
+[^gauss_proc]: That is, we assume that $\mathcal{N}(t)$ is a stationary, mean-zero, auto-correlated process such that for any set of distinct time indices $t_1, \ldots, t_K$ the joint probability distribtuion of $(\mathcal{N}(t_1), \ldots), \mathcal{N}(t_K)$ is multivariate normal.
 
 At lags $|u| \le 1$ the partial auto-correlation is defined as the auto-correlation $\rho (u)$.  For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$.  The calculations are as follows.
 
@@ -274,7 +276,9 @@ $$ {#eq-N-given-future}
 
 The conditional expectation is linear in the conditioning variables thanks to the assumption that $\mathcal{N}(t)$ is a Gaussian process having zero mean.  More generally, in the non-Gaussian case, the linear combination (not the conditional expectation) is retained in the definition and is defined by the least-squares criterion.
 
-The coefficients in the linear combination are shared by $\hat{\mathcal{N}}(t)$ and $\hat{\mathcal{N}}(t + u)$ but are applied in reverse order.  This is because the time-reversed process $\mathcal{N}(-t)$ has the same auto-covariance structure as the original process $\mathcal{N}(t)$.
+The coefficients in the linear combination are shared by $\hat{\mathcal{N}}(t)$ and $\hat{\mathcal{N}}(t + u)$ but are applied in reverse order.  This is because the time-reversed process $\mathcal{N}(-t)$ has the same auto-covariance structure as the original process $\mathcal{N}(t)$.[^rho_even]
+
+[^rho_even]: Recall that for a univariate process the auto-covariance and auto-correlation functions are even, e.g., $\rho (-u) = \rho (u)$.
 
 The partial auto-correlation function is now defined as the correlation of the residual variables:
 
