@@ -100,8 +100,8 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#data-derived-from-a-random-process" id="toc-data-derived-from-a-random-process" class="nav-link" data-scroll-target="#data-derived-from-a-random-process">Data derived from a random process</a></li>
   <li><a href="#stationarity" id="toc-stationarity" class="nav-link" data-scroll-target="#stationarity">Stationarity</a></li>
-  <li><a href="#acf-auto-correlation-function" id="toc-acf-auto-correlation-function" class="nav-link" data-scroll-target="#acf-auto-correlation-function">ACF: auto-correlation function</a></li>
-  <li><a href="#pacf-partial-auto-correlation-function" id="toc-pacf-partial-auto-correlation-function" class="nav-link" data-scroll-target="#pacf-partial-auto-correlation-function">PACF: partial auto-correlation function</a></li>
+  <li><a href="#acf-autocorrelation-function" id="toc-acf-autocorrelation-function" class="nav-link" data-scroll-target="#acf-autocorrelation-function">ACF: autocorrelation function</a></li>
+  <li><a href="#pacf-partial-autocorrelation-function" id="toc-pacf-partial-autocorrelation-function" class="nav-link" data-scroll-target="#pacf-partial-autocorrelation-function">PACF: partial autocorrelation function</a></li>
   </ul></li>
   <li><a href="#operations-on-time-series" id="toc-operations-on-time-series" class="nav-link" data-scroll-target="#operations-on-time-series">Operations on Time Series</a></li>
   <li><a href="#model-components" id="toc-model-components" class="nav-link" data-scroll-target="#model-components">Model Components</a>
@@ -179,7 +179,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">17:38 Sat 14-Jun-2025</p>
+      <p class="date">20:30 Sat 14-Jun-2025</p>
     </div>
   </div>
   
@@ -267,8 +267,8 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \end{align}
 \]</span></p>
 </section>
-<section id="acf-auto-correlation-function" class="level3">
-<h3 class="anchored" data-anchor-id="acf-auto-correlation-function">ACF: auto-correlation function</h3>
+<section id="acf-autocorrelation-function" class="level3">
+<h3 class="anchored" data-anchor-id="acf-autocorrelation-function">ACF: autocorrelation function</h3>
 <p>Setting <span class="math inline">\(s = t\)</span> in the last expression we have</p>
 <p><span id="eq-stationarity-2"><span class="math display">\[
 \begin{align}
@@ -307,9 +307,9 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \end{align}
 \tag{7}\]</span></span></p>
 </section>
-<section id="pacf-partial-auto-correlation-function" class="level3">
-<h3 class="anchored" data-anchor-id="pacf-partial-auto-correlation-function">PACF: partial auto-correlation function</h3>
-<p>Going further, the <em>partial auto-correlation function (PACF)</em> is a useful diagnostic tool. Here’s the idea <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 108</a>)</span>. Recall that if <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, and <span class="math inline">\(Z_\bullet = \{Z_1, \ldots, Z_k\}\)</span> are random variables, then the conditional correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is obtained by first regressing <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> on <span class="math inline">\(Z_\bullet\)</span> to obtain predictors <span class="math inline">\(\hat{X}\)</span> and <span class="math inline">\(\hat{Y}\)</span>. If <span class="math inline">\(X, Y, Z_\bullet\)</span> have a joint normal distribution, we have</p>
+<section id="pacf-partial-autocorrelation-function" class="level3">
+<h3 class="anchored" data-anchor-id="pacf-partial-autocorrelation-function">PACF: partial autocorrelation function</h3>
+<p>Going further, the <em>partial autocorrelation function (PACF)</em> is a useful diagnostic tool. Here’s the idea <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 108</a>)</span>. Recall that if <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, and <span class="math inline">\(Z_\bullet = \{Z_1, \ldots, Z_k\}\)</span> are random variables, then the conditional correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is obtained by first regressing <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> on <span class="math inline">\(Z_\bullet\)</span> to obtain predictors <span class="math inline">\(\hat{X}\)</span> and <span class="math inline">\(\hat{Y}\)</span>. If <span class="math inline">\(X, Y, Z_\bullet\)</span> have a joint normal distribution, we have</p>
 <p><span id="eq-X-Y-given-Z"><span class="math display">\[
 \begin{align}
   \hat{X} &amp;= E(X \; | \; Z_\bullet) \\
@@ -324,7 +324,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \end{align}
 \tag{9}\]</span></span></p>
 <p>In the time series context the PACF is defined with reference to a univariate, stationary Gaussian process, <span class="math inline">\(\mathcal{N}(t)\)</span>, having zero mean.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
-<p>At lags <span class="math inline">\(|u| \le 1\)</span> the partial auto-correlation is defined as the auto-correlation <span class="math inline">\(\rho (u)\)</span>. For <span class="math inline">\(u &gt; 1\)</span> the PACF is defined to be the correlation between <span class="math inline">\(\mathcal{N}(t + u)\)</span> and <span class="math inline">\(\mathcal{N}(t)\)</span> conditioned on the intervening variables <span class="math inline">\(\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)\)</span>. The calculations are as follows.</p>
+<p>At lags <span class="math inline">\(|u| \le 1\)</span> the partial autocorrelation is defined as the autocorrelation <span class="math inline">\(\rho (u)\)</span>. For <span class="math inline">\(u &gt; 1\)</span> the PACF is defined to be the correlation between <span class="math inline">\(\mathcal{N}(t + u)\)</span> and <span class="math inline">\(\mathcal{N}(t)\)</span> conditioned on the intervening variables <span class="math inline">\(\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)\)</span>. The calculations are as follows.</p>
 <p><span id="eq-N-given-past"><span class="math display">\[
 \begin{align}
    \hat{\mathcal{N}}(t + u)
@@ -345,7 +345,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \tag{11}\]</span></span></p>
 <p>The conditional expectation is linear in the conditioning variables thanks to the assumption that <span class="math inline">\(\mathcal{N}(t)\)</span> is a Gaussian process having zero mean. More generally, in the non-Gaussian case, the linear combination (not the conditional expectation) is retained in the definition and is defined by the least-squares criterion.</p>
 <p>The coefficients in the linear combination are shared by <span class="math inline">\(\hat{\mathcal{N}}(t)\)</span> and <span class="math inline">\(\hat{\mathcal{N}}(t + u)\)</span> but are applied in reverse order. This is because the time-reversed process <span class="math inline">\(\mathcal{N}(-t)\)</span> has the same auto-covariance structure as the original process <span class="math inline">\(\mathcal{N}(t)\)</span>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
-<p>The partial auto-correlation function is now defined as the correlation of the residual variables:</p>
+<p>The partial autocorrelation function is now defined as the correlation of the residual variables:</p>
 <p><span id="eq-pacf-defn"><span class="math display">\[
 \begin{align}
   \rho (u | u) &amp;= cor \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t) \right)
@@ -441,7 +441,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <li>fit proposed model</li>
 <li>examine model residuals</li>
 </ul>
-<p>One might continue this cycle until the model residuals seem to be reasonably free of trend and auto-correlation.</p>
+<p>One might continue this cycle until the model residuals seem to be reasonably free of trend and autocorrelation.</p>
 <section id="covariates-and-trend" class="level3">
 <h3 class="anchored" data-anchor-id="covariates-and-trend">Covariates and Trend</h3>
 <p>Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables.</p>
@@ -471,12 +471,19 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
     W(t) &amp;= \text{an uncorrelated ("white noise") series}
 \end{align}
 \]</span></p>
-<p>According to this model<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 - m(t, X_{2:3}(t))\)</span> is modeled as a series free of auto-correlation.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> This assumption seems plausible, since <span class="math inline">\(X_1(t)\)</span> counts the number of arguably independent events (cardiovascular deaths) in each week.</p>
-<p>Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled <span class="math inline">\(W(t)\)</span>), they develop an auto-correlated (<span class="math inline">\(AR(2)\)</span>) model.</p>
+<p>According to this model<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 - m(t, X_{2:3}(t))\)</span> is modeled as a series free of autocorrelation.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> This assumption seems plausible, since <span class="math inline">\(X_1(t)\)</span> counts the number of arguably independent events (cardiovascular deaths) in each week.</p>
+<p>Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled <span class="math inline">\(W(t)\)</span>), they develop an autocorrelated (<span class="math inline">\(AR(2)\)</span>) model.</p>
 <p>This is an example of the cyclic model-building process previously outlined. A model is developed, examined, and revised.</p>
 </section>
 <section id="auto-regression-ar" class="level3">
 <h3 class="anchored" data-anchor-id="auto-regression-ar">Auto-regression (AR)</h3>
+<p>Auto-regressive models are based on the idea that the current value of the series, <span class="math inline">\(X(t)\)</span>, can be approximated, or forecast, as a function of <span class="math inline">\(p\)</span> past values, <span class="math inline">\(X(t−1), X(t−2), \ldots, X(t−p)\)</span>, which leads to the following definition of an auto-regressive model of order <span class="math inline">\(p\)</span>, abbreviated as <span class="math inline">\(AR(p)\)</span>.</p>
+<p><span class="math display">\[
+\begin{align}
+  X(t) &amp;= \sum_{\nu = 1}^p \phi_\nu X(t-\nu) \; + \; W(t)
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(W(t)\)</span> again denotes a residual “white noise” stationary process: free of autocorrelation and having zero mean. (Even more, <span class="math inline">\(W(t)\)</span> is often assumed to be a sequence of independent and identically distributed, or “iid”, normal variates having zero mean.)</p>
 </section>
 <section id="moving-average-ma" class="level3">
 <h3 class="anchored" data-anchor-id="moving-average-ma">Moving Average (MA)</h3>
@@ -858,7 +865,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
 <section id="detecting-serial-correlation" class="level2">
 <h2 class="anchored" data-anchor-id="detecting-serial-correlation">Detecting Serial Correlation</h2>
 <p>The process of building a statistical model (time series or not) is typically cyclic: examining data (or model residuals); conjecturing a statistical model (or model refinement); fitting the conjectured model; and examining the model residuals.</p>
-<p>In time series analysis, an initial review of the data might include a test for serial correlation (autocorrelation). That is, one can check for correlation of <span class="math inline">\(X_\bullet (t)\)</span> with <span class="math inline">\(X_\bullet (t - s)\)</span> at several lags <span class="math inline">\(s\)</span>. If the data do appear to be auto-correlated, one might proceed to build a time series model. If the residuals of that model also appear to be auto-correlated or to exhibit some trend, one might seek to refine the model until the model residuals appear to be free of trend and autocorrelation.</p>
+<p>In time series analysis, an initial review of the data might include a test for serial correlation (autocorrelation). That is, one can check for correlation of <span class="math inline">\(X_\bullet (t)\)</span> with <span class="math inline">\(X_\bullet (t - s)\)</span> at several lags <span class="math inline">\(s\)</span>. If the data do appear to be autocorrelated, one might proceed to build a time series model. If the residuals of that model also appear to be autocorrelated or to exhibit some trend, one might seek to refine the model until the model residuals appear to be free of trend and autocorrelation.</p>
 <section id="statistical-tests" class="level3">
 <h3 class="anchored" data-anchor-id="statistical-tests">Statistical Tests</h3>
 <p>There are several statistical tests for autocorrelation. One of the most widely used is the Ljung-Box test<span class="citation" data-cites="ljung1978">(<a href="#ref-ljung1978" role="doc-biblioref">Ljung and Box 1978</a>)</span> available in <code>R</code> as the function <code>stats::Box.test()</code> in which one specifies the maximal lag to be checked.</p>
@@ -907,7 +914,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \sigma_X^2 &amp;= (1 +\theta^2) \; \sigma_Z^2
 \end{align}
 \tag{22}\]</span></span></p>
-<p>The variance formula for the sample sum, <span class="math inline">\(S_{X, T}\)</span>, differs from that of <span class="math inline">\(S_{Z, T}\)</span>, because <span class="math inline">\(X(\cdot)\)</span> is auto-correlated. The auto-covariance function is</p>
+<p>The variance formula for the sample sum, <span class="math inline">\(S_{X, T}\)</span>, differs from that of <span class="math inline">\(S_{Z, T}\)</span>, because <span class="math inline">\(X(\cdot)\)</span> is autocorrelated. The auto-covariance function is</p>
 <p><span id="eq-auto-cov-ma-1-model"><span class="math display">\[
 \begin{align}
   \gamma_X (u) &amp;= Cov \left ( X(t + u), X(t) \right ) \\
@@ -919,7 +926,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \end{cases}
 \end{align}
 \tag{23}\]</span></span></p>
-<p>The auto-correlation function is thus<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<p>The autocorrelation function is thus<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
 <p><span id="eq-auto-cor-ma-1-model"><span class="math display">\[
 \begin{align}
   \rho_X (u) &amp;= cor \left ( X(t + u), X(t) \right ) \\
@@ -952,7 +959,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
 </section>
 <section id="effective-sample-size-ess" class="level3">
 <h3 class="anchored" data-anchor-id="effective-sample-size-ess">Effective Sample Size (ESS)</h3>
-<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.</p>
+<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws whose sample mean has the same variance as that of the autocorrelated case.</p>
 <p><span id="eq-ess-criterion"><span class="math display">\[
 \begin{align}
   \frac{\sigma_X^2}{N_d} &amp;= Var \left \{ \hat{\mu}_X \right \} \\
@@ -1020,7 +1027,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
      \quad &amp; \quad \text{number of independent draws (effective sample size) } \\
      
   \rho_{\bullet, \bullet} (u)
-     \quad &amp; \quad \text{auto-correlation matrix at time-shift } u \\
+     \quad &amp; \quad \text{autocorrelation matrix at time-shift } u \\
      
   S_{X, T}
      \quad &amp; \quad \text{the sample sum of T observations of } X (\cdot) \\
@@ -1182,8 +1189,8 @@ Venables, W. N., and B. D. Ripley. 2002. <span>“Modern Applied Statistics with
 <ol>
 <li id="fn1"><p>We assume the components of <span class="math inline">\(X_\bullet(t)\)</span> to be real-valued, unless stated otherwise.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of <em>strict stationarity</em>. This means that for any finite set of times <span class="math inline">\((t_1, \ldots, t_K)\)</span> and any time-shift <span class="math inline">\(s\)</span>, the joint probability distribution of <span class="math inline">\((X_\bullet (t_1), \ldots, X_\bullet (t_K))\)</span> is identical to that of <span class="math inline">\((X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>That is, we assume that <span class="math inline">\(\mathcal{N}(t)\)</span> is a stationary, mean-zero, auto-correlated process such that for any set of distinct time indices <span class="math inline">\(t_1, \ldots, t_K\)</span> the joint probability distribtuion of <span class="math inline">\((\mathcal{N}(t_1), \ldots), \mathcal{N}(t_K)\)</span> is multivariate normal.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Recall that for a univariate process the auto-covariance and auto-correlation functions are even, e.g., <span class="math inline">\(\rho (-u) = \rho (u)\)</span>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>That is, we assume that <span class="math inline">\(\mathcal{N}(t)\)</span> is a stationary, mean-zero, autocorrelated process such that for any set of distinct time indices <span class="math inline">\(t_1, \ldots, t_K\)</span> the joint probability distribtuion of <span class="math inline">\((\mathcal{N}(t_1), \ldots), \mathcal{N}(t_K)\)</span> is multivariate normal.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Recall that for a univariate process the auto-covariance and autocorrelation functions are even, e.g., <span class="math inline">\(\rho (-u) = \rho (u)\)</span>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>The authors consider various forms for the function <span class="math inline">\(f(t)\)</span>: a linear function, a quadratic function, or a locally smoothed version of <span class="math inline">\(X_1(t)\)</span>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>The authors generally use the notation <span class="math inline">\(W(t)\)</span> to signify white noise, an uncorrelated stationary random process having mean 0. Moreover, the authors typically reserve this notation to signify an uncorrelated stationary <em>Gaussian</em> process, that is, a process of independent and identically distributed (“iid”) normal variables having mean 0.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>

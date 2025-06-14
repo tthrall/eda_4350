@@ -179,7 +179,7 @@ $$
 \end{align}
 $$
 
-### ACF: auto-correlation function
+### ACF: autocorrelation function
 
 Setting $s = t$ in the last expression we have
 
@@ -227,9 +227,9 @@ $$
 \end{align}
 $$ {#eq-auto-cor}
 
-### PACF: partial auto-correlation function
+### PACF: partial autocorrelation function
 
-Going further, the _partial auto-correlation function (PACF)_ is a useful diagnostic tool.  Here's the idea [@shumway2025, page 108].  Recall that if $X$, $Y$, and $Z_\bullet = \{Z_1, \ldots, Z_k\}$ are random variables, then the conditional correlation between $X$ and $Y$ given $Z_\bullet$ is obtained by first regressing $X$ and $Y$ on $Z_\bullet$ to obtain predictors $\hat{X}$ and $\hat{Y}$.  If $X, Y, Z_\bullet$ have a joint normal distribution, we have
+Going further, the _partial autocorrelation function (PACF)_ is a useful diagnostic tool.  Here's the idea [@shumway2025, page 108].  Recall that if $X$, $Y$, and $Z_\bullet = \{Z_1, \ldots, Z_k\}$ are random variables, then the conditional correlation between $X$ and $Y$ given $Z_\bullet$ is obtained by first regressing $X$ and $Y$ on $Z_\bullet$ to obtain predictors $\hat{X}$ and $\hat{Y}$.  If $X, Y, Z_\bullet$ have a joint normal distribution, we have
 
 $$
 \begin{align}
@@ -250,9 +250,9 @@ $$ {#eq-cor-X-Y-given-Z}
 
 In the time series context the PACF is defined with reference to a univariate, stationary Gaussian process, $\mathcal{N}(t)$, having zero mean.[^gauss_proc].
 
-[^gauss_proc]: That is, we assume that $\mathcal{N}(t)$ is a stationary, mean-zero, auto-correlated process such that for any set of distinct time indices $t_1, \ldots, t_K$ the joint probability distribtuion of $(\mathcal{N}(t_1), \ldots), \mathcal{N}(t_K)$ is multivariate normal.
+[^gauss_proc]: That is, we assume that $\mathcal{N}(t)$ is a stationary, mean-zero, autocorrelated process such that for any set of distinct time indices $t_1, \ldots, t_K$ the joint probability distribtuion of $(\mathcal{N}(t_1), \ldots), \mathcal{N}(t_K)$ is multivariate normal.
 
-At lags $|u| \le 1$ the partial auto-correlation is defined as the auto-correlation $\rho (u)$.  For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$.  The calculations are as follows.
+At lags $|u| \le 1$ the partial autocorrelation is defined as the autocorrelation $\rho (u)$.  For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$.  The calculations are as follows.
 
 $$
 \begin{align}
@@ -278,9 +278,9 @@ The conditional expectation is linear in the conditioning variables thanks to th
 
 The coefficients in the linear combination are shared by $\hat{\mathcal{N}}(t)$ and $\hat{\mathcal{N}}(t + u)$ but are applied in reverse order.  This is because the time-reversed process $\mathcal{N}(-t)$ has the same auto-covariance structure as the original process $\mathcal{N}(t)$.[^rho_even]
 
-[^rho_even]: Recall that for a univariate process the auto-covariance and auto-correlation functions are even, e.g., $\rho (-u) = \rho (u)$.
+[^rho_even]: Recall that for a univariate process the auto-covariance and autocorrelation functions are even, e.g., $\rho (-u) = \rho (u)$.
 
-The partial auto-correlation function is now defined as the correlation of the residual variables:
+The partial autocorrelation function is now defined as the correlation of the residual variables:
 
 $$
 \begin{align}
@@ -417,7 +417,7 @@ The process of building a statistical model (time series or not) is typically cy
 -   fit proposed model
 -   examine model residuals
 
-One might continue this cycle until the model residuals seem to be reasonably free of trend and auto-correlation.
+One might continue this cycle until the model residuals seem to be reasonably free of trend and autocorrelation.
 
 ### Covariates and Trend
 
@@ -455,17 +455,27 @@ $$
 \end{align}
 $$
 
-According to this model[^cmort_trend] the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 - m(t, X_{2:3}(t))$ is modeled as a series free of auto-correlation.[^white_noise] This assumption seems plausible, since $X_1(t)$ counts the number of arguably independent events (cardiovascular deaths) in each week.
+According to this model[^cmort_trend] the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 - m(t, X_{2:3}(t))$ is modeled as a series free of autocorrelation.[^white_noise] This assumption seems plausible, since $X_1(t)$ counts the number of arguably independent events (cardiovascular deaths) in each week.
 
 [^cmort_trend]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
 
 [^white_noise]: The authors generally use the notation $W(t)$ to signify white noise, an uncorrelated stationary random process having mean 0.  Moreover, the authors typically reserve this notation to signify an uncorrelated stationary _Gaussian_ process, that is, a process of independent and identically distributed ("iid") normal variables having mean 0.
 
-Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled $W(t)$), they develop an auto-correlated ($AR(2)$) model.
+Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled $W(t)$), they develop an autocorrelated ($AR(2)$) model.
 
 This is an example of the cyclic model-building process previously outlined.  A model is developed, examined, and revised.
 
 ### Auto-regression (AR)
+
+Auto-regressive models are based on the idea that the current value of the series, $X(t)$, can be approximated, or forecast, as a function of $p$ past values, $X(t−1), X(t−2), \ldots, X(t−p)$, which leads to the following definition of an auto-regressive model of order $p$, abbreviated as $AR(p)$.
+
+$$
+\begin{align}
+  X(t) &= \sum_{\nu = 1}^p \phi_\nu X(t-\nu) \; + \; W(t)
+\end{align}
+$$
+
+where $W(t)$ again denotes a residual "white noise" stationary process: free of autocorrelation and having zero mean.  (Even more, $W(t)$ is often assumed to be a sequence of independent and identically distributed, or "iid", normal variates having zero mean.)
 
 ### Moving Average (MA)
 
@@ -903,7 +913,7 @@ We leave the development of such models to a separate technical note. The point 
 
 The process of building a statistical model (time series or not) is typically cyclic: examining data (or model residuals); conjecturing a statistical model (or model refinement); fitting the conjectured model; and examining the model residuals.
 
-In time series analysis, an initial review of the data might include a test for serial correlation (autocorrelation). That is, one can check for correlation of $X_\bullet (t)$ with $X_\bullet (t - s)$ at several lags $s$. If the data do appear to be auto-correlated, one might proceed to build a time series model. If the residuals of that model also appear to be auto-correlated or to exhibit some trend, one might seek to refine the model until the model residuals appear to be free of trend and autocorrelation.
+In time series analysis, an initial review of the data might include a test for serial correlation (autocorrelation). That is, one can check for correlation of $X_\bullet (t)$ with $X_\bullet (t - s)$ at several lags $s$. If the data do appear to be autocorrelated, one might proceed to build a time series model. If the residuals of that model also appear to be autocorrelated or to exhibit some trend, one might seek to refine the model until the model residuals appear to be free of trend and autocorrelation.
 
 ### Statistical Tests
 
@@ -964,7 +974,7 @@ $$
 \end{align}
 $$ {#eq-ev-ma-1-model}
 
-The variance formula for the sample sum, $S_{X, T}$, differs from that of $S_{Z, T}$, because $X(\cdot)$ is auto-correlated. The auto-covariance function is
+The variance formula for the sample sum, $S_{X, T}$, differs from that of $S_{Z, T}$, because $X(\cdot)$ is autocorrelated. The auto-covariance function is
 
 $$
 \begin{align}
@@ -978,7 +988,7 @@ $$
 \end{align}
 $$ {#eq-auto-cov-ma-1-model}
 
-The auto-correlation function is thus[^7]
+The autocorrelation function is thus[^7]
 
 [^7]: Note that $\rho_X (1)$ is restricted to the interval $(-0.5, 0.5)$, since we have restricted $\theta$ to the interval $(-1, 1)$.
 
@@ -1017,7 +1027,7 @@ In short, ignoring the autocorrelation of $X(\cdot)$ would lead to erroneous cal
 
 ### Effective Sample Size (ESS)
 
-The magnitude of such erroneous calculations can be represented by a quantity called the *effective sample size* (ESS). The calculation of ESS varies with application[^8], but here's the basic idea in the present context. Consider a finite sequence of *independent* draws from the distribution of the random variable $X(t_0)$, thereby producing a sample of independent observations. Define the effective sample size, $N_d$, to be the number of draws whose sample mean has the same variance as that of the auto-correlated case.
+The magnitude of such erroneous calculations can be represented by a quantity called the *effective sample size* (ESS). The calculation of ESS varies with application[^8], but here's the basic idea in the present context. Consider a finite sequence of *independent* draws from the distribution of the random variable $X(t_0)$, thereby producing a sample of independent observations. Define the effective sample size, $N_d$, to be the number of draws whose sample mean has the same variance as that of the autocorrelated case.
 
 [^8]: The `R` package `astsa` provides function `ESS()`.
 
@@ -1285,7 +1295,7 @@ $$
      \quad & \quad \text{number of independent draws (effective sample size) } \\ 
      
   \rho_{\bullet, \bullet} (u) 
-     \quad & \quad \text{auto-correlation matrix at time-shift } u \\ 
+     \quad & \quad \text{autocorrelation matrix at time-shift } u \\ 
      
   S_{X, T} 
      \quad & \quad \text{the sample sum of T observations of } X (\cdot) \\ 
