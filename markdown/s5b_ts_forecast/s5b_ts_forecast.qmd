@@ -465,9 +465,11 @@ $$
     \\ 
     m(t, X_{2:3}(t)) &= \beta_0 + f(t) + \beta_2 X_2(t) + \beta_3 X_3(t) \\ 
     \\ 
-    W(t) &= \text{an uncorrelated ("white noise") series}
+    W(\cdot) &\sim wn(0, \sigma_W^2)
 \end{align}
 $$
+
+Here $wn(0, \sigma_W^2)$ denotes an uncorrelated sequence having zero mean and variance $\sigma_W^2$, referred to as white noise.
 
 According to this model[^6] the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 - m(t, X_{2:3}(t))$ is modeled as a series free of autocorrelation.[^7] This assumption seems plausible, since $X_1(t)$ counts the number of arguably independent events (cardiovascular deaths) in each week.
 
@@ -610,7 +612,7 @@ $$
 \end{align}
 $$ {#eq-AR1-PACF}
 
-### AR(p): PACF
+#### AR(p): PACF
 
 As previously noted, an $AR(p)$ model can be defined via a polynomial $\phi(\cdot)$ that is applied to the back-shift operator $\mathcal{B}$.  The coefficients of $\phi(\cdot)$ are real, but it is useful to apply the polynomial to the complex variable $z$.  From @eq-AR-bs-poly we have 
 
@@ -679,7 +681,7 @@ $$
 \end{align}
 $$
 
-Therefore 
+Therefore the PACF is zero at lags $u > p$.
 
 $$
 \begin{align}
@@ -688,6 +690,51 @@ $$
 $$
 
 ### Moving Average (MA)
+
+A moving average model of order $q$ has the following form.
+
+$$
+\begin{align}
+  X(t) &= \mu_x \; + \; W(t) \; + \; \sum_{\nu = 1}^q \; \theta_\nu \; W(t - \nu) \\ 
+  \text{where } \\ 
+  W(\cdot) &\sim wn(0, \sigma_W^2)
+\end{align}
+$$
+
+Like AR models, an MA model can be expressed by applying a polynomial $\theta(\cdot)$ to the back-shift operator $\mathcal{B}$.
+
+$$
+\begin{align}
+  X(t) - \mu_x  &= W(t) \; + \; \sum_{\nu = 1}^q \; \theta_\nu \; W(t - \nu) \\ 
+  &= \left \{\mathcal{I} + \sum_{\nu = 1}^q \; \theta_\nu \; \mathcal{B}^\nu \right \} \; W(t) \\ 
+  &= \theta(\mathcal{B}) \; W(t) \\ 
+  \\ 
+  \text{where} \\
+  \theta (z) &= 1 + \sum_{\nu = 1}^q \; \theta_\nu \; z^\nu
+\end{align}
+$$
+
+That is, $X(\cdot)$ is filtered white noise, and is therefore stationary for any finite set of filter coefficients.  But some constraint on polynomial $\theta(\cdot)$ is required to eliminate ambiguity.
+
+#### Invertibility
+
+Consider the following two MA(1) models.[^MA1_equivalence]
+
+[^MA1_equivalence]: @shumway2025 [page 92]
+
+$$
+\begin{align}
+  X(t) &= W(t) + \frac{1}{5} W(t-1) & \text{with } W(\cdot) \sim N(0, 25) \\ 
+  \\ 
+  Y(t) &= V(t) + 5 \; V(t-1) & \text{with } V(\cdot) \sim N(0, 1)
+\end{align}
+$$
+
+The probability distributions of the two processes $X(\cdot)$ and $Y(\cdot)$ are identical, so anyone attempting to identify the respective models could not distinguish them based on their respective realizations as time series data.
+
+A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible.  That is we require the roots of polynomial $\theta(\cdot)$ to have magnitude greater than unity.  In the example above we therefore choose the model for $X(\cdot)$ rather than the model for $Y(\cdot)$.
+
+#### MA(q): ACF and PACF
 
 ### Assembling Components
 
