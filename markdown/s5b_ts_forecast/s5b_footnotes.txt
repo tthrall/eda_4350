@@ -17,3 +17,11 @@
 
 [^white_noise]: The authors generally use the notation $W(t)$ to signify white noise, an uncorrelated stationary random process having mean 0.  Moreover, the authors typically reserve this notation to signify an uncorrelated stationary _Gaussian_ process, that is, a process of independent and identically distributed normal variables having mean 0.
 
+[^causal]: An ARMA model is said to be _causal_ if the modeled process $X(t)$ can be expressed as a function of current and past white noise terms, $\{ W(t-u) \}$ for $u \ge 0$.  See the textbook [@shumway2025, page 96].
+
+[^invertible]: A model is said to be _invertible_ if the model's white noise process $W(t)$ can be expressed as a function of current and past terms of the modeled process, $\{ X(t-u) \}$ for $u \ge 0$.  See the textbook [@shumway2025, page 94].
+
+[^AR1_rho]: See the textbook [@shumway2025, page 88].
+
+[^AR1_PACF]: See the textbook [@shumway2025, page 110].
+
