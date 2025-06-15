@@ -136,7 +136,9 @@ $$
 \end{align}
 $$ {#eq-X-bullet}
 
-If the number of data columns is two or greater $(d \ge 2)$, the process is said to be multivariate. Otherwise, if $d = 1$ the process is said to be univariate, and the notation is simplified to $X (t)$.
+If the number of data columns is two or greater $(d \ge 2)$, the process is said to be multivariate. Otherwise, if $d = 1$ the process is said to be univariate, and the notation is simplified to $X (t)$.[^uni_subscripts]
+
+[^uni_subscripts]: For a univariate time series $X(t)$ we denote distributional parameters either omitting a subscript or else using the subscript $X$.
 
 In our example there are two data columns (`hare`, `lynx`), so that $d = 2$, the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period.
 
@@ -248,17 +250,28 @@ $$
 \end{align}
 $$ {#eq-cor-X-Y-given-Z}
 
-In the time series context the PACF is defined with reference to a univariate, stationary Gaussian process, $\mathcal{N}(t)$, having zero mean.[^3].
+In the time series context we introduce the PACF with reference to a univariate, stationary Gaussian process, $\mathcal{N}(t)$, having zero mean.[^3].
 
 [^3]: That is, we assume that $\mathcal{N}(t)$ is a stationary, mean-zero, autocorrelated process such that for any set of distinct time indices $t_1, \ldots, t_K$ the joint probability distribtuion of $(\mathcal{N}(t_1), \ldots), \mathcal{N}(t_K)$ is multivariate normal.
 
-At lags $|u| \le 1$ the partial autocorrelation is defined as the autocorrelation $\rho (u)$. For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$. The calculations are as follows.
+At lags $|u| \le 1$ the partial autocorrelation is defined as the autocorrelation $\rho (u)$. For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$.  Let $\Delta_u$ denote the the integer increments $\{ 1, 2, \ldots, u-1 \}$.
 
 $$
 \begin{align}
-   \hat{\mathcal{N}}(t + u) 
-   &= E \left ( \mathcal{N}(t + u) \; 
-     | \; \mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1) \right ) \\ 
+   \Delta_u &= \{ 1, 2, \ldots, u-1 \} \\ 
+   -\Delta_u &= \{ -1, -2, \ldots, 1-u \} \\ 
+   \\
+   & \text{ for } u > 1
+\end{align}
+$$
+
+The calculations are as follows.
+
+$$
+\begin{align}
+   \hat{\mathcal{N}}(t + u \; | -\Delta_u) 
+   &= E \left \{ \mathcal{N}(t + u) \; 
+     | \; \mathcal{N}(t + u + \nu), \; \nu \in -\Delta_u \right \} \\ 
    &= \beta_1 \mathcal{N}(t + u - 1) + \cdots 
      + \beta_{u-1} \mathcal{N}(t + 1)
 \end{align}
@@ -266,9 +279,9 @@ $$ {#eq-N-given-past}
 
 $$
 \begin{align}
-   \hat{\mathcal{N}}(t) 
-   &= E \left ( \mathcal{N}(t) \; 
-     | \; \mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1) \right ) \\ 
+   \hat{\mathcal{N}}(t \; | \; \Delta_u) 
+   &= E \left \{ \mathcal{N}(t + u) \; 
+     | \; \mathcal{N}(t + \nu), \; \nu \in \Delta_u \right \} \\ 
    &= \beta_1 \mathcal{N}(t + 1) + \cdots 
      + \beta_{u-1} \mathcal{N}(t + u - 1)
 \end{align}
@@ -284,11 +297,11 @@ The partial autocorrelation function is now defined as the correlation of the re
 
 $$
 \begin{align}
-  \rho (u | u) &= cor \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t) \right)
+  \rho (u | u) &= cor \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u \; | -\Delta_u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t \; | \; \Delta_u) \right)
 \end{align}
 $$ {#eq-pacf-defn}
 
-The calculation of the PACF can be based on the recursive Durbin-Levinson algorithm [@shumway2025, page 115].
+The calculation of the PACF can be based on the recursive Durbin-Levinson algorithm [@shumway2025, page 115]:
 
 $$
 \begin{align}
@@ -597,7 +610,82 @@ $$
 \end{align}
 $$ {#eq-AR1-PACF}
 
+### AR(p): PACF
 
+As previously noted, an $AR(p)$ model can be defined via a polynomial $\phi(\cdot)$ that is applied to the back-shift operator $\mathcal{B}$.  The coefficients of $\phi(\cdot)$ are real, but it is useful to apply the polynomial to the complex variable $z$.  From @eq-AR-bs-poly we have 
+
+$$
+\begin{align}
+  \phi(z) &= 1 \; - \; \sum_{\nu = 1}^p \; \phi_\nu \; z^\nu
+\end{align}
+$$ {#eq-ARp-poly-z}
+
+Also as previously mentioned, we require the roots of $\phi(\cdot)$ to lie outside the closed unit disc, that is, to be greater than unity in magnitude.  This requirement ensures that the model is stationary, causal, and invertible.
+
+To elaborate, since $\phi(z) \ne 0$ for $|z| \le 1$, the function $\phi(z)^{-1}$ is analytic for $|z| \le 1$.  Therefore $\phi(z)^{-1}$ has a power series expansion whose radius of convergence equals the minimum magnitude of the roots of $\phi(\cdot)$, which exceeds unity.
+
+Consequently we have the following causal form of the model.[^causal_series]
+
+[^causal_series]: See @shumway2025 [page 117].
+
+$$
+\begin{align}
+  X(t) - \mu_X &= \left \{ \phi(\mathcal{B})^{-1} \; W(\cdot) \right \} (t) \\ 
+  &= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\ 
+  &= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\ 
+  \text{where } \\ 
+  & \psi_0 = 1 \\ 
+  \\ 
+  \text{and } \\ 
+  & \sum_{\nu = 0}^\infty \; |\psi_\nu| \; < \; \infty
+\end{align}
+$$ {#eq-causal-series}
+
+@eq-AR-bs-poly also shows that $W(t)$ depends on current and past values of $X(t)$, with past values terminating at $X(t-p)$.
+
+$$
+\begin{align}
+  W(t) &= \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\ 
+  &= X(t) - \mu_X \; - \; \sum_{\nu = 1}^p \phi_\nu \; (X(t-\nu) - \mu_X)
+\end{align}
+$$
+
+From these equations one can show that for lag $u > p$ we have 
+
+$$
+\begin{align}
+  \hat{X}(t+u \; | -\Delta_u) &= \mu_X + \sum_{\nu = 1}^p \; \phi_\nu \; (X(t + u - \nu) - \mu_X) \\ 
+  X(t+u) \; - \; \hat{X}(t+u \; | -\Delta_u) &= W(t+u)
+\end{align}
+$$
+
+and 
+
+$$
+\begin{align}
+  \hat{X}(t \; | \Delta_u) &= \mu_X + \sum_{\nu = 1}^p \; \phi_\nu \; (X(t + \nu) - \mu_X) \\ 
+  X(t) \; - \; \hat{X}(t \; | \Delta_u) &=  \sum_{\nu = 1}^p \; \phi_\nu \; (X(t - \nu) - X(t + \nu)) \; + W(t)
+\end{align}
+$$
+
+Consequently, for $u > p$ we have 
+
+$$
+\begin{align}
+  & Cov(X(t+u) \; - \; \hat{X}(t+u \; | -\Delta_u), \; X(t) \; - \; \hat{X}(t \; | \Delta_u)) \\ 
+  &= Cov(W(t+u), \; X(t) \; - \; \hat{X}(t \; | \Delta_u)) \\ 
+  &= Cov(W(t+u), \; X(t)) \; - \; Cov(W(t+u), \; \hat{X}(t \; | \Delta_u)) \\ 
+  &= 0
+\end{align}
+$$
+
+Therefore 
+
+$$
+\begin{align}
+  \rho_X (u | u) &= 0 & \text{ for } u > p
+\end{align}
+$$
 
 ### Moving Average (MA)
 

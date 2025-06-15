@@ -1,6 +1,8 @@
 
 [^stationary]: The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of *strict stationarity*. This means that for any finite set of times $(t_1, \ldots, t_K)$ and any time-shift $s$, the joint probability distribution of $(X_\bullet (t_1), \ldots, X_\bullet (t_K))$ is identical to that of $(X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))$.
 
+[^uni_subscripts]: For a univariate time series $X(t)$ we denote distributional parameters either omitting a subscript or else using the subscript $X$.
+
 [^cmort_trend]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
 
 [^faithful]: There are two prominent `R` packages representing the Old Faithful measurements during August, 1985. The `MASS::geyser` data set of 299 observations [@MASS] includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The `datasets::faithful` data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.
