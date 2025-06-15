@@ -21,7 +21,7 @@
 
 [^invertible]: A model is said to be _invertible_ if the model's white noise process $W(t)$ can be expressed as a function of current and past terms of the modeled process, $\{ X(t-u) \}$ for $u \ge 0$.  See the textbook [@shumway2025, page 94].
 
-[^AR1_rho]: See the textbook [@shumway2025, page 88].
+[^AR1_rho]: See @shumway2025 [page 88].
 
-[^AR1_PACF]: See the textbook [@shumway2025, page 110].
+[^AR1_PACF]: See @shumway2025 [page 110].
 

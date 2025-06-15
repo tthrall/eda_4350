@@ -430,7 +430,9 @@ $$
   m(t, X_{2:3}(t)) 
     &= E \left \{ X_1(t) \; | \; X_2(t), \; X_3(t) \; \right \}
 \end{align}
-$$ where
+$$
+
+where 
 
 $$
 \begin{align}
@@ -440,7 +442,7 @@ $$
 \end{align}
 $$
 
-Each of the three components of $X_\bullet (t)$ exhibits an annual periodicity, as one might expect. In the textbook [@shumway2025, page 55] the authors initially propose a model for $X_1(t)$ of the following form.
+Each of the three components of $X_\bullet (t)$ exhibits an annual periodicity, as one might expect. In @shumway2025 [page 55] the authors initially propose a model for $X_1(t)$ of the following form.
 
 $$
 \begin{align}
@@ -497,9 +499,9 @@ The polynomial $\phi(\cdot)$ applied to the back-shift operator $\mathcal{B}$ is
 
 Now, the $AR(p)$ model is defined to be that of a _stationary_ process $X(t)$, which constrains the coefficients of polynomial $\phi(\cdot)$.  Additional requirements that the model be _causal_[^causal] and _invertible_[^invertible] restrict attention to polynomials $\phi(\cdot)$ whose roots lie outside the closed unit disk, $\bar{D}$, the set of complex numbers $z$ such that $|z| \le 1$, thereby ensuring that $\phi (z) \ne 0$ for $|z| \le 1$.
 
-[^causal]: An ARMA model is said to be _causal_ if the modeled process $X(t)$ can be expressed as a function of current and past white noise terms, $\{ W(t-u) \}$ for $u \ge 0$.  See the textbook [@shumway2025, page 96].
+[^causal]: An ARMA model is said to be _causal_ if the modeled process $X(t)$ can be expressed as a function of current and past white noise terms, $\{ W(t-u) \}$ for $u \ge 0$.  See @shumway2025 [page 96].
 
-[^invertible]: A model is said to be _invertible_ if the model's white noise process $W(t)$ can be expressed as a function of current and past terms of the modeled process, $\{ X(t-u) \}$ for $u \ge 0$.  See the textbook [@shumway2025, page 94].
+[^invertible]: A model is said to be _invertible_ if the model's white noise process $W(t)$ can be expressed as a function of current and past terms of the modeled process, $\{ X(t-u) \}$ for $u \ge 0$.  See @shumway2025 [page 94].
 
 #### AR(1): ACF and PACF
 
@@ -570,7 +572,7 @@ $$
 
 Based on these expressions one can show[^AR1_rho] that the auto-covariance and autocorrelation functions of $X(\cdot)$ take the following forms.
 
-[^AR1_rho]: [See @shumway2025, page 88].
+[^AR1_rho]: See @shumway2025 [page 88].
 
 $$
 \begin{align}
@@ -582,7 +584,7 @@ $$ {#eq-AR1-rho}
 
 Using the Durbin-Levinson algorithm, one can go on to show[^AR1_PACF] that the partial autocorrelation function (PACF) of $X(\cdot)$ has the following simple form.
 
-[^AR1_PACF]: [See @shumway2025, page 110].
+[^AR1_PACF]: See @shumway2025 [page 110].
 
 $$
 \begin{align}

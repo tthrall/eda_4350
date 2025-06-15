@@ -179,7 +179,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">10:42 Sun 15-Jun-2025</p>
+      <p class="date">11:03 Sun 15-Jun-2025</p>
     </div>
   </div>
   
@@ -451,7 +451,8 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   m(t, X_{2:3}(t))
     &amp;= E \left \{ X_1(t) \; | \; X_2(t), \; X_3(t) \; \right \}
 \end{align}
-\]</span> where</p>
+\]</span></p>
+<p>where</p>
 <p><span class="math display">\[
 \begin{align}
   X_1(t) = M(t) &amp;= \text{mortality count in week } t \\
@@ -459,7 +460,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
     X_3(t) = P(t) &amp;= \text{level of particulate matter in week } t
 \end{align}
 \]</span></p>
-<p>Each of the three components of <span class="math inline">\(X_\bullet (t)\)</span> exhibits an annual periodicity, as one might expect. In the textbook <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 55</a>)</span> the authors initially propose a model for <span class="math inline">\(X_1(t)\)</span> of the following form.</p>
+<p>Each of the three components of <span class="math inline">\(X_\bullet (t)\)</span> exhibits an annual periodicity, as one might expect. In <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 55</a>)</span> the authors initially propose a model for <span class="math inline">\(X_1(t)\)</span> of the following form.</p>
 <p><span class="math display">\[
 \begin{align}
   X_1(t) &amp;= m(t, X_{2:3}(t)) + W(t)\\
@@ -1284,10 +1285,10 @@ Venables, W. N., and B. D. Ripley. 2002. <span>“Modern Applied Statistics with
 <li id="fn5"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>The authors consider various forms for the function <span class="math inline">\(f(t)\)</span>: a linear function, a quadratic function, or a locally smoothed version of <span class="math inline">\(X_1(t)\)</span>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>The authors generally use the notation <span class="math inline">\(W(t)\)</span> to signify white noise, an uncorrelated stationary random process having mean 0. Moreover, the authors typically reserve this notation to signify an uncorrelated stationary <em>Gaussian</em> process, that is, a process of independent and identically distributed (“iid”) normal variables having mean 0.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>An ARMA model is said to be <em>causal</em> if the modeled process <span class="math inline">\(X(t)\)</span> can be expressed as a function of current and past white noise terms, <span class="math inline">\(\{ W(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See the textbook <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 96</a>)</span>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p>A model is said to be <em>invertible</em> if the model’s white noise process <span class="math inline">\(W(t)\)</span> can be expressed as a function of current and past terms of the modeled process, <span class="math inline">\(\{ X(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See the textbook <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 94</a>)</span>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn10"><p><span class="citation" data-cites="shumway2025">(See <a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 88</a>)</span>.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn11"><p><span class="citation" data-cites="shumway2025">(See <a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 110</a>)</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>An ARMA model is said to be <em>causal</em> if the modeled process <span class="math inline">\(X(t)\)</span> can be expressed as a function of current and past white noise terms, <span class="math inline">\(\{ W(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 96</a>)</span>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>A model is said to be <em>invertible</em> if the model’s white noise process <span class="math inline">\(W(t)\)</span> can be expressed as a function of current and past terms of the modeled process, <span class="math inline">\(\{ X(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 94</a>)</span>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 88</a>)</span>.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 110</a>)</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn12"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations <span class="citation" data-cites="MASS">(<a href="#ref-MASS" role="doc-biblioref">Venables and Ripley 2002</a>)</span> includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn13"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn14"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
