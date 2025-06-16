@@ -217,14 +217,14 @@ $$ {#eq-auto-cov-symmetry}
 
 Consequently, the time-reversed process $Y_\bullet (t) = X_\bullet (-t)$ has the same auto-covariance structure as the original process, allowing for this matrix transposition.
 
-The auto-covariance function is often re-scaled to yield the *autocorrelation (ACF)* function $\rho_{\bullet, \bullet}(\cdot)$.
+The *autocorrelation (ACF)* function $\rho_{\bullet, \bullet}(\cdot)$ is the following scaled version of the auto-covariance function.
 
 $$
 \begin{align}
 \rho_{\bullet, \bullet} (u) &= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\ 
   \\ 
   \text{where} \\
-  \rho_{a, b} (u) &= cor \{ X_a (u), X_b (0) \} \\ 
+  \rho_{a, b} (u) &= corr \{ X_a (u), X_b (0) \} \\ 
   &= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
 $$ {#eq-auto-cor}
@@ -246,7 +246,7 @@ Then the partial correlation between $X$ and $Y$ given $Z_\bullet$ is the correl
 
 $$
 \begin{align}
-  \rho_{X, Y \bullet Z_\bullet} &= cor \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
+  \rho_{X, Y \bullet Z_\bullet} &= corr \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
 \end{align}
 $$ {#eq-cor-X-Y-given-Z}
 
@@ -254,14 +254,14 @@ In the time series context we introduce the PACF with reference to a univariate,
 
 [^3]: That is, we assume that $\mathcal{N}(t)$ is a stationary, mean-zero, autocorrelated process such that for any set of distinct time indices $t_1, \ldots, t_K$ the joint probability distribtuion of $(\mathcal{N}(t_1), \ldots), \mathcal{N}(t_K)$ is multivariate normal.
 
-At lags $|u| \le 1$ the partial autocorrelation is defined as the autocorrelation $\rho (u)$. For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$.  Let $\Delta_u$ denote the the integer increments $\{ 1, 2, \ldots, u-1 \}$.
+At lags $|u| \le 1$ the partial autocorrelation is defined as the autocorrelation $\rho (u)$. For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$.  Let $\Delta_u$ denote these intervening integer increments $\{ 1, 2, \ldots, u-1 \}$.
 
 $$
 \begin{align}
    \Delta_u &= \{ 1, 2, \ldots, u-1 \} \\ 
    -\Delta_u &= \{ -1, -2, \ldots, 1-u \} \\ 
    \\
-   & \text{ for } u > 1
+   & \text{ for } u \ge 2
 \end{align}
 $$
 
@@ -287,7 +287,7 @@ $$
 \end{align}
 $$ {#eq-N-given-future}
 
-The conditional expectation is linear in the conditioning variables thanks to the assumption that $\mathcal{N}(t)$ is a Gaussian process having zero mean. More generally, in the non-Gaussian case, the linear combination (not the conditional expectation) is retained in the definition and is defined by the least-squares criterion.
+The conditional expectation is linear in the conditioning variables thanks to the assumption that $\mathcal{N}(t)$ is a Gaussian process having zero mean. In the non-Gaussian case the linear combination is defined as the one that minimizes the mean-squared approximation error.
 
 The coefficients in the linear combination are shared by $\hat{\mathcal{N}}(t)$ and $\hat{\mathcal{N}}(t + u)$ but are applied in reverse order. This is because the time-reversed process $\mathcal{N}(-t)$ has the same auto-covariance structure as the original process $\mathcal{N}(t)$.[^4]
 
@@ -297,7 +297,7 @@ The partial autocorrelation function is now defined as the correlation of the re
 
 $$
 \begin{align}
-  \rho (u | u) &= cor \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u \; | -\Delta_u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t \; | \; \Delta_u) \right)
+  \rho (u | u) &= corr \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u \; | -\Delta_u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t \; | \; \Delta_u) \right)
 \end{align}
 $$ {#eq-pacf-defn}
 
@@ -419,7 +419,7 @@ $$ {#eq-diff-filter}
 
 A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a *low-pass* filter. The differencing operator can be categorized as a *high-pass* filter.
 
-In signal-processing applications a linear, time-invariant filter $a_{\bullet, \bullet} (\cdot)$ may be designed to extract certain types of signals that are contaminated by noise.
+In signal-processing applications a linear, time-invariant filter $a_{\bullet, \bullet} (\cdot)$ may be designed to extract certain types of signals that are contaminated by noise.[@hamming1989]
 
 ## Model Components
 
@@ -471,11 +471,9 @@ $$
 
 Here $wn(0, \sigma_W^2)$ denotes an uncorrelated sequence having zero mean and variance $\sigma_W^2$, referred to as white noise.
 
-According to this model[^6] the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 - m(t, X_{2:3}(t))$ is modeled as a series free of autocorrelation.[^7] This assumption seems plausible, since $X_1(t)$ counts the number of arguably independent events (cardiovascular deaths) in each week.
+According to this model[^6] the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 - m(t, X_{2:3}(t))$ is modeled as a series free of autocorrelation. This assumption seems plausible, since $X_1(t)$ counts the number of arguably independent events (cardiovascular deaths) in each week.
 
 [^6]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
-
-[^7]: The authors generally use the notation $W(t)$ to signify white noise, an uncorrelated stationary random process having mean 0. Moreover, the authors typically reserve this notation to signify an uncorrelated stationary *Gaussian* process, that is, a process of independent and identically distributed ("iid") normal variables having mean 0.
 
 Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled $W(t)$), they develop an autocorrelated ($AR(2)$) model.
 
@@ -491,11 +489,11 @@ $$
   \text{where } \\ 
   \alpha &= \mu_X \; - \; \mu_X \; \sum_{\nu = 1}^p \phi_\nu \\ 
     \\ 
-    W(t) &= \text{an uncorrelated ("white noise") series}
+    W(t) &\sim wn(0, \sigma_W^2)
 \end{align}
 $$ {#eq-AR-sum}
 
-That is, $W(t)$ again denotes a residual "white noise" stationary process: free of autocorrelation and having zero mean. (Even more, $W(t)$ is often assumed to be a sequence of independent and identically distributed, or "iid", normal variates having zero mean.)
+That is, $W(t)$ again denotes a residual "white noise" stationary process: free of autocorrelation and having zero mean.
 
 #### Polynomial representation
 
@@ -512,7 +510,7 @@ $$ {#eq-AR-bs-poly}
 
 The polynomial $\phi(\cdot)$ applied to the back-shift operator $\mathcal{B}$ is an *auto-regressive operator of order* $p$.
 
-Now, the $AR(p)$ model is defined to be that of a _stationary_ process $X(t)$, which constrains the coefficients of polynomial $\phi(\cdot)$.  Additional requirements that the model be _causal_[^causal] and _invertible_[^invertible] restrict attention to polynomials $\phi(\cdot)$ whose roots lie outside the closed unit disk, $\bar{D}$, the set of complex numbers $z$ such that $|z| \le 1$, thereby ensuring that $\phi (z) \ne 0$ for $|z| \le 1$.
+Now, the $AR(p)$ model is defined to be that of a _stationary_ process $X(t)$, which constrains the coefficients of polynomial $\phi(\cdot)$.  Additional requirements that the model be _causal_[^causal] and _invertible_[^invertible] restrict attention to polynomials $\phi(\cdot)$ whose roots are all greater than unity in magnitude.  This ensures that the function $\phi (z)^{-1}$ is well defned and has a power series expansion for for $|z| \le 1$.
 
 [^causal]: An ARMA model is said to be _causal_ if the modeled process $X(t)$ can be expressed as a function of current and past white noise terms, $\{ W(t-u) \}$ for $u \ge 0$.  See @shumway2025 [page 96].
 
@@ -572,7 +570,7 @@ This result can be obtained more directly by inverting the auto-regressive opera
 $$
 \begin{align}
   W(t) &= \left \{ \phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\ 
-  X(\cdot) - \mu_X &= \left \{ \phi (\mathcal{B})^{-1} \; W(\cdot) \right \} (t)
+  X(t) - \mu_X &= \left \{ \phi (\mathcal{B})^{-1} \; W(\cdot) \right \} (t)
 \end{align}
 $$ {#eq-AR1-bs-inv}
 
@@ -730,11 +728,55 @@ $$
 \end{align}
 $$
 
-The probability distributions of the two processes $X(\cdot)$ and $Y(\cdot)$ are identical, so anyone attempting to identify the respective models could not distinguish them based on their respective realizations as time series data.
+The probability distributions of the two processes $X(\cdot)$ and $Y(\cdot)$ are identical[^MA1_equiv], so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.
 
-A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible.  That is we require the roots of polynomial $\theta(\cdot)$ to have magnitude greater than unity.  In the example above we therefore choose the model for $X(\cdot)$ rather than the model for $Y(\cdot)$.
+[^MA1_equiv]: To see the equivalence of the two models, set $U(t) = 5 V(t-1)$, and then reverse time.
 
-#### MA(q): ACF and PACF
+A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible.  That is, we require the roots of polynomial $\theta(\cdot)$ to have magnitude greater than unity.  In the example above we therefore choose the model for $X(\cdot)$ rather than the model for $Y(\cdot)$.
+
+#### MA(1): ACF and PACF
+
+Consider the $MA(1)$ model 
+
+$$
+\begin{align}
+  X(t) &= W(t) + \theta_1 W(t-1) \\ 
+  \\ 
+  &\text{ with } |\theta_1| < 1 \\ 
+  &\text{ and } W(\cdot) \sim wn(0, \sigma_W^2)
+\end{align}
+$$ {#eq-MA1}
+
+Here is the auto-covariance function for this process.
+
+$$
+\begin{align}
+  \gamma_X (0) &= \sigma_X^2 \\ 
+  &= \sigma_W^2 \; (1 + \theta_1^2) \\ 
+  \\ 
+  \gamma_X (1) &= Cov(W(t+1) + \theta_1 W(t), \; W(t) + \theta_1 W(t-1)) \\ 
+  &= \sigma_W^2 \; \theta_1 \\ 
+  \\ 
+  \gamma_X (u) &= 0 \quad \text{for } |u| \ge 2
+\end{align}
+$$ {#eq-MA1-ACovF}
+
+And here is the corresponding autocorrelation function (ACF).
+
+$$
+\begin{align}
+  \rho_X (u) &= 
+  \begin{cases}
+    1 & \text{ for } u = 0 \\ 
+    \frac{\theta_1}{1 + \theta_1^2} & \text{ for } u = \pm 1 \\ 
+    0 & \text{ for } |u| \ge 2 \\  
+  \end{cases}
+\end{align}
+$$ {#eq-MA1-ACF}
+
+As for the PACF, recall that it is defined to coincide with the ACF at lag 1.  
+
+#### MA(q): ACF
 
 ### Assembling Components
 
@@ -1251,7 +1293,7 @@ The autocorrelation function is thus[^11]
 
 $$
 \begin{align}
-  \rho_X (u) &= cor \left ( X(t + u), X(t) \right ) \\ 
+  \rho_X (u) &= corr \left ( X(t + u), X(t) \right ) \\ 
   &= 
   \begin{cases}
     1 & \text{ for } u = 0 \\ 

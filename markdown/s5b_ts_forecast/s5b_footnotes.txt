@@ -29,3 +29,5 @@
 
 [^MA1_equivalence]: @shumway2025 [page 92]
 
+[^MA1_equiv]: To see the equivalence of the two models, set $U(t) = 5 V(t-1)$, and then reverse time.
+

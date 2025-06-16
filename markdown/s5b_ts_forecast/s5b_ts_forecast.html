@@ -179,7 +179,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">20:05 Sun 15-Jun-2025</p>
+      <p class="date">12:05 Mon 16-Jun-2025</p>
     </div>
   </div>
   
@@ -296,13 +296,13 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \end{align}
 \tag{6}\]</span></span></p>
 <p>Consequently, the time-reversed process <span class="math inline">\(Y_\bullet (t) = X_\bullet (-t)\)</span> has the same auto-covariance structure as the original process, allowing for this matrix transposition.</p>
-<p>The auto-covariance function is often re-scaled to yield the <em>autocorrelation (ACF)</em> function <span class="math inline">\(\rho_{\bullet, \bullet}(\cdot)\)</span>.</p>
+<p>The <em>autocorrelation (ACF)</em> function <span class="math inline">\(\rho_{\bullet, \bullet}(\cdot)\)</span> is the following scaled version of the auto-covariance function.</p>
 <p><span id="eq-auto-cor"><span class="math display">\[
 \begin{align}
 \rho_{\bullet, \bullet} (u) &amp;= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\
   \\
   \text{where} \\
-  \rho_{a, b} (u) &amp;= cor \{ X_a (u), X_b (0) \} \\
+  \rho_{a, b} (u) &amp;= corr \{ X_a (u), X_b (0) \} \\
   &amp;= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
 \tag{7}\]</span></span></p>
@@ -320,17 +320,17 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 <p>Then the partial correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is the correlation between the respective <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> residuals, as follows.</p>
 <p><span id="eq-cor-X-Y-given-Z"><span class="math display">\[
 \begin{align}
-  \rho_{X, Y \bullet Z_\bullet} &amp;= cor \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
+  \rho_{X, Y \bullet Z_\bullet} &amp;= corr \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
 \end{align}
 \tag{9}\]</span></span></p>
 <p>In the time series context we introduce the PACF with reference to a univariate, stationary Gaussian process, <span class="math inline">\(\mathcal{N}(t)\)</span>, having zero mean.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
-<p>At lags <span class="math inline">\(|u| \le 1\)</span> the partial autocorrelation is defined as the autocorrelation <span class="math inline">\(\rho (u)\)</span>. For <span class="math inline">\(u &gt; 1\)</span> the PACF is defined to be the correlation between <span class="math inline">\(\mathcal{N}(t + u)\)</span> and <span class="math inline">\(\mathcal{N}(t)\)</span> conditioned on the intervening variables <span class="math inline">\(\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)\)</span>. Let <span class="math inline">\(\Delta_u\)</span> denote the the integer increments <span class="math inline">\(\{ 1, 2, \ldots, u-1 \}\)</span>.</p>
+<p>At lags <span class="math inline">\(|u| \le 1\)</span> the partial autocorrelation is defined as the autocorrelation <span class="math inline">\(\rho (u)\)</span>. For <span class="math inline">\(u &gt; 1\)</span> the PACF is defined to be the correlation between <span class="math inline">\(\mathcal{N}(t + u)\)</span> and <span class="math inline">\(\mathcal{N}(t)\)</span> conditioned on the intervening variables <span class="math inline">\(\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)\)</span>. Let <span class="math inline">\(\Delta_u\)</span> denote these intervening integer increments <span class="math inline">\(\{ 1, 2, \ldots, u-1 \}\)</span>.</p>
 <p><span class="math display">\[
 \begin{align}
    \Delta_u &amp;= \{ 1, 2, \ldots, u-1 \} \\
    -\Delta_u &amp;= \{ -1, -2, \ldots, 1-u \} \\
    \\
-   &amp; \text{ for } u &gt; 1
+   &amp; \text{ for } u \ge 2
 \end{align}
 \]</span></p>
 <p>The calculations are as follows.</p>
@@ -352,12 +352,12 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
      + \beta_{u-1} \mathcal{N}(t + u - 1)
 \end{align}
 \tag{11}\]</span></span></p>
-<p>The conditional expectation is linear in the conditioning variables thanks to the assumption that <span class="math inline">\(\mathcal{N}(t)\)</span> is a Gaussian process having zero mean. More generally, in the non-Gaussian case, the linear combination (not the conditional expectation) is retained in the definition and is defined by the least-squares criterion.</p>
+<p>The conditional expectation is linear in the conditioning variables thanks to the assumption that <span class="math inline">\(\mathcal{N}(t)\)</span> is a Gaussian process having zero mean. In the non-Gaussian case the linear combination is defined as the one that minimizes the mean-squared approximation error.</p>
 <p>The coefficients in the linear combination are shared by <span class="math inline">\(\hat{\mathcal{N}}(t)\)</span> and <span class="math inline">\(\hat{\mathcal{N}}(t + u)\)</span> but are applied in reverse order. This is because the time-reversed process <span class="math inline">\(\mathcal{N}(-t)\)</span> has the same auto-covariance structure as the original process <span class="math inline">\(\mathcal{N}(t)\)</span>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <p>The partial autocorrelation function is now defined as the correlation of the residual variables:</p>
 <p><span id="eq-pacf-defn"><span class="math display">\[
 \begin{align}
-  \rho (u | u) &amp;= cor \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u \; | -\Delta_u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t \; | \; \Delta_u) \right)
+  \rho (u | u) &amp;= corr \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u \; | -\Delta_u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t \; | \; \Delta_u) \right)
 \end{align}
 \tag{12}\]</span></span></p>
 <p>The calculation of the PACF can be based on the recursive Durbin-Levinson algorithm <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 115</a>)</span>:</p>
@@ -439,7 +439,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{18}\]</span></span></p>
 <p>A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a <em>low-pass</em> filter. The differencing operator can be categorized as a <em>high-pass</em> filter.</p>
-<p>In signal-processing applications a linear, time-invariant filter <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> may be designed to extract certain types of signals that are contaminated by noise.</p>
+<p>In signal-processing applications a linear, time-invariant filter <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> may be designed to extract certain types of signals that are contaminated by noise.<span class="citation" data-cites="hamming1989">(<a href="#ref-hamming1989" role="doc-biblioref">Hamming 1989</a>)</span></p>
 </section>
 <section id="model-components" class="level2">
 <h2 class="anchored" data-anchor-id="model-components">Model Components</h2>
@@ -555,7 +555,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p><span id="eq-AR1-bs-inv"><span class="math display">\[
 \begin{align}
   W(t) &amp;= \left \{ \phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\
-  X(\cdot) - \mu_X &amp;= \left \{ \phi (\mathcal{B})^{-1} \; W(\cdot) \right \} (t)
+  X(t) - \mu_X &amp;= \left \{ \phi (\mathcal{B})^{-1} \; W(\cdot) \right \} (t)
 \end{align}
 \tag{22}\]</span></span></p>
 <p>since</p>
@@ -678,11 +678,47 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   Y(t) &amp;= V(t) + 5 \; V(t-1) &amp; \text{with } V(\cdot) \sim N(0, 1)
 \end{align}
 \]</span></p>
-<p>The probability distributions of the two processes <span class="math inline">\(X(\cdot)\)</span> and <span class="math inline">\(Y(\cdot)\)</span> are identical, so anyone attempting to identify the respective models could not distinguish them based on their respective realizations as time series data.</p>
-<p>A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible. That is we require the roots of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitude greater than unity. In the example above we therefore choose the model for <span class="math inline">\(X(\cdot)\)</span> rather than the model for <span class="math inline">\(Y(\cdot)\)</span>.</p>
+<p>The probability distributions of the two processes <span class="math inline">\(X(\cdot)\)</span> and <span class="math inline">\(Y(\cdot)\)</span> are identical, so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.</p>
+<p>A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible. That is, we require the roots of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitude greater than unity. In the example above we therefore choose the model for <span class="math inline">\(X(\cdot)\)</span> rather than the model for <span class="math inline">\(Y(\cdot)\)</span>.</p>
 </section>
-<section id="maq-acf-and-pacf" class="level4">
-<h4 class="anchored" data-anchor-id="maq-acf-and-pacf">MA(q): ACF and PACF</h4>
+<section id="ma1-acf-and-pacf" class="level4">
+<h4 class="anchored" data-anchor-id="ma1-acf-and-pacf">MA(1): ACF and PACF</h4>
+<p>Consider the <span class="math inline">\(MA(1)\)</span> model</p>
+<p><span id="eq-MA1"><span class="math display">\[
+\begin{align}
+  X(t) &amp;= W(t) + \theta_1 W(t-1) \\
+  \\
+  &amp;\text{ with } |\theta_1| &lt; 1 \\
+  &amp;\text{ and } W(\cdot) \sim wn(0, \sigma_W^2)
+\end{align}
+\tag{27}\]</span></span></p>
+<p>Here is the auto-covariance function for this process.</p>
+<p><span id="eq-MA1-ACovF"><span class="math display">\[
+\begin{align}
+  \gamma_X (0) &amp;= \sigma_X^2 \\
+  &amp;= \sigma_W^2 \; (1 + \theta_1^2) \\
+  \\
+  \gamma_X (1) &amp;= Cov(W(t+1) + \theta_1 W(t), \; W(t) + \theta_1 W(t-1)) \\
+  &amp;= \sigma_W^2 \; \theta_1 \\
+  \\
+  \gamma_X (u) &amp;= 0 \quad \text{for } |u| \ge 2
+\end{align}
+\tag{28}\]</span></span></p>
+<p>And here is the corresponding autocorrelation function (ACF).</p>
+<p><span id="eq-MA1-ACF"><span class="math display">\[
+\begin{align}
+  \rho_X (u) &amp;=
+  \begin{cases}
+    1 &amp; \text{ for } u = 0 \\
+    \frac{\theta_1}{1 + \theta_1^2} &amp; \text{ for } u = \pm 1 \\
+    0 &amp; \text{ for } |u| \ge 2 \\  
+  \end{cases}
+\end{align}
+\tag{29}\]</span></span></p>
+<p>As for the PACF, recall that it is defined to coincide with the ACF at lag 1.</p>
+</section>
+<section id="maq-acf" class="level4">
+<h4 class="anchored" data-anchor-id="maq-acf">MA(q): ACF</h4>
 </section>
 </section>
 <section id="assembling-components" class="level3">
@@ -1078,7 +1114,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \\
   &amp; \text{where } -1 &lt; \theta &lt; 1
 \end{align}
-\tag{27}\]</span></span></p>
+\tag{30}\]</span></span></p>
 <p>Then <span class="math inline">\(X(\cdot)\)</span> is an example of a moving average random process. In the theory of such processes one usually assumes that <span class="math inline">\(X(\cdot)\)</span> is observed for some interval of time <span class="math inline">\((t_0, \ldots, t_0 + T - 1)\)</span> and that <span class="math inline">\(W(\cdot)\)</span> is not observed. But for present purposes suppose that this is a simulation study in which both <span class="math inline">\(X(t)\)</span> and <span class="math inline">\(W(\cdot)\)</span> are generated over the same time interval and that the values of all parameters are known, including the population means, the population variances, and <span class="math inline">\(\theta\)</span>.</p>
 <p>Let’s focus on the calculation of the sample mean and its variance. For <span class="math inline">\(W(\cdot)\)</span> we have the following familiar formulas for the sum of observed values.</p>
 <p><span id="eq-ev-sum-uncorrelated"><span class="math display">\[
@@ -1089,7 +1125,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   Var \left \{ S_{W, T} \right \} &amp;= T \times Var \left \{ W(t_0) \right \}  \\
   &amp;= T \times \sigma_W^2
 \end{align}
-\tag{28}\]</span></span></p>
+\tag{31}\]</span></span></p>
 <p>The sample mean is derived from the sample sum.</p>
 <p><span id="eq-ev-avg-uncorrelated"><span class="math display">\[
 \begin{align}
@@ -1103,14 +1139,14 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\
   &amp;= \frac{ \sigma_W^2 }{T}
 \end{align}
-\tag{29}\]</span></span></p>
+\tag{32}\]</span></span></p>
 <p>The mean and variance of <span class="math inline">\(X(t)\)</span> can be expressed as respective functions of the mean and variance of <span class="math inline">\(Z(t)\)</span>.</p>
 <p><span id="eq-ev-ma-1-model"><span class="math display">\[
 \begin{align}
   \mu_X &amp;= (1 +\theta) \; \mu_Z \\
   \sigma_X^2 &amp;= (1 +\theta^2) \; \sigma_Z^2
 \end{align}
-\tag{30}\]</span></span></p>
+\tag{33}\]</span></span></p>
 <p>The variance formula for the sample sum, <span class="math inline">\(S_{X, T}\)</span>, differs from that of <span class="math inline">\(S_{Z, T}\)</span>, because <span class="math inline">\(X(\cdot)\)</span> is autocorrelated. The auto-covariance function is</p>
 <p><span id="eq-auto-cov-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -1122,11 +1158,11 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{31}\]</span></span></p>
+\tag{34}\]</span></span></p>
 <p>The autocorrelation function is thus<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a></p>
 <p><span id="eq-auto-cor-ma-1-model"><span class="math display">\[
 \begin{align}
-  \rho_X (u) &amp;= cor \left ( X(t + u), X(t) \right ) \\
+  \rho_X (u) &amp;= corr \left ( X(t + u), X(t) \right ) \\
   &amp;=
   \begin{cases}
     1 &amp; \text{ for } u = 0 \\
@@ -1134,7 +1170,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{32}\]</span></span></p>
+\tag{35}\]</span></span></p>
 <p>Therefore</p>
 <p><span id="eq-var-sum-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -1151,7 +1187,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2}
   - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
 \end{align}
-\tag{33}\]</span></span></p>
+\tag{36}\]</span></span></p>
 <p>In short, ignoring the autocorrelation of <span class="math inline">\(X(\cdot)\)</span> would lead to erroneous calculations of the variance of <span class="math inline">\(S_{X, T}\)</span> and <span class="math inline">\(\hat{\mu}_X\)</span>.</p>
 </section>
 <section id="effective-sample-size-ess" class="level3">
@@ -1162,13 +1198,13 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \frac{\sigma_X^2}{N_d} &amp;= Var \left \{ \hat{\mu}_X \right \} \\
   &amp;= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
 \end{align}
-\tag{34}\]</span></span></p>
+\tag{37}\]</span></span></p>
 <p>Equivalently</p>
 <p><span id="eq-ess-definition"><span class="math display">\[
 \begin{align}
   N_d &amp;= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
 \end{align}
-\tag{35}\]</span></span></p>
+\tag{38}\]</span></span></p>
 <p>In our moving average example this yields</p>
 <p><span id="eq-ess-limit-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -1180,7 +1216,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     T^2  &amp; \text{ as } \theta \rightarrow -1
   \end{cases}
 \end{align}
-\tag{36}\]</span></span></p>
+\tag{39}\]</span></span></p>
 <p>As <span class="math inline">\(\theta\)</span> increases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> decreases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T/2\)</span>. In the other direction, as <span class="math inline">\(\theta\)</span> decreases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(-1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> increases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T^2\)</span>.</p>
 <p>The point here is that care must be taken when calculating the variance of estimators derived from time series data. This is a known issue addressed by available software.</p>
 </section>
@@ -1363,6 +1399,9 @@ Figure&nbsp;19: Southern Oscillation Index and fish recruitment
 
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Appendix C: References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-hamming1989" class="csl-entry" role="listitem">
+Hamming, R. W. 1989. <em>Digital Filters (3rd Ed.)</em>. GBR: Prentice Hall International (UK) Ltd.
+</div>
 <div id="ref-ljung1978" class="csl-entry" role="listitem">
 Ljung, G. M., and G. E. P. Box. 1978. <span>“On a Measure of Lack of Fit in Time Series Models.”</span> <em>Biometrika</em> 65 (2): 297–303. <a href="https://doi.org/10.1093/biomet/65.2.297">https://doi.org/10.1093/biomet/65.2.297</a>.
 </div>
