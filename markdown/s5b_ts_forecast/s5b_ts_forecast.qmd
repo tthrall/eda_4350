@@ -471,7 +471,7 @@ $$
 
 Here $wn(0, \sigma_W^2)$ denotes an uncorrelated sequence having zero mean and variance $\sigma_W^2$, referred to as white noise.
 
-According to this model[^6] the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 - m(t, X_{2:3}(t))$ is modeled as a series free of autocorrelation. This assumption seems plausible, since $X_1(t)$ counts the number of arguably independent events (cardiovascular deaths) in each week.
+According to this model[^6] the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 (t) - m(t, X_{2:3}(t))$ is modeled as being free of autocorrelation. The model is consistent with the assumption that, apart from a trend component, weekly numbers of cardiovascular deaths are independent, conditioned on temperature and particulate levels.
 
 [^6]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
 
@@ -504,19 +504,22 @@ $$
   \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) &= W(t) \\ 
   \\ 
   \text{where } \\
+  \phi (z) &= 1 - \sum_{\nu = 1}^p \phi_\nu \; z^\nu
+  \\ 
+  \text{so that } \\
   \phi (\mathcal{B}) &= \mathcal{I} \; - \; \sum_{\nu = 1}^p \phi_\nu \mathcal{B}^\nu
 \end{align}
 $$ {#eq-AR-bs-poly}
 
 The polynomial $\phi(\cdot)$ applied to the back-shift operator $\mathcal{B}$ is an *auto-regressive operator of order* $p$.
 
-Now, the $AR(p)$ model is defined to be that of a _stationary_ process $X(t)$, which constrains the coefficients of polynomial $\phi(\cdot)$.  Additional requirements that the model be _causal_[^causal] and _invertible_[^invertible] restrict attention to polynomials $\phi(\cdot)$ whose roots are all greater than unity in magnitude.  This ensures that the function $\phi (z)^{-1}$ is well defned and has a power series expansion for for $|z| \le 1$.
+Now, the $AR(p)$ model is defined to be that of a _stationary_ process $X(t)$, which constrains the coefficients of polynomial $\phi(\cdot)$.  Additional requirements that the model be _causal_[^causal] and _invertible_[^invertible] restrict attention to polynomials $\phi(\cdot)$ whose roots are all greater than unity in magnitude.  This ensures that the multiplicative inverse function $\phi (z)^{-1}$ is well defined and has a power series expansion for $|z| \le 1$.
 
 [^causal]: An ARMA model is said to be _causal_ if the modeled process $X(t)$ can be expressed as a function of current and past white noise terms, $\{ W(t-u) \}$ for $u \ge 0$.  See @shumway2025 [page 96].
 
 [^invertible]: A model is said to be _invertible_ if the model's white noise process $W(t)$ can be expressed as a function of current and past terms of the modeled process, $\{ X(t-u) \}$ for $u \ge 0$.  See @shumway2025 [page 94].
 
-#### AR(1): ACF and PACF
+#### AR(1)
 
 Consider the $AR(1)$ model.  We have 
 
@@ -610,7 +613,7 @@ $$
 \end{align}
 $$ {#eq-AR1-PACF}
 
-#### AR(p): PACF
+#### AR(p)
 
 As previously noted, an $AR(p)$ model can be defined via a polynomial $\phi(\cdot)$ that is applied to the back-shift operator $\mathcal{B}$.  The coefficients of $\phi(\cdot)$ are real, but it is useful to apply the polynomial to the complex variable $z$.  From @eq-AR-bs-poly we have 
 
@@ -621,8 +624,6 @@ $$
 $$ {#eq-ARp-poly-z}
 
 Also as previously mentioned, we require the roots of $\phi(\cdot)$ to lie outside the closed unit disc, that is, to be greater than unity in magnitude.  This requirement ensures that the model is stationary, causal, and invertible.
-
-To elaborate, since $\phi(z) \ne 0$ for $|z| \le 1$, the function $\phi(z)^{-1}$ is analytic for $|z| \le 1$.  Therefore $\phi(z)^{-1}$ has a power series expansion whose radius of convergence equals the minimum magnitude of the roots of $\phi(\cdot)$, which exceeds unity.
 
 Consequently we have the following causal form of the model.[^causal_series]
 
@@ -693,7 +694,7 @@ A moving average model of order $q$ has the following form.
 
 $$
 \begin{align}
-  X(t) &= \mu_x \; + \; W(t) \; + \; \sum_{\nu = 1}^q \; \theta_\nu \; W(t - \nu) \\ 
+  X(t) &= \mu_X \; + \; W(t) \; + \; \sum_{\nu = 1}^q \; \theta_\nu \; W(t - \nu) \\ 
   \text{where } \\ 
   W(\cdot) &\sim wn(0, \sigma_W^2)
 \end{align}
@@ -730,11 +731,13 @@ $$
 
 The probability distributions of the two processes $X(\cdot)$ and $Y(\cdot)$ are identical[^MA1_equiv], so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.
 
-[^MA1_equiv]: To see the equivalence of the two models, set $U(t) = 5 V(t-1)$, and then reverse time.
+[^MA1_equiv]: Transform the second equation into the first as follows. For all time indices $\nu$ set $U(\nu) = 5 V(\nu - 1)$, and then reverse time by setting $Y'(\nu) = Y(- \nu)$ and $U'(\nu) = U(- \nu)$.
 
-A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible.  That is, we require the roots of polynomial $\theta(\cdot)$ to have magnitude greater than unity.  In the example above we therefore choose the model for $X(\cdot)$ rather than the model for $Y(\cdot)$.
+A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible.  That is, we require the roots of polynomial $\theta(\cdot)$ to have magnitude greater than unity.[^poly_roots]  In the example above we therefore choose the model for $X(\cdot)$ rather than the model for $Y(\cdot)$.
 
-#### MA(1): ACF and PACF
+[^poly_roots]: As previously mentioned, requiring the roots of a polynomial $p(\cdot)$ to be greater than unity in magnitude ensures that $p(z)^{-1}$ is finite and analytic for $|z| \le 1$ and thus has a power series expansion whose radius of convergence is the minimum magnitude of the roots of $p(\cdot)$.  As a consequence the coefficients of that power series are absolutely summable.
+
+#### MA(1)
 
 Consider the $MA(1)$ model 
 
@@ -761,7 +764,7 @@ $$
 \end{align}
 $$ {#eq-MA1-ACovF}
 
-And here is the corresponding autocorrelation function (ACF).
+And here is the corresponding autocorrelation function (ACF).[@shumway2025, page 93]
 
 $$
 \begin{align}
@@ -774,9 +777,79 @@ $$
 \end{align}
 $$ {#eq-MA1-ACF}
 
-As for the PACF, recall that it is defined to coincide with the ACF at lag 1.  
+The PACF turns out to have the following form [@shumway2025, page 111].
 
-#### MA(q): ACF
+$$
+\begin{align}
+  \rho_X (u | u) &=  \frac{(- \theta_1)^u(1 - \theta_1^2)}{1 - \theta_1^{2 (u+1)}} & \text{ for } u \ge 2
+\end{align}
+$$ {#eq-MA1-PACF}
+
+#### MA(q)
+
+An $MA(q)$ model is generated by a polynomial $\theta(\cdot)$ of degree $q$ of the following form.
+
+$$
+\begin{align}
+  \theta(z) &= 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\ 
+  &= \sum_{\nu = 0}^q \theta_\nu \; z^\nu & \text{with } \theta_0 = 1
+\end{align}
+$$
+
+Applying $\theta(\cdot)$ to the back-shift operator $\mathcal{B}$, we have the following $MA(q)$ model.
+
+$$
+\begin{align}
+  X(t) &= W(t) + \sum_{\nu = 1}^q \theta_\nu \; W(t - \nu) \\ 
+  &= \left \{ \theta(\mathcal{B}) \; W(\cdot) \right \} (t)
+  \\ 
+  \\ 
+  &\text{ with } W(\cdot) \sim wn(0, \sigma_W^2)
+\end{align}
+$$ {#eq-MA-q}
+
+With $MA(1)$ serving as an example, it is easy to see that for an $MA(q)$ model of $X(\cdot)$, the auto-covariance function $\gamma_X (u)$ and the autocorrelation function $\rho_X (u)$ equal zero at lags $|u| > q$.
+
+$$
+\begin{align}
+  \text{for } X &\sim MA(q) \\ 
+  \text{and } |u| &> q \\ 
+  \\
+  \rho_X (u) &= 0
+\end{align}
+$$ {#eq-ACF-MA-q}
+
+We require the roots of polynomial $\theta(\cdot)$ to have magnitudes greater than unity to ensure that its multiplicative inverse function, $\theta(z)^{-1}$, has a power series expansion valid for $|z| \le 1$.
+
+$$
+\begin{align}
+  \theta (z)^{-1} &= \frac{1}{\theta (z)} \\ 
+  &= \sum_{\nu = 0}^\infty \psi_\nu \; z^\nu \\ 
+  \\ 
+  & \text{for } |z| \le 1 \\ 
+  \\ 
+  & \text{where } \psi_0 = 1
+\end{align}
+$$ {#eq-MA-q-poly-inv}
+
+Then $\theta(\mathcal{B})^{-1}$ is well-defined, and we have 
+
+$$
+\begin{align}
+  W(t) &= \left \{ \theta(\mathcal{B})^{-1} \; X(\cdot) \right \} (t)  \\
+  &= X(t) + \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu) 
+\end{align}
+$$ {#eq-MA-q-inv}
+
+Equivalently, we have  
+
+$$
+\begin{align}
+  X(t) &= W(t) - \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu) 
+\end{align}
+$$ {#eq-AR-infty}
+
+which can be viewed as an infinite-order auto-regressive model.  Now for an $AR(p)$, with $p$ finite, the PACF can be shown to be non-zero at lag $u = p$ (and zero thereafter).  In the case of the $MA(q)$ model, equivalent to an infinite-order $AR$ model, the PACF tends to zero but does not vanish as $|u| \rightarrow \infty$.
 
 ### Assembling Components
 

@@ -179,7 +179,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">12:05 Mon 16-Jun-2025</p>
+      <p class="date">16:48 Tue 17-Jun-2025</p>
     </div>
   </div>
   
@@ -482,7 +482,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \]</span></p>
 <p>Here <span class="math inline">\(wn(0, \sigma_W^2)\)</span> denotes an uncorrelated sequence having zero mean and variance <span class="math inline">\(\sigma_W^2\)</span>, referred to as white noise.</p>
-<p>According to this model<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 - m(t, X_{2:3}(t))\)</span> is modeled as a series free of autocorrelation.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> This assumption seems plausible, since <span class="math inline">\(X_1(t)\)</span> counts the number of arguably independent events (cardiovascular deaths) in each week.</p>
+<p>According to this model<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 (t) - m(t, X_{2:3}(t))\)</span> is modeled as being free of autocorrelation. The model is consistent with the assumption that, apart from a trend component, weekly numbers of cardiovascular deaths are independent, conditioned on temperature and particulate levels.</p>
 <p>Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled <span class="math inline">\(W(t)\)</span>), they develop an autocorrelated (<span class="math inline">\(AR(2)\)</span>) model.</p>
 <p>This is an example of the cyclic model-building process previously outlined. A model is developed, examined, and revised.</p>
 </section>
@@ -495,10 +495,10 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \text{where } \\
   \alpha &amp;= \mu_X \; - \; \mu_X \; \sum_{\nu = 1}^p \phi_\nu \\
     \\
-    W(t) &amp;= \text{an uncorrelated ("white noise") series}
+    W(t) &amp;\sim wn(0, \sigma_W^2)
 \end{align}
 \tag{19}\]</span></span></p>
-<p>That is, <span class="math inline">\(W(t)\)</span> again denotes a residual “white noise” stationary process: free of autocorrelation and having zero mean. (Even more, <span class="math inline">\(W(t)\)</span> is often assumed to be a sequence of independent and identically distributed, or “iid”, normal variates having zero mean.)</p>
+<p>That is, <span class="math inline">\(W(t)\)</span> again denotes a residual “white noise” stationary process: free of autocorrelation and having zero mean.</p>
 <section id="polynomial-representation" class="level4">
 <h4 class="anchored" data-anchor-id="polynomial-representation">Polynomial representation</h4>
 <p>The <span class="math inline">\(AR(p)\)</span> model can also be expressed using the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> as follows.</p>
@@ -507,14 +507,17 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) &amp;= W(t) \\
   \\
   \text{where } \\
+  \phi (z) &amp;= 1 - \sum_{\nu = 1}^p \phi_\nu \; z^\nu
+  \\
+  \text{so that } \\
   \phi (\mathcal{B}) &amp;= \mathcal{I} \; - \; \sum_{\nu = 1}^p \phi_\nu \mathcal{B}^\nu
 \end{align}
 \tag{20}\]</span></span></p>
 <p>The polynomial <span class="math inline">\(\phi(\cdot)\)</span> applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> is an <em>auto-regressive operator of order</em> <span class="math inline">\(p\)</span>.</p>
-<p>Now, the <span class="math inline">\(AR(p)\)</span> model is defined to be that of a <em>stationary</em> process <span class="math inline">\(X(t)\)</span>, which constrains the coefficients of polynomial <span class="math inline">\(\phi(\cdot)\)</span>. Additional requirements that the model be <em>causal</em><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> and <em>invertible</em><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> restrict attention to polynomials <span class="math inline">\(\phi(\cdot)\)</span> whose roots lie outside the closed unit disk, <span class="math inline">\(\bar{D}\)</span>, the set of complex numbers <span class="math inline">\(z\)</span> such that <span class="math inline">\(|z| \le 1\)</span>, thereby ensuring that <span class="math inline">\(\phi (z) \ne 0\)</span> for <span class="math inline">\(|z| \le 1\)</span>.</p>
+<p>Now, the <span class="math inline">\(AR(p)\)</span> model is defined to be that of a <em>stationary</em> process <span class="math inline">\(X(t)\)</span>, which constrains the coefficients of polynomial <span class="math inline">\(\phi(\cdot)\)</span>. Additional requirements that the model be <em>causal</em><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> and <em>invertible</em><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> restrict attention to polynomials <span class="math inline">\(\phi(\cdot)\)</span> whose roots are all greater than unity in magnitude. This ensures that the multiplicative inverse function <span class="math inline">\(\phi (z)^{-1}\)</span> is well defined and has a power series expansion for <span class="math inline">\(|z| \le 1\)</span>.</p>
 </section>
-<section id="ar1-acf-and-pacf" class="level4">
-<h4 class="anchored" data-anchor-id="ar1-acf-and-pacf">AR(1): ACF and PACF</h4>
+<section id="ar1" class="level4">
+<h4 class="anchored" data-anchor-id="ar1">AR(1)</h4>
 <p>Consider the <span class="math inline">\(AR(1)\)</span> model. We have</p>
 <p><span class="math display">\[
 \begin{align}
@@ -565,7 +568,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= \sum_{\nu = 0}^\infty \phi_1^\nu \; z^\nu &amp; \text{ for } |z| \le 1
 \end{align}
 \]</span></p>
-<p>Based on these expressions one can show<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> that the auto-covariance and autocorrelation functions of <span class="math inline">\(X(\cdot)\)</span> take the following forms.</p>
+<p>Based on these expressions one can show<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> that the auto-covariance and autocorrelation functions of <span class="math inline">\(X(\cdot)\)</span> take the following forms.</p>
 <p><span id="eq-AR1-rho"><span class="math display">\[
 \begin{align}
   \gamma_X (u) &amp;= \frac{\phi_1^{|u|}}{1 - \phi_1^2} \; \sigma_W^2\\
@@ -573,7 +576,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \rho_X (u) &amp;= \phi_1^{|u|}
 \end{align}
 \tag{23}\]</span></span></p>
-<p>Using the Durbin-Levinson algorithm, one can go on to show<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> that the partial autocorrelation function (PACF) of <span class="math inline">\(X(\cdot)\)</span> has the following simple form.</p>
+<p>Using the Durbin-Levinson algorithm, one can go on to show<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> that the partial autocorrelation function (PACF) of <span class="math inline">\(X(\cdot)\)</span> has the following simple form.</p>
 <p><span id="eq-AR1-PACF"><span class="math display">\[
 \begin{align}
   \rho_X (u | u) &amp;=
@@ -585,8 +588,8 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{24}\]</span></span></p>
 </section>
-<section id="arp-pacf" class="level4">
-<h4 class="anchored" data-anchor-id="arp-pacf">AR(p): PACF</h4>
+<section id="arp" class="level4">
+<h4 class="anchored" data-anchor-id="arp">AR(p)</h4>
 <p>As previously noted, an <span class="math inline">\(AR(p)\)</span> model can be defined via a polynomial <span class="math inline">\(\phi(\cdot)\)</span> that is applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>. The coefficients of <span class="math inline">\(\phi(\cdot)\)</span> are real, but it is useful to apply the polynomial to the complex variable <span class="math inline">\(z\)</span>. From <a href="#eq-AR-bs-poly" class="quarto-xref">Equation&nbsp;20</a> we have</p>
 <p><span id="eq-ARp-poly-z"><span class="math display">\[
 \begin{align}
@@ -594,8 +597,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{25}\]</span></span></p>
 <p>Also as previously mentioned, we require the roots of <span class="math inline">\(\phi(\cdot)\)</span> to lie outside the closed unit disc, that is, to be greater than unity in magnitude. This requirement ensures that the model is stationary, causal, and invertible.</p>
-<p>To elaborate, since <span class="math inline">\(\phi(z) \ne 0\)</span> for <span class="math inline">\(|z| \le 1\)</span>, the function <span class="math inline">\(\phi(z)^{-1}\)</span> is analytic for <span class="math inline">\(|z| \le 1\)</span>. Therefore <span class="math inline">\(\phi(z)^{-1}\)</span> has a power series expansion whose radius of convergence equals the minimum magnitude of the roots of <span class="math inline">\(\phi(\cdot)\)</span>, which exceeds unity.</p>
-<p>Consequently we have the following causal form of the model.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a></p>
+<p>Consequently we have the following causal form of the model.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
 <p><span id="eq-causal-series"><span class="math display">\[
 \begin{align}
   X(t) - \mu_X &amp;= \left \{ \phi(\mathcal{B})^{-1} \; W(\cdot) \right \} (t) \\
@@ -651,7 +653,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>A moving average model of order <span class="math inline">\(q\)</span> has the following form.</p>
 <p><span class="math display">\[
 \begin{align}
-  X(t) &amp;= \mu_x \; + \; W(t) \; + \; \sum_{\nu = 1}^q \; \theta_\nu \; W(t - \nu) \\
+  X(t) &amp;= \mu_X \; + \; W(t) \; + \; \sum_{\nu = 1}^q \; \theta_\nu \; W(t - \nu) \\
   \text{where } \\
   W(\cdot) &amp;\sim wn(0, \sigma_W^2)
 \end{align}
@@ -670,7 +672,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>That is, <span class="math inline">\(X(\cdot)\)</span> is filtered white noise, and is therefore stationary for any finite set of filter coefficients. But some constraint on polynomial <span class="math inline">\(\theta(\cdot)\)</span> is required to eliminate ambiguity.</p>
 <section id="invertibility" class="level4">
 <h4 class="anchored" data-anchor-id="invertibility">Invertibility</h4>
-<p>Consider the following two MA(1) models.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
+<p>Consider the following two MA(1) models.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a></p>
 <p><span class="math display">\[
 \begin{align}
   X(t) &amp;= W(t) + \frac{1}{5} W(t-1) &amp; \text{with } W(\cdot) \sim N(0, 25) \\
@@ -678,11 +680,11 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   Y(t) &amp;= V(t) + 5 \; V(t-1) &amp; \text{with } V(\cdot) \sim N(0, 1)
 \end{align}
 \]</span></p>
-<p>The probability distributions of the two processes <span class="math inline">\(X(\cdot)\)</span> and <span class="math inline">\(Y(\cdot)\)</span> are identical, so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.</p>
-<p>A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible. That is, we require the roots of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitude greater than unity. In the example above we therefore choose the model for <span class="math inline">\(X(\cdot)\)</span> rather than the model for <span class="math inline">\(Y(\cdot)\)</span>.</p>
+<p>The probability distributions of the two processes <span class="math inline">\(X(\cdot)\)</span> and <span class="math inline">\(Y(\cdot)\)</span> are identical<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>, so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.</p>
+<p>A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible. That is, we require the roots of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitude greater than unity.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> In the example above we therefore choose the model for <span class="math inline">\(X(\cdot)\)</span> rather than the model for <span class="math inline">\(Y(\cdot)\)</span>.</p>
 </section>
-<section id="ma1-acf-and-pacf" class="level4">
-<h4 class="anchored" data-anchor-id="ma1-acf-and-pacf">MA(1): ACF and PACF</h4>
+<section id="ma1" class="level4">
+<h4 class="anchored" data-anchor-id="ma1">MA(1)</h4>
 <p>Consider the <span class="math inline">\(MA(1)\)</span> model</p>
 <p><span id="eq-MA1"><span class="math display">\[
 \begin{align}
@@ -704,7 +706,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \gamma_X (u) &amp;= 0 \quad \text{for } |u| \ge 2
 \end{align}
 \tag{28}\]</span></span></p>
-<p>And here is the corresponding autocorrelation function (ACF).</p>
+<p>And here is the corresponding autocorrelation function (ACF).<span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 93</a>)</span></p>
 <p><span id="eq-MA1-ACF"><span class="math display">\[
 \begin{align}
   \rho_X (u) &amp;=
@@ -715,10 +717,66 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \end{cases}
 \end{align}
 \tag{29}\]</span></span></p>
-<p>As for the PACF, recall that it is defined to coincide with the ACF at lag 1.</p>
+<p>The PACF turns out to have the following form <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 111</a>)</span>.</p>
+<p><span id="eq-MA1-PACF"><span class="math display">\[
+\begin{align}
+  \rho_X (u | u) &amp;=  \frac{(- \theta_1)^u(1 - \theta_1^2)}{1 - \theta_1^{2 (u+1)}} &amp; \text{ for } u \ge 2
+\end{align}
+\tag{30}\]</span></span></p>
 </section>
-<section id="maq-acf" class="level4">
-<h4 class="anchored" data-anchor-id="maq-acf">MA(q): ACF</h4>
+<section id="maq" class="level4">
+<h4 class="anchored" data-anchor-id="maq">MA(q)</h4>
+<p>An <span class="math inline">\(MA(q)\)</span> model is generated by a polynomial <span class="math inline">\(\theta(\cdot)\)</span> of degree <span class="math inline">\(q\)</span> of the following form.</p>
+<p><span class="math display">\[
+\begin{align}
+  \theta(z) &amp;= 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\
+  &amp;= \sum_{\nu = 0}^q \theta_\nu \; z^\nu &amp; \text{with } \theta_0 = 1
+\end{align}
+\]</span></p>
+<p>Applying <span class="math inline">\(\theta(\cdot)\)</span> to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>, we have the following <span class="math inline">\(MA(q)\)</span> model.</p>
+<p><span id="eq-MA-q"><span class="math display">\[
+\begin{align}
+  X(t) &amp;= W(t) + \sum_{\nu = 1}^q \theta_\nu \; W(t - \nu) \\
+  &amp;= \left \{ \theta(\mathcal{B}) \; W(\cdot) \right \} (t)
+  \\
+  \\
+  &amp;\text{ with } W(\cdot) \sim wn(0, \sigma_W^2)
+\end{align}
+\tag{31}\]</span></span></p>
+<p>With <span class="math inline">\(MA(1)\)</span> serving as an example, it is easy to see that for an <span class="math inline">\(MA(q)\)</span> model of <span class="math inline">\(X(\cdot)\)</span>, the auto-covariance function <span class="math inline">\(\gamma_X (u)\)</span> and the autocorrelation function <span class="math inline">\(\rho_X (u)\)</span> equal zero at lags <span class="math inline">\(|u| &gt; q\)</span>.</p>
+<p><span id="eq-ACF-MA-q"><span class="math display">\[
+\begin{align}
+  \text{for } X &amp;\sim MA(q) \\
+  \text{and } |u| &amp;&gt; q \\
+  \\
+  \rho_X (u) &amp;= 0
+\end{align}
+\tag{32}\]</span></span></p>
+<p>We require the roots of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitudes greater than unity to ensure that its multiplicative inverse function, <span class="math inline">\(\theta(z)^{-1}\)</span>, has a power series expansion valid for <span class="math inline">\(|z| \le 1\)</span>.</p>
+<p><span id="eq-MA-q-poly-inv"><span class="math display">\[
+\begin{align}
+  \theta (z)^{-1} &amp;= \frac{1}{\theta (z)} \\
+  &amp;= \sum_{\nu = 0}^\infty \psi_\nu \; z^\nu \\
+  \\
+  &amp; \text{for } |z| \le 1 \\
+  \\
+  &amp; \text{where } \psi_0 = 1
+\end{align}
+\tag{33}\]</span></span></p>
+<p>Then <span class="math inline">\(\theta(\mathcal{B})^{-1}\)</span> is well-defined, and we have</p>
+<p><span id="eq-MA-q-inv"><span class="math display">\[
+\begin{align}
+  W(t) &amp;= \left \{ \theta(\mathcal{B})^{-1} \; X(\cdot) \right \} (t)  \\
+  &amp;= X(t) + \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu)
+\end{align}
+\tag{34}\]</span></span></p>
+<p>Equivalently, we have</p>
+<p><span id="eq-AR-infty"><span class="math display">\[
+\begin{align}
+  X(t) &amp;= W(t) - \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu)
+\end{align}
+\tag{35}\]</span></span></p>
+<p>which can be viewed as an infinite-order auto-regressive model. Now for an <span class="math inline">\(AR(p)\)</span>, with <span class="math inline">\(p\)</span> finite, the PACF can be shown to be non-zero at lag <span class="math inline">\(u = p\)</span> (and zero thereafter). In the case of the <span class="math inline">\(MA(q)\)</span> model, equivalent to an infinite-order <span class="math inline">\(AR\)</span> model, the PACF tends to zero but does not vanish as <span class="math inline">\(|u| \rightarrow \infty\)</span>.</p>
 </section>
 </section>
 <section id="assembling-components" class="level3">
@@ -756,7 +814,7 @@ Figure&nbsp;2: Sunspots: monthly count
 <h3 class="anchored" data-anchor-id="old-faithful-eruptions">Old Faithful eruptions</h3>
 <section id="description-1" class="level4">
 <h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p><a href="#fig-faithful" class="quarto-xref">Figure&nbsp;3</a> below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
+<p><a href="#fig-faithful" class="quarto-xref">Figure&nbsp;3</a> below represents eruptions of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> The <code>delay</code> variable denotes the number of minutes since the previous eruption and the <code>duration</code> variable denotes the duration of the eruption, again in minutes.</p>
 <p>The data represent a <em>point process</em>, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faithful geyser. In addition to the time of the eruption we have the duration of the eruption.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -840,7 +898,7 @@ Figure&nbsp;3: Old Faithful eruptions: delay and duration
 </div>
 <section id="description-2" class="level4">
 <h4 class="anchored" data-anchor-id="description-2">Description</h4>
-<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;16</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;16</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-gtemp-lo-s5a" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -945,7 +1003,7 @@ Figure&nbsp;7: J&amp;J: earnings per share at linear and log scales
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
 <section id="description-6" class="level4">
 <h4 class="anchored" data-anchor-id="description-6">Description</h4>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;17</a> shows the trading day closings and returns (percent change)<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;17</a> shows the trading day closings and returns (percent change)<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia-s5a" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1114,7 +1172,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \\
   &amp; \text{where } -1 &lt; \theta &lt; 1
 \end{align}
-\tag{30}\]</span></span></p>
+\tag{36}\]</span></span></p>
 <p>Then <span class="math inline">\(X(\cdot)\)</span> is an example of a moving average random process. In the theory of such processes one usually assumes that <span class="math inline">\(X(\cdot)\)</span> is observed for some interval of time <span class="math inline">\((t_0, \ldots, t_0 + T - 1)\)</span> and that <span class="math inline">\(W(\cdot)\)</span> is not observed. But for present purposes suppose that this is a simulation study in which both <span class="math inline">\(X(t)\)</span> and <span class="math inline">\(W(\cdot)\)</span> are generated over the same time interval and that the values of all parameters are known, including the population means, the population variances, and <span class="math inline">\(\theta\)</span>.</p>
 <p>Let’s focus on the calculation of the sample mean and its variance. For <span class="math inline">\(W(\cdot)\)</span> we have the following familiar formulas for the sum of observed values.</p>
 <p><span id="eq-ev-sum-uncorrelated"><span class="math display">\[
@@ -1125,7 +1183,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   Var \left \{ S_{W, T} \right \} &amp;= T \times Var \left \{ W(t_0) \right \}  \\
   &amp;= T \times \sigma_W^2
 \end{align}
-\tag{31}\]</span></span></p>
+\tag{37}\]</span></span></p>
 <p>The sample mean is derived from the sample sum.</p>
 <p><span id="eq-ev-avg-uncorrelated"><span class="math display">\[
 \begin{align}
@@ -1139,14 +1197,14 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\
   &amp;= \frac{ \sigma_W^2 }{T}
 \end{align}
-\tag{32}\]</span></span></p>
+\tag{38}\]</span></span></p>
 <p>The mean and variance of <span class="math inline">\(X(t)\)</span> can be expressed as respective functions of the mean and variance of <span class="math inline">\(Z(t)\)</span>.</p>
 <p><span id="eq-ev-ma-1-model"><span class="math display">\[
 \begin{align}
   \mu_X &amp;= (1 +\theta) \; \mu_Z \\
   \sigma_X^2 &amp;= (1 +\theta^2) \; \sigma_Z^2
 \end{align}
-\tag{33}\]</span></span></p>
+\tag{39}\]</span></span></p>
 <p>The variance formula for the sample sum, <span class="math inline">\(S_{X, T}\)</span>, differs from that of <span class="math inline">\(S_{Z, T}\)</span>, because <span class="math inline">\(X(\cdot)\)</span> is autocorrelated. The auto-covariance function is</p>
 <p><span id="eq-auto-cov-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -1158,8 +1216,8 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{34}\]</span></span></p>
-<p>The autocorrelation function is thus<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a></p>
+\tag{40}\]</span></span></p>
+<p>The autocorrelation function is thus<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a></p>
 <p><span id="eq-auto-cor-ma-1-model"><span class="math display">\[
 \begin{align}
   \rho_X (u) &amp;= corr \left ( X(t + u), X(t) \right ) \\
@@ -1170,7 +1228,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{35}\]</span></span></p>
+\tag{41}\]</span></span></p>
 <p>Therefore</p>
 <p><span id="eq-var-sum-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -1187,24 +1245,24 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2}
   - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
 \end{align}
-\tag{36}\]</span></span></p>
+\tag{42}\]</span></span></p>
 <p>In short, ignoring the autocorrelation of <span class="math inline">\(X(\cdot)\)</span> would lead to erroneous calculations of the variance of <span class="math inline">\(S_{X, T}\)</span> and <span class="math inline">\(\hat{\mu}_X\)</span>.</p>
 </section>
 <section id="effective-sample-size-ess" class="level3">
 <h3 class="anchored" data-anchor-id="effective-sample-size-ess">Effective Sample Size (ESS)</h3>
-<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws whose sample mean has the same variance as that of the autocorrelated case.</p>
+<p>The magnitude of such erroneous calculations can be represented by a quantity called the <em>effective sample size</em> (ESS). The calculation of ESS varies with application<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a>, but here’s the basic idea in the present context. Consider a finite sequence of <em>independent</em> draws from the distribution of the random variable <span class="math inline">\(X(t_0)\)</span>, thereby producing a sample of independent observations. Define the effective sample size, <span class="math inline">\(N_d\)</span>, to be the number of draws whose sample mean has the same variance as that of the autocorrelated case.</p>
 <p><span id="eq-ess-criterion"><span class="math display">\[
 \begin{align}
   \frac{\sigma_X^2}{N_d} &amp;= Var \left \{ \hat{\mu}_X \right \} \\
   &amp;= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
 \end{align}
-\tag{37}\]</span></span></p>
+\tag{43}\]</span></span></p>
 <p>Equivalently</p>
 <p><span id="eq-ess-definition"><span class="math display">\[
 \begin{align}
   N_d &amp;= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
 \end{align}
-\tag{38}\]</span></span></p>
+\tag{44}\]</span></span></p>
 <p>In our moving average example this yields</p>
 <p><span id="eq-ess-limit-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -1216,7 +1274,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     T^2  &amp; \text{ as } \theta \rightarrow -1
   \end{cases}
 \end{align}
-\tag{39}\]</span></span></p>
+\tag{45}\]</span></span></p>
 <p>As <span class="math inline">\(\theta\)</span> increases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> decreases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T/2\)</span>. In the other direction, as <span class="math inline">\(\theta\)</span> decreases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(-1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> increases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T^2\)</span>.</p>
 <p>The point here is that care must be taken when calculating the variance of estimators derived from time series data. This is a known issue addressed by available software.</p>
 </section>
@@ -1338,7 +1396,7 @@ Figure&nbsp;16: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average-1" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average-1">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;17</a> shows the trading day closings and returns (percent change)<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;17</a> shows the trading day closings and returns (percent change)<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1430,19 +1488,20 @@ Venables, W. N., and B. D. Ripley. 2002. <span>“Modern Applied Statistics with
 <li id="fn5"><p>Recall that for a univariate process the auto-covariance and autocorrelation functions are even, e.g., <span class="math inline">\(\rho (-u) = \rho (u)\)</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term “moving average” is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>The authors consider various forms for the function <span class="math inline">\(f(t)\)</span>: a linear function, a quadratic function, or a locally smoothed version of <span class="math inline">\(X_1(t)\)</span>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>The authors generally use the notation <span class="math inline">\(W(t)\)</span> to signify white noise, an uncorrelated stationary random process having mean 0. Moreover, the authors typically reserve this notation to signify an uncorrelated stationary <em>Gaussian</em> process, that is, a process of independent and identically distributed (“iid”) normal variables having mean 0.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p>An ARMA model is said to be <em>causal</em> if the modeled process <span class="math inline">\(X(t)\)</span> can be expressed as a function of current and past white noise terms, <span class="math inline">\(\{ W(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 96</a>)</span>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn10"><p>A model is said to be <em>invertible</em> if the model’s white noise process <span class="math inline">\(W(t)\)</span> can be expressed as a function of current and past terms of the modeled process, <span class="math inline">\(\{ X(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 94</a>)</span>.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn11"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 88</a>)</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn12"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 110</a>)</span>.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn13"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span>.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn14"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 92</a>)</span><a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn15"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations <span class="citation" data-cites="MASS">(<a href="#ref-MASS" role="doc-biblioref">Venables and Ripley 2002</a>)</span> includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn16"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn17"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn18"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn19"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn20"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>An ARMA model is said to be <em>causal</em> if the modeled process <span class="math inline">\(X(t)\)</span> can be expressed as a function of current and past white noise terms, <span class="math inline">\(\{ W(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 96</a>)</span>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>A model is said to be <em>invertible</em> if the model’s white noise process <span class="math inline">\(W(t)\)</span> can be expressed as a function of current and past terms of the modeled process, <span class="math inline">\(\{ X(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 94</a>)</span>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 88</a>)</span>.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 110</a>)</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span>.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 92</a>)</span><a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Transform the second equation into the first as follows. For all time indices <span class="math inline">\(\nu\)</span> set <span class="math inline">\(U(\nu) = 5 V(\nu - 1)\)</span>, and then reverse time by setting <span class="math inline">\(Y'(\nu) = Y(- \nu)\)</span> and <span class="math inline">\(U'(\nu) = U(- \nu)\)</span>.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>As previously mentioned, requiring the roots of a polynomial <span class="math inline">\(p(\cdot)\)</span> to be greater than unity in magnitude ensures that <span class="math inline">\(p(z)^{-1}\)</span> is finite and analytic for <span class="math inline">\(|z| \le 1\)</span> and thus has a power series expansion whose radius of convergence is the minimum magnitude of the roots of <span class="math inline">\(p(\cdot)\)</span>. As a consequence the coefficients of that power series are absolutely summable.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations <span class="citation" data-cites="MASS">(<a href="#ref-MASS" role="doc-biblioref">Venables and Ripley 2002</a>)</span> includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>The data source is <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/">NOAA</a>, who use the term “anomaly” rather than “deviation”. Further clarifications are pending.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>Note that <span class="math inline">\(\rho_X (1)\)</span> is restricted to the interval <span class="math inline">\((-0.5, 0.5)\)</span>, since we have restricted <span class="math inline">\(\theta\)</span> to the interval <span class="math inline">\((-1, 1)\)</span>.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>The <code>R</code> package <code>astsa</code> provides function <code>ESS()</code>.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
