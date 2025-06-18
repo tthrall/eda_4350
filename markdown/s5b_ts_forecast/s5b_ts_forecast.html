@@ -179,7 +179,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">16:48 Tue 17-Jun-2025</p>
+      <p class="date">16:11 Wed 18-Jun-2025</p>
     </div>
   </div>
   
@@ -250,7 +250,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 <section id="stationarity" class="level3">
 <h3 class="anchored" data-anchor-id="stationarity">Stationarity</h3>
 <p>In an additive model (which is most common), the residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is assumed to be <strong>second-order stationary</strong>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new process <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
-<p><span id="eq-shift-operator"><span class="math display">\[
+<p><span id="eq-back-shift-s"><span class="math display">\[
 \begin{align}
   Y_\bullet (t) &amp;= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
   &amp;= X_\bullet (t - s)
@@ -277,7 +277,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \end{align}
 \tag{4}\]</span></span></p>
 <p>Consequently, second-order stationarity enables one to define and estimate the following <em>auto-covariance</em> function.</p>
-<p><span id="eq-auto-cov"><span class="math display">\[
+<p><span id="eq-ACovF"><span class="math display">\[
 \begin{align}
   \gamma_{\bullet, \bullet} (u) &amp;= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\
   \\
@@ -287,7 +287,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \end{align}
 \tag{5}\]</span></span></p>
 <p>Although <span class="math inline">\(\gamma_{\bullet, \bullet} (u)\)</span> is a symmetric matrix at <span class="math inline">\(u = 0\)</span>, it is not generally symmetric at <span class="math inline">\(u \ne 0\)</span>. The symmetry relation we do have is that matrix <span class="math inline">\(\gamma_{\bullet, \bullet} (-u)\)</span> is the transpose of matrix <span class="math inline">\(\gamma_{\bullet, \bullet} (u)\)</span>.</p>
-<p><span id="eq-auto-cov-symmetry"><span class="math display">\[
+<p><span id="eq-ACovF-symm"><span class="math display">\[
 \begin{align}
   \gamma_{a, b} (-u) &amp;= Cov \{ X_a (t - u), X_b (t) \} \\
   &amp;= Cov \{ X_a (t), X_b (t + u) \}  \\
@@ -297,7 +297,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \tag{6}\]</span></span></p>
 <p>Consequently, the time-reversed process <span class="math inline">\(Y_\bullet (t) = X_\bullet (-t)\)</span> has the same auto-covariance structure as the original process, allowing for this matrix transposition.</p>
 <p>The <em>autocorrelation (ACF)</em> function <span class="math inline">\(\rho_{\bullet, \bullet}(\cdot)\)</span> is the following scaled version of the auto-covariance function.</p>
-<p><span id="eq-auto-cor"><span class="math display">\[
+<p><span id="eq-ACF"><span class="math display">\[
 \begin{align}
 \rho_{\bullet, \bullet} (u) &amp;= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\
   \\
@@ -310,7 +310,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 <section id="pacf-partial-autocorrelation-function" class="level3">
 <h3 class="anchored" data-anchor-id="pacf-partial-autocorrelation-function">PACF: partial autocorrelation function</h3>
 <p>Going further, the <em>partial autocorrelation function (PACF)</em> is a useful diagnostic tool. Here’s the idea <span class="citation" data-cites="shumway2025">(<a href="#ref-shumway2025" role="doc-biblioref">Shumway and Stoffer 2025, 108</a>)</span>. Recall that if <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, and <span class="math inline">\(Z_\bullet = \{Z_1, \ldots, Z_k\}\)</span> are random variables, then the partial correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is obtained by first regressing <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> on <span class="math inline">\(Z_\bullet\)</span> to obtain approximations <span class="math inline">\((\hat{X}, \hat{Y})\)</span> of <span class="math inline">\((X, Y)\)</span> respectively. If <span class="math inline">\(X, Y, Z_\bullet\)</span> have a joint normal distribution, then</p>
-<p><span id="eq-X-Y-given-Z"><span class="math display">\[
+<p><span id="eq-eXY-Z"><span class="math display">\[
 \begin{align}
   \hat{X} &amp;= E(X \; | \; Z_\bullet) \\
   \hat{Y} &amp;= E(Y \; | \; Z_\bullet)
@@ -318,7 +318,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \tag{8}\]</span></span></p>
 <p>In the normal case the conditional expectation yields a constant plus a linear combination of the components of <span class="math inline">\(Z_\bullet\)</span>, that is, an affine function of <span class="math inline">\(Z_\bullet\)</span>. More generally, <span class="math inline">\(\hat{X}, \hat{Y}\)</span> are defined as the affine functions of <span class="math inline">\(Z_\bullet\)</span> that minimize mean squared approximation error.</p>
 <p>Then the partial correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is the correlation between the respective <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> residuals, as follows.</p>
-<p><span id="eq-cor-X-Y-given-Z"><span class="math display">\[
+<p><span id="eq-corXY-Z"><span class="math display">\[
 \begin{align}
   \rho_{X, Y \bullet Z_\bullet} &amp;= corr \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
 \end{align}
@@ -355,7 +355,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 <p>The conditional expectation is linear in the conditioning variables thanks to the assumption that <span class="math inline">\(\mathcal{N}(t)\)</span> is a Gaussian process having zero mean. In the non-Gaussian case the linear combination is defined as the one that minimizes the mean-squared approximation error.</p>
 <p>The coefficients in the linear combination are shared by <span class="math inline">\(\hat{\mathcal{N}}(t)\)</span> and <span class="math inline">\(\hat{\mathcal{N}}(t + u)\)</span> but are applied in reverse order. This is because the time-reversed process <span class="math inline">\(\mathcal{N}(-t)\)</span> has the same auto-covariance structure as the original process <span class="math inline">\(\mathcal{N}(t)\)</span>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <p>The partial autocorrelation function is now defined as the correlation of the residual variables:</p>
-<p><span id="eq-pacf-defn"><span class="math display">\[
+<p><span id="eq-PACF"><span class="math display">\[
 \begin{align}
   \rho (u | u) &amp;= corr \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u \; | -\Delta_u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t \; | \; \Delta_u) \right)
 \end{align}
@@ -419,7 +419,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \tag{16}\]</span></span></p>
 <p>As noted above, the moving average operation can help to reveal and thus model the trend in the process, <span class="math inline">\(m_\bullet (t)\)</span>. Forming the residual series <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> is called “de-trending”.</p>
 <p>Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the “differencing” operator <span class="math inline">\(\mathcal{D} = \mathcal{I} - \mathcal{B}\)</span>.</p>
-<p><span id="eq-diff-operator"><span class="math display">\[
+<p><span id="eq-diff-op"><span class="math display">\[
 \begin{align}
   Y_\bullet (t)
   &amp;= X_\bullet (t)  - X_\bullet (t - 1) \\
@@ -489,7 +489,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="auto-regression-ar" class="level3">
 <h3 class="anchored" data-anchor-id="auto-regression-ar">Auto-regression (AR)</h3>
 <p>Auto-regressive models are based on the idea that the current value of the series, <span class="math inline">\(X(t)\)</span>, can be approximated, or forecast, as a function of <span class="math inline">\(p\)</span> past values, <span class="math inline">\(X(t−1), X(t−2), \ldots, X(t−p)\)</span>, which leads to the following formulation of an auto-regressive model of order <span class="math inline">\(p\)</span>, abbreviated as <span class="math inline">\(AR(p)\)</span>.</p>
-<p><span id="eq-AR-sum"><span class="math display">\[
+<p><span id="eq-ARp-alpha"><span class="math display">\[
 \begin{align}
   X(t) &amp;= \alpha \; + \; \sum_{\nu = 1}^p \phi_\nu X(t-\nu) \; + \; W(t) \\
   \text{where } \\
@@ -502,7 +502,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="polynomial-representation" class="level4">
 <h4 class="anchored" data-anchor-id="polynomial-representation">Polynomial representation</h4>
 <p>The <span class="math inline">\(AR(p)\)</span> model can also be expressed using the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> as follows.</p>
-<p><span id="eq-AR-bs-poly"><span class="math display">\[
+<p><span id="eq-ARp-bs-poly"><span class="math display">\[
 \begin{align}
   \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) &amp;= W(t) \\
   \\
@@ -590,15 +590,15 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 <section id="arp" class="level4">
 <h4 class="anchored" data-anchor-id="arp">AR(p)</h4>
-<p>As previously noted, an <span class="math inline">\(AR(p)\)</span> model can be defined via a polynomial <span class="math inline">\(\phi(\cdot)\)</span> that is applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>. The coefficients of <span class="math inline">\(\phi(\cdot)\)</span> are real, but it is useful to apply the polynomial to the complex variable <span class="math inline">\(z\)</span>. From <a href="#eq-AR-bs-poly" class="quarto-xref">Equation&nbsp;20</a> we have</p>
-<p><span id="eq-ARp-poly-z"><span class="math display">\[
+<p>As previously noted, an <span class="math inline">\(AR(p)\)</span> model can be defined via a polynomial <span class="math inline">\(\phi(\cdot)\)</span> that is applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>. The coefficients of <span class="math inline">\(\phi(\cdot)\)</span> are real, but it is useful to apply the polynomial to the complex variable <span class="math inline">\(z\)</span>. From <strong>?@eq-AR-bs-poly</strong> we have</p>
+<p><span id="eq-ARp-poly"><span class="math display">\[
 \begin{align}
   \phi(z) &amp;= 1 \; - \; \sum_{\nu = 1}^p \; \phi_\nu \; z^\nu
 \end{align}
 \tag{25}\]</span></span></p>
 <p>Also as previously mentioned, we require the roots of <span class="math inline">\(\phi(\cdot)\)</span> to lie outside the closed unit disc, that is, to be greater than unity in magnitude. This requirement ensures that the model is stationary, causal, and invertible.</p>
 <p>Consequently we have the following causal form of the model.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
-<p><span id="eq-causal-series"><span class="math display">\[
+<p><span id="eq-causal-form"><span class="math display">\[
 \begin{align}
   X(t) - \mu_X &amp;= \left \{ \phi(\mathcal{B})^{-1} \; W(\cdot) \right \} (t) \\
   &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\
@@ -610,7 +610,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp; \sum_{\nu = 0}^\infty \; |\psi_\nu| \; &lt; \; \infty
 \end{align}
 \tag{26}\]</span></span></p>
-<p><a href="#eq-AR-bs-poly" class="quarto-xref">Equation&nbsp;20</a> also shows that <span class="math inline">\(W(t)\)</span> depends on current and past values of <span class="math inline">\(X(t)\)</span>, with past values terminating at <span class="math inline">\(X(t-p)\)</span>.</p>
+<p><strong>?@eq-AR-bs-poly</strong> also shows that <span class="math inline">\(W(t)\)</span> depends on current and past values of <span class="math inline">\(X(t)\)</span>, with past values terminating at <span class="math inline">\(X(t-p)\)</span>.</p>
 <p><span class="math display">\[
 \begin{align}
   W(t) &amp;= \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\
@@ -727,14 +727,14 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="maq" class="level4">
 <h4 class="anchored" data-anchor-id="maq">MA(q)</h4>
 <p>An <span class="math inline">\(MA(q)\)</span> model is generated by a polynomial <span class="math inline">\(\theta(\cdot)\)</span> of degree <span class="math inline">\(q\)</span> of the following form.</p>
-<p><span class="math display">\[
+<p><span id="eq-MAq-poly"><span class="math display">\[
 \begin{align}
   \theta(z) &amp;= 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\
   &amp;= \sum_{\nu = 0}^q \theta_\nu \; z^\nu &amp; \text{with } \theta_0 = 1
 \end{align}
-\]</span></p>
+\tag{31}\]</span></span></p>
 <p>Applying <span class="math inline">\(\theta(\cdot)\)</span> to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>, we have the following <span class="math inline">\(MA(q)\)</span> model.</p>
-<p><span id="eq-MA-q"><span class="math display">\[
+<p><span id="eq-MAq"><span class="math display">\[
 \begin{align}
   X(t) &amp;= W(t) + \sum_{\nu = 1}^q \theta_\nu \; W(t - \nu) \\
   &amp;= \left \{ \theta(\mathcal{B}) \; W(\cdot) \right \} (t)
@@ -742,18 +742,18 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   &amp;\text{ with } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
-\tag{31}\]</span></span></p>
+\tag{32}\]</span></span></p>
 <p>With <span class="math inline">\(MA(1)\)</span> serving as an example, it is easy to see that for an <span class="math inline">\(MA(q)\)</span> model of <span class="math inline">\(X(\cdot)\)</span>, the auto-covariance function <span class="math inline">\(\gamma_X (u)\)</span> and the autocorrelation function <span class="math inline">\(\rho_X (u)\)</span> equal zero at lags <span class="math inline">\(|u| &gt; q\)</span>.</p>
-<p><span id="eq-ACF-MA-q"><span class="math display">\[
+<p><span id="eq-MAq-ACF"><span class="math display">\[
 \begin{align}
   \text{for } X &amp;\sim MA(q) \\
   \text{and } |u| &amp;&gt; q \\
   \\
   \rho_X (u) &amp;= 0
 \end{align}
-\tag{32}\]</span></span></p>
+\tag{33}\]</span></span></p>
 <p>We require the roots of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitudes greater than unity to ensure that its multiplicative inverse function, <span class="math inline">\(\theta(z)^{-1}\)</span>, has a power series expansion valid for <span class="math inline">\(|z| \le 1\)</span>.</p>
-<p><span id="eq-MA-q-poly-inv"><span class="math display">\[
+<p><span id="eq-MAq-poly-inv"><span class="math display">\[
 \begin{align}
   \theta (z)^{-1} &amp;= \frac{1}{\theta (z)} \\
   &amp;= \sum_{\nu = 0}^\infty \psi_\nu \; z^\nu \\
@@ -762,20 +762,20 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   &amp; \text{where } \psi_0 = 1
 \end{align}
-\tag{33}\]</span></span></p>
+\tag{34}\]</span></span></p>
 <p>Then <span class="math inline">\(\theta(\mathcal{B})^{-1}\)</span> is well-defined, and we have</p>
-<p><span id="eq-MA-q-inv"><span class="math display">\[
+<p><span id="eq-MAq-inv"><span class="math display">\[
 \begin{align}
   W(t) &amp;= \left \{ \theta(\mathcal{B})^{-1} \; X(\cdot) \right \} (t)  \\
   &amp;= X(t) + \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu)
 \end{align}
-\tag{34}\]</span></span></p>
+\tag{35}\]</span></span></p>
 <p>Equivalently, we have</p>
 <p><span id="eq-AR-infty"><span class="math display">\[
 \begin{align}
   X(t) &amp;= W(t) - \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu)
 \end{align}
-\tag{35}\]</span></span></p>
+\tag{36}\]</span></span></p>
 <p>which can be viewed as an infinite-order auto-regressive model. Now for an <span class="math inline">\(AR(p)\)</span>, with <span class="math inline">\(p\)</span> finite, the PACF can be shown to be non-zero at lag <span class="math inline">\(u = p\)</span> (and zero thereafter). In the case of the <span class="math inline">\(MA(q)\)</span> model, equivalent to an infinite-order <span class="math inline">\(AR\)</span> model, the PACF tends to zero but does not vanish as <span class="math inline">\(|u| \rightarrow \infty\)</span>.</p>
 </section>
 </section>
@@ -1172,7 +1172,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \\
   &amp; \text{where } -1 &lt; \theta &lt; 1
 \end{align}
-\tag{36}\]</span></span></p>
+\tag{37}\]</span></span></p>
 <p>Then <span class="math inline">\(X(\cdot)\)</span> is an example of a moving average random process. In the theory of such processes one usually assumes that <span class="math inline">\(X(\cdot)\)</span> is observed for some interval of time <span class="math inline">\((t_0, \ldots, t_0 + T - 1)\)</span> and that <span class="math inline">\(W(\cdot)\)</span> is not observed. But for present purposes suppose that this is a simulation study in which both <span class="math inline">\(X(t)\)</span> and <span class="math inline">\(W(\cdot)\)</span> are generated over the same time interval and that the values of all parameters are known, including the population means, the population variances, and <span class="math inline">\(\theta\)</span>.</p>
 <p>Let’s focus on the calculation of the sample mean and its variance. For <span class="math inline">\(W(\cdot)\)</span> we have the following familiar formulas for the sum of observed values.</p>
 <p><span id="eq-ev-sum-uncorrelated"><span class="math display">\[
@@ -1183,7 +1183,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   Var \left \{ S_{W, T} \right \} &amp;= T \times Var \left \{ W(t_0) \right \}  \\
   &amp;= T \times \sigma_W^2
 \end{align}
-\tag{37}\]</span></span></p>
+\tag{38}\]</span></span></p>
 <p>The sample mean is derived from the sample sum.</p>
 <p><span id="eq-ev-avg-uncorrelated"><span class="math display">\[
 \begin{align}
@@ -1197,14 +1197,14 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\
   &amp;= \frac{ \sigma_W^2 }{T}
 \end{align}
-\tag{38}\]</span></span></p>
+\tag{39}\]</span></span></p>
 <p>The mean and variance of <span class="math inline">\(X(t)\)</span> can be expressed as respective functions of the mean and variance of <span class="math inline">\(Z(t)\)</span>.</p>
 <p><span id="eq-ev-ma-1-model"><span class="math display">\[
 \begin{align}
   \mu_X &amp;= (1 +\theta) \; \mu_Z \\
   \sigma_X^2 &amp;= (1 +\theta^2) \; \sigma_Z^2
 \end{align}
-\tag{39}\]</span></span></p>
+\tag{40}\]</span></span></p>
 <p>The variance formula for the sample sum, <span class="math inline">\(S_{X, T}\)</span>, differs from that of <span class="math inline">\(S_{Z, T}\)</span>, because <span class="math inline">\(X(\cdot)\)</span> is autocorrelated. The auto-covariance function is</p>
 <p><span id="eq-auto-cov-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -1216,7 +1216,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{40}\]</span></span></p>
+\tag{41}\]</span></span></p>
 <p>The autocorrelation function is thus<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a></p>
 <p><span id="eq-auto-cor-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -1228,7 +1228,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{41}\]</span></span></p>
+\tag{42}\]</span></span></p>
 <p>Therefore</p>
 <p><span id="eq-var-sum-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -1245,7 +1245,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2}
   - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
 \end{align}
-\tag{42}\]</span></span></p>
+\tag{43}\]</span></span></p>
 <p>In short, ignoring the autocorrelation of <span class="math inline">\(X(\cdot)\)</span> would lead to erroneous calculations of the variance of <span class="math inline">\(S_{X, T}\)</span> and <span class="math inline">\(\hat{\mu}_X\)</span>.</p>
 </section>
 <section id="effective-sample-size-ess" class="level3">
@@ -1256,13 +1256,13 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \frac{\sigma_X^2}{N_d} &amp;= Var \left \{ \hat{\mu}_X \right \} \\
   &amp;= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
 \end{align}
-\tag{43}\]</span></span></p>
+\tag{44}\]</span></span></p>
 <p>Equivalently</p>
 <p><span id="eq-ess-definition"><span class="math display">\[
 \begin{align}
   N_d &amp;= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
 \end{align}
-\tag{44}\]</span></span></p>
+\tag{45}\]</span></span></p>
 <p>In our moving average example this yields</p>
 <p><span id="eq-ess-limit-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -1274,7 +1274,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     T^2  &amp; \text{ as } \theta \rightarrow -1
   \end{cases}
 \end{align}
-\tag{45}\]</span></span></p>
+\tag{46}\]</span></span></p>
 <p>As <span class="math inline">\(\theta\)</span> increases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> decreases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T/2\)</span>. In the other direction, as <span class="math inline">\(\theta\)</span> decreases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(-1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> increases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T^2\)</span>.</p>
 <p>The point here is that care must be taken when calculating the variance of estimators derived from time series data. This is a known issue addressed by available software.</p>
 </section>

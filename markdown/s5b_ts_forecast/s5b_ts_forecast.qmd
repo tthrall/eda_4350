@@ -167,7 +167,7 @@ $$
   Y_\bullet (t) &= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\ 
   &= X_\bullet (t - s)
 \end{align}
-$$ {#eq-shift-operator}
+$$ {#eq-back-shift-s}
 
 Here $\mathcal{B}$ denotes the *back-shift* operator that shifts time by one unit, so that $\mathcal{B}^s$ (that is, $s$ repeated applications of $\mathcal{B}$) shifts time by $s$ units. Then second-order stationarity can be expressed as follows.
 
@@ -202,7 +202,7 @@ $$
   \gamma_{a, b} (u) &= Cov \{ X_a (t + u), X_b (t) \} \\
   &= Cov \{ X_a (u), X_b (0) \} 
 \end{align}
-$$ {#eq-auto-cov}
+$$ {#eq-ACovF}
 
 Although $\gamma_{\bullet, \bullet} (u)$ is a symmetric matrix at $u = 0$, it is not generally symmetric at $u \ne 0$. The symmetry relation we do have is that matrix $\gamma_{\bullet, \bullet} (-u)$ is the transpose of matrix $\gamma_{\bullet, \bullet} (u)$.
 
@@ -213,7 +213,7 @@ $$
   &= Cov \{ X_b (t + u), X_a (t) \}   \\
   &= \gamma_{b, a} (u)
 \end{align}
-$$ {#eq-auto-cov-symmetry}
+$$ {#eq-ACovF-symm}
 
 Consequently, the time-reversed process $Y_\bullet (t) = X_\bullet (-t)$ has the same auto-covariance structure as the original process, allowing for this matrix transposition.
 
@@ -227,7 +227,7 @@ $$
   \rho_{a, b} (u) &= corr \{ X_a (u), X_b (0) \} \\ 
   &= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
-$$ {#eq-auto-cor}
+$$ {#eq-ACF}
 
 ### PACF: partial autocorrelation function
 
@@ -238,7 +238,7 @@ $$
   \hat{X} &= E(X \; | \; Z_\bullet) \\ 
   \hat{Y} &= E(Y \; | \; Z_\bullet)
 \end{align}
-$$ {#eq-X-Y-given-Z}
+$$ {#eq-eXY-Z}
 
 In the normal case the conditional expectation yields a constant plus a linear combination of the components of $Z_\bullet$, that is, an affine function of $Z_\bullet$. More generally, $\hat{X}, \hat{Y}$ are defined as the affine functions of $Z_\bullet$ that minimize mean squared approximation error.
 
@@ -248,11 +248,11 @@ $$
 \begin{align}
   \rho_{X, Y \bullet Z_\bullet} &= corr \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
 \end{align}
-$$ {#eq-cor-X-Y-given-Z}
+$$ {#eq-corXY-Z}
 
 In the time series context we introduce the PACF with reference to a univariate, stationary Gaussian process, $\mathcal{N}(t)$, having zero mean.[^3].
 
-[^3]: That is, we assume that $\mathcal{N}(t)$ is a stationary, mean-zero, autocorrelated process such that for any set of distinct time indices $t_1, \ldots, t_K$ the joint probability distribtuion of $(\mathcal{N}(t_1), \ldots), \mathcal{N}(t_K)$ is multivariate normal.
+[^3]: That is, we assume that $\mathcal{N}(t)$ is a stationary, mean-zero, autocorrelated process such that for any set of distinct time indices $t_1, \ldots, t_K$ the joint probability distribtuion of $(\mathcal{N}(t_1), \ldots, \mathcal{N}(t_K)$ is multivariate normal.
 
 At lags $|u| \le 1$ the partial autocorrelation is defined as the autocorrelation $\rho (u)$. For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$.  Let $\Delta_u$ denote these intervening integer increments $\{ 1, 2, \ldots, u-1 \}$.
 
@@ -299,7 +299,7 @@ $$
 \begin{align}
   \rho (u | u) &= corr \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u \; | -\Delta_u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t \; | \; \Delta_u) \right)
 \end{align}
-$$ {#eq-pacf-defn}
+$$ {#eq-PACF}
 
 The calculation of the PACF can be based on the recursive Durbin-Levinson algorithm [@shumway2025, page 115]:
 
@@ -402,7 +402,7 @@ $$
   &= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\ 
   &= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
 \end{align}
-$$ {#eq-diff-operator}
+$$ {#eq-diff-op}
 
 For example, consider the DJIA stock index (@fig-djia). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here's the differencing operator $\mathcal{D}$ in the filtering format.
 
@@ -491,7 +491,7 @@ $$
     \\ 
     W(t) &\sim wn(0, \sigma_W^2)
 \end{align}
-$$ {#eq-AR-sum}
+$$ {#eq-ARp-alpha}
 
 That is, $W(t)$ again denotes a residual "white noise" stationary process: free of autocorrelation and having zero mean.
 
@@ -509,7 +509,7 @@ $$
   \text{so that } \\
   \phi (\mathcal{B}) &= \mathcal{I} \; - \; \sum_{\nu = 1}^p \phi_\nu \mathcal{B}^\nu
 \end{align}
-$$ {#eq-AR-bs-poly}
+$$ {#eq-ARp-bs-poly}
 
 The polynomial $\phi(\cdot)$ applied to the back-shift operator $\mathcal{B}$ is an *auto-regressive operator of order* $p$.
 
@@ -621,13 +621,13 @@ $$
 \begin{align}
   \phi(z) &= 1 \; - \; \sum_{\nu = 1}^p \; \phi_\nu \; z^\nu
 \end{align}
-$$ {#eq-ARp-poly-z}
+$$ {#eq-ARp-poly}
 
 Also as previously mentioned, we require the roots of $\phi(\cdot)$ to lie outside the closed unit disc, that is, to be greater than unity in magnitude.  This requirement ensures that the model is stationary, causal, and invertible.
 
-Consequently we have the following causal form of the model.[^causal_series]
+Consequently we have the following causal form of the model.[^causal_form]
 
-[^causal_series]: See @shumway2025 [page 117].
+[^causal_form]: See @shumway2025 [page 117].
 
 $$
 \begin{align}
@@ -640,7 +640,7 @@ $$
   \text{and } \\ 
   & \sum_{\nu = 0}^\infty \; |\psi_\nu| \; < \; \infty
 \end{align}
-$$ {#eq-causal-series}
+$$ {#eq-causal-form}
 
 @eq-AR-bs-poly also shows that $W(t)$ depends on current and past values of $X(t)$, with past values terminating at $X(t-p)$.
 
@@ -794,7 +794,7 @@ $$
   \theta(z) &= 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\ 
   &= \sum_{\nu = 0}^q \theta_\nu \; z^\nu & \text{with } \theta_0 = 1
 \end{align}
-$$
+$$ {#eq-MAq-poly}
 
 Applying $\theta(\cdot)$ to the back-shift operator $\mathcal{B}$, we have the following $MA(q)$ model.
 
@@ -806,7 +806,7 @@ $$
   \\ 
   &\text{ with } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
-$$ {#eq-MA-q}
+$$ {#eq-MAq}
 
 With $MA(1)$ serving as an example, it is easy to see that for an $MA(q)$ model of $X(\cdot)$, the auto-covariance function $\gamma_X (u)$ and the autocorrelation function $\rho_X (u)$ equal zero at lags $|u| > q$.
 
@@ -817,7 +817,7 @@ $$
   \\
   \rho_X (u) &= 0
 \end{align}
-$$ {#eq-ACF-MA-q}
+$$ {#eq-MAq-ACF}
 
 We require the roots of polynomial $\theta(\cdot)$ to have magnitudes greater than unity to ensure that its multiplicative inverse function, $\theta(z)^{-1}$, has a power series expansion valid for $|z| \le 1$.
 
@@ -830,7 +830,7 @@ $$
   \\ 
   & \text{where } \psi_0 = 1
 \end{align}
-$$ {#eq-MA-q-poly-inv}
+$$ {#eq-MAq-poly-inv}
 
 Then $\theta(\mathcal{B})^{-1}$ is well-defined, and we have 
 
@@ -839,7 +839,7 @@ $$
   W(t) &= \left \{ \theta(\mathcal{B})^{-1} \; X(\cdot) \right \} (t)  \\
   &= X(t) + \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu) 
 \end{align}
-$$ {#eq-MA-q-inv}
+$$ {#eq-MAq-inv}
 
 Equivalently, we have  
 

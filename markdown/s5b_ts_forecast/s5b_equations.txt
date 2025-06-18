@@ -1,0 +1,420 @@
+
+
+$$
+\begin{align}
+  X_\bullet (t) = (X_1 (t), \ldots, X_d (t)) \in \mathbb{R}^d
+\end{align}
+$$ {#eq-X-bullet}
+
+$$
+\begin{align}
+  m_\bullet (t) &= E \{ X_\bullet (t) \}
+\end{align}
+$$ {#eq-m-bullet}
+
+$$
+\begin{align}
+  Y_\bullet (t) &= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
+  &= X_\bullet (t - s)
+\end{align}
+$$ {#eq-shift-operator}
+
+$$
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \}
+  &= Cov \{ X_a (u), X_b (0) \}
+\end{align}
+$$ {#eq-stationarity-2}
+
+$$
+\begin{align}
+  \gamma_{\bullet, \bullet} (u) &= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\
+  \\
+  \text{where} \\
+  \gamma_{a, b} (u) &= Cov \{ X_a (t + u), X_b (t) \} \\
+  &= Cov \{ X_a (u), X_b (0) \}
+\end{align}
+$$ {#eq-auto-cov}
+
+$$
+\begin{align}
+  \gamma_{a, b} (-u) &= Cov \{ X_a (t - u), X_b (t) \} \\
+  &= Cov \{ X_a (t), X_b (t + u) \}  \\
+  &= Cov \{ X_b (t + u), X_a (t) \}   \\
+  &= \gamma_{b, a} (u)
+\end{align}
+$$ {#eq-auto-cov-symmetry}
+
+$$
+\begin{align}
+\rho_{\bullet, \bullet} (u) &= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\
+  \\
+  \text{where} \\
+  \rho_{a, b} (u) &= corr \{ X_a (u), X_b (0) \} \\
+  &= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
+\end{align}
+$$ {#eq-auto-cor}
+
+$$
+\begin{align}
+  \hat{X} &= E(X \; | \; Z_\bullet) \\
+  \hat{Y} &= E(Y \; | \; Z_\bullet)
+\end{align}
+$$ {#eq-X-Y-given-Z}
+
+$$
+\begin{align}
+  \rho_{X, Y \bullet Z_\bullet} &= corr \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
+\end{align}
+$$ {#eq-cor-X-Y-given-Z}
+
+$$
+\begin{align}
+   \hat{\mathcal{N}}(t + u \; | -\Delta_u)
+   &= E \left \{ \mathcal{N}(t + u) \;
+     | \; \mathcal{N}(t + u + \nu), \; \nu \in -\Delta_u \right \} \\
+   &= \beta_1 \mathcal{N}(t + u - 1) + \cdots
+     + \beta_{u-1} \mathcal{N}(t + 1)
+\end{align}
+$$ {#eq-N-given-past}
+
+$$
+\begin{align}
+   \hat{\mathcal{N}}(t \; | \; \Delta_u)
+   &= E \left \{ \mathcal{N}(t + u) \;
+     | \; \mathcal{N}(t + \nu), \; \nu \in \Delta_u \right \} \\
+   &= \beta_1 \mathcal{N}(t + 1) + \cdots
+     + \beta_{u-1} \mathcal{N}(t + u - 1)
+\end{align}
+$$ {#eq-N-given-future}
+
+$$
+\begin{align}
+  \rho (u | u) &= corr \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u \; | -\Delta_u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t \; | \; \Delta_u) \right)
+\end{align}
+$$ {#eq-pacf-defn}
+
+$$
+\begin{align}
+  \rho (u | u) &= \frac{\rho(u) - \sum_{\nu = 1}^{u - 1} \rho(u-1 | \nu) \;  \rho(u-\nu) }{1 - \sum_{\nu = 1}^{u - 1} \rho(u-1 | \nu) \;  \rho(\nu) } \\
+  \\
+  \text{where} \\
+  \\
+  \rho (u | \nu) &= \rho (u-1 | \nu) \; - \; \rho (u | u) \; \rho (u-1 | u-\nu)
+\end{align}
+$$ {#eq-DL-algo}
+
+$$
+\begin{align}
+  Y_\bullet (t)
+  &= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
+\end{align}
+$$ {#eq-ma-5}
+
+$$
+\begin{align}
+  Y_\bullet (t)
+  &= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\
+  &= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u)
+\end{align}
+$$ {#eq-filter}
+
+$$
+\begin{align}
+  a_{\bullet, \bullet} (u) &=
+    \begin{cases}
+      \frac{1}{5} I & \text{ for } |u| \le 2 \\
+      0 & \text{ for } |u| > 2
+    \end{cases}
+\end{align}
+$$ {#eq-ma-5-filter}
+
+$$
+\begin{align}
+  Y_\bullet (t)
+  &= X_\bullet (t)  - X_\bullet (t - 1) \\
+  &= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\
+  &= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
+\end{align}
+$$ {#eq-diff-operator}
+
+$$
+\begin{align}
+  a_{\bullet, \bullet} (u) &=
+    \begin{cases}
+      I  & \text{ for } u = 0 \\
+      -I & \text{ for } u = 1 \\
+      0  & \text{ otherwise }
+    \end{cases}
+\end{align}
+$$ {#eq-diff-filter}
+
+$$
+\begin{align}
+  X(t) &= \alpha \; + \; \sum_{\nu = 1}^p \phi_\nu X(t-\nu) \; + \; W(t) \\
+  \text{where } \\
+  \alpha &= \mu_X \; - \; \mu_X \; \sum_{\nu = 1}^p \phi_\nu \\
+    \\
+    W(t) &\sim wn(0, \sigma_W^2)
+\end{align}
+$$ {#eq-AR-sum}
+
+$$
+\begin{align}
+  \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) &= W(t) \\
+  \\
+  \text{where } \\
+  \phi (z) &= 1 - \sum_{\nu = 1}^p \phi_\nu \; z^\nu
+  \\
+  \text{so that } \\
+  \phi (\mathcal{B}) &= \mathcal{I} \; - \; \sum_{\nu = 1}^p \phi_\nu \mathcal{B}^\nu
+\end{align}
+$$ {#eq-AR-bs-poly}
+
+$$
+\begin{align}
+  W(t) &= (X(t) - \mu_X)  \; - \; \phi_1 (X(t-1) - \mu_X) \\
+  &= \left \{ (\mathcal{I} - \phi_1 \mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\
+  &= \left \{ \phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t)
+\end{align}
+$$ {#eq-AR1-resid}
+
+$$
+\begin{align}
+  W(t) &= \left \{ \phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\
+  X(t) - \mu_X &= \left \{ \phi (\mathcal{B})^{-1} \; W(\cdot) \right \} (t)
+\end{align}
+$$ {#eq-AR1-bs-inv}
+
+$$
+\begin{align}
+  \gamma_X (u) &= \frac{\phi_1^{|u|}}{1 - \phi_1^2} \; \sigma_W^2\\
+  \\
+  \rho_X (u) &= \phi_1^{|u|}
+\end{align}
+$$ {#eq-AR1-rho}
+
+$$
+\begin{align}
+  \rho_X (u | u) &=
+  \begin{cases}
+    1 & \text{ for } u = 0 \\
+    \phi_1 & \text{ for } u = \pm 1 \\
+    0 & \text{ for } |u| > 1
+  \end{cases}
+\end{align}
+$$ {#eq-AR1-PACF}
+
+$$
+\begin{align}
+  \phi(z) &= 1 \; - \; \sum_{\nu = 1}^p \; \phi_\nu \; z^\nu
+\end{align}
+$$ {#eq-ARp-poly-z}
+
+$$
+\begin{align}
+  X(t) - \mu_X &= \left \{ \phi(\mathcal{B})^{-1} \; W(\cdot) \right \} (t) \\
+  &= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\
+  &= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\
+  \text{where } \\
+  & \psi_0 = 1 \\
+  \\
+  \text{and } \\
+  & \sum_{\nu = 0}^\infty \; |\psi_\nu| \; < \; \infty
+\end{align}
+$$ {#eq-causal-series}
+
+$$
+\begin{align}
+  X(t) &= W(t) + \theta_1 W(t-1) \\
+  \\
+  &\text{ with } |\theta_1| < 1 \\
+  &\text{ and } W(\cdot) \sim wn(0, \sigma_W^2)
+\end{align}
+$$ {#eq-MA1}
+
+$$
+\begin{align}
+  \gamma_X (0) &= \sigma_X^2 \\
+  &= \sigma_W^2 \; (1 + \theta_1^2) \\
+  \\
+  \gamma_X (1) &= Cov(W(t+1) + \theta_1 W(t), \; W(t) + \theta_1 W(t-1)) \\
+  &= \sigma_W^2 \; \theta_1 \\
+  \\
+  \gamma_X (u) &= 0 \quad \text{for } |u| \ge 2
+\end{align}
+$$ {#eq-MA1-ACovF}
+
+$$
+\begin{align}
+  \rho_X (u) &=
+  \begin{cases}
+    1 & \text{ for } u = 0 \\
+    \frac{\theta_1}{1 + \theta_1^2} & \text{ for } u = \pm 1 \\
+    0 & \text{ for } |u| \ge 2 \\
+  \end{cases}
+\end{align}
+$$ {#eq-MA1-ACF}
+
+$$
+\begin{align}
+  \rho_X (u | u) &=  \frac{(- \theta_1)^u(1 - \theta_1^2)}{1 - \theta_1^{2 (u+1)}} & \text{ for } u \ge 2
+\end{align}
+$$ {#eq-MA1-PACF}
+
+$$
+\begin{align}
+  \theta(z) &= 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\
+  &= \sum_{\nu = 0}^q \theta_\nu \; z^\nu & \text{with } \theta_0 = 1
+\end{align}
+$$ {#eq-MAq-poly}
+
+$$
+\begin{align}
+  X(t) &= W(t) + \sum_{\nu = 1}^q \theta_\nu \; W(t - \nu) \\
+  &= \left \{ \theta(\mathcal{B}) \; W(\cdot) \right \} (t)
+  \\
+  \\
+  &\text{ with } W(\cdot) \sim wn(0, \sigma_W^2)
+\end{align}
+$$ {#eq-MA-q}
+
+$$
+\begin{align}
+  \text{for } X &\sim MA(q) \\
+  \text{and } |u| &> q \\
+  \\
+  \rho_X (u) &= 0
+\end{align}
+$$ {#eq-ACF-MA-q}
+
+$$
+\begin{align}
+  \theta (z)^{-1} &= \frac{1}{\theta (z)} \\
+  &= \sum_{\nu = 0}^\infty \psi_\nu \; z^\nu \\
+  \\
+  & \text{for } |z| \le 1 \\
+  \\
+  & \text{where } \psi_0 = 1
+\end{align}
+$$ {#eq-MAq-poly-inv}
+
+$$
+\begin{align}
+  W(t) &= \left \{ \theta(\mathcal{B})^{-1} \; X(\cdot) \right \} (t)  \\
+  &= X(t) + \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu)
+\end{align}
+$$ {#eq-MAq-inv}
+
+$$
+\begin{align}
+  X(t) &= W(t) - \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu)
+\end{align}
+$$ {#eq-AR-infty}
+
+$$
+\begin{align}
+  X(t) &= W(t) + \theta \; W(t-1) \\
+  \\
+  & \text{where } -1 < \theta < 1
+\end{align}
+$$ {#eq-ma-1-model}
+
+$$
+\begin{align}
+  S_{W, T} &= \sum_{t = t_0}^{t_0 + T -1} W(t) \\
+  E \left \{ S_{W, T} \right \} &= T \times E \left \{ W(t_0) \right \}  \\
+  &= T \times \mu_W \\
+  Var \left \{ S_{W, T} \right \} &= T \times Var \left \{ W(t_0) \right \}  \\
+  &= T \times \sigma_W^2
+\end{align}
+$$ {#eq-ev-sum-uncorrelated}
+
+$$
+\begin{align}
+  \hat{\mu}_W &= \frac{S_{W, T}}{T} \\
+  \\
+  E \left \{ \hat{\mu}_W \right \}
+  &= \frac{E \left \{ S_{W, T} \right \}}{T} \\
+  &= \mu_W \\
+  \\
+  Var \left \{ \hat{\mu}_W \right \}
+  &= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\
+  &= \frac{ \sigma_W^2 }{T}
+\end{align}
+$$ {#eq-ev-avg-uncorrelated}
+
+$$
+\begin{align}
+  \mu_X &= (1 +\theta) \; \mu_Z \\
+  \sigma_X^2 &= (1 +\theta^2) \; \sigma_Z^2
+\end{align}
+$$ {#eq-ev-ma-1-model}
+
+$$
+\begin{align}
+  \gamma_X (u) &= Cov \left ( X(t + u), X(t) \right ) \\
+  &=
+  \begin{cases}
+    (1 +\theta^2) \; \sigma_Z^2 & \text{ for } u = 0 \\
+    \theta \; \sigma_Z^2 & \text{ for } u = \pm 1 \\
+    0 & \text{ for } |u| > 1
+  \end{cases}
+\end{align}
+$$ {#eq-auto-cov-ma-1-model}
+
+$$
+\begin{align}
+  \rho_X (u) &= corr \left ( X(t + u), X(t) \right ) \\
+  &=
+  \begin{cases}
+    1 & \text{ for } u = 0 \\
+    \frac{\theta}{1 +\theta^2} & \text{ for } u = \pm 1 \\
+    0 & \text{ for } |u| > 1
+  \end{cases}
+\end{align}
+$$ {#eq-auto-cor-ma-1-model}
+
+$$
+\begin{align}
+  Var \left \{ S_{X, T} \right \}
+  &= Cov \left ( \sum_{s = t_0}^{t_0 + T - 1} X(s), \; \sum_{t = t_0}^{t_0 + T - 1} X(t)  \right ) \\
+  &= \sum_{s = t_0}^{t_0 + T - 1} \sum_{y = t_0}^{t_0 + T - 1}
+  Cov \left ( X(s), X(t) \right ) \\
+  &= \sum_{s = t_0}^{t_0 + T - 1} \sum_{y = t_0}^{t_0 + T - 1}
+  \gamma_X (s - t) \\
+  &= \sum_{u = -T + 1}^{T - 1} (T - |u|) \; \gamma_X (u) \\
+  &= T \; \gamma_X (0) + 2 (T - 1) \; \gamma_X (1) \\
+  &= T \; \sigma_X^2 \; \left ( 1 + 2 \; (1 - \frac{1}{T}) \; \rho_X (1) \right ) \\
+  &= T \; \sigma_X^2 \; \left ( 1 + 2 \; (1 - \frac{1}{T}) \; \frac{\theta}{1 +\theta^2} \right ) \\
+  &= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2}
+  - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
+\end{align}
+$$ {#eq-var-sum-ma-1-model}
+
+$$
+\begin{align}
+  \frac{\sigma_X^2}{N_d} &= Var \left \{ \hat{\mu}_X \right \} \\
+  &= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
+\end{align}
+$$ {#eq-ess-criterion}
+
+$$
+\begin{align}
+  N_d &= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
+\end{align}
+$$ {#eq-ess-definition}
+
+$$
+\begin{align}
+  N_d &= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} } \\
+  &\sim
+  \begin{cases}
+    T \; \frac{1 +\theta^2}{(1 + \theta)^2}
+      & \text{ as } T \rightarrow \infty \\
+    T^2  & \text{ as } \theta \rightarrow -1
+  \end{cases}
+\end{align}
+$$ {#eq-ess-limit-ma-1-model}
+
+
