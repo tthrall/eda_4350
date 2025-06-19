@@ -1,0 +1,1835 @@
+---
+title: "Time Series Forecasting"
+subtitle: "An Introduction"
+author:
+  - name: "Send comments to: Tony T (tthrall)"
+date: last-modified
+date-format: HH:mm ddd D-MMM-YYYY
+toc: true
+toc-depth: 3
+format:
+  html:
+    code: true
+params:
+  file_id: "s5b"
+  file_prefix: "s5b_ts_forecast"
+abstract:
+  "Introduce the components of time domain models and the forecasting that such models enable.  <br><br>"
+bibliography: s5b_references.bib
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+knitr::opts_chunk$set(
+  echo    = FALSE,
+  error   = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+```{r}
+#| label: cran_libraries
+
+library(assertthat)
+library(astsa)
+library(here)
+library(knitr)
+library(latex2exp)
+library(tidyverse)
+library(tinytex)
+library(tsibble)
+library(tsibbledata)
+library(xts)
+```
+
+```{r}
+#| label: local_libraries
+
+# library(ugrid)
+```
+
+```{r}
+#| label: local_source
+
+# gen_ds_tbl
+# compile a tibble that identifies data sets
+source(here("code", "gen_ds_tbl.R"))
+
+# get_ref_materials
+# encapsulate reference materials as separate modules
+source(here("code", "get_ref_materials.R"))
+```
+
+```{r}
+#| label: plotting_params
+
+# grid-points in (-m pi, m pi), m = m_periods
+# x_vec <- u_vec * (m_periods * pi)
+```
+
+```{r}
+#| label: astsa_data_set_tbl
+
+astsa_data_set_tbl <- get_all_ds_per_pkg(pkgs = "astsa")
+```
+
+```{r}
+#| label: astsa_data_set_tb__save
+#| eval: false
+
+# write to file only as needed
+save_to_file <- FALSE
+if (save_to_file) {
+  # TSV
+  astsa_data_set_tbl |>
+    readr::write_tsv(here(
+	  "data", "retain", "astsa_data_set_tbl.txt"
+	))
+  # RDS
+  astsa_data_set_tbl |>
+    readr::write_rds(here(
+	  "data", "rds", "astsa_data_set_tbl.rds"
+	))
+}
+```
+
+## Introduction
+
+This technical note introduces the basic components of widely used statistical models of time series data. Such models can improve the understanding of underlying processes, possibly raising new questions or refining existing questions. Such models are also heavily used to forecast future values, which is the emphasis of this note.
+
+The examples and methods presented here are from the selected textbook [@shumway2025] supported by `R` package `astsa` [@astsa].
+
+## Mathematical Framework
+
+### Data derived from a random process
+
+Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (@tbl-hl-pelts and @fig-pred-prey), based on the record of snowshoe hare (`astsa::Hare`) and lynx (`astsa::Lynx`) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.
+
+```{r}
+#| label: hl_pelts
+
+hl_pelts <- tsibbledata::pelt |> 
+  dplyr::rename(yr = Year, hare = Hare, lynx = Lynx) |> 
+  dplyr::mutate(across(
+    .cols = c(hare, lynx), 
+    .fns  = ~ .x/1000
+  ))
+```
+
+```{r}
+#| label: tbl-hl-pelts
+#| tbl-cap: Hare and lynx pelts (thousands)
+
+hl_pelts |> as_tibble() |> print(n = 5)
+```
+
+The distinction of time series analysis is that observations are indexed by time, and are not assumed to be statistically independent. Instead, time series data are typically modeled as a realization of a random process of the following form.[^1]
+
+[^1]: We assume the components of $X_\bullet(t)$ to be real-valued, unless stated otherwise.
+
+$$
+\begin{align}
+  X_\bullet (t) = (X_1 (t), \ldots, X_d (t)) \in \mathbb{R}^d
+\end{align}
+$$ {#eq-X-bullet}
+
+If the number of data columns is two or greater $(d \ge 2)$, the process is said to be multivariate. Otherwise, if $d = 1$ the process is said to be univariate, and the notation is simplified to $X (t)$.[^uni_subscripts]
+
+[^uni_subscripts]: For a univariate time series $X(t)$ we denote distributional parameters either omitting a subscript or else using the subscript $X$.
+
+In our example there are two data columns (`hare`, `lynx`), so that $d = 2$, the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period.
+
+$$
+\begin{align}
+  t &= t_0 + u & \text{ with } u \in \{0, 1, \ldots, T-1 \}
+\end{align}
+$$
+
+The expected value of the random process may be modeled by various functions of time: a constant, a linear trend, a seasonal component (periodic function), etc.
+
+$$
+\begin{align}
+  m_\bullet (t) &= E \{ X_\bullet (t) \}
+\end{align}
+$$ {#eq-m-bullet}
+
+### Stationarity
+
+In an additive model (which is most common), the residual random process, $X_\bullet (t) - m_\bullet (t)$ , is assumed to be **second-order stationary**.[^2] That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new process $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
+
+[^2]: The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of *strict stationarity*. This means that for any finite set of times $(t_1, \ldots, t_K)$ and any time-shift $s$, the joint probability distribution of $(X_\bullet (t_1), \ldots, X_\bullet (t_K))$ is identical to that of $(X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))$.
+
+$$
+\begin{align}
+  Y_\bullet (t) &= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\ 
+  &= X_\bullet (t - s)
+\end{align}
+$$ {#eq-back-shift-s}
+
+Here $\mathcal{B}$ denotes the *back-shift* operator that shifts time by one unit, so that $\mathcal{B}^s$ (that is, $s$ repeated applications of $\mathcal{B}$) shifts time by $s$ units. Then second-order stationarity can be expressed as follows.
+
+$$
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \} 
+  &= Cov \{ Y_a (t + u), Y_b (t) \} \\ 
+  &= Cov \{ X_a (t + u - s), X_b (t - s) \} \\ 
+  \\ 
+  & \text{for all } s \in \mathbb{Z} \text{ and } a, b \in \{ 1, \ldots, d \}
+\end{align}
+$$
+
+### ACF: autocorrelation function
+
+Setting $s = t$ in the last expression we have
+
+$$
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \} 
+  &= Cov \{ X_a (u), X_b (0) \} 
+\end{align}
+$$ {#eq-stationarity-2}
+
+Consequently, second-order stationarity enables one to define and estimate the following *auto-covariance* function.
+
+$$
+\begin{align}
+  \gamma_{\bullet, \bullet} (u) &= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\ 
+  \\ 
+  \text{where} \\
+  \gamma_{a, b} (u) &= Cov \{ X_a (t + u), X_b (t) \} \\
+  &= Cov \{ X_a (u), X_b (0) \} 
+\end{align}
+$$ {#eq-ACovF}
+
+Although $\gamma_{\bullet, \bullet} (u)$ is a symmetric matrix at $u = 0$, it is not generally symmetric at $u \ne 0$. The symmetry relation we do have is that matrix $\gamma_{\bullet, \bullet} (-u)$ is the transpose of matrix $\gamma_{\bullet, \bullet} (u)$.
+
+$$
+\begin{align}
+  \gamma_{a, b} (-u) &= Cov \{ X_a (t - u), X_b (t) \} \\
+  &= Cov \{ X_a (t), X_b (t + u) \}  \\
+  &= Cov \{ X_b (t + u), X_a (t) \}   \\
+  &= \gamma_{b, a} (u)
+\end{align}
+$$ {#eq-ACovF-symm}
+
+Consequently, the time-reversed process $Y_\bullet (t) = X_\bullet (-t)$ has the same auto-covariance structure as the original process, allowing for this matrix transposition.
+
+The *autocorrelation (ACF)* function $\rho_{\bullet, \bullet}(\cdot)$ is the following scaled version of the auto-covariance function.
+
+$$
+\begin{align}
+\rho_{\bullet, \bullet} (u) &= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\ 
+  \\ 
+  \text{where} \\
+  \rho_{a, b} (u) &= corr \{ X_a (u), X_b (0) \} \\ 
+  &= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
+\end{align}
+$$ {#eq-ACF}
+
+### PACF: partial autocorrelation function
+
+Going further, the *partial autocorrelation function (PACF)* is a useful diagnostic tool. Here's the idea [@shumway2025, page 108]. Recall that if $X$, $Y$, and $Z_\bullet = \{Z_1, \ldots, Z_k\}$ are random variables, then the partial correlation between $X$ and $Y$ given $Z_\bullet$ is obtained by first regressing $X$ and $Y$ on $Z_\bullet$ to obtain approximations $(\hat{X}, \hat{Y})$ of $(X, Y)$ respectively. If $X, Y, Z_\bullet$ have a joint normal distribution, then
+
+$$
+\begin{align}
+  \hat{X} &= E(X \; | \; Z_\bullet) \\ 
+  \hat{Y} &= E(Y \; | \; Z_\bullet)
+\end{align}
+$$ {#eq-eXY-Z}
+
+In the normal case the conditional expectation yields a constant plus a linear combination of the components of $Z_\bullet$, that is, an affine function of $Z_\bullet$. More generally, $\hat{X}, \hat{Y}$ are defined as the affine functions of $Z_\bullet$ that minimize mean squared approximation error.
+
+Then the partial correlation between $X$ and $Y$ given $Z_\bullet$ is the correlation between the respective $X$ and $Y$ residuals, as follows.
+
+$$
+\begin{align}
+  \rho_{X, Y \bullet Z_\bullet} &= corr \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
+\end{align}
+$$ {#eq-corXY-Z}
+
+In the time series context we introduce the PACF with reference to a univariate, stationary Gaussian process, $\mathcal{N}(t)$, having zero mean.[^3].
+
+[^3]: That is, we assume that $\mathcal{N}(t)$ is a stationary, mean-zero, autocorrelated process such that for any set of distinct time indices $t_1, \ldots, t_K$ the joint probability distribtuion of $(\mathcal{N}(t_1), \ldots, \mathcal{N}(t_K)$ is multivariate normal.
+
+At lags $|u| \le 1$ the partial autocorrelation is defined as the autocorrelation $\rho (u)$. For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$.  Let $\Delta_u$ denote these intervening integer increments $\{ 1, 2, \ldots, u-1 \}$.
+
+$$
+\begin{align}
+   \Delta_u &= \{ 1, 2, \ldots, u-1 \} \\ 
+   -\Delta_u &= \{ -1, -2, \ldots, 1-u \} \\ 
+   \\
+   & \text{ for } u \ge 2
+\end{align}
+$$
+
+The calculations are as follows.
+
+$$
+\begin{align}
+   \hat{\mathcal{N}}(t + u \; | -\Delta_u) 
+   &= E \left \{ \mathcal{N}(t + u) \; 
+     | \; \mathcal{N}(t + u + \nu), \; \nu \in -\Delta_u \right \} \\ 
+   &= \beta_1 \mathcal{N}(t + u - 1) + \cdots 
+     + \beta_{u-1} \mathcal{N}(t + 1)
+\end{align}
+$$ {#eq-N-given-past}
+
+$$
+\begin{align}
+   \hat{\mathcal{N}}(t \; | \; \Delta_u) 
+   &= E \left \{ \mathcal{N}(t + u) \; 
+     | \; \mathcal{N}(t + \nu), \; \nu \in \Delta_u \right \} \\ 
+   &= \beta_1 \mathcal{N}(t + 1) + \cdots 
+     + \beta_{u-1} \mathcal{N}(t + u - 1)
+\end{align}
+$$ {#eq-N-given-future}
+
+The conditional expectation is linear in the conditioning variables thanks to the assumption that $\mathcal{N}(t)$ is a Gaussian process having zero mean. In the non-Gaussian case the linear combination is defined as the one that minimizes the mean-squared approximation error.
+
+The coefficients in the linear combination are shared by $\hat{\mathcal{N}}(t)$ and $\hat{\mathcal{N}}(t + u)$ but are applied in reverse order. This is because the time-reversed process $\mathcal{N}(-t)$ has the same auto-covariance structure as the original process $\mathcal{N}(t)$.[^4]
+
+[^4]: Recall that for a univariate process the auto-covariance and autocorrelation functions are even, e.g., $\rho (-u) = \rho (u)$.
+
+The partial autocorrelation function is now defined as the correlation of the residual variables:
+
+$$
+\begin{align}
+  \rho (u | u) &= corr \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u \; | -\Delta_u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t \; | \; \Delta_u) \right)
+\end{align}
+$$ {#eq-PACF}
+
+The calculation of the PACF can be based on the recursive Durbin-Levinson algorithm [@shumway2025, page 115]:
+
+$$
+\begin{align}
+  \rho (u | u) &= \frac{\rho(u) - \sum_{\nu = 1}^{u - 1} \rho(u-1 | \nu) \;  \rho(u-\nu) }{1 - \sum_{\nu = 1}^{u - 1} \rho(u-1 | \nu) \;  \rho(\nu) } \\ 
+  \\
+  \text{where} \\ 
+  \\ 
+  \rho (u | \nu) &= \rho (u-1 | \nu) \; - \; \rho (u | u) \; \rho (u-1 | u-\nu) 
+\end{align}
+$$ {#eq-DL-algo}
+
+## Operations on Time Series
+
+The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings (@fig-jj), we see that the transformed time series, $Y(t) = \log_e (X(t))$, can be more closely approximated by a linear trend.
+
+In addition to the data transformations used on independent observations, we often want to average time series data over time.
+
+As an example, @fig-gt-lo-ma5 shows a 5-year moving average of global temperature data (@fig-gtemp-lo). This operation smooths out local fluctuations to show the overall trend more clearly.
+
+```{r}
+#| label: gt_lo
+
+gt_lo <- cbind(
+  astsa::gtemp_land, astsa::gtemp_ocean)
+names(gt_lo) <- c("land", "ocean")
+```
+
+```{r}
+#| label: gt_lo_ma5
+
+gt_lo_ma5 <- gt_lo |> 
+  stats::filter(filter = rep(1/5, 5))
+names(gt_lo_ma5) <- c("land", "ocean")
+```
+
+```{r}
+#| label: fig-gt-lo-ma5
+#| fig-cap: "Global temperatures: 5-year moving average"
+
+astsa::tsplot(
+  gt_lo_ma5, 
+  ncolm = 2, 
+  spaghetti=TRUE, 
+  col=astsa.col(c(4,2),.7), 
+  pch=c(20,18), 
+  type="o", 
+  ylab="\u00B0C", 
+  main="Temperature Deviations (5-year avg)", 
+  addLegend=TRUE, 
+  location="topleft", 
+  legend=c("Land Surface","Sea Surface")
+)
+```
+
+In this case the 5-year moving average operation can be expressed as follows.[^5]
+
+[^5]: The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term "moving average" is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.
+
+$$
+\begin{align}
+  Y_\bullet (t) 
+  &= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u) 
+\end{align}
+$$ {#eq-ma-5}
+
+Here $X_\bullet (\cdot)$ is a two-component random process representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant *filter*, having the following general form.
+
+$$
+\begin{align}
+  Y_\bullet (t) 
+  &= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\ 
+  &= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u) 
+\end{align}
+$$ {#eq-filter}
+
+where $a_{\bullet, \bullet} (\cdot)$ is a sequence of $d \times d$ matrices and $*$ denotes discrete convolution.
+
+For example, here's the 5-year moving average above expressed in this format.
+
+$$
+\begin{align}
+  a_{\bullet, \bullet} (u) &= 
+    \begin{cases}
+      \frac{1}{5} I & \text{ for } |u| \le 2 \\ 
+      0 & \text{ for } |u| > 2
+    \end{cases}
+\end{align}
+$$ {#eq-ma-5-filter}
+
+As noted above, the moving average operation can help to reveal and thus model the trend in the process, $m_\bullet (t)$. Forming the residual series $X_\bullet (t) - m_\bullet (t)$ is called "de-trending".
+
+Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the "differencing" operator $\mathcal{D} = \mathcal{I} - \mathcal{B}$.
+
+$$
+\begin{align}
+  Y_\bullet (t) 
+  &= X_\bullet (t)  - X_\bullet (t - 1) \\ 
+  &= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\ 
+  &= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
+\end{align}
+$$ {#eq-diff-op}
+
+For example, consider the DJIA stock index (@fig-djia). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here's the differencing operator $\mathcal{D}$ in the filtering format.
+
+$$
+\begin{align}
+  a_{\bullet, \bullet} (u) &= 
+    \begin{cases}
+      I  & \text{ for } u = 0 \\ 
+      -I & \text{ for } u = 1 \\ 
+      0  & \text{ otherwise }
+    \end{cases}
+\end{align}
+$$ {#eq-diff-filter}
+
+A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a *low-pass* filter. The differencing operator can be categorized as a *high-pass* filter.
+
+In signal-processing applications a linear, time-invariant filter $a_{\bullet, \bullet} (\cdot)$ may be designed to extract certain types of signals that are contaminated by noise.[@hamming1989]
+
+## Model Components
+
+The process of building a statistical model (time series or not) is typically cyclic:
+
+-   examine data (or model residuals)
+-   propose model (or refinement of current model)
+-   fit proposed model
+-   examine model residuals
+
+One might continue this cycle until the model residuals seem to be reasonably free of trend and autocorrelation.
+
+### Covariates and Trend
+
+Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables.
+
+Consider, for example, the cardiovascular mortality data shown in @fig-cmort, where mortality is modeled as a response to temperature and the level of particulate matter. In this example we can formulate the expected value of mortality in the following terms.
+
+$$
+\begin{align}
+  m(t, X_{2:3}(t)) 
+    &= E \left \{ X_1(t) \; | \; X_2(t), \; X_3(t) \; \right \}
+\end{align}
+$$
+
+where 
+
+$$
+\begin{align}
+  X_1(t) = M(t) &= \text{mortality count in week } t \\ 
+    X_2(t) = T(t) &= \text{temperature } (^\circ F) \text{ in week } t \\ 
+    X_3(t) = P(t) &= \text{level of particulate matter in week } t 
+\end{align}
+$$
+
+Each of the three components of $X_\bullet (t)$ exhibits an annual periodicity, as one might expect. In @shumway2025 [page 55] the authors initially propose a model for $X_1(t)$ of the following form.
+
+$$
+\begin{align}
+  X_1(t) &= m(t, X_{2:3}(t)) + W(t)\\ 
+   \\ 
+    \text{ where } \\ 
+    \\ 
+    m(t, X_{2:3}(t)) &= \beta_0 + f(t) + \beta_2 X_2(t) + \beta_3 X_3(t) \\ 
+    \\ 
+    W(\cdot) &\sim wn(0, \sigma_W^2)
+\end{align}
+$$
+
+Here $wn(0, \sigma_W^2)$ denotes an uncorrelated sequence having zero mean and variance $\sigma_W^2$, referred to as white noise.
+
+According to this model[^6] the pattern over time of $X_1(t)$ is captured by the mean over time, $m(t, X_{2:3}(t))$. Once the mean level is accounted for, the residual series $W(t) = X_1 (t) - m(t, X_{2:3}(t))$ is modeled as being free of autocorrelation. The model is consistent with the assumption that, apart from a trend component, weekly numbers of cardiovascular deaths are independent, conditioned on temperature and particulate levels.
+
+[^6]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
+
+Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled $W(t)$), they develop an autocorrelated ($AR(2)$) model.
+
+This is an example of the cyclic model-building process previously outlined. A model is developed, examined, and revised.
+
+### Auto-regression (AR)
+
+Auto-regressive models are based on the idea that the current value of the series, $X(t)$, can be approximated, or forecast, as a function of $p$ past values, $X(t−1), X(t−2), \ldots, X(t−p)$, which leads to the following formulation of an auto-regressive model of order $p$, abbreviated as $AR(p)$.
+
+$$
+\begin{align}
+  X(t) &= \alpha \; + \; \sum_{\nu = 1}^p \phi_\nu X(t-\nu) \; + \; W(t) \\ 
+  \text{where } \\ 
+  \alpha &= \mu_X \; - \; \mu_X \; \sum_{\nu = 1}^p \phi_\nu \\ 
+    \\ 
+    W(t) &\sim wn(0, \sigma_W^2)
+\end{align}
+$$ {#eq-ARp-alpha}
+
+That is, $W(t)$ again denotes a residual "white noise" stationary process: free of autocorrelation and having zero mean.
+
+#### Polynomial representation
+
+The $AR(p)$ model can also be expressed using the back-shift operator $\mathcal{B}$ as follows.
+
+$$
+\begin{align}
+  \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) &= W(t) \\ 
+  \\ 
+  \text{where } \\
+  \phi (z) &= 1 - \sum_{\nu = 1}^p \phi_\nu \; z^\nu
+  \\ 
+  \text{so that } \\
+  \phi (\mathcal{B}) &= \mathcal{I} \; - \; \sum_{\nu = 1}^p \phi_\nu \mathcal{B}^\nu
+\end{align}
+$$ {#eq-ARp-bs-poly}
+
+The polynomial $\phi(\cdot)$ applied to the back-shift operator $\mathcal{B}$ is an *auto-regressive operator of order* $p$.
+
+Now, the $AR(p)$ model is defined to be that of a _stationary_ process $X(t)$, which constrains the coefficients of polynomial $\phi(\cdot)$.  Additional requirements that the model be _causal_[^causal] and _invertible_[^invertible] restrict attention to polynomials $\phi(\cdot)$ whose roots are all greater than unity in magnitude.  This ensures that the multiplicative inverse function $\phi (z)^{-1}$ is well defined and has a power series expansion for $|z| \le 1$.
+
+[^causal]: An ARMA model is said to be _causal_ if the modeled process $X(t)$ can be expressed as a function of current and past white noise terms, $\{ W(t-u) \}$ for $u \ge 0$.  See @shumway2025 [page 96].
+
+[^invertible]: A model is said to be _invertible_ if the model's white noise process $W(t)$ can be expressed as a function of current and past terms of the modeled process, $\{ X(t-u) \}$ for $u \ge 0$.  See @shumway2025 [page 94].
+
+#### AR(1)
+
+Consider the $AR(1)$ model.  We have 
+
+$$
+\begin{align}
+  X(t) &= \mu_X \; + \; \phi_1 (X(t-1) - \mu_X) \; + \; W(t)
+\end{align}
+$$
+
+so that 
+
+$$
+\begin{align}
+  W(t) &= (X(t) - \mu_X)  \; - \; \phi_1 (X(t-1) - \mu_X) \\ 
+  &= \left \{ (\mathcal{I} - \phi_1 \mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\ 
+  &= \left \{ \phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t)
+\end{align}
+$$ {#eq-AR1-resid}
+
+The auto-regressive polynomial $\phi (\cdot)$ has degree 1.
+
+$$
+\begin{align}
+  \phi (z) &= 1 \; - \; \phi_1 z & \text{ with } | \phi_1 | &< 1 
+\end{align}
+$$
+
+The restriction on the real-valued coefficient $\phi_1$ ensures that $\phi (z) \ne 0$ for $|z| \le 1$, as previously mentioned.
+
+Now one can show by induction that for $u > 0$ we have 
+
+$$
+\begin{align}
+  X(t) - \mu_X  \\
+  &= \phi_1^u \; (X(t-u) - \mu_X) + \sum_{\nu = 0}^{u-1} \phi_1^\nu \; W(t-\nu)
+\end{align}
+$$
+
+In the limit, as $u \rightarrow \infty$, we see that $\phi_1^u \rightarrow 0$ so that  
+
+$$
+\begin{align}
+  X(t) - \mu_X \\ 
+  &= \sum_{\nu = 0}^\infty \phi_1^\nu \; W(t-\nu) \\ 
+  &= \sum_{\nu = 0}^\infty \phi_1^\nu \; \mathcal{B}^\nu \; W(t)
+\end{align}
+$$
+
+This result can be obtained more directly by inverting the auto-regressive operator $\phi (\mathcal{B})$.
+
+$$
+\begin{align}
+  W(t) &= \left \{ \phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\ 
+  X(t) - \mu_X &= \left \{ \phi (\mathcal{B})^{-1} \; W(\cdot) \right \} (t)
+\end{align}
+$$ {#eq-AR1-bs-inv}
+
+since 
+
+$$
+\begin{align}
+  \phi (z)^{-1} &= \frac{1}{1 - \phi_1 \; z} \\ 
+  &= \sum_{\nu = 0}^\infty \phi_1^\nu \; z^\nu & \text{ for } |z| \le 1
+\end{align}
+$$
+
+Based on these expressions one can show[^AR1_rho] that the auto-covariance and autocorrelation functions of $X(\cdot)$ take the following forms.
+
+[^AR1_rho]: See @shumway2025 [page 88].
+
+$$
+\begin{align}
+  \gamma_X (u) &= \frac{\phi_1^{|u|}}{1 - \phi_1^2} \; \sigma_W^2\\ 
+  \\ 
+  \rho_X (u) &= \phi_1^{|u|}
+\end{align}
+$$ {#eq-AR1-rho}
+
+Using the Durbin-Levinson algorithm, one can go on to show[^AR1_PACF] that the partial autocorrelation function (PACF) of $X(\cdot)$ has the following simple form.
+
+[^AR1_PACF]: See @shumway2025 [page 110].
+
+$$
+\begin{align}
+  \rho_X (u | u) &= 
+  \begin{cases}
+    1 & \text{ for } u = 0 \\ 
+    \phi_1 & \text{ for } u = \pm 1 \\ 
+    0 & \text{ for } |u| > 1 
+  \end{cases}
+\end{align}
+$$ {#eq-AR1-PACF}
+
+#### AR(p)
+
+As previously noted, an $AR(p)$ model can be defined via a polynomial $\phi(\cdot)$ that is applied to the back-shift operator $\mathcal{B}$.  The coefficients of $\phi(\cdot)$ are real, but it is useful to apply the polynomial to the complex variable $z$.  From @eq-AR-bs-poly we have 
+
+$$
+\begin{align}
+  \phi(z) &= 1 \; - \; \sum_{\nu = 1}^p \; \phi_\nu \; z^\nu
+\end{align}
+$$ {#eq-ARp-poly}
+
+Also as previously mentioned, we require the roots of $\phi(\cdot)$ to lie outside the closed unit disc, that is, to be greater than unity in magnitude.  This requirement ensures that the model is stationary, causal, and invertible.
+
+Consequently we have the following causal form of the model.[^causal_form]
+
+[^causal_form]: See @shumway2025 [page 117].
+
+$$
+\begin{align}
+  X(t) - \mu_X &= \left \{ \phi(\mathcal{B})^{-1} \; W(\cdot) \right \} (t) \\ 
+  &= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\ 
+  &= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\ 
+  \text{where } \\ 
+  & \psi_0 = 1 \\ 
+  \\ 
+  \text{and } \\ 
+  & \sum_{\nu = 0}^\infty \; |\psi_\nu| \; < \; \infty
+\end{align}
+$$ {#eq-causal-form}
+
+@eq-AR-bs-poly also shows that $W(t)$ depends on current and past values of $X(t)$, with past values terminating at $X(t-p)$.
+
+$$
+\begin{align}
+  W(t) &= \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\ 
+  &= X(t) - \mu_X \; - \; \sum_{\nu = 1}^p \phi_\nu \; (X(t-\nu) - \mu_X)
+\end{align}
+$$
+
+From these equations one can show that for lag $u > p$ we have 
+
+$$
+\begin{align}
+  \hat{X}(t+u \; | -\Delta_u) &= \mu_X + \sum_{\nu = 1}^p \; \phi_\nu \; (X(t + u - \nu) - \mu_X) \\ 
+  X(t+u) \; - \; \hat{X}(t+u \; | -\Delta_u) &= W(t+u)
+\end{align}
+$$
+
+and 
+
+$$
+\begin{align}
+  \hat{X}(t \; | \Delta_u) &= \mu_X + \sum_{\nu = 1}^p \; \phi_\nu \; (X(t + \nu) - \mu_X) \\ 
+  X(t) \; - \; \hat{X}(t \; | \Delta_u) &=  \sum_{\nu = 1}^p \; \phi_\nu \; (X(t - \nu) - X(t + \nu)) \; + W(t)
+\end{align}
+$$
+
+Consequently, for $u > p$ we have 
+
+$$
+\begin{align}
+  & Cov(X(t+u) \; - \; \hat{X}(t+u \; | -\Delta_u), \; X(t) \; - \; \hat{X}(t \; | \Delta_u)) \\ 
+  &= Cov(W(t+u), \; X(t) \; - \; \hat{X}(t \; | \Delta_u)) \\ 
+  &= Cov(W(t+u), \; X(t)) \; - \; Cov(W(t+u), \; \hat{X}(t \; | \Delta_u)) \\ 
+  &= 0
+\end{align}
+$$
+
+Therefore the PACF is zero at lags $u > p$.
+
+$$
+\begin{align}
+  \rho_X (u | u) &= 0 & \text{ for } u > p
+\end{align}
+$$
+
+### Moving Average (MA)
+
+A moving average model of order $q$ has the following form.
+
+$$
+\begin{align}
+  X(t) &= \mu_X \; + \; W(t) \; + \; \sum_{\nu = 1}^q \; \theta_\nu \; W(t - \nu) \\ 
+  \text{where } \\ 
+  W(\cdot) &\sim wn(0, \sigma_W^2)
+\end{align}
+$$
+
+Like AR models, an MA model can be expressed by applying a polynomial $\theta(\cdot)$ to the back-shift operator $\mathcal{B}$.
+
+$$
+\begin{align}
+  X(t) - \mu_x  &= W(t) \; + \; \sum_{\nu = 1}^q \; \theta_\nu \; W(t - \nu) \\ 
+  &= \left \{\mathcal{I} + \sum_{\nu = 1}^q \; \theta_\nu \; \mathcal{B}^\nu \right \} \; W(t) \\ 
+  &= \theta(\mathcal{B}) \; W(t) \\ 
+  \\ 
+  \text{where} \\
+  \theta (z) &= 1 + \sum_{\nu = 1}^q \; \theta_\nu \; z^\nu
+\end{align}
+$$
+
+That is, $X(\cdot)$ is filtered white noise, and is therefore stationary for any finite set of filter coefficients.  But some constraint on polynomial $\theta(\cdot)$ is required to eliminate ambiguity.
+
+#### Invertibility
+
+Consider the following two MA(1) models.[^MA1_equivalence]
+
+[^MA1_equivalence]: @shumway2025 [page 92]
+
+$$
+\begin{align}
+  X(t) &= W(t) + \frac{1}{5} W(t-1) & \text{with } W(\cdot) \sim N(0, 25) \\ 
+  \\ 
+  Y(t) &= V(t) + 5 \; V(t-1) & \text{with } V(\cdot) \sim N(0, 1)
+\end{align}
+$$
+
+The probability distributions of the two processes $X(\cdot)$ and $Y(\cdot)$ are identical[^MA1_equiv], so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.
+
+[^MA1_equiv]: Transform the second equation into the first as follows. For all time indices $\nu$ set $U(\nu) = 5 V(\nu - 1)$, and then reverse time by setting $Y'(\nu) = Y(- \nu)$ and $U'(\nu) = U(- \nu)$.
+
+A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible.  That is, we require the roots of polynomial $\theta(\cdot)$ to have magnitude greater than unity.[^poly_roots]  In the example above we therefore choose the model for $X(\cdot)$ rather than the model for $Y(\cdot)$.
+
+[^poly_roots]: As previously mentioned, requiring the roots of a polynomial $p(\cdot)$ to be greater than unity in magnitude ensures that $p(z)^{-1}$ is finite and analytic for $|z| \le 1$ and thus has a power series expansion whose radius of convergence is the minimum magnitude of the roots of $p(\cdot)$.  As a consequence the coefficients of that power series are absolutely summable.
+
+#### MA(1)
+
+Consider the $MA(1)$ model 
+
+$$
+\begin{align}
+  X(t) &= W(t) + \theta_1 W(t-1) \\ 
+  \\ 
+  &\text{ with } |\theta_1| < 1 \\ 
+  &\text{ and } W(\cdot) \sim wn(0, \sigma_W^2)
+\end{align}
+$$ {#eq-MA1}
+
+Here is the auto-covariance function for this process.
+
+$$
+\begin{align}
+  \gamma_X (0) &= \sigma_X^2 \\ 
+  &= \sigma_W^2 \; (1 + \theta_1^2) \\ 
+  \\ 
+  \gamma_X (1) &= Cov(W(t+1) + \theta_1 W(t), \; W(t) + \theta_1 W(t-1)) \\ 
+  &= \sigma_W^2 \; \theta_1 \\ 
+  \\ 
+  \gamma_X (u) &= 0 \quad \text{for } |u| \ge 2
+\end{align}
+$$ {#eq-MA1-ACovF}
+
+And here is the corresponding autocorrelation function (ACF).[@shumway2025, page 93]
+
+$$
+\begin{align}
+  \rho_X (u) &= 
+  \begin{cases}
+    1 & \text{ for } u = 0 \\ 
+    \frac{\theta_1}{1 + \theta_1^2} & \text{ for } u = \pm 1 \\ 
+    0 & \text{ for } |u| \ge 2 \\  
+  \end{cases}
+\end{align}
+$$ {#eq-MA1-ACF}
+
+The PACF turns out to have the following form [@shumway2025, page 111].
+
+$$
+\begin{align}
+  \rho_X (u | u) &=  \frac{(- \theta_1)^u(1 - \theta_1^2)}{1 - \theta_1^{2 (u+1)}} & \text{ for } u \ge 2
+\end{align}
+$$ {#eq-MA1-PACF}
+
+#### MA(q)
+
+An $MA(q)$ model is generated by a polynomial $\theta(\cdot)$ of degree $q$ of the following form.
+
+$$
+\begin{align}
+  \theta(z) &= 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\ 
+  &= \sum_{\nu = 0}^q \theta_\nu \; z^\nu & \text{with } \theta_0 = 1
+\end{align}
+$$ {#eq-MAq-poly}
+
+Applying $\theta(\cdot)$ to the back-shift operator $\mathcal{B}$, we have the following $MA(q)$ model.
+
+$$
+\begin{align}
+  X(t) &= W(t) + \sum_{\nu = 1}^q \theta_\nu \; W(t - \nu) \\ 
+  &= \left \{ \theta(\mathcal{B}) \; W(\cdot) \right \} (t)
+  \\ 
+  \\ 
+  &\text{ with } W(\cdot) \sim wn(0, \sigma_W^2)
+\end{align}
+$$ {#eq-MAq}
+
+With $MA(1)$ serving as an example, it is easy to see that for an $MA(q)$ model of $X(\cdot)$, the auto-covariance function $\gamma_X (u)$ and the autocorrelation function $\rho_X (u)$ equal zero at lags $|u| > q$.
+
+$$
+\begin{align}
+  \text{for } X &\sim MA(q) \\ 
+  \text{and } |u| &> q \\ 
+  \\
+  \rho_X (u) &= 0
+\end{align}
+$$ {#eq-MAq-ACF}
+
+We require the roots of polynomial $\theta(\cdot)$ to have magnitudes greater than unity to ensure that its multiplicative inverse function, $\theta(z)^{-1}$, has a power series expansion valid for $|z| \le 1$.
+
+$$
+\begin{align}
+  \theta (z)^{-1} &= \frac{1}{\theta (z)} \\ 
+  &= \sum_{\nu = 0}^\infty \psi_\nu \; z^\nu \\ 
+  \\ 
+  & \text{for } |z| \le 1 \\ 
+  \\ 
+  & \text{where } \psi_0 = 1
+\end{align}
+$$ {#eq-MAq-poly-inv}
+
+Then $\theta(\mathcal{B})^{-1}$ is well-defined, and we have 
+
+$$
+\begin{align}
+  W(t) &= \left \{ \theta(\mathcal{B})^{-1} \; X(\cdot) \right \} (t)  \\
+  &= X(t) + \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu) 
+\end{align}
+$$ {#eq-MAq-inv}
+
+Equivalently, we have  
+
+$$
+\begin{align}
+  X(t) &= W(t) - \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu) 
+\end{align}
+$$ {#eq-AR-infty}
+
+which can be viewed as an infinite-order auto-regressive model.  Now for an $AR(p)$, with $p$ finite, the PACF can be shown to be non-zero at lag $u = p$ (and zero thereafter).  In the case of the $MA(q)$ model, equivalent to an infinite-order $AR$ model, the PACF tends to zero but does not vanish as $|u| \rightarrow \infty$.
+
+### Assembling Components
+
+## Natural Science Examples
+
+### Sunspots: Monthly Counts, 1749 - Present
+
+#### Description
+
+@fig-sunspots below shows `sunspot.month`, the number of sunspots per month in `R` package `datasets`. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.
+
+```{r}
+#| label: fig-sunspots
+#| fig-cap: "Sunspots: monthly count"
+
+g_sunspots <- astsa::tsplot(
+  x = datasets::sunspot.month, 
+  ylab = "sunspot count", 
+  col = 4)
+```
+
+#### Context: Questions and Objectives
+
+As described in [Recalibration of the Sunspot-Number: Status Report \| Solar Physics](https://link.springer.com/article/10.1007/s11207-023-02136-3), the record of sunspot numbers links past and present solar behavior, and is the primary input for reconstructions of total solar irradiance (TSI) for years before 1978.
+
+### Old Faithful eruptions
+
+#### Description
+
+@fig-faithful below represents eruptions of the "Old Faithful" geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.[^8] The `delay` variable denotes the number of minutes since the previous eruption and the `duration` variable denotes the duration of the eruption, again in minutes.
+
+[^8]: There are two prominent `R` packages representing the Old Faithful measurements during August, 1985. The `MASS::geyser` data set of 299 observations [@MASS] includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The `datasets::faithful` data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.
+
+The data represent a *point process*, where each observation records the time of occurrence of a certain type of event, and may include other information about the occurrence. Here the type of event is an eruption of the Old Faithful geyser. In addition to the time of the eruption we have the duration of the eruption.
+
+```{r}
+#| label: faithful_tbl
+
+faithful_tbl <- datasets::faithful |> 
+  tibble::as_tibble() |> 
+  dplyr::rename(
+    duration = eruptions, 
+    delay    = waiting
+  ) |> 
+  dplyr::select(delay, duration)
+```
+
+```{r}
+#| label: fig-faithful
+#| fig-cap: "Old Faithful eruptions: delay and duration"
+
+g_faithful_tbl <- faithful_tbl |> 
+  ggplot(mapping = aes(
+    x = delay, y = duration
+  )) + 
+  geom_point() + 
+  labs(title = "Old Faithful eruptions: delay and duration")
+g_faithful_tbl
+```
+
+#### Context: Questions and Objectives
+
+The figure shows two clusters of data points. Old Faithful eruptions are conjectured to occur in 2 distinct temporal patterns due to the presence of an upper and lower chamber beneath the vertical column (tube) that forms the geyser.
+
+In this example, we have the goal of scientific understanding of a natural phenomenon, supported by statistical modeling.
+
+### Climate Change
+
+```{r}
+#| label: climate_ds_tbl
+
+# names of relevant data sets from package astsa::
+climate_ds_names <- c(
+  "cardox", "ENSO", "gtemp.month", "gtemp_both", 
+  "gtemp_land", "gtemp_ocean", "soi"
+)
+climate_ds_tbl <- select_ds_per_pkg(
+  pkgs = "astsa",
+  datasets = climate_ds_names)
+```
+
+Here are some of the data sets related to climate change from the `R` package `astsa`.
+
+```{r}
+#| label: climate_ds_tbl__kable
+
+climate_ds_tbl |> knitr::kable(
+  caption = "Climate: selected data sets"
+)
+```
+
+#### Description
+
+@fig-gtemp-lo below shows the time series `gtemp_land` and `gtemp_ocean`, annual temperature deviations (in ◦C) from averages for the period 1991-2020.[^9] The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.
+
+[^9]: The data source is [NOAA](https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/), who use the term "anomaly" rather than "deviation". Further clarifications are pending.
+
+```{r}
+#| label: tmp_lob_s5a
+
+# join surface temperatures into multivariate ts
+tmp_lo <- cbind(
+  astsa::gtemp_land, 
+  astsa::gtemp_ocean)
+dimnames(tmp_lo) [[2]] <- c("land", "ocean")
+
+tmp_lob <- 
+  cbind(tmp_lo, astsa::gtemp_both)
+dimnames(tmp_lob) [[2]] <- c("land", "ocean", "both")
+```
+
+```{r}
+#| label: ref_lob_tbl_s5a
+
+# tmp_lob subset: 1991-2020 reference period
+ref_lob_tbl <- tmp_lob |> 
+  tibble::as_tibble() |> 
+  dplyr::mutate(yr = 1850:2023) |> 
+  dplyr::select(yr, land, ocean, both) |> 
+  dplyr::filter(yr >= 1991, yr <= 2020)
+```
+
+```{r}
+#| label: ref_lob_smy_s5a
+
+# check average deviation for reference period 1991-2020
+land_smy_vec  <- ref_lob_tbl$ land  |> summary()
+ocean_smy_vec <- ref_lob_tbl$ ocean |> summary()
+both_smy_vec  <- ref_lob_tbl$ both  |> summary()
+
+ref_lob_smy <- tibble::tibble(
+  stat  = c("min", "q_1", "mid", "avg", "q_3", "max"), 
+  land  = land_smy_vec, 
+  ocean = ocean_smy_vec, 
+  both  = both_smy_vec
+)
+
+# ref_lob_smy
+# # A tibble: 6 × 4
+#   stat  land     ocean     both     
+#   <chr> <table>  <table>   <table>  
+# 1 min   0.360000 0.2600000 0.3000000
+# 2 q_1   0.815000 0.3700000 0.5175000
+# 3 mid   1.120000 0.4350000 0.6750000
+# 4 avg   1.193667 0.4776667 0.6993333
+# 5 q_3   1.570000 0.5525000 0.8425000
+# 6 max   2.500000 0.8300000 1.3500000
+```
+
+```{r}
+#| label: fig-gtemp-lo-s5a
+#| fig-cap: "Deviations in global surface temperatures"
+
+g_temp_lo <- astsa::tsplot(
+  cbind(gtemp_land, gtemp_ocean), 
+  spaghetti=TRUE, 
+  col=astsa.col(c(4,2),.7), 
+  pch=c(20,18), 
+  type="o", 
+  ylab="\u00B0C", 
+  main="Global Surface Temperature Deviations", 
+  addLegend=TRUE, 
+  location="topleft", 
+  legend=c("Land Surface","Sea Surface")
+)
+```
+
+#### Context: Questions and Objectives
+
+The upward trend in the two temperature series during the latter part of the 20th century has been used as an argument for the climate change hypothesis. Further data and information would be needed, of course, to estimate the contributions of natural and anthropogenic sources to the observed rise in temperature.
+
+### El Niño and Fish Population
+
+#### Description
+
+@fig-soi-s5a shows the Southern Oscillation Index (SOI, `astsa::soi`) and associated Recruitment (`astsa::rec`), an index of the number of viable new fish). Both series consist of 453 monthly values ranging over the years 1950–1987.
+
+The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.
+
+```{r}
+#| label: fig-soi-s5a
+#| fig-cap: "Southern Oscillation Index and fish recruitment"
+
+par(mfrow=2:1)
+g_soi <- astsa::tsplot(soi, ylab="", main="Southern Oscillation Index", col=4)
+
+text(1970, .91, "COOL", col=5, font=4)
+text(1970, -.91, "WARM", col=6, font=4)
+
+g_rec <- astsa::tsplot(rec, ylab="", main="Recruitment", col=4)
+```
+
+#### Context: Questions and Objectives
+
+The processes that drive the periodicity of the two time series are of scientific interest. Frequency decomposition of the time series may help to identify those underlying processes.
+
+### Predator–Prey Interactions
+
+#### Description
+
+One of the classic studies of predator–prey interactions is based on the record of lynx (`astsa::Lynx`) and snowshoe hare (`astsa::Hare`) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.
+
+These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in @fig-pred-prey are thousands of pelts per year.
+
+```{r}
+#| label: fig-pred-prey-s5a
+#| fig-cap: "Hare and lynx: purchased pelts"
+
+g_hare_lynx <- tsplot(
+  cbind(Hare, Lynx), 
+  col=c(2,4), 
+  type="o", 
+  pch=c(0,2), 
+  ylab="Number", 
+  spaghetti=TRUE, 
+  addLegend=TRUE)
+
+mtext("(\u00D7 1000)", side=2, adj=1, line=1.5, cex=.8)
+```
+
+#### Context: Questions and Objectives
+
+The scientific understanding of predator-prey interactions, starting with the Lotka-Volterra model (1910-1926), marked the beginnings of mathematical biology, and has been extended to the analysis of economic competition.
+
+## Business and Economic Examples
+
+### JJ Quarterly Earnings
+
+#### Description
+
+@fig-jj below shows Johnson & Johnson quarterly earnings per share in US dollars from 1960 through 1980 (`astsa::jj`). The bottom panel shows the same data on a $\log_e$ scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.
+
+```{r}
+#| label: fig-jj-s5a
+#| fig-cap: "J&J: earnings per share at linear and log scales"
+
+par(mfrow=2:1)
+
+g_jj <- astsa::tsplot(
+  jj, 
+  col=4, 
+  ylab="USD", 
+  type="o")
+
+g_jj_log <- astsa::tsplot(
+  jj, col=4, ylab="USD", type="o", log="y")
+```
+
+#### Context: Questions and Objectives
+
+Developing a statistical model of the time series can be regarded as a first step toward an economic understanding. With that understanding, various interested parties can set company performance goals, make investment decisions, or use this company as an example in a larger study.
+
+### Dow Jones Industrial Average
+
+#### Description
+
+@fig-djia shows the trading day closings and returns (percent change)[^10] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
+
+[^10]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
+
+```{r}
+#| label: fig-djia-s5a
+#| fig-cap: "Dow Jones Industrial Average"
+
+# log-ratio of successive closing values
+djia_return <- 
+  astsa::djia $Close |> log() |> diff()
+
+par(mfrow=2:1)
+
+plot(djia$Close, col=4, main="DJIA Close")
+
+plot(djia_return, col=4, main="DJIA Returns")
+```
+
+#### Context: Questions and Objectives
+
+The returns of the DJIA are typical of other assets. The mean function of the series appears to be stable with an average return of approximately zero. Of equal interest are highly volatile (variable) periods. That variability is both a symptom and cause of market uncertainty. A challenge in the analysis of financial data is to forecast the volatility of future returns.
+
+## Signal Processing Examples
+
+### fMRI Imaging
+
+#### Description
+
+@fig-fmri shows fMRI data (`astsa::fmri1`) from 2 locations in each of the cortex, thalamus, and cerebellum regions of the brain; n = 128 points, with one observation taken every 2 seconds. The square wave shows the stimulus signal (on or off).
+
+The data are from a 1997 study that used fMRI to examine pain perception in humans. Here we focus on five subjects whose hands were periodically brushed. The stimulus (represented as a square wave in the figure) was applied for 32 seconds and then stopped for 32 seconds so that the signal period is 64 seconds. The sampling rate was one observation every 2 seconds for 256 seconds (n = 128).
+
+The data are consecutive measures of blood oxygenation-level dependent (BOLD) signal intensity, which measures areas of activation in the brain. The series shown are from two locations each in the cortex, thalamus, and cerebellum and the values are averaged over subjects. These were evoked responses and all subjects were in phase.
+
+```{r}
+#| label: fig-fmri
+#| fig-cap: "Evoked response per brain region"
+
+par(mfrow=c(3,1))
+
+# fMRI response data
+x = ts(fmri1[,4:9], start=0, freq=32)
+
+# square-wave stimulus
+u = ts(
+  rep(c(rep(.6,16), rep(-.6,16)), 4), 
+  start=0, 
+  freq=32)
+
+# area of the brain
+# fMRI recorded in two locations per area
+names = c(
+  "Cortex (2 locations)",
+  "Thalamus (2 locations)",
+  "Cerebellum (2 locations)"
+)
+
+g_fmri <- list()
+for (i in 1:3){
+  j = 2*i-1
+  g_fmri [[i]] <- astsa::tsplot(
+    x[,j:(j+1)], 
+    ylab="BOLD", xlab="", 
+    main=names[i], col=5:6, 
+    ylim=c(-.6,.6), lwd=2, xaxt="n", spaghetti=TRUE
+  )
+  
+  axis(seq(0,256,64), side=1, at=0:4)
+  
+  lines(u, type="s", col=gray(.3))
+}
+
+mtext("seconds", side=1, line=1.75, cex=.9)
+```
+
+#### Context: Questions and Objectives
+
+Note that the periodicities appear strongly in the motor cortex series and less so in the thalamus and cerebellum. This experiment has been designed to test whether these distinct areas of the brain respond differently to the stimulus.
+
+### Speech Recording
+
+#### Description
+
+@fig-speech below shows the `speech` data set from the `astsa` package, a recording of the utterance *aaahhh*. Note the repetitive nature of the signal and the rather regular periodicities. Also note the repetition of small wavelets. The separation between wavelets is known as the *pitch period* and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis.
+
+```{r}
+#| label: fig-speech
+#| fig-cap: "Utterance 'aaahhh' sampled at 10 Hz"
+
+g_speech <- astsa::tsplot(speech, col=4)
+arrows(658, 3850, 766, 3850, 
+       code=3, angle=90, length=.05, col=6)
+text(712, 4100, "pitch period", cex=.75)
+```
+
+#### Context: Questions and Objectives
+
+Computer recognition of speech is an active area of research and development. In the current case one might seek to transcribe the signal above into the text string "aaahhh". One approach would be a frequency based decomposition (spectral analysis) of the signal yielding a signature of the utterance that could be matched to one or more entries in a library of such signatures.
+
+### Earthquakes and Explosions
+
+#### Description
+
+@fig-eqexp shows recordings (40 per second) at a Scandinavian seismic station of an earthquake (`astsa::EQ5`) and of a mining explosion (`astsa::EXP6`).
+
+```{r}
+#| label: fig-eqexp
+#| fig-cap: "Earthquake and explosion sampled at 40 Hz"
+
+g_eqexp <- astsa::tsplot(
+  cbind(EQ5,EXP6), 
+  ylab=c("Earthquake", "Explosion"), 
+  col=4
+)
+```
+
+#### Context: Questions and Objectives
+
+The general problem of interest is to distinguish between wave-forms generated by earthquakes versus those generated by explosions.
+
+## Data Analysis Objectives & Methods
+
+There are a number of ways to categorize types of data analysis. For example, the distinction between confirmatory and exploratory data analysis has been widely discussed over several decades. But for present purposes we consider the complementary aims of decision support and scientific understanding.
+
+### Decision Support
+
+Decisions are often made via complex human interactions that are difficult to represent formally. Financial transactions, however, are easier to record and model. Financial management operates at markedly different time scales. At one extreme, consider algorithms that respond in real time to changing market valuations. At the other extreme we have decisions pertaining to multi-year projects. The financial stakes warrant substantial investment, which has fueled steady advancement in all aspects of the technology, including time series modeling. To be useful the models must be as precise and as reliable as possible (with precision and reliability balanced as deemed appropriate in each situation).
+
+Time series models that support decisions (in any setting) are typically time-domain parametric models whose components may include data transformations along with filtering algorithms. We leave the description of such models for a separate technical note.
+
+### Scientific Understanding
+
+Enhancing human understanding of natural and social phenomena can be gratifying in itself, but may also pertain directly or indirectly to human welfare. The natural sciences offer many examples of phenomena that are usefully decomposed by frequency-domain time series models. Again, description of these methods is left to a separate technical note.
+
+### Overlap
+
+Of course societal decisions often require both action-oriented recommendations and scientific understanding of what is known and unknown pertaining to the decision. Decisions related to climate change are a leading example of this overlap.
+
+To illustrate, @fig-cardox-records below shows monthly $CO_2$ levels (ppm) taken at the Mauna Loa, Hawaii observatory (top) and a second-order differencing of the data to remove trends (bottom).
+
+```{r}
+#| label: fig-cardox-records
+#| fig-cap: "$CO_2$: Mauna Loa, monthly readings"
+
+par(mfrow=2:1)
+
+tsplot(
+  cardox, col = 4, ylab = bquote(CO[2]), 
+  main="Monthly Carbon Dioxide Readings - Mauna Loa Observatory"
+)
+
+tsplot(
+  diff(diff(cardox, 12)), col = 4, 
+  ylab = "diff( CO2, 2 )"
+)
+```
+
+@fig-cardox-forecast shows a 5-year forecast based on a time-domain model (a seasonal auto-regressive, moving-average model).
+
+```{r}
+#| label: fig-cardox-forecast
+#| fig-cap: "$CO_2$: Mauna Loa, monthly forecast"
+
+cardox_forecast <- 
+  sarima.for(
+    cardox, 60, 1,1,1, 0,1,1,12, 
+    col=4, ylab = bquote(CO[2])
+  )
+
+abline(v=2023.17, lty=6)
+```
+
+We leave the development of such models to a separate technical note. The point here is that such forecasts, when presented to support high-stakes societal decisions, are both valued for their precision and scrutinized as to their scientific reliability.
+
+## Detecting Serial Correlation
+
+The process of building a statistical model (time series or not) is typically cyclic: examining data (or model residuals); conjecturing a statistical model (or model refinement); fitting the conjectured model; and examining the model residuals.
+
+In time series analysis, an initial review of the data might include a test for serial correlation (autocorrelation). That is, one can check for correlation of $X_\bullet (t)$ with $X_\bullet (t - s)$ at several lags $s$. If the data do appear to be autocorrelated, one might proceed to build a time series model. If the residuals of that model also appear to be autocorrelated or to exhibit some trend, one might seek to refine the model until the model residuals appear to be free of trend and autocorrelation.
+
+### Statistical Tests
+
+There are several statistical tests for autocorrelation. One of the most widely used is the Ljung-Box test[@ljung1978] available in `R` as the function `stats::Box.test()` in which one specifies the maximal lag to be checked.
+
+In the frequency domain, the variation exhibited in the data is decomposed into the variation from groups of sinusoidal functions, each group corresponding to a frequency band. From this perspective the absence of autocorrelation corresponds to each band contributing the same proportion of variance, a phenomenon called "white noise". A test for such white noise is available in `R` as the function `hwwntest::bartlettB()`[@hwwntest].
+
+### Autocorrelation and Estimator Variance
+
+The presence of autocorrelation in the data requires adjustment of the usual variance calculations designed for data in which observations are statistically independent. Here's an example.
+
+Suppose that $W(t)$ is a white noise process of independent and identically distributed ("iid") random variables, and that $X(\cdot)$ is the following filtered version of $W(\cdot)$.
+
+$$
+\begin{align}
+  X(t) &= W(t) + \theta \; W(t-1) \\ 
+  \\ 
+  & \text{where } -1 < \theta < 1
+\end{align}
+$$ {#eq-ma-1-model}
+
+Then $X(\cdot)$ is an example of a moving average random process. In the theory of such processes one usually assumes that $X(\cdot)$ is observed for some interval of time $(t_0, \ldots, t_0 + T - 1)$ and that $W(\cdot)$ is not observed. But for present purposes suppose that this is a simulation study in which both $X(t)$ and $W(\cdot)$ are generated over the same time interval and that the values of all parameters are known, including the population means, the population variances, and $\theta$.
+
+Let's focus on the calculation of the sample mean and its variance. For $W(\cdot)$ we have the following familiar formulas for the sum of observed values.
+
+$$
+\begin{align}
+  S_{W, T} &= \sum_{t = t_0}^{t_0 + T -1} W(t) \\ 
+  E \left \{ S_{W, T} \right \} &= T \times E \left \{ W(t_0) \right \}  \\ 
+  &= T \times \mu_W \\ 
+  Var \left \{ S_{W, T} \right \} &= T \times Var \left \{ W(t_0) \right \}  \\ 
+  &= T \times \sigma_W^2
+\end{align}
+$$ {#eq-ev-sum-uncorrelated}
+
+The sample mean is derived from the sample sum.
+
+$$
+\begin{align}
+  \hat{\mu}_W &= \frac{S_{W, T}}{T} \\ 
+  \\ 
+  E \left \{ \hat{\mu}_W \right \} 
+  &= \frac{E \left \{ S_{W, T} \right \}}{T} \\ 
+  &= \mu_W \\ 
+  \\ 
+  Var \left \{ \hat{\mu}_W \right \} 
+  &= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\ 
+  &= \frac{ \sigma_W^2 }{T}
+\end{align}
+$$ {#eq-ev-avg-uncorrelated}
+
+The mean and variance of $X(t)$ can be expressed as respective functions of the mean and variance of $Z(t)$.
+
+$$
+\begin{align}
+  \mu_X &= (1 +\theta) \; \mu_Z \\ 
+  \sigma_X^2 &= (1 +\theta^2) \; \sigma_Z^2
+\end{align}
+$$ {#eq-ev-ma-1-model}
+
+The variance formula for the sample sum, $S_{X, T}$, differs from that of $S_{Z, T}$, because $X(\cdot)$ is autocorrelated. The auto-covariance function is
+
+$$
+\begin{align}
+  \gamma_X (u) &= Cov \left ( X(t + u), X(t) \right ) \\ 
+  &= 
+  \begin{cases}
+    (1 +\theta^2) \; \sigma_Z^2 & \text{ for } u = 0 \\ 
+    \theta \; \sigma_Z^2 & \text{ for } u = \pm 1 \\ 
+    0 & \text{ for } |u| > 1 
+  \end{cases}
+\end{align}
+$$ {#eq-auto-cov-ma-1-model}
+
+The autocorrelation function is thus[^11]
+
+[^11]: Note that $\rho_X (1)$ is restricted to the interval $(-0.5, 0.5)$, since we have restricted $\theta$ to the interval $(-1, 1)$.
+
+$$
+\begin{align}
+  \rho_X (u) &= corr \left ( X(t + u), X(t) \right ) \\ 
+  &= 
+  \begin{cases}
+    1 & \text{ for } u = 0 \\ 
+    \frac{\theta}{1 +\theta^2} & \text{ for } u = \pm 1 \\ 
+    0 & \text{ for } |u| > 1 
+  \end{cases}
+\end{align}
+$$ {#eq-auto-cor-ma-1-model}
+
+Therefore
+
+$$
+\begin{align}
+  Var \left \{ S_{X, T} \right \} 
+  &= Cov \left ( \sum_{s = t_0}^{t_0 + T - 1} X(s), \; \sum_{t = t_0}^{t_0 + T - 1} X(t)  \right ) \\ 
+  &= \sum_{s = t_0}^{t_0 + T - 1} \sum_{y = t_0}^{t_0 + T - 1} 
+  Cov \left ( X(s), X(t) \right ) \\ 
+  &= \sum_{s = t_0}^{t_0 + T - 1} \sum_{y = t_0}^{t_0 + T - 1} 
+  \gamma_X (s - t) \\ 
+  &= \sum_{u = -T + 1}^{T - 1} (T - |u|) \; \gamma_X (u) \\ 
+  &= T \; \gamma_X (0) + 2 (T - 1) \; \gamma_X (1) \\ 
+  &= T \; \sigma_X^2 \; \left ( 1 + 2 \; (1 - \frac{1}{T}) \; \rho_X (1) \right ) \\ 
+  &= T \; \sigma_X^2 \; \left ( 1 + 2 \; (1 - \frac{1}{T}) \; \frac{\theta}{1 +\theta^2} \right ) \\ 
+  &= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2} 
+  - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
+\end{align}
+$$ {#eq-var-sum-ma-1-model}
+
+In short, ignoring the autocorrelation of $X(\cdot)$ would lead to erroneous calculations of the variance of $S_{X, T}$ and $\hat{\mu}_X$.
+
+### Effective Sample Size (ESS)
+
+The magnitude of such erroneous calculations can be represented by a quantity called the *effective sample size* (ESS). The calculation of ESS varies with application[^12], but here's the basic idea in the present context. Consider a finite sequence of *independent* draws from the distribution of the random variable $X(t_0)$, thereby producing a sample of independent observations. Define the effective sample size, $N_d$, to be the number of draws whose sample mean has the same variance as that of the autocorrelated case.
+
+[^12]: The `R` package `astsa` provides function `ESS()`.
+
+$$
+\begin{align}
+  \frac{\sigma_X^2}{N_d} &= Var \left \{ \hat{\mu}_X \right \} \\ 
+  &= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
+\end{align}
+$$ {#eq-ess-criterion}
+
+Equivalently
+
+$$
+\begin{align}
+  N_d &= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
+\end{align}
+$$ {#eq-ess-definition}
+
+In our moving average example this yields
+
+$$
+\begin{align}
+  N_d &= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} } \\ 
+  &\sim 
+  \begin{cases}
+    T \; \frac{1 +\theta^2}{(1 + \theta)^2} 
+      & \text{ as } T \rightarrow \infty \\  
+    T^2  & \text{ as } \theta \rightarrow -1
+  \end{cases}
+\end{align}
+$$ {#eq-ess-limit-ma-1-model}
+
+As $\theta$ increases from $0$ towards $1$ the matching number of independent draws $N_d$ decreases from $T$ towards $T/2$. In the other direction, as $\theta$ decreases from $0$ towards $-1$ the matching number of independent draws $N_d$ increases from $T$ towards $T^2$.
+
+The point here is that care must be taken when calculating the variance of estimators derived from time series data. This is a known issue addressed by available software.
+
+## Closing Remarks
+
+This technical note is intended as an overview of time series analysis based on the textbook [@shumway2025] cited below along with the supporting `R` package `astsa` [@astsa]. The reader should feel free to select the presented examples of greatest interest, skipping others to save time.
+
+In this note, time-domain and frequency-domain methods are mentioned only in the broadest terms, leaving details for other presentations.
+
+For a more comprehensive listing of relevant `R` packages see the time series task view available from [CRAN](https://cran.r-project.org/web/views/TimeSeries.html), the Comprehensive R Archive Network.
+
+See [Regression and Time Series Primer](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer) for a more detailed introduction to the topics presented here. And see [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa) for an introduction to `R` package `astsa`.
+
+```{r}
+#| label: s5a_books_tbl
+
+s5a_books_tbl <- tibble::tibble(
+  title = c(
+    "Time Series (2e)",
+    "Time Series Analysis and Its Applications: With R Examples (5e)"
+  ),
+  link = c(
+    "https://doi.org/10.1137/1.9780898719246",
+    "https://doi.org/10.1007/978-3-031-70584-7"
+  ),
+  auth = c(
+    "David Brillinger",
+    "Robert Shumway and David Stoffer"
+  )
+) |>
+  dplyr::arrange(title)
+```
+
+```{r}
+#| label: s5a_books_tbl__save
+
+# save file only when updated
+save_to_file <- FALSE
+if (save_to_file) {
+  # TSV format
+  s5a_books_tbl |> readr::write_tsv(here::here(
+    "markdown", "s5a_ts_intro", "s5a_books_tbl.txt"
+  ))
+}
+```
+
+```{r}
+#| label: s5a_books_tbl__kable
+#| eval: false
+
+s5a_books_tbl |> 
+  list_links(a_idx = 3L) |>
+  knitr::kable(
+    format    = "html",
+    escape    = FALSE,
+    col.names = ""
+  )
+```
+
+```{r}
+#| label: s5a_articles_tbl
+
+s5a_articles_tbl <- tibble::tribble(
+  ~title, ~link,
+  "Bartlett's test - Wikipedia", 
+  "https://en.wikipedia.org/wiki/Bartlett%27s_test",
+  
+  "CRAN Task View: Time Series Analysis", 
+  "https://cran.r-project.org/web/views/TimeSeries.html",
+  
+  "Fun with asta", 
+  "https://github.com/nickpoison/astsa/tree/master/fun_with_astsa", 
+  
+  "hwwntest: Tests of White Noise using Wavelets", 
+  "https://cran.r-project.org/web/packages/hwwntest/index.html", 
+  
+  "Ljung–Box test - Wikipedia", 
+  "https://en.wikipedia.org/wiki/Ljung%E2%80%93Box_test",
+  
+  "R Tutorial | Stoffer’s GitHome", 
+  "https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer", 
+  
+  "Some remarks on the analysis of time-series (Bartlett, 1967)", 
+  "https://doi.org/10.1093/biomet/54.1-2.25"
+) |>
+  dplyr::arrange(title)
+```
+
+```{r}
+#| label: s5a_articles_tbl__save
+
+# save file only when updated
+save_to_file <- FALSE
+if (save_to_file) {
+  # TSV format
+  s5a_articles_tbl |> readr::write_tsv(here::here(
+    "markdown", "s5a_ts_intro", "s5a_articles_tbl.txt"
+  ))
+}
+```
+
+```{r}
+#| label: s5a_articles_tbl__kable
+#| eval: false
+
+s5a_articles_tbl |>
+  list_links() |>
+  knitr::kable(
+    format    = "html",
+    escape    = FALSE,
+    col.names = ""
+  )
+```
+
+## Appendix A: Glossary of Math Symbols
+
+```{r}
+#| label: s5a_symbol_tbl
+
+s5a_symbol_tbl <- tibble::tribble(
+  ~tag, ~symbol, ~dscr, 
+  
+  "a_u", 
+  "$a_{\\bullet, \\bullet} (u)$",
+  "matrix of filter coefficients at time-shift $u$", 
+  
+  "B", 
+  "$\\mathcal{B}$",
+  "back-shift operator", 
+  
+  "D", 
+  "$\\mathcal{D}$",
+  "difference operator, $\\mathcal{I} - \\mathcal{B}$", 
+  
+  "ACovF", 
+  "$\\gamma_{\\bullet, \\bullet} (u)$",
+  "auto-covariance matrix at time-shift $u$", 
+  
+  "I", 
+  "$\\mathcal{I}$",
+  "identity operator", 
+  
+  "m_vec", 
+  "$m_\\bullet (t)$",
+  "$E \\{ X_\\bullet (t) \\}$, expected value of $X_\\bullet (t)$",
+  
+  "T", 
+  "$T$",
+  "number of time series observations",
+  
+  "mu_X", 
+  "$\\mu_X$",
+  "the expected value of random variable $X (t_0)$",
+  
+  "N_d", 
+  "$N_d$",
+  "number of independent draws (effective sample size)",
+  
+  "S_X_T", 
+  "$S_{X, T}$",
+  "the sample sum of T observations of $X (t)$",
+  
+  "sig2_X", 
+  "$\\sigma_X^2$",
+  "the variance of random variable $X (t_0)$",
+  
+  "t_0", 
+  "$t_0$",
+  "initial time index of a time series data set",
+  
+  "X_vec", 
+  "$X_\\bullet (t)$",
+  "$(X_1 (t), \\ldots, X_d (t))$, a multivariate random process"
+)
+```
+
+```{r}
+#| label: s5a_symbol_tbl__save
+
+# save file only when updated
+save_to_file <- FALSE
+if (save_to_file) {
+  # TSV format
+  s5a_symbol_tbl |> readr::write_tsv(here::here(
+    "markdown", "s5a_ts_intro", "s5a_symbol_tbl.txt"
+  ))
+}
+```
+
+```{r}
+#| label: s5a_symbol_tbl__kable
+#| eval: false
+
+s5a_symbol_tbl |>
+  dplyr::select(symbol, dscr) |>
+  knitr::kable(
+    format = "html",
+	escape = FALSE,
+	caption = "Glossary of Mathematical Symbols (s)",
+	col.names = c("s", "description")
+  )
+```
+
+\$\$ \begin{align}
+
+  {a_{\bullet, \bullet} (u)} 
+    \quad & \quad \text{matrix of filter coefficients at time-shift } u \\ 
+    
+  \mathcal{B} 
+     \quad & \quad \text{back-shift operator } \\ 
+     
+  \mathcal{D} 
+     \quad & \quad \text{difference operator } \mathcal{I - B} \\ 
+     
+  \gamma_{\bullet, \bullet} (u) 
+     \quad & \quad \text{auto-covariance matrix at time-shift } u \\ 
+     
+  \mathcal{I} 
+     \quad & \quad \text{identity operator } \\ 
+     
+  m_\bullet (t) 
+     \quad & \quad E \{ X_\bullet (t) \} \text{, expected value of } X_\bullet (t) \\ 
+     
+  \mu_X 
+     \quad & \quad E\{ X (t_0) \} \text{, expected value of } X (t_0) \\ 
+     
+  \hat{\mu} _X
+     \quad & \quad \text{sample mean, } S_{X, T} / T \\ 
+     
+  N_d 
+     \quad & \quad \text{number of independent draws (effective sample size) } \\ 
+     
+  \rho_{\bullet, \bullet} (u) 
+     \quad & \quad \text{autocorrelation matrix at time-shift } u \\ 
+     
+  S_{X, T} 
+     \quad & \quad \text{the sample sum of T observations of } X (\cdot) \\ 
+     
+  \sigma_X^2 
+     \quad & \quad Var \{ X (t_0) \} \text{, variance of } X (t_0) \\ 
+     
+  T 
+     \quad & \quad \text{number of time series observations } \\ 
+     
+  t_0 
+     \quad & \quad \text{initial time index of time series observations } \\ 
+     
+  X_\bullet (t) 
+     \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } 
+     
+\end{align} \$\$
+
+## Appendix B: Data Examples
+
+### Hare and Lynx Populations
+
+One of the classic studies of predator–prey interactions is based on the record of lynx (`astsa::Lynx`) and snowshoe hare (`astsa::Hare`) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.
+
+These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in @fig-pred-prey are thousands of pelts per year.
+
+```{r}
+#| label: fig-pred-prey
+#| fig-cap: "Hare and lynx: purchased pelts"
+
+g_hare_lynx <- tsplot(
+  cbind(Hare, Lynx), 
+  col=c(2,4), 
+  type="o", 
+  pch=c(0,2), 
+  ylab="Number", 
+  spaghetti=TRUE, 
+  addLegend=TRUE)
+
+mtext("(\u00D7 1000)", side=2, adj=1, line=1.5, cex=.8)
+```
+
+### JJ Quarterly Earnings
+
+@fig-jj below shows Johnson & Johnson quarterly earnings per share in US dollars from 1960 through 1980 (`astsa::jj`). The bottom panel shows the same data on a $\log_e$ scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.
+
+```{r}
+#| label: fig-jj
+#| fig-cap: "J&J: earnings per share at linear and log scales"
+
+par(mfrow=2:1)
+
+g_jj <- astsa::tsplot(
+  jj, 
+  col=4, 
+  ylab="USD", 
+  type="o")
+
+g_jj_log <- astsa::tsplot(
+  jj, col=4, ylab="USD", type="o", log="y")
+```
+
+### Global Temperatures
+
+@fig-gtemp-lo below shows the time series `gtemp_land` and `gtemp_ocean`, annual temperature deviations (in ◦C) from averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.
+
+```{r}
+#| label: fig-gtemp-lo
+#| fig-cap: "Deviations in global surface temperatures"
+
+g_temp_lo <- astsa::tsplot(
+  cbind(gtemp_land, gtemp_ocean), 
+  spaghetti=TRUE, 
+  col=astsa.col(c(4,2),.7), 
+  pch=c(20,18), 
+  type="o", 
+  ylab="\u00B0C", 
+  main="Global Surface Temperature Deviations", 
+  addLegend=TRUE, 
+  location="topleft", 
+  legend=c("Land Surface","Sea Surface")
+)
+```
+
+### Dow Jones Industrial Average
+
+@fig-djia shows the trading day closings and returns (percent change)[^13] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
+
+[^13]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
+
+```{r}
+#| label: fig-djia
+#| fig-cap: "Dow Jones Industrial Average"
+
+# log-ratio of successive closing values
+djia_return <- 
+  astsa::djia $Close |> log() |> diff()
+
+par(mfrow=2:1)
+
+plot(djia$Close, col=4, main="DJIA Close")
+
+plot(djia_return, col=4, main="DJIA Returns")
+```
+
+### Cardiovascular Mortality in Los Angeles
+
+@fig-cmort shows data from a study [@shumway1988] of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.
+
+```{r}
+#| label: fig-cmort
+#| fig-cap: "Weekly levels of mortality, temperature, and particulates in Los Angeles"
+
+par(mfrow = c(3,1))
+
+tsplot(
+  cmort, ylab="Rate per 10,000", type="o", 
+  pch=19, col=6, nxm=2, main="Cardiovascular Mortality"
+)
+tsplot(
+  tempr, ylab="\u00B0F", type="o", 
+  pch=19, col=4, nxm=2, main="Temperature"
+)
+tsplot(
+  part, ylab="PPM", type="o", 
+  pch=19, col=2, nxm=2, main="Particulates"
+)
+
+# dev.new()
+# 
+# pairs(cbind(Mortality=cmort, Temperature=tempr, Particulates=part), col=4,
+# lower.panel = astsa:::.panelcor)
+# temp = tempr - mean(tempr) # center temperature
+# temp2 = tempˆ2
+# trend = time(cmort) # time
+# fit = lm(cmort˜ trend + temp + temp2 + part, na.action=NULL)
+# summary(fit) # regression results
+# summary(aov(fit)) # ANOVA table (compare to next line)
+# summary(aov(lm(cmort˜cbind(trend, temp, temp2, part)))) # Table 2.1
+# num = length(cmort) # sample size
+# AIC(fit)/num - log(2*pi) # AIC as in (2.15)
+# BIC(fit)/num - log(2*pi) # BIC as in (2.17)
+# (AICc = log(sum(resid(fit)ˆ2)/num)+(num+5)/(num-5-2)) # AICc
+
+```
+
+### El Niño and Fish Population
+
+@fig-soi shows the Southern Oscillation Index (SOI, `astsa::soi`) and associated Recruitment (`astsa::rec`), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values ranging over the years 1950–1987.
+
+The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.
+
+```{r}
+#| label: fig-soi
+#| fig-cap: "Southern Oscillation Index and fish recruitment"
+
+par(mfrow=2:1)
+g_soi <- astsa::tsplot(soi, ylab="", main="Southern Oscillation Index", col=4)
+
+text(1970, .91, "COOL", col=5, font=4)
+text(1970, -.91, "WARM", col=6, font=4)
+
+g_rec <- astsa::tsplot(rec, ylab="", main="Recruitment", col=4)
+```
+
+## Appendix C: References
