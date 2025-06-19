@@ -32,3 +32,23 @@
 [^MA1_equiv]: To see the equivalence of the two models, set $U(t) = 5 V(t-1)$, and then reverse time.
 
 [^poly_roots]: As previously mentioned, requiring the roots of a polynomial $p(\cdot)$ to be greater than unity in magnitude ensures that $p(z)^{-1}$ is finite and analytic for $z \le 1$ and thus has a power series expansion whose radius of convergence is the minimum magnitude of the roots of $p(\cdot)$.  As a consequence the coefficients of that power series are absolutely summable.
+
+[^PACF_intro]: See @shumway2025 [page 108].
+
+[^DL_algo]: See @shumway2025 [page 115].
+
+[^cmort_trend_models]: See @shumway2025 [page 55].
+
+[^AR1_rho]: See @shumway2025 [page 88].
+
+[^AR1_PACF]: See @shumway2025 [page 110].
+
+[^causal_form]: See @shumway2025 [page 117].
+
+[^MA1_equivalence]: See @shumway2025 [page 92].
+
+[^MA1_ACF]: See @shumway2025 [page 93].
+
+[^MA1_PACF]: See @shumway2025 [page 111].
+
+

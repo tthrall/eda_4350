@@ -100,7 +100,7 @@ if (save_to_file) {
 
 This technical note introduces the basic components of widely used statistical models of time series data. Such models can improve the understanding of underlying processes, possibly raising new questions or refining existing questions. Such models are also heavily used to forecast future values, which is the emphasis of this note.
 
-The examples and methods presented here are from the selected textbook [@shumway2025] supported by `R` package `astsa` [@astsa].
+The examples and methods presented here are from @shumway2025 supported by `R` package `astsa` [@astsa].
 
 ## Mathematical Framework
 
@@ -215,6 +215,8 @@ $$
 \end{align}
 $$ {#eq-ACovF-symm}
 
+In particular, $\gamma_{a, a} (\cdot)$ is an even function: $\gamma_{a, a} (-u) = \gamma_{a, a} (u)$.
+
 Consequently, the time-reversed process $Y_\bullet (t) = X_\bullet (-t)$ has the same auto-covariance structure as the original process, allowing for this matrix transposition.
 
 The *autocorrelation (ACF)* function $\rho_{\bullet, \bullet}(\cdot)$ is the following scaled version of the auto-covariance function.
@@ -231,7 +233,9 @@ $$ {#eq-ACF}
 
 ### PACF: partial autocorrelation function
 
-Going further, the *partial autocorrelation function (PACF)* is a useful diagnostic tool. Here's the idea [@shumway2025, page 108]. Recall that if $X$, $Y$, and $Z_\bullet = \{Z_1, \ldots, Z_k\}$ are random variables, then the partial correlation between $X$ and $Y$ given $Z_\bullet$ is obtained by first regressing $X$ and $Y$ on $Z_\bullet$ to obtain approximations $(\hat{X}, \hat{Y})$ of $(X, Y)$ respectively. If $X, Y, Z_\bullet$ have a joint normal distribution, then
+Going further, the *partial autocorrelation function (PACF)* is a useful diagnostic tool. Here's the idea[^txt_PACF_intro]. Recall that if $X$, $Y$, and $Z_\bullet = \{Z_1, \ldots, Z_k\}$ are random variables, then the partial correlation between $X$ and $Y$ given $Z_\bullet$ is obtained by first regressing $X$ and $Y$ on $Z_\bullet$ to obtain approximations $(\hat{X}, \hat{Y})$ of $(X, Y)$ respectively. If $X, Y, Z_\bullet$ have a joint normal distribution, then
+
+[^txt_PACF_intro]: See @shumway2025 [page 108].
 
 $$
 \begin{align}
@@ -301,7 +305,9 @@ $$
 \end{align}
 $$ {#eq-PACF}
 
-The calculation of the PACF can be based on the recursive Durbin-Levinson algorithm [@shumway2025, page 115]:
+The calculation of the PACF can be based on the recursive Durbin-Levinson algorithm[^txt_DL_algo]:
+
+[^txt_DL_algo]: See @shumway2025 [page 115].
 
 $$
 \begin{align}
@@ -436,7 +442,7 @@ One might continue this cycle until the model residuals seem to be reasonably fr
 
 Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables.
 
-Consider, for example, the cardiovascular mortality data shown in @fig-cmort, where mortality is modeled as a response to temperature and the level of particulate matter. In this example we can formulate the expected value of mortality in the following terms.
+Consider, for example, the cardiovascular mortality data shown in @fig-cmort, where mortality is modeled as a response to temperature and the level of airborne particulate matter. In this example we can formulate the expected value of mortality in the following terms.
 
 $$
 \begin{align}
@@ -451,11 +457,13 @@ $$
 \begin{align}
   X_1(t) = M(t) &= \text{mortality count in week } t \\ 
     X_2(t) = T(t) &= \text{temperature } (^\circ F) \text{ in week } t \\ 
-    X_3(t) = P(t) &= \text{level of particulate matter in week } t 
+    X_3(t) = P(t) &= \text{level of airborne particulate matter in week } t 
 \end{align}
 $$
 
-Each of the three components of $X_\bullet (t)$ exhibits an annual periodicity, as one might expect. In @shumway2025 [page 55] the authors initially propose a model for $X_1(t)$ of the following form.
+Each of the three components of $X_\bullet (t)$ exhibits an annual periodicity, as one might expect. The textbook authors initially propose a model for $X_1(t)$ of the following form[^txt_cmort_model].
+
+[^txt_cmort_model]: See @shumway2025 [page 55].
 
 $$
 \begin{align}
@@ -588,9 +596,9 @@ $$
 \end{align}
 $$
 
-Based on these expressions one can show[^AR1_rho] that the auto-covariance and autocorrelation functions of $X(\cdot)$ take the following forms.
+Based on these expressions one can show[^txt_AR1_ACF] that the auto-covariance and autocorrelation functions of $X(\cdot)$ take the following forms.
 
-[^AR1_rho]: See @shumway2025 [page 88].
+[^txt_AR1_ACF]: See @shumway2025 [page 88].
 
 $$
 \begin{align}
@@ -600,9 +608,9 @@ $$
 \end{align}
 $$ {#eq-AR1-rho}
 
-Using the Durbin-Levinson algorithm, one can go on to show[^AR1_PACF] that the partial autocorrelation function (PACF) of $X(\cdot)$ has the following simple form.
+Using the Durbin-Levinson algorithm, one can go on to show[^txt_AR1_PACF] that the partial autocorrelation function (PACF) of $X(\cdot)$ has the following simple form.
 
-[^AR1_PACF]: See @shumway2025 [page 110].
+[^txt_AR1_PACF]: See @shumway2025 [page 110].
 
 $$
 \begin{align}
@@ -617,7 +625,7 @@ $$ {#eq-AR1-PACF}
 
 #### AR(p)
 
-As previously noted, an $AR(p)$ model can be defined via a polynomial $\phi(\cdot)$ that is applied to the back-shift operator $\mathcal{B}$.  The coefficients of $\phi(\cdot)$ are real, but it is useful to apply the polynomial to the complex variable $z$.  From @eq-AR-bs-poly we have 
+As previously noted, an $AR(p)$ model can be defined via a polynomial $\phi(\cdot)$ that is applied to the back-shift operator $\mathcal{B}$.  The coefficients of $\phi(\cdot)$ are real, but it is useful to apply the polynomial to the complex variable $z$.  From @eq-ARp-bs-poly we have 
 
 $$
 \begin{align}
@@ -627,9 +635,9 @@ $$ {#eq-ARp-poly}
 
 Also as previously mentioned, we require the roots of $\phi(\cdot)$ to lie outside the closed unit disc, that is, to be greater than unity in magnitude.  This requirement ensures that the model is stationary, causal, and invertible.
 
-Consequently we have the following causal form of the model.[^causal_form]
+Consequently we have the following causal form of the model.[^txt_causal_form]
 
-[^causal_form]: See @shumway2025 [page 117].
+[^txt_causal_form]: See @shumway2025 [page 117].
 
 $$
 \begin{align}
@@ -644,7 +652,7 @@ $$
 \end{align}
 $$ {#eq-causal-form}
 
-@eq-AR-bs-poly also shows that $W(t)$ depends on current and past values of $X(t)$, with past values terminating at $X(t-p)$.
+@eq-ARp-bs-poly also shows that $W(t)$ depends on current and past values of $X(t)$, with past values terminating at $X(t-p)$.
 
 $$
 \begin{align}
@@ -719,9 +727,9 @@ That is, $X(\cdot)$ is filtered white noise, and is therefore stationary for any
 
 #### Invertibility
 
-Consider the following two MA(1) models.[^MA1_equivalence]
+Consider the following two MA(1) models.[^txt_MA1_equivalence]
 
-[^MA1_equivalence]: @shumway2025 [page 92]
+[^txt_MA1_equivalence]: See @shumway2025 [page 92].
 
 $$
 \begin{align}
@@ -731,9 +739,9 @@ $$
 \end{align}
 $$
 
-The probability distributions of the two processes $X(\cdot)$ and $Y(\cdot)$ are identical[^MA1_equiv], so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.
+The probability distributions of the two processes $X(\cdot)$ and $Y(\cdot)$ are identical[^MA1_transform], so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.
 
-[^MA1_equiv]: Transform the second equation into the first as follows. For all time indices $\nu$ set $U(\nu) = 5 V(\nu - 1)$, and then reverse time by setting $Y'(\nu) = Y(- \nu)$ and $U'(\nu) = U(- \nu)$.
+[^MA1_transform]: Transform the second equation into the first as follows. For all time indices $\nu$ set $U(\nu) = 5 V(\nu - 1)$, and then reverse time by setting $Y'(\nu) = Y(- \nu)$ and $U'(\nu) = U(- \nu)$.
 
 A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible.  That is, we require the roots of polynomial $\theta(\cdot)$ to have magnitude greater than unity.  In the example above we therefore choose the model for $X(\cdot)$ rather than the model for $Y(\cdot)$.
 
@@ -764,7 +772,9 @@ $$
 \end{align}
 $$ {#eq-MA1-ACovF}
 
-And here is the corresponding autocorrelation function (ACF).[@shumway2025, page 93]
+And here is the corresponding autocorrelation function (ACF)[^txt_MA1_ACF].
+
+[^txt_MA1_ACF]: See @shumway2025 [page 93].
 
 $$
 \begin{align}
@@ -777,7 +787,9 @@ $$
 \end{align}
 $$ {#eq-MA1-ACF}
 
-The PACF turns out to have the following form [@shumway2025, page 111].
+The PACF turns out to have the following form[^txt_MA1_PACF].
+
+[^txt_MA1_PACF]: See @shumway2025 [page 111].
 
 $$
 \begin{align}
@@ -857,7 +869,7 @@ which can be viewed as an infinite-order auto-regressive model.  Now for an $AR(
 
 ## Closing Remarks
 
-This technical note is intended as an overview of time series analysis based on the textbook [@shumway2025] cited below along with the supporting `R` package `astsa` [@astsa]. The reader should feel free to select the presented examples of greatest interest, skipping others to save time.
+This technical note is intended as an overview of time series analysis based on @shumway2025 along with the supporting `R` package `astsa` [@astsa]. The reader should feel free to select the presented examples of greatest interest, skipping others to save time.
 
 In this note, time-domain and frequency-domain methods are mentioned only in the broadest terms, leaving details for other presentations.
 
@@ -1172,9 +1184,9 @@ g_temp_lo <- astsa::tsplot(
 
 ### Dow Jones Industrial Average
 
-@fig-djia shows the trading day closings and returns (percent change)[^13] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
+@fig-djia shows the trading day closings and returns (percent change)[^djia_returns] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
 
-[^13]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
+[^djia_returns]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
 
 ```{r}
 #| label: fig-djia
