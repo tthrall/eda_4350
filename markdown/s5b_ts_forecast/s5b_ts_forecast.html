@@ -109,7 +109,10 @@ window.Quarto = {
   <li><a href="#covariates-and-trend" id="toc-covariates-and-trend" class="nav-link" data-scroll-target="#covariates-and-trend">Covariates and Trend</a></li>
   <li><a href="#auto-regression-ar" id="toc-auto-regression-ar" class="nav-link" data-scroll-target="#auto-regression-ar">Auto-regression (AR)</a></li>
   <li><a href="#moving-average-ma" id="toc-moving-average-ma" class="nav-link" data-scroll-target="#moving-average-ma">Moving Average (MA)</a></li>
-  <li><a href="#assembling-components" id="toc-assembling-components" class="nav-link" data-scroll-target="#assembling-components">Assembling Components</a></li>
+  </ul></li>
+  <li><a href="#assembling-components" id="toc-assembling-components" class="nav-link" data-scroll-target="#assembling-components">Assembling Components</a>
+  <ul class="collapse">
+  <li><a href="#armap-q" id="toc-armap-q" class="nav-link" data-scroll-target="#armap-q">ARMA(p, q)</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#appendix-a-glossary-of-math-symbols" id="toc-appendix-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#appendix-a-glossary-of-math-symbols">Appendix A: Glossary of Math Symbols</a></li>
@@ -148,7 +151,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">11:36 Thu 19-Jun-2025</p>
+      <p class="date">16:45 Thu 19-Jun-2025</p>
     </div>
   </div>
   
@@ -749,8 +752,35 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>which can be viewed as an infinite-order auto-regressive model. Now for an <span class="math inline">\(AR(p)\)</span>, with <span class="math inline">\(p\)</span> finite, the PACF can be shown to be non-zero at lag <span class="math inline">\(u = p\)</span> (and zero thereafter). In the case of the <span class="math inline">\(MA(q)\)</span> model, equivalent to an infinite-order <span class="math inline">\(AR\)</span> model, the PACF tends to zero but does not vanish as <span class="math inline">\(|u| \rightarrow \infty\)</span>.</p>
 </section>
 </section>
-<section id="assembling-components" class="level3">
-<h3 class="anchored" data-anchor-id="assembling-components">Assembling Components</h3>
+</section>
+<section id="assembling-components" class="level2">
+<h2 class="anchored" data-anchor-id="assembling-components">Assembling Components</h2>
+<section id="armap-q" class="level3">
+<h3 class="anchored" data-anchor-id="armap-q">ARMA(p, q)</h3>
+<p>The <span class="math inline">\(AR(p)\)</span> and <span class="math inline">\(MA(q)\)</span> models can be combined into the following <span class="math inline">\(ARMA(p,q)\)</span> model. To simplify notation we suppose for the moment that <span class="math inline">\(\mu_X = 0\)</span>. And once again <span class="math inline">\(W(\cdot)\)</span> denotes a white noise process.</p>
+<p><span id="eq-ARMA_p_q"><span class="math display">\[
+\begin{align}
+  \phi(\mathcal{B}) \; X(\cdot) &amp;= \theta(\mathcal{B}) \; W(\cdot) \\
+  \\
+  \text{so that } \\
+  \\
+  X(t) &amp;= \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
+\end{align}
+\tag{37}\]</span></span></p>
+<p>Here we must impose a restriction on the polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> in addition to requiring their respective roots to all have magnitude greater than unity. The additional requirement is that they have no roots in common.</p>
+<p>Consider for example the following putative <span class="math inline">\(ARMA(1,1)\)</span> model.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a></p>
+<p><span id="eq-ARMA_1_1_not"><span class="math display">\[
+\begin{align}
+  X(t) &amp;= \alpha \; X(t - 1) \; + \; W(t) \; - \; \alpha \; W(t - 1) \\   \\
+  \text{so that } \\
+  \\
+  p(\mathcal{B}) \; X(\cdot) &amp;= p(\mathcal{B}) \; W(\cdot) \\   \\
+  \text{where } \\
+  \\
+  p(z) &amp;= 1 - \alpha \; z \quad \text{with } |\alpha| &lt; 1
+\end{align}
+\tag{38}\]</span></span></p>
+<p>The operator <span class="math inline">\(p(\mathcal{B})\)</span> can be cancelled from both sides of the equation, leaving only a white noise process: <span class="math inline">\(X(\cdot) = W(\cdot)\)</span>. Thus we assume that any polynomial factors common to both <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> have been eliminated. This implies that the roots of <span class="math inline">\(\phi(\cdot)\)</span> are distinct from those of <span class="math inline">\(\theta(\cdot)\)</span>.</p>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
@@ -870,7 +900,7 @@ Figure&nbsp;4: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a> shows the trading day closings and returns (percent change)<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a> shows the trading day closings and returns (percent change)<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -966,7 +996,8 @@ Stoffer, David. 2025. <span>“Astsa: Applied Statistical Time Series Analysis.�
 <li id="fn18"><p>Transform the second equation into the first as follows. For all time indices <span class="math inline">\(\nu\)</span> set <span class="math inline">\(U(\nu) = 5 V(\nu - 1)\)</span>, and then reverse time by setting <span class="math inline">\(Y'(\nu) = Y(- \nu)\)</span> and <span class="math inline">\(U'(\nu) = U(- \nu)\)</span>.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn19"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 93</a>)</span>.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn20"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 111</a>)</span>.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn21"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 95</a>)</span>.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

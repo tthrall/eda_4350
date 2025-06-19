@@ -863,9 +863,41 @@ $$ {#eq-AR-infty}
 
 which can be viewed as an infinite-order auto-regressive model.  Now for an $AR(p)$, with $p$ finite, the PACF can be shown to be non-zero at lag $u = p$ (and zero thereafter).  In the case of the $MA(q)$ model, equivalent to an infinite-order $AR$ model, the PACF tends to zero but does not vanish as $|u| \rightarrow \infty$.
 
-### Assembling Components
+## Assembling Components
 
+### ARMA(p, q)
 
+The $AR(p)$ and $MA(q)$ models can be combined into the following $ARMA(p,q)$ model.  To simplify notation we suppose for the moment that $\mu_X = 0$.  And once again $W(\cdot)$ denotes a white noise process.
+
+$$
+\begin{align}
+  \phi(\mathcal{B}) \; X(\cdot) &= \theta(\mathcal{B}) \; W(\cdot) \\ 
+  \\ 
+  \text{so that } \\
+  \\ 
+  X(t) &= \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
+ \end{align}
+$$ {#eq-ARMA_p_q}
+
+Here we must impose a restriction on the polynomials $\phi(\cdot)$ and $\theta(\cdot)$ in addition to requiring their respective roots to all have magnitude greater than unity.  The additional requirement is that they have no roots in common.
+
+Consider for example the following putative $ARMA(1,1)$ model.[^txt_ARMA_1_1_not]
+
+[^txt_ARMA_1_1_not]: See @shumway2025 [page 95].
+
+$$
+\begin{align}
+  X(t) &= \alpha \; X(t - 1) \; + \; W(t) \; - \; \alpha \; W(t - 1) \\   \\
+  \text{so that } \\ 
+  \\ 
+  p(\mathcal{B}) \; X(\cdot) &= p(\mathcal{B}) \; W(\cdot) \\   \\
+  \text{where } \\ 
+  \\ 
+  p(z) &= 1 - \alpha \; z \quad \text{with } |\alpha| < 1
+ \end{align}
+$$ {#eq-ARMA_1_1_not}
+
+The operator $p(\mathcal{B})$ can be cancelled from both sides of the equation, leaving only a white noise process: $X(\cdot) = W(\cdot)$.  Thus we assume that any polynomial factors common to both $\phi(\cdot)$ and $\theta(\cdot)$ have been eliminated.  This implies that the roots of $\phi(\cdot)$ are distinct from those of $\theta(\cdot)$.
 
 ## Closing Remarks
 
