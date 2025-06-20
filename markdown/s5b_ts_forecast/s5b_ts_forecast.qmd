@@ -689,22 +689,24 @@ $$ {#eq-ARp-poly}
 
 Also as previously mentioned, we require the roots of $\phi(\cdot)$ to lie outside the closed unit disc, that is, to be greater than unity in magnitude.  This requirement ensures that the model is stationary, causal, and invertible.
 
-Consequently we have the following causal form of the model.[^txt_causal_form]
+Consequently we have the following causal form of the model.[^txt_causal_form] [^ARp_causal]
 
 [^txt_causal_form]: See @shumway2025 [page 117].
+
+[^ARp_causal]: To expand $\phi(z)^{-1}$ in a power series, define polynomial $f(\cdot) = 1 - \phi(\cdot)$ so that $f(z) = \phi_1 z + \cdots + \phi_p z^p$.  We then have $\phi(z)^{-1} = (1 - f(z))^{-1}$ as a geometric series in $f(z)$ which can be re-expressed as a power series in $z$.
 
 $$
 \begin{align}
   X(t) - \mu_X &= \left \{ \phi(\mathcal{B})^{-1} \; W(\cdot) \right \} (t) \\ 
-  &= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\ 
-  &= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\ 
+  &= \sum_{\nu = 0}^\infty \; \chi_\nu \; \mathcal{B}^\nu \; W(t) \\ 
+  &= \sum_{\nu = 0}^\infty \; \chi_\nu \; W(t - \nu) \\ 
   \text{where } \\ 
-  & \psi_0 = 1 \\ 
+  & \chi_0 = 1 \\ 
   \\ 
   \text{and } \\ 
-  & \sum_{\nu = 0}^\infty \; |\psi_\nu| \; < \; \infty
+  & \sum_{\nu = 0}^\infty \; |\chi_\nu| \; < \; \infty
 \end{align}
-$$ {#eq-causal-form}
+$$ {#eq-ARp-causal-form}
 
 @eq-ARp-bs-poly also shows that $W(t)$ depends on current and past values of $X(t)$, with past values terminating at $X(t-p)$.
 
@@ -952,6 +954,23 @@ $$
 $$ {#eq-ARMA_1_1_not}
 
 The operator $p(\mathcal{B})$ can be cancelled from both sides of the equation, leaving only a white noise process: $X(\cdot) = W(\cdot)$.  Thus we assume that any polynomial factors common to both $\phi(\cdot)$ and $\theta(\cdot)$ have been eliminated.  This implies that the roots of $\phi(\cdot)$ are distinct from those of $\theta(\cdot)$.
+
+The $ARMA(p,q)$ model can be expressed in causal form.[^ARMA_p_q_causal]
+
+[^ARMA_p_q_causal]: That is, the rational function $\theta(z) \; \div \phi(z)$ can be represented as a power series obtained as the power series for $\phi(z)^{-1}$ multiplied by the polynomial $\theta(z)$.
+
+$$
+\begin{align}
+  X(\cdot) &= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(\cdot) \\ 
+  &= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\ 
+  &= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\ 
+  \text{where } \\ 
+  & \psi_0 = 1 \\ 
+  \\ 
+  \text{and } \\ 
+  & \sum_{\nu = 0}^\infty \; |\psi_\nu| \; < \; \infty
+ \end{align}
+$$ {#eq-ARMA_p_q_causal}
 
 ## Closing Remarks
 

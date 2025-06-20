@@ -157,7 +157,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">17:07 Fri 20-Jun-2025</p>
+      <p class="date">19:23 Fri 20-Jun-2025</p>
     </div>
   </div>
   
@@ -619,17 +619,17 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{29}\]</span></span></p>
 <p>Also as previously mentioned, we require the roots of <span class="math inline">\(\phi(\cdot)\)</span> to lie outside the closed unit disc, that is, to be greater than unity in magnitude. This requirement ensures that the model is stationary, causal, and invertible.</p>
-<p>Consequently we have the following causal form of the model.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a></p>
-<p><span id="eq-causal-form"><span class="math display">\[
+<p>Consequently we have the following causal form of the model.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> <a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a></p>
+<p><span id="eq-ARp-causal-form"><span class="math display">\[
 \begin{align}
   X(t) - \mu_X &amp;= \left \{ \phi(\mathcal{B})^{-1} \; W(\cdot) \right \} (t) \\
-  &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\
-  &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\
+  &amp;= \sum_{\nu = 0}^\infty \; \chi_\nu \; \mathcal{B}^\nu \; W(t) \\
+  &amp;= \sum_{\nu = 0}^\infty \; \chi_\nu \; W(t - \nu) \\
   \text{where } \\
-  &amp; \psi_0 = 1 \\
+  &amp; \chi_0 = 1 \\
   \\
   \text{and } \\
-  &amp; \sum_{\nu = 0}^\infty \; |\psi_\nu| \; &lt; \; \infty
+  &amp; \sum_{\nu = 0}^\infty \; |\chi_\nu| \; &lt; \; \infty
 \end{align}
 \tag{30}\]</span></span></p>
 <p><a href="#eq-ARp-bs-poly" class="quarto-xref">Equation&nbsp;24</a> also shows that <span class="math inline">\(W(t)\)</span> depends on current and past values of <span class="math inline">\(X(t)\)</span>, with past values terminating at <span class="math inline">\(X(t-p)\)</span>.</p>
@@ -694,7 +694,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>That is, <span class="math inline">\(X(\cdot)\)</span> is filtered white noise, and is therefore stationary for any finite set of filter coefficients. But some constraint on polynomial <span class="math inline">\(\theta(\cdot)\)</span> is required to eliminate ambiguity.</p>
 <section id="invertibility" class="level4">
 <h4 class="anchored" data-anchor-id="invertibility">Invertibility</h4>
-<p>Consider the following two MA(1) models.<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a></p>
+<p>Consider the following two MA(1) models.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a></p>
 <p><span class="math display">\[
 \begin{align}
   X(t) &amp;= W(t) + \frac{1}{5} W(t-1) &amp; \text{with } W(\cdot) \sim N(0, 25) \\
@@ -702,7 +702,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   Y(t) &amp;= V(t) + 5 \; V(t-1) &amp; \text{with } V(\cdot) \sim N(0, 1)
 \end{align}
 \]</span></p>
-<p>The probability distributions of the two processes <span class="math inline">\(X(\cdot)\)</span> and <span class="math inline">\(Y(\cdot)\)</span> are identical<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a>, so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.</p>
+<p>The probability distributions of the two processes <span class="math inline">\(X(\cdot)\)</span> and <span class="math inline">\(Y(\cdot)\)</span> are identical<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a>, so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.</p>
 <p>A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible. That is, we require the roots of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitude greater than unity. In the example above we therefore choose the model for <span class="math inline">\(X(\cdot)\)</span> rather than the model for <span class="math inline">\(Y(\cdot)\)</span>.</p>
 </section>
 <section id="ma1" class="level4">
@@ -728,7 +728,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \gamma_X (u) &amp;= 0 \quad \text{for } |u| \ge 2
 \end{align}
 \tag{32}\]</span></span></p>
-<p>And here is the corresponding autocorrelation function (ACF)<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a>.</p>
+<p>And here is the corresponding autocorrelation function (ACF)<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a>.</p>
 <p><span id="eq-MA1-ACF"><span class="math display">\[
 \begin{align}
   \rho_X (u) &amp;=
@@ -739,7 +739,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \end{cases}
 \end{align}
 \tag{33}\]</span></span></p>
-<p>The PACF turns out to have the following form<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a>.</p>
+<p>The PACF turns out to have the following form<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a>.</p>
 <p><span id="eq-MA1-PACF"><span class="math display">\[
 \begin{align}
   \rho_X (u | u) &amp;=  \frac{(- \theta_1)^u(1 - \theta_1^2)}{1 - \theta_1^{2 (u+1)}} &amp; \text{ for } u \ge 2
@@ -817,7 +817,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{41}\]</span></span></p>
 <p>Here we must impose a restriction on the polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> in addition to requiring their respective roots to all have magnitude greater than unity. The additional requirement is that they have no roots in common.</p>
-<p>Consider for example the following putative <span class="math inline">\(ARMA(1,1)\)</span> model.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
+<p>Consider for example the following putative <span class="math inline">\(ARMA(1,1)\)</span> model.<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a></p>
 <p><span id="eq-ARMA_1_1_not"><span class="math display">\[
 \begin{align}
   X(t) &amp;= \alpha \; X(t - 1) \; + \; W(t) \; - \; \alpha \; W(t - 1) \\   \\
@@ -830,6 +830,19 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{42}\]</span></span></p>
 <p>The operator <span class="math inline">\(p(\mathcal{B})\)</span> can be cancelled from both sides of the equation, leaving only a white noise process: <span class="math inline">\(X(\cdot) = W(\cdot)\)</span>. Thus we assume that any polynomial factors common to both <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> have been eliminated. This implies that the roots of <span class="math inline">\(\phi(\cdot)\)</span> are distinct from those of <span class="math inline">\(\theta(\cdot)\)</span>.</p>
+<p>The <span class="math inline">\(ARMA(p,q)\)</span> model can be expressed in causal form.<a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a></p>
+<p><span id="eq-ARMA_p_q_causal"><span class="math display">\[
+\begin{align}
+  X(\cdot) &amp;= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(\cdot) \\
+  &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\
+  &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\
+  \text{where } \\
+  &amp; \psi_0 = 1 \\
+  \\
+  \text{and } \\
+  &amp; \sum_{\nu = 0}^\infty \; |\psi_\nu| \; &lt; \; \infty
+\end{align}
+\tag{43}\]</span></span></p>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
@@ -949,7 +962,7 @@ Figure&nbsp;4: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a> shows the trading day closings and returns (percent change)<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a> shows the trading day closings and returns (percent change)<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1042,12 +1055,14 @@ Stoffer, David. 2025. <span>“Astsa: Applied Statistical Time Series Analysis.�
 <li id="fn15"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 88</a>)</span>.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn16"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 110</a>)</span>.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn17"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span>.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn18"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 92</a>)</span>.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn19"><p>Transform the second equation into the first as follows. For all time indices <span class="math inline">\(\nu\)</span> set <span class="math inline">\(U(\nu) = 5 V(\nu - 1)\)</span>, and then reverse time by setting <span class="math inline">\(Y'(\nu) = Y(- \nu)\)</span> and <span class="math inline">\(U'(\nu) = U(- \nu)\)</span>.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn20"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 93</a>)</span>.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn21"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 111</a>)</span>.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn22"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 95</a>)</span>.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn23"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>To expand <span class="math inline">\(\phi(z)^{-1}\)</span> in a power series, define polynomial <span class="math inline">\(f(\cdot) = 1 - \phi(\cdot)\)</span> so that <span class="math inline">\(f(z) = \phi_1 z + \cdots + \phi_p z^p\)</span>. We then have <span class="math inline">\(\phi(z)^{-1} = (1 - f(z))^{-1}\)</span> as a geometric series in <span class="math inline">\(f(z)\)</span> which can be re-expressed as a power series in <span class="math inline">\(z\)</span>.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 92</a>)</span>.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>Transform the second equation into the first as follows. For all time indices <span class="math inline">\(\nu\)</span> set <span class="math inline">\(U(\nu) = 5 V(\nu - 1)\)</span>, and then reverse time by setting <span class="math inline">\(Y'(\nu) = Y(- \nu)\)</span> and <span class="math inline">\(U'(\nu) = U(- \nu)\)</span>.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 93</a>)</span>.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 111</a>)</span>.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn23"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 95</a>)</span>.<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn24"><p>That is, the rational function <span class="math inline">\(\theta(z) \; \div \phi(z)\)</span> can be represented as a power series obtained as the power series for <span class="math inline">\(\phi(z)^{-1}\)</span> multiplied by the polynomial <span class="math inline">\(\theta(z)\)</span>.<a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn25"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
