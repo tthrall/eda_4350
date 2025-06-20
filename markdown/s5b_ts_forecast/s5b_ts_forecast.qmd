@@ -345,9 +345,13 @@ $$ {#eq-DL-algo}
 
 ## Operations on Time Series
 
+### Transformation of Each Observation
+
 The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings (@fig-jj), we see that the transformed time series, $Y(t) = \log_e (X(t))$, can be more closely approximated by a linear trend.
 
-In addition to the data transformations used on independent observations, we often want to average time series data over time.
+### Running Averages of Observations
+
+In addition to the data transformations used on independent observations, we often want to form a running average (also called a moving average) of time series data.
 
 As an example, @fig-gt-lo-ma5 shows a 5-year moving average of global temperature data (@fig-gtemp-lo). This operation smooths out local fluctuations to show the overall trend more clearly.
 
@@ -397,7 +401,45 @@ $$
 \end{align}
 $$ {#eq-ma-5}
 
-Here $X_\bullet (\cdot)$ is a two-component random process representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant *filter*, having the following general form.
+### Differences of Successive Observations
+
+Time series data often exhibit trends over time.  The data fluctuate around some level that varies consistently and can be modeled as some function of time, $m(t)$.  Suppose we want to extract the fluctuations about $m(t)$ from the original data.  One approach is to estimate $m(t)$ and then form the residual series.  This is called "de-trending".  Another approach is to apply an operator that removes the trend directly.
+
+For example, suppose that the process $X(t)$ has a linear trend $m(t) = \beta_0 + \beta_1 t$.
+
+$$
+\begin{align}
+  m(t) &= E\{ X(t) \} = \beta_0 + \beta_1 t
+\end{align}
+$$ {#eq-linear-trend}
+
+Then forming successive differences removes the linear trend.
+
+$$
+\begin{align}
+  E \left \{ X(t) - X(t-1) \right \} &= \beta_1
+\end{align}
+$$ {#eq-e-diff}
+
+Here we have applied the differencing operator $\mathcal{D}$.
+
+$$
+\begin{align}
+  \{\mathcal{D} \; X(\cdot) \} \; (t) &= X(t) - X(t-1) \\ 
+  \\ 
+  \text{where } \\
+  \\
+  \mathcal{D} &= \mathcal{I} - \mathcal{B}
+\end{align}
+$$ {#eq-diff-op-demo}
+
+For example, consider the DJIA stock index (@fig-djia). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.
+
+Repeated application of $\mathcal{D}$ removes polynomial trends.
+
+### Filtering
+
+Running averages and successive differences are each an example of a linear, time-invariant *filter*, having the following general form.
 
 $$
 \begin{align}
@@ -421,20 +463,8 @@ $$
 \end{align}
 $$ {#eq-ma-5-filter}
 
-As noted above, the moving average operation can help to reveal and thus model the trend in the process, $m_\bullet (t)$. Forming the residual series $X_\bullet (t) - m_\bullet (t)$ is called "de-trending".
 
-Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the "differencing" operator $\mathcal{D} = \mathcal{I} - \mathcal{B}$.
-
-$$
-\begin{align}
-  Y_\bullet (t) 
-  &= X_\bullet (t)  - X_\bullet (t - 1) \\ 
-  &= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\ 
-  &= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
-\end{align}
-$$ {#eq-diff-op}
-
-For example, consider the DJIA stock index (@fig-djia). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here's the differencing operator $\mathcal{D}$ in the filtering format.
+And here's the difference operator $\mathcal{D}$ in the filtering format.
 
 $$
 \begin{align}

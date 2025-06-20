@@ -103,7 +103,13 @@ window.Quarto = {
   <li><a href="#acf-autocorrelation-function" id="toc-acf-autocorrelation-function" class="nav-link" data-scroll-target="#acf-autocorrelation-function">ACF: autocorrelation function</a></li>
   <li><a href="#pacf-partial-autocorrelation-function" id="toc-pacf-partial-autocorrelation-function" class="nav-link" data-scroll-target="#pacf-partial-autocorrelation-function">PACF: partial autocorrelation function</a></li>
   </ul></li>
-  <li><a href="#operations-on-time-series" id="toc-operations-on-time-series" class="nav-link" data-scroll-target="#operations-on-time-series">Operations on Time Series</a></li>
+  <li><a href="#operations-on-time-series" id="toc-operations-on-time-series" class="nav-link" data-scroll-target="#operations-on-time-series">Operations on Time Series</a>
+  <ul class="collapse">
+  <li><a href="#transformation-of-each-observation" id="toc-transformation-of-each-observation" class="nav-link" data-scroll-target="#transformation-of-each-observation">Transformation of Each Observation</a></li>
+  <li><a href="#running-averages-of-observations" id="toc-running-averages-of-observations" class="nav-link" data-scroll-target="#running-averages-of-observations">Running Averages of Observations</a></li>
+  <li><a href="#differences-of-successive-observations" id="toc-differences-of-successive-observations" class="nav-link" data-scroll-target="#differences-of-successive-observations">Differences of Successive Observations</a></li>
+  <li><a href="#filtering" id="toc-filtering" class="nav-link" data-scroll-target="#filtering">Filtering</a></li>
+  </ul></li>
   <li><a href="#model-components" id="toc-model-components" class="nav-link" data-scroll-target="#model-components">Model Components</a>
   <ul class="collapse">
   <li><a href="#covariates-and-trend" id="toc-covariates-and-trend" class="nav-link" data-scroll-target="#covariates-and-trend">Covariates and Trend</a></li>
@@ -151,7 +157,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">14:24 Fri 20-Jun-2025</p>
+      <p class="date">17:07 Fri 20-Jun-2025</p>
     </div>
   </div>
   
@@ -363,8 +369,13 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 </section>
 <section id="operations-on-time-series" class="level2">
 <h2 class="anchored" data-anchor-id="operations-on-time-series">Operations on Time Series</h2>
+<section id="transformation-of-each-observation" class="level3">
+<h3 class="anchored" data-anchor-id="transformation-of-each-observation">Transformation of Each Observation</h3>
 <p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings (<a href="#fig-jj" class="quarto-xref">Figure&nbsp;3</a>), we see that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, can be more closely approximated by a linear trend.</p>
-<p>In addition to the data transformations used on independent observations, we often want to average time series data over time.</p>
+</section>
+<section id="running-averages-of-observations" class="level3">
+<h3 class="anchored" data-anchor-id="running-averages-of-observations">Running Averages of Observations</h3>
+<p>In addition to the data transformations used on independent observations, we often want to form a running average (also called a moving average) of time series data.</p>
 <p>As an example, <a href="#fig-gt-lo-ma5" class="quarto-xref">Figure&nbsp;1</a> shows a 5-year moving average of global temperature data (<a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;4</a>). This operation smooths out local fluctuations to show the overall trend more clearly.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -387,14 +398,45 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
 \end{align}
 \tag{16}\]</span></span></p>
-<p>Here <span class="math inline">\(X_\bullet (\cdot)\)</span> is a two-component random process representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant <em>filter</em>, having the following general form.</p>
+</section>
+<section id="differences-of-successive-observations" class="level3">
+<h3 class="anchored" data-anchor-id="differences-of-successive-observations">Differences of Successive Observations</h3>
+<p>Time series data often exhibit trends over time. The data fluctuate around some level that varies consistently and can be modeled as some function of time, <span class="math inline">\(m(t)\)</span>. Suppose we want to extract the fluctuations about <span class="math inline">\(m(t)\)</span> from the original data. One approach is to estimate <span class="math inline">\(m(t)\)</span> and then form the residual series. This is called “de-trending”. Another approach is to apply an operator that removes the trend directly.</p>
+<p>For example, suppose that the process <span class="math inline">\(X(t)\)</span> has a linear trend <span class="math inline">\(m(t) = \beta_0 + \beta_1 t\)</span>.</p>
+<p><span id="eq-linear-trend"><span class="math display">\[
+\begin{align}
+  m(t) &amp;= E\{ X(t) \} = \beta_0 + \beta_1 t
+\end{align}
+\tag{17}\]</span></span></p>
+<p>Then forming successive differences removes the linear trend.</p>
+<p><span id="eq-e-diff"><span class="math display">\[
+\begin{align}
+  E \left \{ X(t) - X(t-1) \right \} &amp;= \beta_1
+\end{align}
+\tag{18}\]</span></span></p>
+<p>Here we have applied the differencing operator <span class="math inline">\(\mathcal{D}\)</span>.</p>
+<p><span id="eq-diff-op-demo"><span class="math display">\[
+\begin{align}
+  \{\mathcal{D} \; X(\cdot) \} \; (t) &amp;= X(t) - X(t-1) \\
+  \\
+  \text{where } \\
+  \\
+  \mathcal{D} &amp;= \mathcal{I} - \mathcal{B}
+\end{align}
+\tag{19}\]</span></span></p>
+<p>For example, consider the DJIA stock index (<a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a>). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.</p>
+<p>Repeated application of <span class="math inline">\(\mathcal{D}\)</span> removes polynomial trends.</p>
+</section>
+<section id="filtering" class="level3">
+<h3 class="anchored" data-anchor-id="filtering">Filtering</h3>
+<p>Running averages and successive differences are each an example of a linear, time-invariant <em>filter</em>, having the following general form.</p>
 <p><span id="eq-filter"><span class="math display">\[
 \begin{align}
   Y_\bullet (t)
   &amp;= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\
   &amp;= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u)
 \end{align}
-\tag{17}\]</span></span></p>
+\tag{20}\]</span></span></p>
 <p>where <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> is a sequence of <span class="math inline">\(d \times d\)</span> matrices and <span class="math inline">\(*\)</span> denotes discrete convolution.</p>
 <p>For example, here’s the 5-year moving average above expressed in this format.</p>
 <p><span id="eq-ma-5-filter"><span class="math display">\[
@@ -405,18 +447,8 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
       0 &amp; \text{ for } |u| &gt; 2
     \end{cases}
 \end{align}
-\tag{18}\]</span></span></p>
-<p>As noted above, the moving average operation can help to reveal and thus model the trend in the process, <span class="math inline">\(m_\bullet (t)\)</span>. Forming the residual series <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> is called “de-trending”.</p>
-<p>Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the “differencing” operator <span class="math inline">\(\mathcal{D} = \mathcal{I} - \mathcal{B}\)</span>.</p>
-<p><span id="eq-diff-op"><span class="math display">\[
-\begin{align}
-  Y_\bullet (t)
-  &amp;= X_\bullet (t)  - X_\bullet (t - 1) \\
-  &amp;= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\
-  &amp;= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
-\end{align}
-\tag{19}\]</span></span></p>
-<p>For example, consider the DJIA stock index (<a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a>). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here’s the differencing operator <span class="math inline">\(\mathcal{D}\)</span> in the filtering format.</p>
+\tag{21}\]</span></span></p>
+<p>And here’s the difference operator <span class="math inline">\(\mathcal{D}\)</span> in the filtering format.</p>
 <p><span id="eq-diff-filter"><span class="math display">\[
 \begin{align}
   a_{\bullet, \bullet} (u) &amp;=
@@ -426,9 +458,10 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
       0  &amp; \text{ otherwise }
     \end{cases}
 \end{align}
-\tag{20}\]</span></span></p>
+\tag{22}\]</span></span></p>
 <p>A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a <em>low-pass</em> filter. The differencing operator can be categorized as a <em>high-pass</em> filter.</p>
 <p>In signal-processing applications a linear, time-invariant filter <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> may be designed to extract certain types of signals that are contaminated by noise.<span class="citation" data-cites="hamming1989">(<a href="#ref-hamming1989" role="doc-biblioref">Hamming 1989</a>)</span></p>
+</section>
 </section>
 <section id="model-components" class="level2">
 <h2 class="anchored" data-anchor-id="model-components">Model Components</h2>
@@ -486,7 +519,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
     \\
     W(t) &amp;\sim wn(0, \sigma_W^2)
 \end{align}
-\tag{21}\]</span></span></p>
+\tag{23}\]</span></span></p>
 <p>That is, <span class="math inline">\(W(t)\)</span> again denotes a residual “white noise” stationary process: free of autocorrelation and having zero mean.</p>
 <section id="polynomial-representation" class="level4">
 <h4 class="anchored" data-anchor-id="polynomial-representation">Polynomial representation</h4>
@@ -501,7 +534,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \text{so that } \\
   \phi (\mathcal{B}) &amp;= \mathcal{I} \; - \; \sum_{\nu = 1}^p \phi_\nu \mathcal{B}^\nu
 \end{align}
-\tag{22}\]</span></span></p>
+\tag{24}\]</span></span></p>
 <p>The polynomial <span class="math inline">\(\phi(\cdot)\)</span> applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> is an <em>auto-regressive operator of order</em> <span class="math inline">\(p\)</span>.</p>
 <p>Now, the <span class="math inline">\(AR(p)\)</span> model is defined to be that of a <em>stationary</em> process <span class="math inline">\(X(t)\)</span>, which constrains the coefficients of polynomial <span class="math inline">\(\phi(\cdot)\)</span>. Additional requirements that the model be <em>causal</em><a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> and <em>invertible</em><a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> restrict attention to polynomials <span class="math inline">\(\phi(\cdot)\)</span> whose roots are all greater than unity in magnitude. This ensures that the multiplicative inverse function <span class="math inline">\(\phi (z)^{-1}\)</span> is well defined and has a power series expansion for <span class="math inline">\(|z| \le 1\)</span>.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
 </section>
@@ -520,7 +553,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= \left \{ (\mathcal{I} - \phi_1 \mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\
   &amp;= \left \{ \phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t)
 \end{align}
-\tag{23}\]</span></span></p>
+\tag{25}\]</span></span></p>
 <p>The auto-regressive polynomial <span class="math inline">\(\phi (\cdot)\)</span> has degree 1.</p>
 <p><span class="math display">\[
 \begin{align}
@@ -549,7 +582,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   W(t) &amp;= \left \{ \phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\
   X(t) - \mu_X &amp;= \left \{ \phi (\mathcal{B})^{-1} \; W(\cdot) \right \} (t)
 \end{align}
-\tag{24}\]</span></span></p>
+\tag{26}\]</span></span></p>
 <p>since</p>
 <p><span class="math display">\[
 \begin{align}
@@ -564,7 +597,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   \rho_X (u) &amp;= \phi_1^{|u|}
 \end{align}
-\tag{25}\]</span></span></p>
+\tag{27}\]</span></span></p>
 <p>Using the Durbin-Levinson algorithm, one can go on to show<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> that the partial autocorrelation function (PACF) of <span class="math inline">\(X(\cdot)\)</span> has the following simple form.</p>
 <p><span id="eq-AR1-PACF"><span class="math display">\[
 \begin{align}
@@ -575,16 +608,16 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{26}\]</span></span></p>
+\tag{28}\]</span></span></p>
 </section>
 <section id="arp" class="level4">
 <h4 class="anchored" data-anchor-id="arp">AR(p)</h4>
-<p>As previously noted, an <span class="math inline">\(AR(p)\)</span> model can be defined via a polynomial <span class="math inline">\(\phi(\cdot)\)</span> that is applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>. The coefficients of <span class="math inline">\(\phi(\cdot)\)</span> are real, but it is useful to apply the polynomial to the complex variable <span class="math inline">\(z\)</span>. From <a href="#eq-ARp-bs-poly" class="quarto-xref">Equation&nbsp;22</a> we have</p>
+<p>As previously noted, an <span class="math inline">\(AR(p)\)</span> model can be defined via a polynomial <span class="math inline">\(\phi(\cdot)\)</span> that is applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>. The coefficients of <span class="math inline">\(\phi(\cdot)\)</span> are real, but it is useful to apply the polynomial to the complex variable <span class="math inline">\(z\)</span>. From <a href="#eq-ARp-bs-poly" class="quarto-xref">Equation&nbsp;24</a> we have</p>
 <p><span id="eq-ARp-poly"><span class="math display">\[
 \begin{align}
   \phi(z) &amp;= 1 \; - \; \sum_{\nu = 1}^p \; \phi_\nu \; z^\nu
 \end{align}
-\tag{27}\]</span></span></p>
+\tag{29}\]</span></span></p>
 <p>Also as previously mentioned, we require the roots of <span class="math inline">\(\phi(\cdot)\)</span> to lie outside the closed unit disc, that is, to be greater than unity in magnitude. This requirement ensures that the model is stationary, causal, and invertible.</p>
 <p>Consequently we have the following causal form of the model.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a></p>
 <p><span id="eq-causal-form"><span class="math display">\[
@@ -598,8 +631,8 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \text{and } \\
   &amp; \sum_{\nu = 0}^\infty \; |\psi_\nu| \; &lt; \; \infty
 \end{align}
-\tag{28}\]</span></span></p>
-<p><a href="#eq-ARp-bs-poly" class="quarto-xref">Equation&nbsp;22</a> also shows that <span class="math inline">\(W(t)\)</span> depends on current and past values of <span class="math inline">\(X(t)\)</span>, with past values terminating at <span class="math inline">\(X(t-p)\)</span>.</p>
+\tag{30}\]</span></span></p>
+<p><a href="#eq-ARp-bs-poly" class="quarto-xref">Equation&nbsp;24</a> also shows that <span class="math inline">\(W(t)\)</span> depends on current and past values of <span class="math inline">\(X(t)\)</span>, with past values terminating at <span class="math inline">\(X(t-p)\)</span>.</p>
 <p><span class="math display">\[
 \begin{align}
   W(t) &amp;= \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\
@@ -682,7 +715,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;\text{ with } |\theta_1| &lt; 1 \\
   &amp;\text{ and } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
-\tag{29}\]</span></span></p>
+\tag{31}\]</span></span></p>
 <p>Here is the auto-covariance function for this process.</p>
 <p><span id="eq-MA1-ACovF"><span class="math display">\[
 \begin{align}
@@ -694,7 +727,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   \gamma_X (u) &amp;= 0 \quad \text{for } |u| \ge 2
 \end{align}
-\tag{30}\]</span></span></p>
+\tag{32}\]</span></span></p>
 <p>And here is the corresponding autocorrelation function (ACF)<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a>.</p>
 <p><span id="eq-MA1-ACF"><span class="math display">\[
 \begin{align}
@@ -705,13 +738,13 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
     0 &amp; \text{ for } |u| \ge 2 \\  
   \end{cases}
 \end{align}
-\tag{31}\]</span></span></p>
+\tag{33}\]</span></span></p>
 <p>The PACF turns out to have the following form<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a>.</p>
 <p><span id="eq-MA1-PACF"><span class="math display">\[
 \begin{align}
   \rho_X (u | u) &amp;=  \frac{(- \theta_1)^u(1 - \theta_1^2)}{1 - \theta_1^{2 (u+1)}} &amp; \text{ for } u \ge 2
 \end{align}
-\tag{32}\]</span></span></p>
+\tag{34}\]</span></span></p>
 </section>
 <section id="maq" class="level4">
 <h4 class="anchored" data-anchor-id="maq">MA(q)</h4>
@@ -721,7 +754,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \theta(z) &amp;= 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\
   &amp;= \sum_{\nu = 0}^q \theta_\nu \; z^\nu &amp; \text{with } \theta_0 = 1
 \end{align}
-\tag{33}\]</span></span></p>
+\tag{35}\]</span></span></p>
 <p>Applying <span class="math inline">\(\theta(\cdot)\)</span> to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>, we have the following <span class="math inline">\(MA(q)\)</span> model.</p>
 <p><span id="eq-MAq"><span class="math display">\[
 \begin{align}
@@ -731,7 +764,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   &amp;\text{ with } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
-\tag{34}\]</span></span></p>
+\tag{36}\]</span></span></p>
 <p>With <span class="math inline">\(MA(1)\)</span> serving as an example, it is easy to see that for an <span class="math inline">\(MA(q)\)</span> model of <span class="math inline">\(X(\cdot)\)</span>, the auto-covariance function <span class="math inline">\(\gamma_X (u)\)</span> and the autocorrelation function <span class="math inline">\(\rho_X (u)\)</span> equal zero at lags <span class="math inline">\(|u| &gt; q\)</span>.</p>
 <p><span id="eq-MAq-ACF"><span class="math display">\[
 \begin{align}
@@ -740,7 +773,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   \rho_X (u) &amp;= 0
 \end{align}
-\tag{35}\]</span></span></p>
+\tag{37}\]</span></span></p>
 <p>We require the roots of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitudes greater than unity to ensure that its multiplicative inverse function, <span class="math inline">\(\theta(z)^{-1}\)</span>, has a power series expansion valid for <span class="math inline">\(|z| \le 1\)</span>.</p>
 <p><span id="eq-MAq-poly-inv"><span class="math display">\[
 \begin{align}
@@ -751,20 +784,20 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   &amp; \text{where } \psi_0 = 1
 \end{align}
-\tag{36}\]</span></span></p>
+\tag{38}\]</span></span></p>
 <p>Then <span class="math inline">\(\theta(\mathcal{B})^{-1}\)</span> is well-defined, and we have</p>
 <p><span id="eq-MAq-inv"><span class="math display">\[
 \begin{align}
   W(t) &amp;= \left \{ \theta(\mathcal{B})^{-1} \; X(\cdot) \right \} (t)  \\
   &amp;= X(t) + \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu)
 \end{align}
-\tag{37}\]</span></span></p>
+\tag{39}\]</span></span></p>
 <p>Equivalently, we have</p>
 <p><span id="eq-AR-infty"><span class="math display">\[
 \begin{align}
   X(t) &amp;= W(t) - \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu)
 \end{align}
-\tag{38}\]</span></span></p>
+\tag{40}\]</span></span></p>
 <p>which can be viewed as an infinite-order auto-regressive model. Now for an <span class="math inline">\(AR(p)\)</span>, with <span class="math inline">\(p\)</span> finite, the PACF can be shown to be non-zero at lag <span class="math inline">\(u = p\)</span> (and zero thereafter). In the case of the <span class="math inline">\(MA(q)\)</span> model, equivalent to an infinite-order <span class="math inline">\(AR\)</span> model, the PACF tends to zero but does not vanish as <span class="math inline">\(|u| \rightarrow \infty\)</span>.</p>
 </section>
 </section>
@@ -782,7 +815,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   X(t) &amp;= \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
 \end{align}
-\tag{39}\]</span></span></p>
+\tag{41}\]</span></span></p>
 <p>Here we must impose a restriction on the polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> in addition to requiring their respective roots to all have magnitude greater than unity. The additional requirement is that they have no roots in common.</p>
 <p>Consider for example the following putative <span class="math inline">\(ARMA(1,1)\)</span> model.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
 <p><span id="eq-ARMA_1_1_not"><span class="math display">\[
@@ -795,7 +828,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   p(z) &amp;= 1 - \alpha \; z \quad \text{with } |\alpha| &lt; 1
 \end{align}
-\tag{40}\]</span></span></p>
+\tag{42}\]</span></span></p>
 <p>The operator <span class="math inline">\(p(\mathcal{B})\)</span> can be cancelled from both sides of the equation, leaving only a white noise process: <span class="math inline">\(X(\cdot) = W(\cdot)\)</span>. Thus we assume that any polynomial factors common to both <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> have been eliminated. This implies that the roots of <span class="math inline">\(\phi(\cdot)\)</span> are distinct from those of <span class="math inline">\(\theta(\cdot)\)</span>.</p>
 </section>
 </section>
