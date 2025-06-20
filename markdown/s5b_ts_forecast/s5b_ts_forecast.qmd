@@ -233,18 +233,40 @@ $$ {#eq-ACF}
 
 ### PACF: partial autocorrelation function
 
-Going further, the *partial autocorrelation function (PACF)* is a useful diagnostic tool. Here's the idea[^txt_PACF_intro]. Recall that if $X$, $Y$, and $Z_\bullet = \{Z_1, \ldots, Z_k\}$ are random variables, then the partial correlation between $X$ and $Y$ given $Z_\bullet$ is obtained by first regressing $X$ and $Y$ on $Z_\bullet$ to obtain approximations $(\hat{X}, \hat{Y})$ of $(X, Y)$ respectively. If $X, Y, Z_\bullet$ have a joint normal distribution, then
+The *partial autocorrelation function (PACF)*[^txt_PACF_intro] is a refinement of the ACF and a useful diagnostic tool.
 
 [^txt_PACF_intro]: See @shumway2025 [page 108].
 
+We first recall the related concept of conditional expectation. If $X, Y, Z_\bullet = \{Z_1, \ldots, Z_K\}$ are random variables having a joint probability distribution, then we denote the conditional expectation of $X$ and $Y$ given $Z_\bullet$ as follows.
+
 $$
 \begin{align}
-  \hat{X} &= E(X \; | \; Z_\bullet) \\ 
-  \hat{Y} &= E(Y \; | \; Z_\bullet)
+  \tilde{X} &= E(X \; | \; Z_\bullet) \\ 
+  \tilde{Y} &= E(Y \; | \; Z_\bullet)
 \end{align}
 $$ {#eq-eXY-Z}
 
-In the normal case the conditional expectation yields a constant plus a linear combination of the components of $Z_\bullet$, that is, an affine function of $Z_\bullet$. More generally, $\hat{X}, \hat{Y}$ are defined as the affine functions of $Z_\bullet$ that minimize mean squared approximation error.
+Of all possible functions of $Z_\bullet$, the conditional expectation above minimizes the mean squared approximation error.
+
+$$
+\begin{align}
+  MSE \left \{ X, \; f(Z_\bullet) \right \} &= E \left \{ (X - f(Z_\bullet))^2 \right \} \\ 
+  MSE \left \{ Y, \; g(Z_\bullet) \right \} &= E \left \{ (Y - g(Z_\bullet))^2 \right \}
+\end{align}
+$$ {#eq-mse-XY-Z}
+
+If $X, Y, Z_\bullet$ have a joint normal distribution, then $\tilde{X}$ is an affine function of $Z_\bullet$, that is, a constant plus a linear combination of the components of $Z_\bullet$, and so is $\tilde{Y}$.
+
+In general, however $X, Y, Z_\bullet$ may be jointly distributed, we denote by $\hat{X}$ and $\hat{Y}$ the affine functions of $Z_\bullet$ that minimize the mean squared approximation error.
+
+$$
+\begin{align}
+  \hat{\beta}_\bullet &= \arg \min_{\beta_\bullet} \; MSE \left \{ X, \; \beta_0 + \sum_{k = 1}^K \beta_k Z_k \right \} \\ 
+  \hat{X} &= \hat{\beta}_0 + \sum_{k = 1}^K \hat{\beta}_k Z_k 
+\end{align}
+$$ {#eq-hat-X-Z}
+
+$\hat{Y}$ is similarly defined.  In the normal case we have $\tilde{X} = \hat{X}$ and $\tilde{Y} = \hat{Y}$.
 
 Then the partial correlation between $X$ and $Y$ given $Z_\bullet$ is the correlation between the respective $X$ and $Y$ residuals, as follows.
 
@@ -254,9 +276,11 @@ $$
 \end{align}
 $$ {#eq-corXY-Z}
 
-In the time series context we introduce the PACF with reference to a univariate, stationary Gaussian process, $\mathcal{N}(t)$, having zero mean.[^Gaussian].
+In the time series context we introduce the PACF with reference to a univariate, stationary Gaussian process, $\mathcal{N}(t)$, having zero mean.[^Gaussian] [^non_Gaussian]
 
 [^Gaussian]: That is, we assume that $\mathcal{N}(t)$ is a stationary, mean-zero, autocorrelated process such that for any set of distinct time indices $t_1, \ldots, t_K$ the joint probability distribtuion of $(\mathcal{N}(t_1), \ldots, \mathcal{N}(t_K)$ is multivariate normal.
+
+[^non_Gaussian]: Normality allows us to define approximations as conditional expectations.  To define PACF more generally, replace conditional expectation with the affine function that minimizes mean squared approximation error.
 
 At lags $|u| \le 1$ the partial autocorrelation is defined as the autocorrelation $\rho (u)$. For $u > 1$ the PACF is defined to be the correlation between $\mathcal{N}(t + u)$ and $\mathcal{N}(t)$ conditioned on the intervening variables $\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)$.  Let $\Delta_u$ denote these intervening integer increments $\{ 1, 2, \ldots, u-1 \}$.
 
@@ -295,7 +319,7 @@ The conditional expectation is linear in the conditioning variables thanks to th
 
 The coefficients in the linear combination are shared by $\hat{\mathcal{N}}(t)$ and $\hat{\mathcal{N}}(t + u)$ but are applied in reverse order. This is because the time-reversed process $\mathcal{N}(-t)$ has the same auto-covariance structure as the original process $\mathcal{N}(t)$.[^rho_even]
 
-[^rho_even]: Recall that for a univariate process the auto-covariance and autocorrelation functions are even, e.g., $\rho (-u) = \rho (u)$.
+[^rho_even]: Recall that for a univariate process the auto-covariance and autocorrelation functions are even, e.g., $\rho (-u) = \rho (u)$.  The PACF of a univariate process is also defined to be an even function.
 
 The partial autocorrelation function is now defined as the correlation of the residual variables:
 
