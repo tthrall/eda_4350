@@ -144,7 +144,7 @@ In our example there are two data columns (`hare`, `lynx`), so that $d = 2$, the
 
 $$
 \begin{align}
-  t &= t_0 + u & \text{ with } u \in \{0, 1, \ldots, T-1 \}
+  t &= t_0 + \nu & \text{ with } \nu \in \nu_T = \{0, 1, \ldots, T-1 \}
 \end{align}
 $$
 
