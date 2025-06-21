@@ -437,7 +437,11 @@ $$ {#eq-diff-op-demo}
 
 For example, consider the DJIA stock index (@fig-djia). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.
 
-Repeated application of $\mathcal{D}$ removes polynomial trends.
+To remove a polynomial trend of degree $d$, one can apply $\mathcal{D}^d$, in other words $d$ repeated applications of $\mathcal{D}$.
+
+To remove a seasonal component one can apply a variant of $\mathcal{D}$, namely seasonal differencing defined as $\mathcal{I} - \mathcal{B}^\sigma$, where $\sigma$ is the number of time indices that span one season.[^txt_seasonal_diff]
+
+[^txt_seasonal_diff]: See @shumway2025 [page 157]. 
 
 ### Filtering
 
