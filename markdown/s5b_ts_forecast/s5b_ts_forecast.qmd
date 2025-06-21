@@ -996,6 +996,10 @@ $$
  \end{align}
 $$ {#eq-ARMA_p_q_causal}
 
+### ARIMA(p, d, q)
+
+@whittle1951hypothesis introduced ARMA models, followed by @box1970time,  expanding the family of ARMA models to include non-stationary models, that is, auto-regressive integrated moving average (ARIMA) models.
+
 ## Closing Remarks
 
 This technical note is intended as an overview of time series analysis based on @shumway2025 along with the supporting `R` package `astsa` [@astsa]. The reader should feel free to select the presented examples of greatest interest, skipping others to save time.
