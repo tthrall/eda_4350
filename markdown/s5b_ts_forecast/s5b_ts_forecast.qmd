@@ -932,7 +932,7 @@ The $AR(p)$ and $MA(q)$ models can be combined into the following $ARMA(p,q)$ mo
 $$
 \begin{align}
   \phi(\mathcal{B}) \; (X(\cdot) - \mu_X) &= \theta(\mathcal{B}) \; W(\cdot) & \text{with } W(\cdot) \sim wn(0, \sigma_W^2)
- \end{align}
+\end{align}
 $$ {#eq-ARMA_p_q_proc}
 
 so that 
@@ -940,7 +940,7 @@ so that
 $$
 \begin{align}
   X(t) &= \mu_X + \sum_{j = 1}^p \phi_j \; (X(t - j) - \mu_X) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
- \end{align}
+\end{align}
 $$ {#eq-ARMA_p_q}
 
 or more succinctly 
@@ -950,7 +950,7 @@ $$
   X(t) &= \alpha + \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k) \\ 
   \text{where } \\
   \alpha &= \mu_x \; \left ( 1  - \sum_{j = 1}^p \phi_j \right )
- \end{align}
+\end{align}
 $$ {#eq-ARMA_p_q_alpha}
 
 ### Co-prime Polynomials
@@ -970,7 +970,7 @@ $$
   \text{where } \\ 
   \\ 
   p(z) &= 1 - \beta_1 \; z \quad \text{with } |\beta_1| < 1
- \end{align}
+\end{align}
 $$ {#eq-ARMA_1_1_not}
 
 The operator $p(\mathcal{B})$ can be cancelled from both sides of the equation, leaving only a white noise process: $X(\cdot) = W(\cdot)$.
@@ -993,7 +993,7 @@ $$
   \\ 
   \text{and } \\ 
   & \sum_{\nu = 0}^\infty \; |\psi_\nu| \; < \; \infty
- \end{align}
+\end{align}
 $$ {#eq-ARMA_p_q_causal}
 
 ### ARIMA(p, d, q)
@@ -1010,7 +1010,7 @@ $$
   \text{where } \\ 
   & \phi (z) = 1 - \sum_{j = 1}^p \phi_j \; z^j \\ 
   & \theta (z) = 1 + \sum_{k = 1}^q \theta_k \; z^k
- \end{align}
+\end{align}
 $$ {#eq-ARIMA_p_d_q_proc}
 
 By convention, $d \in \{ 0, 1, 2, \ldots \}$ so that $ARIMA(p, 0, q)$ is synonymous with $ARMA(p, q)$.
@@ -1019,7 +1019,7 @@ If $d \ge 1$ then $\mathcal{D}^d$ removes $\mu_X$, which can be omitted from the
 
 ## Forecasting
 
-### Notation
+### Problem Statement
 
 Let $X(\cdot)$ be a stationary process, with observed values for 
 
@@ -1028,17 +1028,78 @@ $$
   t &\in \tau_T  \\
   &= t_0 + \nu_T \\
   &= t_0 + \{ 0, \ldots, T-1  \}
- \end{align}
+\end{align}
 $$
 
 For $u \ge 1$ let $\hat{X} (u | \tau_T)$ denote the _linear least squares predictor_ of $X(u + t_0 + T - 1)$ as an affine function of $\{ X(t) \}_{t \in \tau_T}$.
 
 $$
 \begin{align}
-  \hat{\beta}_\bullet &= \arg \min_{\beta_\bullet} \; MSE \left \{ X(u + t_0 + T - 1), \; \beta_0 + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\ 
-  \hat{X} (u | \tau_T) &= \hat{\beta}_0 + \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) 
- \end{align}
+  (\hat{\alpha}, \hat{\beta}_\bullet) &= \arg \min_{\alpha, \beta_\bullet} \; MSE \left \{ X(u + t_0 + T - 1), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\ 
+  \hat{X} (u | \tau_T) &= \hat{\alpha} + \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) 
+\end{align}
 $$ {#eq-linear-predictor-defn}
+
+### Linear Equations
+
+We assume for the moment that the first and second-order statistics (mean, variance, auto-covariance, ...) of $X(\cdot)$ are known in order to express the linear coefficients $\hat{\alpha}, \hat{\beta}_\bullet$ as functions of those statistics.
+
+Consider the expression for mean-squared error (MSE).
+
+$$
+\begin{align}
+  MSE \left \{ X(u + t_0 + T - 1), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\ 
+  = E \left \{ \left ( X(u + t_0 + T - 1) \; - \alpha - \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right )^2 \right \}
+\end{align}
+$$ {#eq-predictor-MSE}
+
+We take the derivative of this expression with respect to each coefficient $(\alpha, \beta_\bullet)$ and set that derivative to zero to define $(\hat{\alpha}, \hat{\beta}_\bullet)$.  For $\hat{\alpha}$ we have 
+
+$$
+\begin{align}
+  0 &= E \left \{ \left ( X(u + t_0 + T - 1) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \right \} \\ 
+  &= \mu_X - \hat{\alpha}  \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \mu_X
+\end{align}
+$$ {#eq-predictor-const-coeff-eqn}
+
+so that 
+
+$$
+\begin{align}
+  \hat{\alpha} &= \mu_X \left (1 - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \right )
+\end{align}
+$$ {#eq-predictor-const-coeff-hat}
+
+For each of the remaining coefficients $\hat{\beta}_j$ we obtain 
+
+$$
+\begin{align}
+  0 &= E \left \{ \left ( X(u + t_0 + T - 1) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \; X(t_0 + j) \right \} \\ 
+  &= E \left \{ \left ( X(u + t_0 + T - 1) - \mu_x - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \left ( X(t_0 + \nu) - \mu_x \right ) \right ) \; X(t_0 + j) \right \} \\ 
+  &= \gamma_X(T + u - 1 - j) \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \gamma_X(\nu - j) 
+\end{align}
+$$ {#eq-predictor-slope-j-coeff-eqn}
+
+In vector-matrix notation we have the following linear system.
+
+$$
+\begin{align}
+  \Gamma \; \hat{\beta}_\bullet &= \tilde{\gamma}_\bullet
+\end{align}
+$$ {#eq-predictor-matrix-eqn}
+
+where we set the range of vector and matrix indices to $\nu_T = \{ 0, \dots, T-1 \}$ so that 
+
+$$
+\begin{align}
+  \Gamma [j, \nu] & = \gamma_X(\nu - j) & \text{for } \nu, j \in \nu_T \\ 
+  \tilde{\gamma} [j] &= \gamma_X (T + u - 1 - j)
+\end{align}
+$$ {#eq-predictor-matrix-vars}
+
+$\Gamma$ is a covariance matrix, and is therefore non-negative definite.  In most scenarios $\Gamma$ can be assumed to be non-singular, for otherwise we would have a degenerate process.  In any case $\hat{\beta}_\bullet$ can be defined by applying the inverse (or a generalized inverse) of $\Gamma$ to $\tilde{\gamma}_\bullet$.
+
+As noted above, we have assumed for the sake of discussion that the entire auto-covariance function $\gamma_X (\cdot)$ is known.  In practice such statistics must be estimated from the data, and the equations above entail $\gamma_X(T + u - 1 - j)$, which for $j < u$ cannot be directly estimated from the data.  Instead we must rely on a model of the process for such estimates.
 
 ## Closing Remarks
 

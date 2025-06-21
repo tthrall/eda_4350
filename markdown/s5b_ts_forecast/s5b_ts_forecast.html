@@ -124,7 +124,8 @@ window.Quarto = {
   </ul></li>
   <li><a href="#forecasting" id="toc-forecasting" class="nav-link" data-scroll-target="#forecasting">Forecasting</a>
   <ul class="collapse">
-  <li><a href="#notation" id="toc-notation" class="nav-link" data-scroll-target="#notation">Notation</a></li>
+  <li><a href="#problem-statement" id="toc-problem-statement" class="nav-link" data-scroll-target="#problem-statement">Problem Statement</a></li>
+  <li><a href="#linear-equations" id="toc-linear-equations" class="nav-link" data-scroll-target="#linear-equations">Linear Equations</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#appendix-a-glossary-of-math-symbols" id="toc-appendix-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#appendix-a-glossary-of-math-symbols">Appendix A: Glossary of Math Symbols</a></li>
@@ -163,7 +164,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15:45 Sat 21-Jun-2025</p>
+      <p class="date">18:41 Sat 21-Jun-2025</p>
     </div>
   </div>
   
@@ -886,8 +887,8 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 <section id="forecasting" class="level2">
 <h2 class="anchored" data-anchor-id="forecasting">Forecasting</h2>
-<section id="notation" class="level3">
-<h3 class="anchored" data-anchor-id="notation">Notation</h3>
+<section id="problem-statement" class="level3">
+<h3 class="anchored" data-anchor-id="problem-statement">Problem Statement</h3>
 <p>Let <span class="math inline">\(X(\cdot)\)</span> be a stationary process, with observed values for</p>
 <p><span class="math display">\[
 \begin{align}
@@ -899,10 +900,57 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>For <span class="math inline">\(u \ge 1\)</span> let <span class="math inline">\(\hat{X} (u | \tau_T)\)</span> denote the <em>linear least squares predictor</em> of <span class="math inline">\(X(u + t_0 + T - 1)\)</span> as an affine function of <span class="math inline">\(\{ X(t) \}_{t \in \tau_T}\)</span>.</p>
 <p><span id="eq-linear-predictor-defn"><span class="math display">\[
 \begin{align}
-  \hat{\beta}_\bullet &amp;= \arg \min_{\beta_\bullet} \; MSE \left \{ X(u + t_0 + T - 1), \; \beta_0 + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\
-  \hat{X} (u | \tau_T) &amp;= \hat{\beta}_0 + \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu)
+  (\hat{\alpha}, \hat{\beta}_\bullet) &amp;= \arg \min_{\alpha, \beta_\bullet} \; MSE \left \{ X(u + t_0 + T - 1), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\
+  \hat{X} (u | \tau_T) &amp;= \hat{\alpha} + \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu)
 \end{align}
 \tag{48}\]</span></span></p>
+</section>
+<section id="linear-equations" class="level3">
+<h3 class="anchored" data-anchor-id="linear-equations">Linear Equations</h3>
+<p>We assume for the moment that the first and second-order statistics (mean, variance, auto-covariance, …) of <span class="math inline">\(X(\cdot)\)</span> are known in order to express the linear coefficients <span class="math inline">\(\hat{\alpha}, \hat{\beta}_\bullet\)</span> as functions of those statistics.</p>
+<p>Consider the expression for mean-squared error (MSE).</p>
+<p><span id="eq-predictor-MSE"><span class="math display">\[
+\begin{align}
+  MSE \left \{ X(u + t_0 + T - 1), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\
+  = E \left \{ \left ( X(u + t_0 + T - 1) \; - \alpha - \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right )^2 \right \}
+\end{align}
+\tag{49}\]</span></span></p>
+<p>We take the derivative of this expression with respect to each coefficient <span class="math inline">\((\alpha, \beta_\bullet)\)</span> and set that derivative to zero to define <span class="math inline">\((\hat{\alpha}, \hat{\beta}_\bullet)\)</span>. For <span class="math inline">\(\hat{\alpha}\)</span> we have</p>
+<p><span id="eq-predictor-const-coeff-eqn"><span class="math display">\[
+\begin{align}
+  0 &amp;= E \left \{ \left ( X(u + t_0 + T - 1) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \right \} \\
+  &amp;= \mu_X - \hat{\alpha}  \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \mu_X
+\end{align}
+\tag{50}\]</span></span></p>
+<p>so that</p>
+<p><span id="eq-predictor-const-coeff-hat"><span class="math display">\[
+\begin{align}
+  \hat{\alpha} &amp;= \mu_X \left (1 - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \right )
+\end{align}
+\tag{51}\]</span></span></p>
+<p>For each of the remaining coefficients <span class="math inline">\(\hat{\beta}_j\)</span> we obtain</p>
+<p><span id="eq-predictor-slope-j-coeff-eqn"><span class="math display">\[
+\begin{align}
+  0 &amp;= E \left \{ \left ( X(u + t_0 + T - 1) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \; X(t_0 + j) \right \} \\
+  &amp;= E \left \{ \left ( X(u + t_0 + T - 1) - \mu_x - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \left ( X(t_0 + \nu) - \mu_x \right ) \right ) \; X(t_0 + j) \right \} \\
+  &amp;= \gamma_X(T + u - 1 - j) \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \gamma_X(\nu - j)
+\end{align}
+\tag{52}\]</span></span></p>
+<p>In vector-matrix notation we have the following linear system.</p>
+<p><span id="eq-predictor-matrix-eqn"><span class="math display">\[
+\begin{align}
+  \Gamma \; \hat{\beta}_\bullet &amp;= \tilde{\gamma}_\bullet
+\end{align}
+\tag{53}\]</span></span></p>
+<p>where we set the range of vector and matrix indices to <span class="math inline">\(\nu_T = \{ 0, \dots, T-1 \}\)</span> so that</p>
+<p><span id="eq-predictor-matrix-vars"><span class="math display">\[
+\begin{align}
+  \Gamma [j, \nu] &amp; = \gamma_X(\nu - j) &amp; \text{for } \nu, j \in \nu_T \\
+  \tilde{\gamma} [j] &amp;= \gamma_X (T + u - 1 - j)
+\end{align}
+\tag{54}\]</span></span></p>
+<p><span class="math inline">\(\Gamma\)</span> is a covariance matrix, and is therefore non-negative definite. In most scenarios <span class="math inline">\(\Gamma\)</span> can be assumed to be non-singular, for otherwise we would have a degenerate process. In any case <span class="math inline">\(\hat{\beta}_\bullet\)</span> can be defined by applying the inverse (or a generalized inverse) of <span class="math inline">\(\Gamma\)</span> to <span class="math inline">\(\tilde{\gamma}_\bullet\)</span>.</p>
+<p>As noted above, we have assumed for the sake of discussion that the entire auto-covariance function <span class="math inline">\(\gamma_X (\cdot)\)</span> is known. In practice such statistics must be estimated from the data, and the equations above entail <span class="math inline">\(\gamma_X(T + u - 1 - j)\)</span>, which for <span class="math inline">\(j &lt; u\)</span> cannot be directly estimated from the data. Instead we must rely on a model of the process for such estimates.</p>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
