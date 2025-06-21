@@ -116,9 +116,10 @@ window.Quarto = {
   <li><a href="#auto-regression-ar" id="toc-auto-regression-ar" class="nav-link" data-scroll-target="#auto-regression-ar">Auto-regression (AR)</a></li>
   <li><a href="#moving-average-ma" id="toc-moving-average-ma" class="nav-link" data-scroll-target="#moving-average-ma">Moving Average (MA)</a></li>
   </ul></li>
-  <li><a href="#assembling-components" id="toc-assembling-components" class="nav-link" data-scroll-target="#assembling-components">Assembling Components</a>
+  <li><a href="#armap-q" id="toc-armap-q" class="nav-link" data-scroll-target="#armap-q">ARMA(p, q)</a>
   <ul class="collapse">
-  <li><a href="#armap-q" id="toc-armap-q" class="nav-link" data-scroll-target="#armap-q">ARMA(p, q)</a></li>
+  <li><a href="#co-prime-polynomials" id="toc-co-prime-polynomials" class="nav-link" data-scroll-target="#co-prime-polynomials">Co-prime Polynomials</a></li>
+  <li><a href="#causal-form" id="toc-causal-form" class="nav-link" data-scroll-target="#causal-form">Causal Form</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#appendix-a-glossary-of-math-symbols" id="toc-appendix-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#appendix-a-glossary-of-math-symbols">Appendix A: Glossary of Math Symbols</a></li>
@@ -157,7 +158,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">19:23 Fri 20-Jun-2025</p>
+      <p class="date">07:35 Sat 21-Jun-2025</p>
     </div>
   </div>
   
@@ -802,38 +803,52 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 </section>
 </section>
-<section id="assembling-components" class="level2">
-<h2 class="anchored" data-anchor-id="assembling-components">Assembling Components</h2>
-<section id="armap-q" class="level3">
-<h3 class="anchored" data-anchor-id="armap-q">ARMA(p, q)</h3>
-<p>The <span class="math inline">\(AR(p)\)</span> and <span class="math inline">\(MA(q)\)</span> models can be combined into the following <span class="math inline">\(ARMA(p,q)\)</span> model. To simplify notation we suppose for the moment that <span class="math inline">\(\mu_X = 0\)</span>. And once again <span class="math inline">\(W(\cdot)\)</span> denotes a white noise process.</p>
-<p><span id="eq-ARMA_p_q"><span class="math display">\[
+<section id="armap-q" class="level2">
+<h2 class="anchored" data-anchor-id="armap-q">ARMA(p, q)</h2>
+<p>The <span class="math inline">\(AR(p)\)</span> and <span class="math inline">\(MA(q)\)</span> models can be combined into the following <span class="math inline">\(ARMA(p,q)\)</span> model.</p>
+<p><span id="eq-ARMA_p_q_proc"><span class="math display">\[
 \begin{align}
-  \phi(\mathcal{B}) \; X(\cdot) &amp;= \theta(\mathcal{B}) \; W(\cdot) \\
-  \\
-  \text{so that } \\
-  \\
-  X(t) &amp;= \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
+  \phi(\mathcal{B}) \; (X(\cdot) - \mu_X) &amp;= \theta(\mathcal{B}) \; W(\cdot) &amp; \text{with } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
 \tag{41}\]</span></span></p>
-<p>Here we must impose a restriction on the polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> in addition to requiring their respective roots to all have magnitude greater than unity. The additional requirement is that they have no roots in common.</p>
+<p>so that</p>
+<p><span id="eq-ARMA_p_q"><span class="math display">\[
+\begin{align}
+  X(t) &amp;= \mu_X + \sum_{j = 1}^p \phi_j \; (X(t - j) - \mu_X) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
+\end{align}
+\tag{42}\]</span></span></p>
+<p>or more succinctly</p>
+<p><span id="eq-ARMA_p_q_alpha"><span class="math display">\[
+\begin{align}
+  X(t) &amp;= \alpha + \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k) \\
+  \text{where } \\
+  \alpha &amp;= \mu_x \; \left ( 1  - \sum_{j = 1}^p \phi_j \right )
+\end{align}
+\tag{43}\]</span></span></p>
+<section id="co-prime-polynomials" class="level3">
+<h3 class="anchored" data-anchor-id="co-prime-polynomials">Co-prime Polynomials</h3>
+<p>We must impose a restriction on the polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> in addition to requiring their respective roots to all have magnitude greater than unity. The additional requirement is that they have no roots in common.</p>
 <p>Consider for example the following putative <span class="math inline">\(ARMA(1,1)\)</span> model.<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a></p>
 <p><span id="eq-ARMA_1_1_not"><span class="math display">\[
 \begin{align}
-  X(t) &amp;= \alpha \; X(t - 1) \; + \; W(t) \; - \; \alpha \; W(t - 1) \\   \\
+  X(t) &amp;= \beta_1 \; X(t - 1) \; + \; W(t) \; - \; \beta_1 \; W(t - 1) \\   \\
   \text{so that } \\
   \\
   p(\mathcal{B}) \; X(\cdot) &amp;= p(\mathcal{B}) \; W(\cdot) \\   \\
   \text{where } \\
   \\
-  p(z) &amp;= 1 - \alpha \; z \quad \text{with } |\alpha| &lt; 1
+  p(z) &amp;= 1 - \beta_1 \; z \quad \text{with } |\beta_1| &lt; 1
 \end{align}
-\tag{42}\]</span></span></p>
-<p>The operator <span class="math inline">\(p(\mathcal{B})\)</span> can be cancelled from both sides of the equation, leaving only a white noise process: <span class="math inline">\(X(\cdot) = W(\cdot)\)</span>. Thus we assume that any polynomial factors common to both <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> have been eliminated. This implies that the roots of <span class="math inline">\(\phi(\cdot)\)</span> are distinct from those of <span class="math inline">\(\theta(\cdot)\)</span>.</p>
-<p>The <span class="math inline">\(ARMA(p,q)\)</span> model can be expressed in causal form.<a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a></p>
+\tag{44}\]</span></span></p>
+<p>The operator <span class="math inline">\(p(\mathcal{B})\)</span> can be cancelled from both sides of the equation, leaving only a white noise process: <span class="math inline">\(X(\cdot) = W(\cdot)\)</span>.</p>
+<p>More generally we require the elimination of any polynomial factors common to both <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span>. Equivalently, we require the roots of <span class="math inline">\(\phi(\cdot)\)</span> to be distinct from those of <span class="math inline">\(\theta(\cdot)\)</span>.</p>
+</section>
+<section id="causal-form" class="level3">
+<h3 class="anchored" data-anchor-id="causal-form">Causal Form</h3>
+<p>The <span class="math inline">\(ARMA(p,q)\)</span> model can be expressed in causal form as follows.<a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a></p>
 <p><span id="eq-ARMA_p_q_causal"><span class="math display">\[
 \begin{align}
-  X(\cdot) &amp;= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(\cdot) \\
+  X(\cdot) - \mu_X &amp;= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(\cdot) \\
   &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\
   &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\
   \text{where } \\
@@ -842,7 +857,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \text{and } \\
   &amp; \sum_{\nu = 0}^\infty \; |\psi_\nu| \; &lt; \; \infty
 \end{align}
-\tag{43}\]</span></span></p>
+\tag{45}\]</span></span></p>
 </section>
 </section>
 <section id="closing-remarks" class="level2">

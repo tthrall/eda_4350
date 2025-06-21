@@ -919,23 +919,37 @@ $$ {#eq-AR-infty}
 
 which can be viewed as an infinite-order auto-regressive model.  Now for an $AR(p)$, with $p$ finite, the PACF can be shown to be non-zero at lag $u = p$ (and zero thereafter).  In the case of the $MA(q)$ model, equivalent to an infinite-order $AR$ model, the PACF tends to zero but does not vanish as $|u| \rightarrow \infty$.
 
-## Assembling Components
+## ARMA(p, q)
 
-### ARMA(p, q)
-
-The $AR(p)$ and $MA(q)$ models can be combined into the following $ARMA(p,q)$ model.  To simplify notation we suppose for the moment that $\mu_X = 0$.  And once again $W(\cdot)$ denotes a white noise process.
+The $AR(p)$ and $MA(q)$ models can be combined into the following $ARMA(p,q)$ model.
 
 $$
 \begin{align}
-  \phi(\mathcal{B}) \; X(\cdot) &= \theta(\mathcal{B}) \; W(\cdot) \\ 
-  \\ 
-  \text{so that } \\
-  \\ 
-  X(t) &= \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
+  \phi(\mathcal{B}) \; (X(\cdot) - \mu_X) &= \theta(\mathcal{B}) \; W(\cdot) & \text{with } W(\cdot) \sim wn(0, \sigma_W^2)
+ \end{align}
+$$ {#eq-ARMA_p_q_proc}
+
+so that 
+
+$$
+\begin{align}
+  X(t) &= \mu_X + \sum_{j = 1}^p \phi_j \; (X(t - j) - \mu_X) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
  \end{align}
 $$ {#eq-ARMA_p_q}
 
-Here we must impose a restriction on the polynomials $\phi(\cdot)$ and $\theta(\cdot)$ in addition to requiring their respective roots to all have magnitude greater than unity.  The additional requirement is that they have no roots in common.
+or more succinctly 
+
+$$
+\begin{align}
+  X(t) &= \alpha + \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k) \\ 
+  \text{where } \\
+  \alpha &= \mu_x \; \left ( 1  - \sum_{j = 1}^p \phi_j \right )
+ \end{align}
+$$ {#eq-ARMA_p_q_alpha}
+
+### Co-prime Polynomials
+
+We must impose a restriction on the polynomials $\phi(\cdot)$ and $\theta(\cdot)$ in addition to requiring their respective roots to all have magnitude greater than unity.  The additional requirement is that they have no roots in common.
 
 Consider for example the following putative $ARMA(1,1)$ model.[^txt_ARMA_1_1_not]
 
@@ -943,25 +957,29 @@ Consider for example the following putative $ARMA(1,1)$ model.[^txt_ARMA_1_1_not
 
 $$
 \begin{align}
-  X(t) &= \alpha \; X(t - 1) \; + \; W(t) \; - \; \alpha \; W(t - 1) \\   \\
+  X(t) &= \beta_1 \; X(t - 1) \; + \; W(t) \; - \; \beta_1 \; W(t - 1) \\   \\
   \text{so that } \\ 
   \\ 
   p(\mathcal{B}) \; X(\cdot) &= p(\mathcal{B}) \; W(\cdot) \\   \\
   \text{where } \\ 
   \\ 
-  p(z) &= 1 - \alpha \; z \quad \text{with } |\alpha| < 1
+  p(z) &= 1 - \beta_1 \; z \quad \text{with } |\beta_1| < 1
  \end{align}
 $$ {#eq-ARMA_1_1_not}
 
-The operator $p(\mathcal{B})$ can be cancelled from both sides of the equation, leaving only a white noise process: $X(\cdot) = W(\cdot)$.  Thus we assume that any polynomial factors common to both $\phi(\cdot)$ and $\theta(\cdot)$ have been eliminated.  This implies that the roots of $\phi(\cdot)$ are distinct from those of $\theta(\cdot)$.
+The operator $p(\mathcal{B})$ can be cancelled from both sides of the equation, leaving only a white noise process: $X(\cdot) = W(\cdot)$.
 
-The $ARMA(p,q)$ model can be expressed in causal form.[^ARMA_p_q_causal]
+More generally we require the elimination of any polynomial factors common to both $\phi(\cdot)$ and $\theta(\cdot)$.  Equivalently, we require the roots of $\phi(\cdot)$ to be distinct from those of $\theta(\cdot)$.
+
+### Causal Form
+
+The $ARMA(p,q)$ model can be expressed in causal form as follows.[^ARMA_p_q_causal]
 
 [^ARMA_p_q_causal]: That is, the rational function $\theta(z) \; \div \phi(z)$ can be represented as a power series obtained as the power series for $\phi(z)^{-1}$ multiplied by the polynomial $\theta(z)$.
 
 $$
 \begin{align}
-  X(\cdot) &= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(\cdot) \\ 
+  X(\cdot) - \mu_X &= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(\cdot) \\ 
   &= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\ 
   &= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\ 
   \text{where } \\ 
