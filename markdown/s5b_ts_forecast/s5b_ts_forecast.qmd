@@ -144,9 +144,11 @@ In our example there are two data columns (`hare`, `lynx`), so that $d = 2$, the
 
 $$
 \begin{align}
-  t &= t_0 + \nu & \text{ with } \nu \in \nu_T = \{0, 1, \ldots, T-1 \}
+  & t \in \tau_T \\ 
+  \text{where } & \tau_T = t_0 + \nu_T \\ 
+  \text{and } & \nu_T = \{0, 1, \ldots, T-1 \}
 \end{align}
-$$
+$$ {#eq-tau-T}
 
 The expected value of the random process may be modeled by various functions of time: a constant, a linear trend, a seasonal component (periodic function), etc.
 

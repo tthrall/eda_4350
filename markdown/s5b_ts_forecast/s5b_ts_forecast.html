@@ -158,7 +158,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">10:45 Sat 21-Jun-2025</p>
+      <p class="date">11:51 Sat 21-Jun-2025</p>
     </div>
   </div>
   
@@ -214,17 +214,19 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \tag{1}\]</span></span></p>
 <p>If the number of data columns is two or greater <span class="math inline">\((d \ge 2)\)</span>, the process is said to be multivariate. Otherwise, if <span class="math inline">\(d = 1\)</span> the process is said to be univariate, and the notation is simplified to <span class="math inline">\(X (t)\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>In our example there are two data columns (<code>hare</code>, <code>lynx</code>), so that <span class="math inline">\(d = 2\)</span>, the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period.</p>
-<p><span class="math display">\[
+<p><span id="eq-tau-T"><span class="math display">\[
 \begin{align}
-  t &amp;= t_0 + \nu &amp; \text{ with } \nu \in \nu_T = \{0, 1, \ldots, T-1 \}
+  &amp; t \in \tau_T \\
+  \text{where } &amp; \tau_T = t_0 + \nu_T \\
+  \text{and } &amp; \nu_T = \{0, 1, \ldots, T-1 \}
 \end{align}
-\]</span></p>
+\tag{2}\]</span></span></p>
 <p>The expected value of the random process may be modeled by various functions of time: a constant, a linear trend, a seasonal component (periodic function), etc.</p>
 <p><span id="eq-m-bullet"><span class="math display">\[
 \begin{align}
   m_\bullet (t) &amp;= E \{ X_\bullet (t) \}
 \end{align}
-\tag{2}\]</span></span></p>
+\tag{3}\]</span></span></p>
 </section>
 <section id="stationarity" class="level3">
 <h3 class="anchored" data-anchor-id="stationarity">Stationarity</h3>
@@ -234,7 +236,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   Y_\bullet (t) &amp;= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
   &amp;= X_\bullet (t - s)
 \end{align}
-\tag{3}\]</span></span></p>
+\tag{4}\]</span></span></p>
 <p>Here <span class="math inline">\(\mathcal{B}\)</span> denotes the <em>back-shift</em> operator that shifts time by one unit, so that <span class="math inline">\(\mathcal{B}^s\)</span> (that is, <span class="math inline">\(s\)</span> repeated applications of <span class="math inline">\(\mathcal{B}\)</span>) shifts time by <span class="math inline">\(s\)</span> units. Then second-order stationarity can be expressed as follows.</p>
 <p><span class="math display">\[
 \begin{align}
@@ -254,7 +256,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   Cov \{ X_a (t + u), X_b (t) \}
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
-\tag{4}\]</span></span></p>
+\tag{5}\]</span></span></p>
 <p>Consequently, second-order stationarity enables one to define and estimate the following <em>auto-covariance</em> function.</p>
 <p><span id="eq-ACovF"><span class="math display">\[
 \begin{align}
@@ -264,7 +266,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   \gamma_{a, b} (u) &amp;= Cov \{ X_a (t + u), X_b (t) \} \\
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
-\tag{5}\]</span></span></p>
+\tag{6}\]</span></span></p>
 <p>Although <span class="math inline">\(\gamma_{\bullet, \bullet} (u)\)</span> is a symmetric matrix at <span class="math inline">\(u = 0\)</span>, it is not generally symmetric at <span class="math inline">\(u \ne 0\)</span>. The symmetry relation we do have is that matrix <span class="math inline">\(\gamma_{\bullet, \bullet} (-u)\)</span> is the transpose of matrix <span class="math inline">\(\gamma_{\bullet, \bullet} (u)\)</span>.</p>
 <p><span id="eq-ACovF-symm"><span class="math display">\[
 \begin{align}
@@ -273,7 +275,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   &amp;= Cov \{ X_b (t + u), X_a (t) \}   \\
   &amp;= \gamma_{b, a} (u)
 \end{align}
-\tag{6}\]</span></span></p>
+\tag{7}\]</span></span></p>
 <p>In particular, <span class="math inline">\(\gamma_{a, a} (\cdot)\)</span> is an even function: <span class="math inline">\(\gamma_{a, a} (-u) = \gamma_{a, a} (u)\)</span>.</p>
 <p>Consequently, the time-reversed process <span class="math inline">\(Y_\bullet (t) = X_\bullet (-t)\)</span> has the same auto-covariance structure as the original process, allowing for this matrix transposition.</p>
 <p>The <em>autocorrelation (ACF)</em> function <span class="math inline">\(\rho_{\bullet, \bullet}(\cdot)\)</span> is the following scaled version of the auto-covariance function.</p>
@@ -285,7 +287,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   \rho_{a, b} (u) &amp;= corr \{ X_a (u), X_b (0) \} \\
   &amp;= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
-\tag{7}\]</span></span></p>
+\tag{8}\]</span></span></p>
 </section>
 <section id="pacf-partial-autocorrelation-function" class="level3">
 <h3 class="anchored" data-anchor-id="pacf-partial-autocorrelation-function">PACF: partial autocorrelation function</h3>
@@ -296,14 +298,14 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   \tilde{X} &amp;= E(X \; | \; Z_\bullet) \\
   \tilde{Y} &amp;= E(Y \; | \; Z_\bullet)
 \end{align}
-\tag{8}\]</span></span></p>
+\tag{9}\]</span></span></p>
 <p>Of all possible functions of <span class="math inline">\(Z_\bullet\)</span>, the conditional expectation above minimizes the mean squared approximation error.</p>
 <p><span id="eq-mse-XY-Z"><span class="math display">\[
 \begin{align}
   MSE \left \{ X, \; f(Z_\bullet) \right \} &amp;= E \left \{ (X - f(Z_\bullet))^2 \right \} \\
   MSE \left \{ Y, \; g(Z_\bullet) \right \} &amp;= E \left \{ (Y - g(Z_\bullet))^2 \right \}
 \end{align}
-\tag{9}\]</span></span></p>
+\tag{10}\]</span></span></p>
 <p>If <span class="math inline">\(X, Y, Z_\bullet\)</span> have a joint normal distribution, then <span class="math inline">\(\tilde{X}\)</span> is an affine function of <span class="math inline">\(Z_\bullet\)</span>, that is, a constant plus a linear combination of the components of <span class="math inline">\(Z_\bullet\)</span>, and so is <span class="math inline">\(\tilde{Y}\)</span>.</p>
 <p>In general, however <span class="math inline">\(X, Y, Z_\bullet\)</span> may be jointly distributed, we denote by <span class="math inline">\(\hat{X}\)</span> and <span class="math inline">\(\hat{Y}\)</span> the affine functions of <span class="math inline">\(Z_\bullet\)</span> that minimize the mean squared approximation error.</p>
 <p><span id="eq-hat-X-Z"><span class="math display">\[
@@ -311,14 +313,14 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   \hat{\beta}_\bullet &amp;= \arg \min_{\beta_\bullet} \; MSE \left \{ X, \; \beta_0 + \sum_{k = 1}^K \beta_k Z_k \right \} \\
   \hat{X} &amp;= \hat{\beta}_0 + \sum_{k = 1}^K \hat{\beta}_k Z_k
 \end{align}
-\tag{10}\]</span></span></p>
+\tag{11}\]</span></span></p>
 <p><span class="math inline">\(\hat{Y}\)</span> is similarly defined. In the normal case we have <span class="math inline">\(\tilde{X} = \hat{X}\)</span> and <span class="math inline">\(\tilde{Y} = \hat{Y}\)</span>.</p>
 <p>Then the partial correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z_\bullet\)</span> is the correlation between the respective <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> residuals, as follows.</p>
 <p><span id="eq-corXY-Z"><span class="math display">\[
 \begin{align}
   \rho_{X, Y \bullet Z_\bullet} &amp;= corr \left (X - \hat{X} \; , \; Y - \hat{Y} \right)
 \end{align}
-\tag{11}\]</span></span></p>
+\tag{12}\]</span></span></p>
 <p>In the time series context we introduce the PACF with reference to a univariate, stationary Gaussian process, <span class="math inline">\(\mathcal{N}(t)\)</span>, having zero mean.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 <p>At lags <span class="math inline">\(|u| \le 1\)</span> the partial autocorrelation is defined as the autocorrelation <span class="math inline">\(\rho (u)\)</span>. For <span class="math inline">\(u &gt; 1\)</span> the PACF is defined to be the correlation between <span class="math inline">\(\mathcal{N}(t + u)\)</span> and <span class="math inline">\(\mathcal{N}(t)\)</span> conditioned on the intervening variables <span class="math inline">\(\mathcal{N}(t + 1), \ldots, \mathcal{N}(t + u - 1)\)</span>. Let <span class="math inline">\(\Delta_u\)</span> denote these intervening integer increments <span class="math inline">\(\{ 1, 2, \ldots, u-1 \}\)</span>.</p>
 <p><span class="math display">\[
@@ -338,7 +340,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
    &amp;= \beta_1 \mathcal{N}(t + u - 1) + \cdots
      + \beta_{u-1} \mathcal{N}(t + 1)
 \end{align}
-\tag{12}\]</span></span></p>
+\tag{13}\]</span></span></p>
 <p><span id="eq-N-given-future"><span class="math display">\[
 \begin{align}
    \hat{\mathcal{N}}(t \; | \; \Delta_u)
@@ -347,7 +349,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
    &amp;= \beta_1 \mathcal{N}(t + 1) + \cdots
      + \beta_{u-1} \mathcal{N}(t + u - 1)
 \end{align}
-\tag{13}\]</span></span></p>
+\tag{14}\]</span></span></p>
 <p>The conditional expectation is linear in the conditioning variables thanks to the assumption that <span class="math inline">\(\mathcal{N}(t)\)</span> is a Gaussian process having zero mean. In the non-Gaussian case the linear combination is defined as the one that minimizes the mean-squared approximation error.</p>
 <p>The coefficients in the linear combination are shared by <span class="math inline">\(\hat{\mathcal{N}}(t)\)</span> and <span class="math inline">\(\hat{\mathcal{N}}(t + u)\)</span> but are applied in reverse order. This is because the time-reversed process <span class="math inline">\(\mathcal{N}(-t)\)</span> has the same auto-covariance structure as the original process <span class="math inline">\(\mathcal{N}(t)\)</span>.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
 <p>The partial autocorrelation function is now defined as the correlation of the residual variables:</p>
@@ -355,7 +357,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \begin{align}
   \rho (u | u) &amp;= corr \left (\mathcal{N}(t + u) - \hat{\mathcal{N}}(t + u \; | -\Delta_u) \; , \; \mathcal{N}(t) - \hat{\mathcal{N}}(t \; | \; \Delta_u) \right)
 \end{align}
-\tag{14}\]</span></span></p>
+\tag{15}\]</span></span></p>
 <p>The calculation of the PACF can be based on the recursive Durbin-Levinson algorithm<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>:</p>
 <p><span id="eq-DL-algo"><span class="math display">\[
 \begin{align}
@@ -365,7 +367,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   \\
   \rho (u | \nu) &amp;= \rho (u-1 | \nu) \; - \; \rho (u | u) \; \rho (u-1 | u-\nu)
 \end{align}
-\tag{15}\]</span></span></p>
+\tag{16}\]</span></span></p>
 </section>
 </section>
 <section id="operations-on-time-series" class="level2">
@@ -398,7 +400,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   Y_\bullet (t)
   &amp;= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
 \end{align}
-\tag{16}\]</span></span></p>
+\tag{17}\]</span></span></p>
 </section>
 <section id="differences-of-successive-observations" class="level3">
 <h3 class="anchored" data-anchor-id="differences-of-successive-observations">Differences of Successive Observations</h3>
@@ -408,13 +410,13 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \begin{align}
   m(t) &amp;= E\{ X(t) \} = \beta_0 + \beta_1 t
 \end{align}
-\tag{17}\]</span></span></p>
+\tag{18}\]</span></span></p>
 <p>Then forming successive differences removes the linear trend.</p>
 <p><span id="eq-e-diff"><span class="math display">\[
 \begin{align}
   E \left \{ X(t) - X(t-1) \right \} &amp;= \beta_1
 \end{align}
-\tag{18}\]</span></span></p>
+\tag{19}\]</span></span></p>
 <p>Here we have applied the differencing operator <span class="math inline">\(\mathcal{D}\)</span>.</p>
 <p><span id="eq-diff-op-demo"><span class="math display">\[
 \begin{align}
@@ -424,7 +426,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   \mathcal{D} &amp;= \mathcal{I} - \mathcal{B}
 \end{align}
-\tag{19}\]</span></span></p>
+\tag{20}\]</span></span></p>
 <p>For example, consider the DJIA stock index (<a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a>). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.</p>
 <p>Repeated application of <span class="math inline">\(\mathcal{D}\)</span> removes polynomial trends.</p>
 </section>
@@ -437,7 +439,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\
   &amp;= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u)
 \end{align}
-\tag{20}\]</span></span></p>
+\tag{21}\]</span></span></p>
 <p>where <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> is a sequence of <span class="math inline">\(d \times d\)</span> matrices and <span class="math inline">\(*\)</span> denotes discrete convolution.</p>
 <p>For example, here’s the 5-year moving average above expressed in this format.</p>
 <p><span id="eq-ma-5-filter"><span class="math display">\[
@@ -448,7 +450,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
       0 &amp; \text{ for } |u| &gt; 2
     \end{cases}
 \end{align}
-\tag{21}\]</span></span></p>
+\tag{22}\]</span></span></p>
 <p>And here’s the difference operator <span class="math inline">\(\mathcal{D}\)</span> in the filtering format.</p>
 <p><span id="eq-diff-filter"><span class="math display">\[
 \begin{align}
@@ -459,7 +461,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
       0  &amp; \text{ otherwise }
     \end{cases}
 \end{align}
-\tag{22}\]</span></span></p>
+\tag{23}\]</span></span></p>
 <p>A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a <em>low-pass</em> filter. The differencing operator can be categorized as a <em>high-pass</em> filter.</p>
 <p>In signal-processing applications a linear, time-invariant filter <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> may be designed to extract certain types of signals that are contaminated by noise.<span class="citation" data-cites="hamming1989">(<a href="#ref-hamming1989" role="doc-biblioref">Hamming 1989</a>)</span></p>
 </section>
@@ -520,7 +522,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
     \\
     W(t) &amp;\sim wn(0, \sigma_W^2)
 \end{align}
-\tag{23}\]</span></span></p>
+\tag{24}\]</span></span></p>
 <p>That is, <span class="math inline">\(W(t)\)</span> again denotes a residual “white noise” stationary process: free of autocorrelation and having zero mean.</p>
 <section id="polynomial-representation" class="level4">
 <h4 class="anchored" data-anchor-id="polynomial-representation">Polynomial representation</h4>
@@ -535,7 +537,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \text{so that } \\
   \phi (\mathcal{B}) &amp;= \mathcal{I} \; - \; \sum_{\nu = 1}^p \phi_\nu \mathcal{B}^\nu
 \end{align}
-\tag{24}\]</span></span></p>
+\tag{25}\]</span></span></p>
 <p>The polynomial <span class="math inline">\(\phi(\cdot)\)</span> applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> is an <em>auto-regressive operator of order</em> <span class="math inline">\(p\)</span>.</p>
 <p>Now, the <span class="math inline">\(AR(p)\)</span> model is defined to be that of a <em>stationary</em> process <span class="math inline">\(X(t)\)</span>, which constrains the coefficients of polynomial <span class="math inline">\(\phi(\cdot)\)</span>. Additional requirements that the model be <em>causal</em><a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> and <em>invertible</em><a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> restrict attention to polynomials <span class="math inline">\(\phi(\cdot)\)</span> whose roots are all greater than unity in magnitude. This ensures that the multiplicative inverse function <span class="math inline">\(\phi (z)^{-1}\)</span> is well defined and has a power series expansion for <span class="math inline">\(|z| \le 1\)</span>.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
 </section>
@@ -554,7 +556,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= \left \{ (\mathcal{I} - \phi_1 \mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\
   &amp;= \left \{ \phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t)
 \end{align}
-\tag{25}\]</span></span></p>
+\tag{26}\]</span></span></p>
 <p>The auto-regressive polynomial <span class="math inline">\(\phi (\cdot)\)</span> has degree 1.</p>
 <p><span class="math display">\[
 \begin{align}
@@ -583,7 +585,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   W(t) &amp;= \left \{ \phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\
   X(t) - \mu_X &amp;= \left \{ \phi (\mathcal{B})^{-1} \; W(\cdot) \right \} (t)
 \end{align}
-\tag{26}\]</span></span></p>
+\tag{27}\]</span></span></p>
 <p>since</p>
 <p><span class="math display">\[
 \begin{align}
@@ -598,7 +600,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   \rho_X (u) &amp;= \phi_1^{|u|}
 \end{align}
-\tag{27}\]</span></span></p>
+\tag{28}\]</span></span></p>
 <p>Using the Durbin-Levinson algorithm, one can go on to show<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> that the partial autocorrelation function (PACF) of <span class="math inline">\(X(\cdot)\)</span> has the following simple form.</p>
 <p><span id="eq-AR1-PACF"><span class="math display">\[
 \begin{align}
@@ -609,16 +611,16 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{28}\]</span></span></p>
+\tag{29}\]</span></span></p>
 </section>
 <section id="arp" class="level4">
 <h4 class="anchored" data-anchor-id="arp">AR(p)</h4>
-<p>As previously noted, an <span class="math inline">\(AR(p)\)</span> model can be defined via a polynomial <span class="math inline">\(\phi(\cdot)\)</span> that is applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>. The coefficients of <span class="math inline">\(\phi(\cdot)\)</span> are real, but it is useful to apply the polynomial to the complex variable <span class="math inline">\(z\)</span>. From <a href="#eq-ARp-bs-poly" class="quarto-xref">Equation&nbsp;24</a> we have</p>
+<p>As previously noted, an <span class="math inline">\(AR(p)\)</span> model can be defined via a polynomial <span class="math inline">\(\phi(\cdot)\)</span> that is applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>. The coefficients of <span class="math inline">\(\phi(\cdot)\)</span> are real, but it is useful to apply the polynomial to the complex variable <span class="math inline">\(z\)</span>. From <a href="#eq-ARp-bs-poly" class="quarto-xref">Equation&nbsp;25</a> we have</p>
 <p><span id="eq-ARp-poly"><span class="math display">\[
 \begin{align}
   \phi(z) &amp;= 1 \; - \; \sum_{\nu = 1}^p \; \phi_\nu \; z^\nu
 \end{align}
-\tag{29}\]</span></span></p>
+\tag{30}\]</span></span></p>
 <p>Also as previously mentioned, we require the roots of <span class="math inline">\(\phi(\cdot)\)</span> to lie outside the closed unit disc, that is, to be greater than unity in magnitude. This requirement ensures that the model is stationary, causal, and invertible.</p>
 <p>Consequently we have the following causal form of the model.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> <a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a></p>
 <p><span id="eq-ARp-causal-form"><span class="math display">\[
@@ -632,8 +634,8 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \text{and } \\
   &amp; \sum_{\nu = 0}^\infty \; |\chi_\nu| \; &lt; \; \infty
 \end{align}
-\tag{30}\]</span></span></p>
-<p><a href="#eq-ARp-bs-poly" class="quarto-xref">Equation&nbsp;24</a> also shows that <span class="math inline">\(W(t)\)</span> depends on current and past values of <span class="math inline">\(X(t)\)</span>, with past values terminating at <span class="math inline">\(X(t-p)\)</span>.</p>
+\tag{31}\]</span></span></p>
+<p><a href="#eq-ARp-bs-poly" class="quarto-xref">Equation&nbsp;25</a> also shows that <span class="math inline">\(W(t)\)</span> depends on current and past values of <span class="math inline">\(X(t)\)</span>, with past values terminating at <span class="math inline">\(X(t-p)\)</span>.</p>
 <p><span class="math display">\[
 \begin{align}
   W(t) &amp;= \left \{\phi (\mathcal{B}) \; (X(\cdot) - \mu_X) \right \} \; (t) \\
@@ -716,7 +718,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;\text{ with } |\theta_1| &lt; 1 \\
   &amp;\text{ and } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
-\tag{31}\]</span></span></p>
+\tag{32}\]</span></span></p>
 <p>Here is the auto-covariance function for this process.</p>
 <p><span id="eq-MA1-ACovF"><span class="math display">\[
 \begin{align}
@@ -728,7 +730,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   \gamma_X (u) &amp;= 0 \quad \text{for } |u| \ge 2
 \end{align}
-\tag{32}\]</span></span></p>
+\tag{33}\]</span></span></p>
 <p>And here is the corresponding autocorrelation function (ACF)<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a>.</p>
 <p><span id="eq-MA1-ACF"><span class="math display">\[
 \begin{align}
@@ -739,13 +741,13 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
     0 &amp; \text{ for } |u| \ge 2 \\  
   \end{cases}
 \end{align}
-\tag{33}\]</span></span></p>
+\tag{34}\]</span></span></p>
 <p>The PACF turns out to have the following form<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a>.</p>
 <p><span id="eq-MA1-PACF"><span class="math display">\[
 \begin{align}
   \rho_X (u | u) &amp;=  \frac{(- \theta_1)^u(1 - \theta_1^2)}{1 - \theta_1^{2 (u+1)}} &amp; \text{ for } u \ge 2
 \end{align}
-\tag{34}\]</span></span></p>
+\tag{35}\]</span></span></p>
 </section>
 <section id="maq" class="level4">
 <h4 class="anchored" data-anchor-id="maq">MA(q)</h4>
@@ -755,7 +757,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \theta(z) &amp;= 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\
   &amp;= \sum_{\nu = 0}^q \theta_\nu \; z^\nu &amp; \text{with } \theta_0 = 1
 \end{align}
-\tag{35}\]</span></span></p>
+\tag{36}\]</span></span></p>
 <p>Applying <span class="math inline">\(\theta(\cdot)\)</span> to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>, we have the following <span class="math inline">\(MA(q)\)</span> model.</p>
 <p><span id="eq-MAq"><span class="math display">\[
 \begin{align}
@@ -765,7 +767,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   &amp;\text{ with } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
-\tag{36}\]</span></span></p>
+\tag{37}\]</span></span></p>
 <p>With <span class="math inline">\(MA(1)\)</span> serving as an example, it is easy to see that for an <span class="math inline">\(MA(q)\)</span> model of <span class="math inline">\(X(\cdot)\)</span>, the auto-covariance function <span class="math inline">\(\gamma_X (u)\)</span> and the autocorrelation function <span class="math inline">\(\rho_X (u)\)</span> equal zero at lags <span class="math inline">\(|u| &gt; q\)</span>.</p>
 <p><span id="eq-MAq-ACF"><span class="math display">\[
 \begin{align}
@@ -774,7 +776,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   \rho_X (u) &amp;= 0
 \end{align}
-\tag{37}\]</span></span></p>
+\tag{38}\]</span></span></p>
 <p>We require the roots of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitudes greater than unity to ensure that its multiplicative inverse function, <span class="math inline">\(\theta(z)^{-1}\)</span>, has a power series expansion valid for <span class="math inline">\(|z| \le 1\)</span>.</p>
 <p><span id="eq-MAq-poly-inv"><span class="math display">\[
 \begin{align}
@@ -785,20 +787,20 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   &amp; \text{where } \psi_0 = 1
 \end{align}
-\tag{38}\]</span></span></p>
+\tag{39}\]</span></span></p>
 <p>Then <span class="math inline">\(\theta(\mathcal{B})^{-1}\)</span> is well-defined, and we have</p>
 <p><span id="eq-MAq-inv"><span class="math display">\[
 \begin{align}
   W(t) &amp;= \left \{ \theta(\mathcal{B})^{-1} \; X(\cdot) \right \} (t)  \\
   &amp;= X(t) + \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu)
 \end{align}
-\tag{39}\]</span></span></p>
+\tag{40}\]</span></span></p>
 <p>Equivalently, we have</p>
 <p><span id="eq-AR-infty"><span class="math display">\[
 \begin{align}
   X(t) &amp;= W(t) - \sum_{\nu = 1}^\infty \psi_\nu \; X(t - \nu)
 \end{align}
-\tag{40}\]</span></span></p>
+\tag{41}\]</span></span></p>
 <p>which can be viewed as an infinite-order auto-regressive model. Now for an <span class="math inline">\(AR(p)\)</span>, with <span class="math inline">\(p\)</span> finite, the PACF can be shown to be non-zero at lag <span class="math inline">\(u = p\)</span> (and zero thereafter). In the case of the <span class="math inline">\(MA(q)\)</span> model, equivalent to an infinite-order <span class="math inline">\(AR\)</span> model, the PACF tends to zero but does not vanish as <span class="math inline">\(|u| \rightarrow \infty\)</span>.</p>
 </section>
 </section>
@@ -810,13 +812,13 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \begin{align}
   \phi(\mathcal{B}) \; (X(\cdot) - \mu_X) &amp;= \theta(\mathcal{B}) \; W(\cdot) &amp; \text{with } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
-\tag{41}\]</span></span></p>
+\tag{42}\]</span></span></p>
 <p>so that</p>
 <p><span id="eq-ARMA_p_q"><span class="math display">\[
 \begin{align}
   X(t) &amp;= \mu_X + \sum_{j = 1}^p \phi_j \; (X(t - j) - \mu_X) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
 \end{align}
-\tag{42}\]</span></span></p>
+\tag{43}\]</span></span></p>
 <p>or more succinctly</p>
 <p><span id="eq-ARMA_p_q_alpha"><span class="math display">\[
 \begin{align}
@@ -824,7 +826,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \text{where } \\
   \alpha &amp;= \mu_x \; \left ( 1  - \sum_{j = 1}^p \phi_j \right )
 \end{align}
-\tag{43}\]</span></span></p>
+\tag{44}\]</span></span></p>
 <section id="co-prime-polynomials" class="level3">
 <h3 class="anchored" data-anchor-id="co-prime-polynomials">Co-prime Polynomials</h3>
 <p>We must impose a restriction on the polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> in addition to requiring their respective roots to all have magnitude greater than unity. The additional requirement is that they have no roots in common.</p>
@@ -839,7 +841,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   p(z) &amp;= 1 - \beta_1 \; z \quad \text{with } |\beta_1| &lt; 1
 \end{align}
-\tag{44}\]</span></span></p>
+\tag{45}\]</span></span></p>
 <p>The operator <span class="math inline">\(p(\mathcal{B})\)</span> can be cancelled from both sides of the equation, leaving only a white noise process: <span class="math inline">\(X(\cdot) = W(\cdot)\)</span>.</p>
 <p>More generally we require the elimination of any polynomial factors common to both <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span>. Equivalently, we require the roots of <span class="math inline">\(\phi(\cdot)\)</span> to be distinct from those of <span class="math inline">\(\theta(\cdot)\)</span>.</p>
 </section>
@@ -857,7 +859,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \text{and } \\
   &amp; \sum_{\nu = 0}^\infty \; |\psi_\nu| \; &lt; \; \infty
 \end{align}
-\tag{45}\]</span></span></p>
+\tag{46}\]</span></span></p>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
