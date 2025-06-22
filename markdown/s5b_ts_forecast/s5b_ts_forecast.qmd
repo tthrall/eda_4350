@@ -1103,19 +1103,50 @@ $\Gamma$ is a covariance matrix, and is therefore non-negative definite.  In mos
 
 As noted above, we have assumed for the sake of discussion that the entire auto-covariance function $\gamma_X (\cdot)$ is known.  In practice such statistics must be estimated from the data, and the equations above entail $\gamma_X(T + u - 1 - j)$, which for $j < u$ cannot be directly estimated from the data.  Instead we must rely on a model of the process for such estimates.
 
-### ARMA Forecasting
+$$
+\begin{align}
+  \Gamma [j, \nu] & = \gamma_X(\nu - j) & \text{for } \nu, j \in \nu_T \\ 
+  \tilde{\gamma} [j] &= \gamma_X (u - j + T - 1)
+\end{align}
+$$ {#eq-predictor-matrix-vars}
 
+### ARMA Forecasting[^txt-ARMA-forecasting]
 
+[^txt-ARMA-forecasting]: @shumway2025 [page 117]
+
+For presentation purposes we continue to assume that all random process parameters are known.  And to simplify notation we first consider the case of a stationary Gaussian process $\mathcal{N} (\cdot)$ having mean 0.  In this case we can express the intended least squares linear approximation of $N(t)$ based on $\{ N(s) \}_{s \in \mathcal{S}}$ as a conditional expectation.  In fact it will be convenient to be able to condition on the entire past of the random process covering indices $\mathcal{p} (t_f)$ up to and including the index $t_f$ of the final data observation.
+
+$$
+\begin{align}
+  \mathcal{p} (t_f) &= \left \{ s \in \mathbb{Z} \; | \; s \le t_f \right \}
+\end{align}
+$$ {#eq-le-tf}
+
+We adopt the following notation for the expectation of a future value of the process $N(u + t_f)$ conditioned on the entire past history of the process $\{ N(s) \}_{s \le t_f}$.
+
+$$
+\begin{align}
+  \tilde{\mathcal{N}} (u + t_f \; | \; \mathcal{p} (t_f)) &= E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
+\end{align}
+$$ {#eq-e-future-given-past}
+
+Due to the normality of $N(\cdot)$ this conditional expectation coincides with the linear (affine) least squares predictor.
+
+$$
+\begin{align}
+  \hat{\mathcal{N}} (u + t_f \; | \; \mathcal{p} (t_f)) &= \tilde{\mathcal{N}} (u + t_f \; | \; \mathcal{p} (t_f))
+\end{align}
+$$ {#eq-e-future-given-past}
 
 ## Closing Remarks
 
-This technical note is intended as an overview of time series analysis based on @shumway2025 along with the supporting `R` package `astsa` [@astsa]. The reader should feel free to select the presented examples of greatest interest, skipping others to save time.
+This technical note is intended as an overview of time series forecasting models based on @shumway2025 along with the supporting `R` package `astsa` [@astsa].[^2]
 
-In this note, time-domain and frequency-domain methods are mentioned only in the broadest terms, leaving details for other presentations.
+[^2]: The notation in this note draws on another textbook, @brillinger2001.
 
 For a more comprehensive listing of relevant `R` packages see the time series task view available from [CRAN](https://cran.r-project.org/web/views/TimeSeries.html), the Comprehensive R Archive Network.
 
-See [Regression and Time Series Primer](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer) for a more detailed introduction to the topics presented here. And see [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa) for an introduction to `R` package `astsa`.
+Also see [Regression and Time Series Primer](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer) for a more detailed introduction to the topics presented here. And see [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa) for an introduction to `R` package `astsa`.
 
 ```{r}
 #| label: s5a_books_tbl
@@ -1257,9 +1288,15 @@ $$
   \\   
   \hat{\mu}_X
      \quad & \quad \text{sample mean, } S_{X, T} / T \\ 
+  \\   
+  \mathcal{N}(\cdot)
+     \quad & \quad \text{a univariate, stationary, Gaussian process having mean 0} \\ 
   \\ 
   \nu_T 
      \quad & \quad \{ 0, 1, \dots, T-1 \} \\ 
+  \\ 
+  \mathcal{p} (t_f) 
+     \quad & \quad \{ s \in \mathbb{Z} \; | \; s \le t_f \} \\ 
   \\ 
   \rho_{\bullet, \bullet} (u) 
      \quad & \quad \text{autocorrelation matrix at time-shift } u \\ 
@@ -1367,9 +1404,9 @@ g_temp_lo <- astsa::tsplot(
 
 ### Dow Jones Industrial Average
 
-@fig-djia shows the trading day closings and returns (percent change)[^2] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
+@fig-djia shows the trading day closings and returns (percent change)[^djia_returns] of the Dow Jones Industrial Average (DJIA, `astsa::djia`) from 2006 to 2016. It is easy to spot the financial crisis of 2008.
 
-[^2]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
+[^djia_returns]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
 
 ```{r}
 #| label: fig-djia
