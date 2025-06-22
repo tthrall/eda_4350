@@ -120,6 +120,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#co-prime-polynomials" id="toc-co-prime-polynomials" class="nav-link" data-scroll-target="#co-prime-polynomials">Co-prime Polynomials</a></li>
   <li><a href="#causal-form" id="toc-causal-form" class="nav-link" data-scroll-target="#causal-form">Causal Form</a></li>
+  <li><a href="#inverted-form" id="toc-inverted-form" class="nav-link" data-scroll-target="#inverted-form">Inverted Form</a></li>
   <li><a href="#arimap-d-q" id="toc-arimap-d-q" class="nav-link" data-scroll-target="#arimap-d-q">ARIMA(p, d, q)</a></li>
   </ul></li>
   <li><a href="#forecasting" id="toc-forecasting" class="nav-link" data-scroll-target="#forecasting">Forecasting</a>
@@ -165,7 +166,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">16:25 Sun 22-Jun-2025</p>
+      <p class="date">16:53 Sun 22-Jun-2025</p>
     </div>
   </div>
   
@@ -825,13 +826,13 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{42}\]</span></span></p>
 <p>so that</p>
-<p><span id="eq-ARMA_p_q"><span class="math display">\[
+<p><span id="eq-ARMA-p-q"><span class="math display">\[
 \begin{align}
   X(t) &amp;= \mu_X + \sum_{j = 1}^p \phi_j \; (X(t - j) - \mu_X) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
 \end{align}
 \tag{43}\]</span></span></p>
 <p>or more succinctly</p>
-<p><span id="eq-ARMA_p_q_alpha"><span class="math display">\[
+<p><span id="eq-ARMA-p-q-alpha"><span class="math display">\[
 \begin{align}
   X(t) &amp;= \alpha + \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k) \\
   \text{where } \\
@@ -842,7 +843,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <h3 class="anchored" data-anchor-id="co-prime-polynomials">Co-prime Polynomials</h3>
 <p>We must impose a restriction on the polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> in addition to requiring their respective roots to all have magnitude greater than unity. The additional requirement is that they have no roots in common.</p>
 <p>Consider for example the following putative <span class="math inline">\(ARMA(1,1)\)</span> model.<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a></p>
-<p><span id="eq-ARMA_1_1_not"><span class="math display">\[
+<p><span id="eq-ARMA-1-1-not"><span class="math display">\[
 \begin{align}
   X(t) &amp;= \beta_1 \; X(t - 1) \; + \; W(t) \; - \; \beta_1 \; W(t - 1) \\   \\
   \text{so that } \\
@@ -859,9 +860,9 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="causal-form" class="level3">
 <h3 class="anchored" data-anchor-id="causal-form">Causal Form</h3>
 <p>The <span class="math inline">\(ARMA(p,q)\)</span> model can be expressed in causal form as follows.<a href="#fn26" class="footnote-ref" id="fnref26" role="doc-noteref"><sup>26</sup></a> <a href="#fn27" class="footnote-ref" id="fnref27" role="doc-noteref"><sup>27</sup></a></p>
-<p><span id="eq-ARMA_p_q_causal"><span class="math display">\[
+<p><span id="eq-ARMA-p-q-causal"><span class="math display">\[
 \begin{align}
-  X(\cdot) - \mu_X &amp;= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(\cdot) \\
+  X(t) - \mu_X &amp;= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(t) \\
   &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\
   &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\
   \text{where } \\
@@ -872,10 +873,26 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{46}\]</span></span></p>
 </section>
+<section id="inverted-form" class="level3">
+<h3 class="anchored" data-anchor-id="inverted-form">Inverted Form</h3>
+<p>It is also useful to invert the MA operator in an ARMA model to obtain the white noise process <span class="math inline">\(W(t)\)</span> as a linear function of current and past values of <span class="math inline">\(X(t)\)</span>.<a href="#fn28" class="footnote-ref" id="fnref28" role="doc-noteref"><sup>28</sup></a></p>
+<p><span id="eq-ARMA-p-q-inv"><span class="math display">\[
+\begin{align}
+  W(t) &amp;= \theta(\mathcal{B})^{-1} \phi(\mathcal{B}) \; (X(t) - \mu_X) \\
+  &amp;= \sum_{\nu = 0}^\infty \; \pi_\nu \; \mathcal{B}^\nu \; (X(t) - \mu_X) \\
+  &amp;= \sum_{\nu = 0}^\infty \; \pi_\nu \; (X(t - \nu) - \mu_X) \\
+  \text{where } \\
+  &amp; \pi_0 = 1 \\
+  \\
+  \text{and } \\
+  &amp; \sum_{\nu = 0}^\infty \; |\pi_\nu| \; &lt; \; \infty
+\end{align}
+\tag{47}\]</span></span></p>
+</section>
 <section id="arimap-d-q" class="level3">
 <h3 class="anchored" data-anchor-id="arimap-d-q">ARIMA(p, d, q)</h3>
-<p><span class="citation" data-cites="whittle1951hypothesis">Whittle (<a href="#ref-whittle1951hypothesis" role="doc-biblioref">1951</a>)</span> introduced ARMA models. Then, in order to treat non-stationary processes, <span class="citation" data-cites="box1970time">Box and Jenkins (<a href="#ref-box1970time" role="doc-biblioref">1970</a>)</span> presented auto-regressive integrated moving average (ARIMA) models. Here’s the form of an ARIMA model having <span class="math inline">\(p, d, q\)</span> as its orders of auto-regression, differencing, and moving average, respectively.<a href="#fn28" class="footnote-ref" id="fnref28" role="doc-noteref"><sup>28</sup></a></p>
-<p><span id="eq-ARIMA_p_d_q_proc"><span class="math display">\[
+<p><span class="citation" data-cites="whittle1951hypothesis">Whittle (<a href="#ref-whittle1951hypothesis" role="doc-biblioref">1951</a>)</span> introduced ARMA models. Then, in order to treat non-stationary processes, <span class="citation" data-cites="box1970time">Box and Jenkins (<a href="#ref-box1970time" role="doc-biblioref">1970</a>)</span> presented auto-regressive integrated moving average (ARIMA) models. Here’s the form of an ARIMA model having <span class="math inline">\(p, d, q\)</span> as its orders of auto-regression, differencing, and moving average, respectively.<a href="#fn29" class="footnote-ref" id="fnref29" role="doc-noteref"><sup>29</sup></a></p>
+<p><span id="eq-ARIMA-p-d-q-proc"><span class="math display">\[
 \begin{align}
   \phi(\mathcal{B}) \; \mathcal{D}^d \; (X(\cdot) - \mu_X)
   &amp;= \theta(\mathcal{B}) \; W(\cdot) \\
@@ -884,7 +901,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp; \phi (z) = 1 - \sum_{j = 1}^p \phi_j \; z^j \\
   &amp; \theta (z) = 1 + \sum_{k = 1}^q \theta_k \; z^k
 \end{align}
-\tag{47}\]</span></span></p>
+\tag{48}\]</span></span></p>
 <p>By convention, <span class="math inline">\(d \in \{ 0, 1, 2, \ldots \}\)</span> so that <span class="math inline">\(ARIMA(p, 0, q)\)</span> is synonymous with <span class="math inline">\(ARMA(p, q)\)</span>.</p>
 <p>If <span class="math inline">\(d \ge 1\)</span> then <span class="math inline">\(\mathcal{D}^d\)</span> removes <span class="math inline">\(\mu_X\)</span>, which can be omitted from the formula for simplificaton. As previously noted the operator <span class="math inline">\(\mathcal{D}^d\)</span> removes any polynomial trend of degree <span class="math inline">\(d\)</span> or less.</p>
 </section>
@@ -900,7 +917,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   (\hat{\alpha}, \hat{\beta}_\bullet) &amp;= \arg \min_{\alpha, \beta_\bullet} \; MSE \left \{ X(u + t_f), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\
   \hat{X} (u | \tau_T) &amp;= \hat{\alpha} + \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu)
 \end{align}
-\tag{48}\]</span></span></p>
+\tag{49}\]</span></span></p>
 </section>
 <section id="linear-equations" class="level3">
 <h3 class="anchored" data-anchor-id="linear-equations">Linear Equations</h3>
@@ -911,20 +928,20 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   MSE \left \{ X(u + t_f), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\
   = E \left \{ \left ( X(u + t_f) \; - \alpha - \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right )^2 \right \}
 \end{align}
-\tag{49}\]</span></span></p>
+\tag{50}\]</span></span></p>
 <p>We take the derivative of this expression with respect to each coefficient <span class="math inline">\((\alpha, \beta_\bullet)\)</span> and set that derivative to zero to define <span class="math inline">\((\hat{\alpha}, \hat{\beta}_\bullet)\)</span>. For <span class="math inline">\(\hat{\alpha}\)</span> we have</p>
 <p><span id="eq-predictor-const-coeff-eqn"><span class="math display">\[
 \begin{align}
   0 &amp;= E \left \{ \left ( X(u + t_f) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \right \} \\
   &amp;= \mu_X - \hat{\alpha}  \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \mu_X
 \end{align}
-\tag{50}\]</span></span></p>
+\tag{51}\]</span></span></p>
 <p>so that</p>
 <p><span id="eq-predictor-const-coeff-hat"><span class="math display">\[
 \begin{align}
   \hat{\alpha} &amp;= \mu_X \left (1 - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \right )
 \end{align}
-\tag{51}\]</span></span></p>
+\tag{52}\]</span></span></p>
 <p>For each of the remaining coefficients <span class="math inline">\(\hat{\beta}_j\)</span> we obtain</p>
 <p><span id="eq-predictor-slope-j-coeff-eqn"><span class="math display">\[
 \begin{align}
@@ -932,20 +949,20 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= E \left \{ \left ( X(u + t_0 + T - 1) - \mu_x - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \left ( X(t_0 + \nu) - \mu_x \right ) \right ) \; X(t_0 + j) \right \} \\
   &amp;= \gamma_X(u - j + T - 1) \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \gamma_X(\nu - j)
 \end{align}
-\tag{52}\]</span></span></p>
-<p>In vector-matrix notation we have the following linear system.<a href="#fn29" class="footnote-ref" id="fnref29" role="doc-noteref"><sup>29</sup></a></p>
+\tag{53}\]</span></span></p>
+<p>In vector-matrix notation we have the following linear system.<a href="#fn30" class="footnote-ref" id="fnref30" role="doc-noteref"><sup>30</sup></a></p>
 <p><span id="eq-predictor-matrix-eqn"><span class="math display">\[
 \begin{align}
   \Gamma \; \hat{\beta}_\bullet &amp;= \tilde{\gamma}_\bullet
 \end{align}
-\tag{53}\]</span></span></p>
+\tag{54}\]</span></span></p>
 <p>where we set the range of vector and matrix indices to <span class="math inline">\(\nu_T = \{ 0, \dots, T-1 \}\)</span> so that</p>
 <p><span id="eq-predictor-matrix-vars"><span class="math display">\[
 \begin{align}
   \Gamma [j, \nu] &amp; = \gamma_X(\nu - j) &amp; \text{for } \nu, j \in \nu_T \\
   \tilde{\gamma} [j] &amp;= \gamma_X (u - j + T - 1)
 \end{align}
-\tag{54}\]</span></span></p>
+\tag{55}\]</span></span></p>
 <p><span class="math inline">\(\Gamma\)</span> is a covariance matrix, and is therefore non-negative definite. In most scenarios <span class="math inline">\(\Gamma\)</span> can be assumed to be non-singular, for otherwise we would have a degenerate process. In any case <span class="math inline">\(\hat{\beta}_\bullet\)</span> can be defined by applying the inverse (or a generalized inverse) of <span class="math inline">\(\Gamma\)</span> to <span class="math inline">\(\tilde{\gamma}_\bullet\)</span>.</p>
 <p>As noted above, we have assumed for the sake of discussion that the entire auto-covariance function <span class="math inline">\(\gamma_X (\cdot)\)</span> is known. In practice such statistics must be estimated from the data, and the equations above entail <span class="math inline">\(\gamma_X(T + u - 1 - j)\)</span>, which for <span class="math inline">\(j &lt; u\)</span> cannot be directly estimated from the data. Instead we must rely on a model of the process for such estimates.</p>
 <p><span id="eq-predictor-matrix-vars"><span class="math display">\[
@@ -953,33 +970,33 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \Gamma [j, \nu] &amp; = \gamma_X(\nu - j) &amp; \text{for } \nu, j \in \nu_T \\
   \tilde{\gamma} [j] &amp;= \gamma_X (u - j + T - 1)
 \end{align}
-\tag{55}\]</span></span></p>
+\tag{56}\]</span></span></p>
 </section>
 <section id="arma-forecastingtxt-arma-forecasting" class="level3">
-<h3 class="anchored" data-anchor-id="arma-forecastingtxt-arma-forecasting">ARMA Forecasting<a href="#fn30" class="footnote-ref" id="fnref30" role="doc-noteref"><sup>30</sup></a></h3>
+<h3 class="anchored" data-anchor-id="arma-forecastingtxt-arma-forecasting">ARMA Forecasting<a href="#fn31" class="footnote-ref" id="fnref31" role="doc-noteref"><sup>31</sup></a></h3>
 <p>For presentation purposes we continue to assume that all random process parameters are known. And to simplify notation we first consider the case of a stationary Gaussian process <span class="math inline">\(\mathcal{N} (\cdot)\)</span> having mean 0. In this case we can express the intended least squares linear approximation of <span class="math inline">\(N(t)\)</span> based on <span class="math inline">\(\{ N(s) \}_{s \in \mathcal{S}}\)</span> as a conditional expectation. In fact it will be convenient to be able to condition on the entire past of the random process covering indices <span class="math inline">\(\mathcal{p} (t_f)\)</span> up to and including the index <span class="math inline">\(t_f\)</span> of the final data observation.</p>
 <p><span id="eq-le-tf"><span class="math display">\[
 \begin{align}
   \mathcal{p} (t_f) &amp;= \left \{ s \in \mathbb{Z} \; | \; s \le t_f \right \}
 \end{align}
-\tag{56}\]</span></span></p>
+\tag{57}\]</span></span></p>
 <p>We adopt the following notation for the expectation of a future value of the process <span class="math inline">\(N(u + t_f)\)</span> conditioned on the entire past history of the process <span class="math inline">\(\{ N(s) \}_{s \le t_f}\)</span>.</p>
 <p><span id="eq-e-future-given-past"><span class="math display">\[
 \begin{align}
   \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f)) &amp;= E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
 \end{align}
-\tag{57}\]</span></span></p>
+\tag{58}\]</span></span></p>
 <p>Due to the normality of <span class="math inline">\(N(\cdot)\)</span> this conditional expectation coincides with the linear (affine) least squares predictor.</p>
 <p><span id="eq-e-future-given-past"><span class="math display">\[
 \begin{align}
   \hat{\mathcal{N}} (u \; | \; \mathcal{p} (t_f)) &amp;= \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f))
 \end{align}
-\tag{58}\]</span></span></p>
+\tag{59}\]</span></span></p>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
-<p>This technical note is intended as an overview of time series forecasting models based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn31" class="footnote-ref" id="fnref31" role="doc-noteref"><sup>31</sup></a></p>
+<p>This technical note is intended as an overview of time series forecasting models based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a></p>
 <p>For a more comprehensive listing of relevant <code>R</code> packages see the time series task view available from <a href="https://cran.r-project.org/web/views/TimeSeries.html">CRAN</a>, the Comprehensive R Archive Network.</p>
 <p>Also see <a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> for a more detailed introduction to the topics presented here. And see <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a> for an introduction to <code>R</code> package <code>astsa</code>.</p>
 </section>
@@ -1132,7 +1149,7 @@ Figure&nbsp;4: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a> shows the trading day closings and returns (percent change)<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a> shows the trading day closings and returns (percent change)<a href="#fn33" class="footnote-ref" id="fnref33" role="doc-noteref"><sup>33</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1244,11 +1261,12 @@ Whittle, P. 1951. <em>Hypothesis Testing in Time Series Analysis</em>. Statistic
 <li id="fn25"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 95</a>)</span>.<a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn26"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 97</a>)</span>.<a href="#fnref26" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn27"><p>The rational function <span class="math inline">\(\theta(z) \; \div \phi(z)\)</span> can be expressed as a power series, namely the power series of <span class="math inline">\(\phi(z)^{-1}\)</span> multiplied by the polynomial <span class="math inline">\(\theta(z)\)</span>.<a href="#fnref27" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn28"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref28" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn29"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 114</a>)</span> introduce the <span class="math inline">\(\Gamma\)</span> matrix.<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn30"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span><a href="#fnref30" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn31"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn32"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn28"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 97</a>)</span>.<a href="#fnref28" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn29"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn30"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 114</a>)</span> introduce the <span class="math inline">\(\Gamma\)</span> matrix.<a href="#fnref30" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn31"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span><a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn32"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn33"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

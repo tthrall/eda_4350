@@ -947,7 +947,7 @@ $$
 \begin{align}
   X(t) &= \mu_X + \sum_{j = 1}^p \phi_j \; (X(t - j) - \mu_X) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
 \end{align}
-$$ {#eq-ARMA_p_q}
+$$ {#eq-ARMA-p-q}
 
 or more succinctly 
 
@@ -957,7 +957,7 @@ $$
   \text{where } \\
   \alpha &= \mu_x \; \left ( 1  - \sum_{j = 1}^p \phi_j \right )
 \end{align}
-$$ {#eq-ARMA_p_q_alpha}
+$$ {#eq-ARMA-p-q-alpha}
 
 ### Co-prime Polynomials
 
@@ -977,7 +977,7 @@ $$
   \\ 
   p(z) &= 1 - \beta_1 \; z \quad \text{with } |\beta_1| < 1
 \end{align}
-$$ {#eq-ARMA_1_1_not}
+$$ {#eq-ARMA-1-1-not}
 
 The operator $p(\mathcal{B})$ can be cancelled from both sides of the equation, leaving only a white noise process: $X(\cdot) = W(\cdot)$.
 
@@ -993,7 +993,7 @@ The $ARMA(p,q)$ model can be expressed in causal form as follows.[^txt_ARMA_p_q_
 
 $$
 \begin{align}
-  X(\cdot) - \mu_X &= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(\cdot) \\ 
+  X(t) - \mu_X &= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(t) \\ 
   &= \sum_{\nu = 0}^\infty \; \psi_\nu \; \mathcal{B}^\nu \; W(t) \\ 
   &= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(t - \nu) \\ 
   \text{where } \\ 
@@ -1002,7 +1002,26 @@ $$
   \text{and } \\ 
   & \sum_{\nu = 0}^\infty \; |\psi_\nu| \; < \; \infty
 \end{align}
-$$ {#eq-ARMA_p_q_causal}
+$$ {#eq-ARMA-p-q-causal}
+
+### Inverted Form
+
+It is also useful to invert the MA operator in an ARMA model to obtain the white noise process $W(t)$ as a linear function of current and past values of $X(t)$.[^txt_ARMA_p_q_inv]
+
+[^txt_ARMA_p_q_inv]: See @shumway2025 [page 97].
+
+$$
+\begin{align}
+  W(t) &= \theta(\mathcal{B})^{-1} \phi(\mathcal{B}) \; (X(t) - \mu_X) \\ 
+  &= \sum_{\nu = 0}^\infty \; \pi_\nu \; \mathcal{B}^\nu \; (X(t) - \mu_X) \\ 
+  &= \sum_{\nu = 0}^\infty \; \pi_\nu \; (X(t - \nu) - \mu_X) \\ 
+  \text{where } \\ 
+  & \pi_0 = 1 \\ 
+  \\ 
+  \text{and } \\ 
+  & \sum_{\nu = 0}^\infty \; |\pi_\nu| \; < \; \infty
+\end{align}
+$$ {#eq-ARMA-p-q-inv}
 
 ### ARIMA(p, d, q)
 
@@ -1019,7 +1038,7 @@ $$
   & \phi (z) = 1 - \sum_{j = 1}^p \phi_j \; z^j \\ 
   & \theta (z) = 1 + \sum_{k = 1}^q \theta_k \; z^k
 \end{align}
-$$ {#eq-ARIMA_p_d_q_proc}
+$$ {#eq-ARIMA-p-d-q-proc}
 
 By convention, $d \in \{ 0, 1, 2, \ldots \}$ so that $ARIMA(p, 0, q)$ is synonymous with $ARMA(p, q)$.
 
