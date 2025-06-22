@@ -323,7 +323,9 @@ The coefficients in the linear combination are shared by $\hat{\mathcal{N}}(t)$ 
 
 [^rho_even]: Recall that for a univariate process the auto-covariance and autocorrelation functions are even, e.g., $\rho (-u) = \rho (u)$.  The PACF of a univariate process is also defined to be an even function.
 
-The partial autocorrelation function is now defined as the correlation of the residual variables:
+The partial autocorrelation function is now defined as the correlation of the residual variables:[^txt_PACF_defn]
+
+[^txt_PACF_defn]: See @shumway2025 [page 110].
 
 $$
 \begin{align}
@@ -1218,93 +1220,6 @@ s5a_articles_tbl |>
 
 ## Appendix A: Glossary of Math Symbols
 
-```{r}
-#| label: s5a_symbol_tbl
-
-s5a_symbol_tbl <- tibble::tribble(
-  ~tag, ~symbol, ~dscr, 
-  
-  "a_u", 
-  "$a_{\\bullet, \\bullet} (u)$",
-  "matrix of filter coefficients at time-shift $u$", 
-  
-  "B", 
-  "$\\mathcal{B}$",
-  "back-shift operator", 
-  
-  "D", 
-  "$\\mathcal{D}$",
-  "difference operator, $\\mathcal{I} - \\mathcal{B}$", 
-  
-  "ACovF", 
-  "$\\gamma_{\\bullet, \\bullet} (u)$",
-  "auto-covariance matrix at time-shift $u$", 
-  
-  "I", 
-  "$\\mathcal{I}$",
-  "identity operator", 
-  
-  "m_vec", 
-  "$m_\\bullet (t)$",
-  "$E \\{ X_\\bullet (t) \\}$, expected value of $X_\\bullet (t)$",
-  
-  "T", 
-  "$T$",
-  "number of time series observations",
-  
-  "mu_X", 
-  "$\\mu_X$",
-  "the expected value of random variable $X (t_0)$",
-  
-  "N_d", 
-  "$N_d$",
-  "number of independent draws (effective sample size)",
-  
-  "S_X_T", 
-  "$S_{X, T}$",
-  "the sample sum of T observations of $X (t)$",
-  
-  "sig2_X", 
-  "$\\sigma_X^2$",
-  "the variance of random variable $X (t_0)$",
-  
-  "t_0", 
-  "$t_0$",
-  "initial time index of a time series data set",
-  
-  "X_vec", 
-  "$X_\\bullet (t)$",
-  "$(X_1 (t), \\ldots, X_d (t))$, a multivariate random process"
-)
-```
-
-```{r}
-#| label: s5a_symbol_tbl__save
-
-# save file only when updated
-save_to_file <- FALSE
-if (save_to_file) {
-  # TSV format
-  s5a_symbol_tbl |> readr::write_tsv(here::here(
-    "markdown", "s5a_ts_intro", "s5a_symbol_tbl.txt"
-  ))
-}
-```
-
-```{r}
-#| label: s5a_symbol_tbl__kable
-#| eval: false
-
-s5a_symbol_tbl |>
-  dplyr::select(symbol, dscr) |>
-  knitr::kable(
-    format = "html",
-	escape = FALSE,
-	caption = "Glossary of Mathematical Symbols (s)",
-	col.names = c("s", "description")
-  )
-```
-
 $$
 \begin{align}
   {a_{\bullet, \bullet} (u)} 
@@ -1316,11 +1231,23 @@ $$
   \mathcal{D} 
      \quad & \quad \text{difference operator } \mathcal{I - B} \\ 
   \\ 
+  \Delta_u
+     \quad & \quad \{ 1, 2, \ldots, u-1 \} \text{ for } u \ge 2 \\ 
+  \\ 
+  \phi(\cdot)
+     \quad & \quad \text{AR polynomial, } 1 - \sum_{\nu = 1}^p \phi_\nu \; z^\nu \\ 
+  \\ 
+  \Gamma 
+     \quad & \quad \text{auto-covariance matrix, } \Gamma [j, \nu] = \gamma_X (\nu - j) \text{, for } j, \nu \in \nu_T \\ 
+  \\ 
   \gamma_{\bullet, \bullet} (u) 
      \quad & \quad \text{auto-covariance matrix at time-shift } u \\ 
   \\ 
   \mathcal{I} 
      \quad & \quad \text{identity operator } \\ 
+  \\ 
+  MSE 
+     \quad & \quad \text{mean squared error } \\ 
   \\ 
   m_\bullet (t) 
      \quad & \quad E \{ X_\bullet (t) \} \text{, expected value of } X_\bullet (t) \\ 
@@ -1328,14 +1255,17 @@ $$
   \mu_X 
      \quad & \quad E\{ X (t_0) \} \text{, expected value of } X (t_0) \\ 
   \\   
-  \hat{\mu} _X
+  \hat{\mu}_X
      \quad & \quad \text{sample mean, } S_{X, T} / T \\ 
   \\ 
-  N_d 
-     \quad & \quad \text{number of independent draws (effective sample size) } \\ 
+  \nu_T 
+     \quad & \quad \{ 0, 1, \dots, T-1 \} \\ 
   \\ 
   \rho_{\bullet, \bullet} (u) 
      \quad & \quad \text{autocorrelation matrix at time-shift } u \\ 
+  \\ 
+  \rho (u | u) 
+     \quad & \quad corr(X(t+u) - \hat{X}(t+u \; | \; - \Delta_u), \; X(t) - \hat{X}(t \; | \; \Delta_u)) \\ 
   \\ 
   S_{X, T} 
      \quad & \quad \text{the sample sum of T observations of } X (\cdot) \\ 
@@ -1349,8 +1279,20 @@ $$
   t_0 
      \quad & \quad \text{initial time index of time series observations } \\ 
   \\ 
+  \tau_T 
+     \quad & \quad t_0 + \{ 0, 1, \ldots, T-1  \} \\ 
+  \\ 
+  \theta(\cdot) 
+     \quad & \quad \text{MA polynomial, } 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\ 
+  \\ 
   X_\bullet (t) 
-     \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } 
+     \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } \\ 
+  \\ 
+  \hat{X}(t \; | \; \Delta_u) 
+     \quad & \quad \text{approximates } X(t) \text{ as affine function of } \{ X(t + \nu) \}_{\nu \in \Delta_u} \\ 
+  \\ 
+  \hat{X} (u \; | \; \tau_T) 
+     \quad & \quad \text{predicts } X(u + t_0 + T - 1) \text{ as affine function of } \{ X(t) \}_{t \in \tau_T}
 \end{align}
 $$
 
