@@ -1006,9 +1006,11 @@ $$ {#eq-ARMA-p-q-causal}
 
 ### Inverted Form
 
-It is also useful to invert the MA operator in an ARMA model to obtain the white noise process $W(t)$ as a linear function of current and past values of $X(t)$.[^txt_ARMA_p_q_inv]
+It is also useful to invert the MA operator in an ARMA model to obtain the white noise process $W(t)$ as a linear function of current and past values of $X(t)$.[^txt_ARMA_p_q_inv] [^MAq_inv]
 
 [^txt_ARMA_p_q_inv]: See @shumway2025 [page 97].
+
+[^MAq_inv]: This inversion requires each root of polynomial $\theta(\cdot)$ to have magnitude greater than unity.
 
 $$
 \begin{align}
@@ -1133,7 +1135,7 @@ $$ {#eq-predictor-matrix-vars}
 
 [^txt-ARMA-forecasting]: @shumway2025 [page 117]
 
-For presentation purposes we continue to assume that all random process parameters are known.  And to simplify notation we first consider the case of a stationary Gaussian process $\mathcal{N} (\cdot)$ having mean 0.  In this case we can express the intended least squares linear approximation of $N(t)$ based on $\{ N(s) \}_{s \in \mathcal{S}}$ as a conditional expectation.  In fact it will be convenient to be able to condition on the entire past of the random process covering indices $\mathcal{p} (t_f)$ up to and including the index $t_f$ of the final data observation.
+For presentation purposes we continue to assume that all random process parameters are known.  And to simplify notation we first consider the case of a stationary Gaussian process $\mathcal{N} (\cdot)$ having mean 0.  In this case we can express the intended least squares linear approximation of $\mathcal{N}(t)$ based on $\{ \mathcal{N}(s) \}_{s \in \mathcal{S}}$ as a conditional expectation.  In fact it will be convenient to be able to condition on the entire past of the random process covering indices $\mathcal{p} (t_f)$ up to and including the index $t_f$ of the final observation.
 
 $$
 \begin{align}
@@ -1141,7 +1143,7 @@ $$
 \end{align}
 $$ {#eq-le-tf}
 
-We adopt the following notation for the expectation of a future value of the process $N(u + t_f)$ conditioned on the entire past history of the process $\{ N(s) \}_{s \le t_f}$.
+We adopt the following notation for the expectation of $\mathcal{N}(u + t_f)$, the process at a future time, conditioned on $\{ \mathcal{N}(s) \}_{s \le t_f}$, the history of the process prior to and including the final observation.
 
 $$
 \begin{align}
@@ -1149,7 +1151,7 @@ $$
 \end{align}
 $$ {#eq-e-future-given-past}
 
-Due to the normality of $N(\cdot)$ this conditional expectation coincides with the linear (affine) least squares predictor.
+Due to the normality of $\mathcal{N}(\cdot)$ this conditional expectation coincides with the linear (affine) least squares predictor.
 
 $$
 \begin{align}
