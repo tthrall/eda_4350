@@ -165,7 +165,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15:48 Sun 22-Jun-2025</p>
+      <p class="date">16:25 Sun 22-Jun-2025</p>
     </div>
   </div>
   
@@ -966,13 +966,13 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>We adopt the following notation for the expectation of a future value of the process <span class="math inline">\(N(u + t_f)\)</span> conditioned on the entire past history of the process <span class="math inline">\(\{ N(s) \}_{s \le t_f}\)</span>.</p>
 <p><span id="eq-e-future-given-past"><span class="math display">\[
 \begin{align}
-  \tilde{\mathcal{N}} (u + t_f \; | \; \mathcal{p} (t_f)) &amp;= E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f)) &amp;= E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
 \end{align}
 \tag{57}\]</span></span></p>
 <p>Due to the normality of <span class="math inline">\(N(\cdot)\)</span> this conditional expectation coincides with the linear (affine) least squares predictor.</p>
 <p><span id="eq-e-future-given-past"><span class="math display">\[
 \begin{align}
-  \hat{\mathcal{N}} (u + t_f \; | \; \mathcal{p} (t_f)) &amp;= \tilde{\mathcal{N}} (u + t_f \; | \; \mathcal{p} (t_f))
+  \hat{\mathcal{N}} (u \; | \; \mathcal{p} (t_f)) &amp;= \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f))
 \end{align}
 \tag{58}\]</span></span></p>
 </section>
@@ -1025,6 +1025,9 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\   
   \mathcal{N}(\cdot)
      \quad &amp; \quad \text{a univariate, stationary, Gaussian process having mean 0} \\
+  \\   
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f))
+     \quad &amp; \quad E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \} \\
   \\
   \nu_T
      \quad &amp; \quad \{ 0, 1, \dots, T-1 \} \\

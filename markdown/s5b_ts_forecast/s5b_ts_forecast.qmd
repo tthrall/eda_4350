@@ -1126,7 +1126,7 @@ We adopt the following notation for the expectation of a future value of the pro
 
 $$
 \begin{align}
-  \tilde{\mathcal{N}} (u + t_f \; | \; \mathcal{p} (t_f)) &= E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f)) &= E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
 \end{align}
 $$ {#eq-e-future-given-past}
 
@@ -1134,7 +1134,7 @@ Due to the normality of $N(\cdot)$ this conditional expectation coincides with t
 
 $$
 \begin{align}
-  \hat{\mathcal{N}} (u + t_f \; | \; \mathcal{p} (t_f)) &= \tilde{\mathcal{N}} (u + t_f \; | \; \mathcal{p} (t_f))
+  \hat{\mathcal{N}} (u \; | \; \mathcal{p} (t_f)) &= \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f))
 \end{align}
 $$ {#eq-e-future-given-past}
 
@@ -1291,6 +1291,9 @@ $$
   \\   
   \mathcal{N}(\cdot)
      \quad & \quad \text{a univariate, stationary, Gaussian process having mean 0} \\ 
+  \\   
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f))
+     \quad & \quad E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \} \\ 
   \\ 
   \nu_T 
      \quad & \quad \{ 0, 1, \dots, T-1 \} \\ 
