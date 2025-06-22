@@ -979,7 +979,9 @@ More generally we require the elimination of any polynomial factors common to bo
 
 ### Causal Form
 
-The $ARMA(p,q)$ model can be expressed in causal form as follows.[^ARMA_p_q_causal]
+The $ARMA(p,q)$ model can be expressed in causal form as follows.[^txt_ARMA_p_q_causal] [^ARMA_p_q_causal]
+
+[^txt_ARMA_p_q_causal]: See @shumway2025 [page 97].
 
 [^ARMA_p_q_causal]: The rational function $\theta(z) \; \div \phi(z)$ can be expressed as a power series, namely the power series of $\phi(z)^{-1}$ multiplied by the polynomial $\theta(z)$.
 
@@ -1080,7 +1082,9 @@ $$
 \end{align}
 $$ {#eq-predictor-slope-j-coeff-eqn}
 
-In vector-matrix notation we have the following linear system.
+In vector-matrix notation we have the following linear system.[^txt_Gamma_defn]
+
+[^txt_Gamma_defn]: @shumway2025 [page 114] introduce the $\Gamma$ matrix.
 
 $$
 \begin{align}

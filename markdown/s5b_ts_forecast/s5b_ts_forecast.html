@@ -164,7 +164,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">18:41 Sat 21-Jun-2025</p>
+      <p class="date">07:52 Sun 22-Jun-2025</p>
     </div>
   </div>
   
@@ -854,7 +854,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 <section id="causal-form" class="level3">
 <h3 class="anchored" data-anchor-id="causal-form">Causal Form</h3>
-<p>The <span class="math inline">\(ARMA(p,q)\)</span> model can be expressed in causal form as follows.<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a></p>
+<p>The <span class="math inline">\(ARMA(p,q)\)</span> model can be expressed in causal form as follows.<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a> <a href="#fn26" class="footnote-ref" id="fnref26" role="doc-noteref"><sup>26</sup></a></p>
 <p><span id="eq-ARMA_p_q_causal"><span class="math display">\[
 \begin{align}
   X(\cdot) - \mu_X &amp;= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(\cdot) \\
@@ -870,7 +870,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 <section id="arimap-d-q" class="level3">
 <h3 class="anchored" data-anchor-id="arimap-d-q">ARIMA(p, d, q)</h3>
-<p><span class="citation" data-cites="whittle1951hypothesis">Whittle (<a href="#ref-whittle1951hypothesis" role="doc-biblioref">1951</a>)</span> introduced ARMA models. Then, in order to treat non-stationary processes, <span class="citation" data-cites="box1970time">Box and Jenkins (<a href="#ref-box1970time" role="doc-biblioref">1970</a>)</span> presented auto-regressive integrated moving average (ARIMA) models. Here’s the form of an ARIMA model having <span class="math inline">\(p, d, q\)</span> as its orders of auto-regression, differencing, and moving average, respectively.<a href="#fn26" class="footnote-ref" id="fnref26" role="doc-noteref"><sup>26</sup></a></p>
+<p><span class="citation" data-cites="whittle1951hypothesis">Whittle (<a href="#ref-whittle1951hypothesis" role="doc-biblioref">1951</a>)</span> introduced ARMA models. Then, in order to treat non-stationary processes, <span class="citation" data-cites="box1970time">Box and Jenkins (<a href="#ref-box1970time" role="doc-biblioref">1970</a>)</span> presented auto-regressive integrated moving average (ARIMA) models. Here’s the form of an ARIMA model having <span class="math inline">\(p, d, q\)</span> as its orders of auto-regression, differencing, and moving average, respectively.<a href="#fn27" class="footnote-ref" id="fnref27" role="doc-noteref"><sup>27</sup></a></p>
 <p><span id="eq-ARIMA_p_d_q_proc"><span class="math display">\[
 \begin{align}
   \phi(\mathcal{B}) \; \mathcal{D}^d \; (X(\cdot) - \mu_X)
@@ -936,7 +936,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= \gamma_X(T + u - 1 - j) \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \gamma_X(\nu - j)
 \end{align}
 \tag{52}\]</span></span></p>
-<p>In vector-matrix notation we have the following linear system.</p>
+<p>In vector-matrix notation we have the following linear system.<a href="#fn28" class="footnote-ref" id="fnref28" role="doc-noteref"><sup>28</sup></a></p>
 <p><span id="eq-predictor-matrix-eqn"><span class="math display">\[
 \begin{align}
   \Gamma \; \hat{\beta}_\bullet &amp;= \tilde{\gamma}_\bullet
@@ -1070,7 +1070,7 @@ Figure&nbsp;4: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a> shows the trading day closings and returns (percent change)<a href="#fn27" class="footnote-ref" id="fnref27" role="doc-noteref"><sup>27</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a> shows the trading day closings and returns (percent change)<a href="#fn29" class="footnote-ref" id="fnref29" role="doc-noteref"><sup>29</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1176,9 +1176,11 @@ Whittle, P. 1951. <em>Hypothesis Testing in Time Series Analysis</em>. Statistic
 <li id="fn22"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 93</a>)</span>.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn23"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 111</a>)</span>.<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn24"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 95</a>)</span>.<a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn25"><p>The rational function <span class="math inline">\(\theta(z) \; \div \phi(z)\)</span> can be expressed as a power series, namely the power series of <span class="math inline">\(\phi(z)^{-1}\)</span> multiplied by the polynomial <span class="math inline">\(\theta(z)\)</span>.<a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn26"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref26" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn27"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref27" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn25"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 97</a>)</span>.<a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn26"><p>The rational function <span class="math inline">\(\theta(z) \; \div \phi(z)\)</span> can be expressed as a power series, namely the power series of <span class="math inline">\(\phi(z)^{-1}\)</span> multiplied by the polynomial <span class="math inline">\(\theta(z)\)</span>.<a href="#fnref26" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn27"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref27" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn28"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 114</a>)</span> introduce the <span class="math inline">\(\Gamma\)</span> matrix.<a href="#fnref28" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn29"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
