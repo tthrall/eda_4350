@@ -140,13 +140,17 @@ If the number of data columns is two or greater $(d \ge 2)$, the process is said
 
 [^uni_subscripts]: For a univariate time series $X(t)$ we denote distributional parameters either omitting a subscript or else using the subscript $X$.
 
-In our example there are two data columns (`hare`, `lynx`), so that $d = 2$, the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period.
+In our example there are two data columns (`hare`, `lynx`), so that $d = 2$, the unit of time is one year, and the sampling frequency is once per year.
+
+The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period, $\tau_T$, of length $T$.
 
 $$
 \begin{align}
-  & t \in \tau_T \\ 
-  \text{where } & \tau_T = t_0 + \nu_T \\ 
-  \text{and } & \nu_T = \{0, 1, \ldots, T-1 \}
+  \tau_T &=  t_0 + \nu_T \\ 
+  \nu_T &=  \{ 0, 1, \ldots, T-1 \} \\
+  t_0 &=  \text{ initial data index} = \min \tau_T \\ 
+  t_f &=  \text{ final data index} = \max \tau_T \\ 
+  T &=  \text{ number of observatons (data length)}
 \end{align}
 $$ {#eq-tau-T}
 
@@ -1025,35 +1029,27 @@ If $d \ge 1$ then $\mathcal{D}^d$ removes $\mu_X$, which can be omitted from the
 
 ### Problem Statement
 
-Let $X(\cdot)$ be a stationary process, with observed values for 
+Let $X(\cdot)$ be a stationary process, whose $T$ time indices, $\tau_T$, begin with $t_0$ and end with $t_f$ per @eq-tau-T.
+
+For $u \ge 1$ let $\hat{X} (u | \tau_T)$ denote the _linear least squares predictor_ of $X(u + t_f)$ as an affine function of $\{ X(t) \}_{t \in \tau_T}$.
 
 $$
 \begin{align}
-  t &\in \tau_T  \\
-  &= t_0 + \nu_T \\
-  &= t_0 + \{ 0, \ldots, T-1  \}
-\end{align}
-$$
-
-For $u \ge 1$ let $\hat{X} (u | \tau_T)$ denote the _linear least squares predictor_ of $X(u + t_0 + T - 1)$ as an affine function of $\{ X(t) \}_{t \in \tau_T}$.
-
-$$
-\begin{align}
-  (\hat{\alpha}, \hat{\beta}_\bullet) &= \arg \min_{\alpha, \beta_\bullet} \; MSE \left \{ X(u + t_0 + T - 1), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\ 
+  (\hat{\alpha}, \hat{\beta}_\bullet) &= \arg \min_{\alpha, \beta_\bullet} \; MSE \left \{ X(u + t_f), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\ 
   \hat{X} (u | \tau_T) &= \hat{\alpha} + \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) 
 \end{align}
 $$ {#eq-linear-predictor-defn}
 
 ### Linear Equations
 
-We assume for the moment that the first and second-order statistics (mean, variance, auto-covariance, ...) of $X(\cdot)$ are known in order to express the linear coefficients $\hat{\alpha}, \hat{\beta}_\bullet$ as functions of those statistics.
+We assume for the moment that the first and second-order statistics (mean, variance, auto-covariance, ...) of $X(\cdot)$ are known in order to express the coefficients $\hat{\alpha}, \hat{\beta}_\bullet$ as functions of those statistics.
 
 Consider the expression for mean-squared error (MSE).
 
 $$
 \begin{align}
-  MSE \left \{ X(u + t_0 + T - 1), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\ 
-  = E \left \{ \left ( X(u + t_0 + T - 1) \; - \alpha - \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right )^2 \right \}
+  MSE \left \{ X(u + t_f), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\ 
+  = E \left \{ \left ( X(u + t_f) \; - \alpha - \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right )^2 \right \}
 \end{align}
 $$ {#eq-predictor-MSE}
 
@@ -1061,7 +1057,7 @@ We take the derivative of this expression with respect to each coefficient $(\al
 
 $$
 \begin{align}
-  0 &= E \left \{ \left ( X(u + t_0 + T - 1) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \right \} \\ 
+  0 &= E \left \{ \left ( X(u + t_f) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \right \} \\ 
   &= \mu_X - \hat{\alpha}  \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \mu_X
 \end{align}
 $$ {#eq-predictor-const-coeff-eqn}
@@ -1078,9 +1074,9 @@ For each of the remaining coefficients $\hat{\beta}_j$ we obtain
 
 $$
 \begin{align}
-  0 &= E \left \{ \left ( X(u + t_0 + T - 1) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \; X(t_0 + j) \right \} \\ 
+  0 &= E \left \{ \left ( X(u + t_f) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \; X(t_0 + j) \right \} \\ 
   &= E \left \{ \left ( X(u + t_0 + T - 1) - \mu_x - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \left ( X(t_0 + \nu) - \mu_x \right ) \right ) \; X(t_0 + j) \right \} \\ 
-  &= \gamma_X(T + u - 1 - j) \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \gamma_X(\nu - j) 
+  &= \gamma_X(u - j + T - 1) \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \gamma_X(\nu - j) 
 \end{align}
 $$ {#eq-predictor-slope-j-coeff-eqn}
 
@@ -1099,13 +1095,17 @@ where we set the range of vector and matrix indices to $\nu_T = \{ 0, \dots, T-1
 $$
 \begin{align}
   \Gamma [j, \nu] & = \gamma_X(\nu - j) & \text{for } \nu, j \in \nu_T \\ 
-  \tilde{\gamma} [j] &= \gamma_X (T + u - 1 - j)
+  \tilde{\gamma} [j] &= \gamma_X (u - j + T - 1)
 \end{align}
 $$ {#eq-predictor-matrix-vars}
 
 $\Gamma$ is a covariance matrix, and is therefore non-negative definite.  In most scenarios $\Gamma$ can be assumed to be non-singular, for otherwise we would have a degenerate process.  In any case $\hat{\beta}_\bullet$ can be defined by applying the inverse (or a generalized inverse) of $\Gamma$ to $\tilde{\gamma}_\bullet$.
 
 As noted above, we have assumed for the sake of discussion that the entire auto-covariance function $\gamma_X (\cdot)$ is known.  In practice such statistics must be estimated from the data, and the equations above entail $\gamma_X(T + u - 1 - j)$, which for $j < u$ cannot be directly estimated from the data.  Instead we must rely on a model of the process for such estimates.
+
+### ARMA Forecasting
+
+
 
 ## Closing Remarks
 
@@ -1278,6 +1278,9 @@ $$
   \\ 
   t_0 
      \quad & \quad \text{initial time index of time series observations } \\ 
+  \\ 
+  t_f 
+     \quad & \quad \text{final time index of time series observations } \\ 
   \\ 
   \tau_T 
      \quad & \quad t_0 + \{ 0, 1, \ldots, T-1  \} \\ 

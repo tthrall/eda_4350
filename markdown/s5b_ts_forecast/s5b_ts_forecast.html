@@ -126,6 +126,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#problem-statement" id="toc-problem-statement" class="nav-link" data-scroll-target="#problem-statement">Problem Statement</a></li>
   <li><a href="#linear-equations" id="toc-linear-equations" class="nav-link" data-scroll-target="#linear-equations">Linear Equations</a></li>
+  <li><a href="#arma-forecasting" id="toc-arma-forecasting" class="nav-link" data-scroll-target="#arma-forecasting">ARMA Forecasting</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#appendix-a-glossary-of-math-symbols" id="toc-appendix-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#appendix-a-glossary-of-math-symbols">Appendix A: Glossary of Math Symbols</a></li>
@@ -164,7 +165,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">09:42 Sun 22-Jun-2025</p>
+      <p class="date">13:42 Sun 22-Jun-2025</p>
     </div>
   </div>
   
@@ -219,12 +220,15 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 \end{align}
 \tag{1}\]</span></span></p>
 <p>If the number of data columns is two or greater <span class="math inline">\((d \ge 2)\)</span>, the process is said to be multivariate. Otherwise, if <span class="math inline">\(d = 1\)</span> the process is said to be univariate, and the notation is simplified to <span class="math inline">\(X (t)\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p>In our example there are two data columns (<code>hare</code>, <code>lynx</code>), so that <span class="math inline">\(d = 2\)</span>, the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period.</p>
+<p>In our example there are two data columns (<code>hare</code>, <code>lynx</code>), so that <span class="math inline">\(d = 2\)</span>, the unit of time is one year, and the sampling frequency is once per year.</p>
+<p>The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period, <span class="math inline">\(\tau_T\)</span>, of length <span class="math inline">\(T\)</span>.</p>
 <p><span id="eq-tau-T"><span class="math display">\[
 \begin{align}
-  &amp; t \in \tau_T \\
-  \text{where } &amp; \tau_T = t_0 + \nu_T \\
-  \text{and } &amp; \nu_T = \{0, 1, \ldots, T-1 \}
+  \tau_T &amp;=  t_0 + \nu_T \\
+  \nu_T &amp;=  \{ 0, 1, \ldots, T-1 \} \\
+  t_0 &amp;=  \text{ initial data index} = \min \tau_T \\
+  t_f &amp;=  \text{ final data index} = \max \tau_T \\
+  T &amp;=  \text{ number of observatons (data length)}
 \end{align}
 \tag{2}\]</span></span></p>
 <p>The expected value of the random process may be modeled by various functions of time: a constant, a linear trend, a seasonal component (periodic function), etc.</p>
@@ -889,36 +893,29 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <h2 class="anchored" data-anchor-id="forecasting">Forecasting</h2>
 <section id="problem-statement" class="level3">
 <h3 class="anchored" data-anchor-id="problem-statement">Problem Statement</h3>
-<p>Let <span class="math inline">\(X(\cdot)\)</span> be a stationary process, with observed values for</p>
-<p><span class="math display">\[
-\begin{align}
-  t &amp;\in \tau_T  \\
-  &amp;= t_0 + \nu_T \\
-  &amp;= t_0 + \{ 0, \ldots, T-1  \}
-\end{align}
-\]</span></p>
-<p>For <span class="math inline">\(u \ge 1\)</span> let <span class="math inline">\(\hat{X} (u | \tau_T)\)</span> denote the <em>linear least squares predictor</em> of <span class="math inline">\(X(u + t_0 + T - 1)\)</span> as an affine function of <span class="math inline">\(\{ X(t) \}_{t \in \tau_T}\)</span>.</p>
+<p>Let <span class="math inline">\(X(\cdot)\)</span> be a stationary process, whose <span class="math inline">\(T\)</span> time indices, <span class="math inline">\(\tau_T\)</span>, begin with <span class="math inline">\(t_0\)</span> and end with <span class="math inline">\(t_f\)</span> per <a href="#eq-tau-T" class="quarto-xref">Equation&nbsp;2</a>.</p>
+<p>For <span class="math inline">\(u \ge 1\)</span> let <span class="math inline">\(\hat{X} (u | \tau_T)\)</span> denote the <em>linear least squares predictor</em> of <span class="math inline">\(X(u + t_f)\)</span> as an affine function of <span class="math inline">\(\{ X(t) \}_{t \in \tau_T}\)</span>.</p>
 <p><span id="eq-linear-predictor-defn"><span class="math display">\[
 \begin{align}
-  (\hat{\alpha}, \hat{\beta}_\bullet) &amp;= \arg \min_{\alpha, \beta_\bullet} \; MSE \left \{ X(u + t_0 + T - 1), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\
+  (\hat{\alpha}, \hat{\beta}_\bullet) &amp;= \arg \min_{\alpha, \beta_\bullet} \; MSE \left \{ X(u + t_f), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\
   \hat{X} (u | \tau_T) &amp;= \hat{\alpha} + \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu)
 \end{align}
 \tag{48}\]</span></span></p>
 </section>
 <section id="linear-equations" class="level3">
 <h3 class="anchored" data-anchor-id="linear-equations">Linear Equations</h3>
-<p>We assume for the moment that the first and second-order statistics (mean, variance, auto-covariance, …) of <span class="math inline">\(X(\cdot)\)</span> are known in order to express the linear coefficients <span class="math inline">\(\hat{\alpha}, \hat{\beta}_\bullet\)</span> as functions of those statistics.</p>
+<p>We assume for the moment that the first and second-order statistics (mean, variance, auto-covariance, …) of <span class="math inline">\(X(\cdot)\)</span> are known in order to express the coefficients <span class="math inline">\(\hat{\alpha}, \hat{\beta}_\bullet\)</span> as functions of those statistics.</p>
 <p>Consider the expression for mean-squared error (MSE).</p>
 <p><span id="eq-predictor-MSE"><span class="math display">\[
 \begin{align}
-  MSE \left \{ X(u + t_0 + T - 1), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\
-  = E \left \{ \left ( X(u + t_0 + T - 1) \; - \alpha - \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right )^2 \right \}
+  MSE \left \{ X(u + t_f), \; \alpha + \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right \} \\
+  = E \left \{ \left ( X(u + t_f) \; - \alpha - \sum_{\nu = 0}^{T-1} \beta_\nu X(t_0 + \nu) \right )^2 \right \}
 \end{align}
 \tag{49}\]</span></span></p>
 <p>We take the derivative of this expression with respect to each coefficient <span class="math inline">\((\alpha, \beta_\bullet)\)</span> and set that derivative to zero to define <span class="math inline">\((\hat{\alpha}, \hat{\beta}_\bullet)\)</span>. For <span class="math inline">\(\hat{\alpha}\)</span> we have</p>
 <p><span id="eq-predictor-const-coeff-eqn"><span class="math display">\[
 \begin{align}
-  0 &amp;= E \left \{ \left ( X(u + t_0 + T - 1) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \right \} \\
+  0 &amp;= E \left \{ \left ( X(u + t_f) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \right \} \\
   &amp;= \mu_X - \hat{\alpha}  \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \mu_X
 \end{align}
 \tag{50}\]</span></span></p>
@@ -931,9 +928,9 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>For each of the remaining coefficients <span class="math inline">\(\hat{\beta}_j\)</span> we obtain</p>
 <p><span id="eq-predictor-slope-j-coeff-eqn"><span class="math display">\[
 \begin{align}
-  0 &amp;= E \left \{ \left ( X(u + t_0 + T - 1) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \; X(t_0 + j) \right \} \\
+  0 &amp;= E \left \{ \left ( X(u + t_f) \; - \hat{\alpha} - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu X(t_0 + \nu) \right ) \; X(t_0 + j) \right \} \\
   &amp;= E \left \{ \left ( X(u + t_0 + T - 1) - \mu_x - \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \left ( X(t_0 + \nu) - \mu_x \right ) \right ) \; X(t_0 + j) \right \} \\
-  &amp;= \gamma_X(T + u - 1 - j) \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \gamma_X(\nu - j)
+  &amp;= \gamma_X(u - j + T - 1) \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \gamma_X(\nu - j)
 \end{align}
 \tag{52}\]</span></span></p>
 <p>In vector-matrix notation we have the following linear system.<a href="#fn29" class="footnote-ref" id="fnref29" role="doc-noteref"><sup>29</sup></a></p>
@@ -946,11 +943,14 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p><span id="eq-predictor-matrix-vars"><span class="math display">\[
 \begin{align}
   \Gamma [j, \nu] &amp; = \gamma_X(\nu - j) &amp; \text{for } \nu, j \in \nu_T \\
-  \tilde{\gamma} [j] &amp;= \gamma_X (T + u - 1 - j)
+  \tilde{\gamma} [j] &amp;= \gamma_X (u - j + T - 1)
 \end{align}
 \tag{54}\]</span></span></p>
 <p><span class="math inline">\(\Gamma\)</span> is a covariance matrix, and is therefore non-negative definite. In most scenarios <span class="math inline">\(\Gamma\)</span> can be assumed to be non-singular, for otherwise we would have a degenerate process. In any case <span class="math inline">\(\hat{\beta}_\bullet\)</span> can be defined by applying the inverse (or a generalized inverse) of <span class="math inline">\(\Gamma\)</span> to <span class="math inline">\(\tilde{\gamma}_\bullet\)</span>.</p>
 <p>As noted above, we have assumed for the sake of discussion that the entire auto-covariance function <span class="math inline">\(\gamma_X (\cdot)\)</span> is known. In practice such statistics must be estimated from the data, and the equations above entail <span class="math inline">\(\gamma_X(T + u - 1 - j)\)</span>, which for <span class="math inline">\(j &lt; u\)</span> cannot be directly estimated from the data. Instead we must rely on a model of the process for such estimates.</p>
+</section>
+<section id="arma-forecasting" class="level3">
+<h3 class="anchored" data-anchor-id="arma-forecasting">ARMA Forecasting</h3>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
@@ -1020,6 +1020,9 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \\
   t_0
      \quad &amp; \quad \text{initial time index of time series observations } \\
+  \\
+  t_f
+     \quad &amp; \quad \text{final time index of time series observations } \\
   \\
   \tau_T
      \quad &amp; \quad t_0 + \{ 0, 1, \ldots, T-1  \} \\
