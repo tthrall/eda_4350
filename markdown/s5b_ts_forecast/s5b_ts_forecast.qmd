@@ -939,7 +939,7 @@ $$
 \begin{align}
   \phi(\mathcal{B}) \; (X(\cdot) - \mu_X) &= \theta(\mathcal{B}) \; W(\cdot) & \text{with } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
-$$ {#eq-ARMA_p_q_proc}
+$$ {#eq-ARMA-p-q-proc}
 
 so that 
 
@@ -1135,7 +1135,17 @@ $$ {#eq-predictor-matrix-vars}
 
 [^txt-ARMA-forecasting]: @shumway2025 [page 117]
 
-For presentation purposes we continue to assume that all random process parameters are known.  And to simplify notation we first consider the case of a stationary Gaussian process $\mathcal{N} (\cdot)$ having mean 0.  In this case we can express the intended least squares linear approximation of $\mathcal{N}(t)$ based on $\{ \mathcal{N}(s) \}_{s \in \mathcal{S}}$ as a conditional expectation.  In fact it will be convenient to be able to condition on the entire past of the random process covering indices $\mathcal{p} (t_f)$ up to and including the index $t_f$ of the final observation.
+#### Notation and Assumptions
+
+For presentation purposes we continue to assume that all random process parameters are known.  And to simplify notation we first consider the case of a stationary Gaussian process $\mathcal{N} (\cdot)$ having mean 0.
+
+$$
+\begin{align}
+  \mathcal{N}(t) &\sim N(0, \sigma_\mathcal{N}^2) \quad \forall \; t
+\end{align}
+$$ {#eq-Gaussian-0-mean}
+
+In this case we can express the intended least squares linear approximation of $\mathcal{N}(t)$ based on $\{ \mathcal{N}(s) \}_{s \in \mathcal{S}}$ as a conditional expectation.  In fact it will be convenient to be able to condition on the entire past of the random process covering indices $\mathcal{p} (t_f)$ up to and including the index $t_f$ of the final observation.
 
 $$
 \begin{align}
@@ -1151,13 +1161,150 @@ $$
 \end{align}
 $$ {#eq-e-future-given-past}
 
-Due to the normality of $\mathcal{N}(\cdot)$ this conditional expectation coincides with the linear least squares predictor.
+Due to the normality of $\mathcal{N}(\cdot)$ this conditional expectation $\tilde{\mathcal{N}}$ coincides with the linear least squares predictor $\hat{\mathcal{N}}$, which is the relevant predictor for non-normal processes.
 
 $$
 \begin{align}
   \hat{\mathcal{N}} (u \; | \; \mathcal{p} (t_f)) &= \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f))
 \end{align}
-$$ {#eq-e-future-given-past}
+$$ {#eq-lin-pred-and-condl-exp}
+
+We also assume that this Gaussian process follows an $ARMA(p, q)$ model, 
+
+$$
+\begin{align}
+  \phi(\mathcal{B}) \; \mathcal{N} (\cdot) &= \theta(\mathcal{B}) \; W(\cdot) & \text{with iid } W(\cdot) \sim N(0, \sigma_W^2)
+\end{align}
+$$ {#eq-normal-ARMA-proc}
+
+where the roots of both the AR polynomial, $\phi(\cdot)$, and the MA polynomial, $\theta(\cdot)$, have magnitudes greater than unity.  This ensures that $\phi(\mathcal{B})^{-1}$ and $\theta(\mathcal{B})^{-1}$ are well defined.
+
+#### Prediction Residuals
+
+We now examine the residuals from the linear least squared predictors defined above.  For fixed $u$ the predicted variable is $\mathcal{N} (u + t_f)$, which we now express in both causal and inverted forms.
+
+$$
+\begin{align}
+  \mathcal{N} (u + t_f) &= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(u + t_f - \nu), \quad \psi_0 = 1
+\end{align}
+$$ {#eq-predicted-causal-form}
+
+$$
+\begin{align}
+  W(u + t_f) &= \sum_{\nu = 0}^\infty \; \pi_\nu \; \mathcal{N} (u + t_f - \nu), \quad \pi_0 = 1
+\end{align}
+$$ {#eq-predicted-inv-form}
+
+We now take the expectations in @eq-predicted-causal-form conditioned on $\{ \mathcal{N} (s) \}_{s \le t_f}$.
+
+$$
+\begin{align}
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p}(t_f)) &= \sum_{\nu = 0}^\infty \; \psi_\nu \; E \left \{ W(u + t_f - \nu) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
+\end{align}
+$$ {#eq-predictor-causal-form-0}
+
+Expanding $\mathcal{N} (s)$ in causal form, we see that 
+
+$$
+\begin{align}
+  E \left \{ W(u + t_f - \nu) \; | \; \mathcal{N} (s), \; s \le t_f \right \} &= 
+  \begin{cases} 
+    0 & \text{ for } \nu < u \\ 
+    W(u + t_f - \nu) & \text{ for } \nu \ge u
+  \end{cases}
+\end{align}
+$$
+
+This eliminates the first $u$ terms in @eq-predictor-causal-form-0 and simplifies the remaning terms. 
+
+$$
+\begin{align}
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p}(t_f)) &= \sum_{\nu = u}^\infty \; \psi_\nu \; W(u + t_f - \nu)
+\end{align}
+$$ {#eq-predictor-causal-form-u}
+
+Next, applying the same conditional expectations to @eq-predicted-inv-form, we have 
+
+$$
+\begin{align}
+  0 &= \sum_{\nu = 0}^\infty \; \pi_\nu \; \tilde{\mathcal{N}} (u - \nu \; | \; \mathcal{p} (t_f))
+\end{align}
+$$
+
+Since $\pi_0 = 1$, this is equivalent to: 
+
+$$
+\begin{align}
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f) &= - \sum_{\nu = 1}^\infty \; \pi_\nu \; \tilde{\mathcal{N}} (u - \nu \; | \; \mathcal{p} (t_f))
+\end{align}
+$$ {#eq-predictor-inv-form-1}
+
+We now note that 
+
+$$
+\begin{align}
+  \tilde{\mathcal{N}} (u - \nu \; | \; \mathcal{p} (t_f) 
+  &= \mathcal{N} (u - \nu + t_f) \quad \text{for } \nu \ge u
+\end{align}
+$$
+
+Applying this result we have 
+
+$$
+\begin{align}
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f) &= - \sum_{\nu = 1}^{u - 1} \; \pi_\nu \; \tilde{\mathcal{N}} (u - \nu \; | \; \mathcal{p} (t_f)) \; - \; \sum_{\nu = u}^\infty \; \pi_\nu \; \mathcal{N} (u - \nu + t_f)
+\end{align}
+$$ {#eq-predictor-inv-form-u}
+
+We now re-express @eq-predicted-inv-form as an infinite AR model.
+
+$$
+\begin{align}
+  \mathcal{N} (u + t_f) &= W(u + t_f) -  \sum_{\nu = 1}^\infty \; \pi_\nu \; \mathcal{N} (u + t_f - \nu)
+\end{align}
+$$ {#eq-predicted-AR-infty}
+
+Let $R(\cdot)$ denote the residual of the predictors.
+
+$$
+\begin{align}
+  R(k) &= \mathcal{N} (k + t_f) \; - \; \tilde{\mathcal{N}} (k \; | \; \mathcal{p} (t_f), \quad k \ge 1
+\end{align}
+$$ {#eq-predictor-resid-defn}
+
+Combining @eq-predictor-inv-form-u and @eq-predicted-AR-infty we can express process $R(k)$ for $k \ge 1$ in an expanding but finite auto-regressive form.
+
+$$
+\begin{align}
+  R(u) &= \mathcal{N} (u + t_f) \; - \; \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f) \\ 
+  &= W(u + t_f) - \sum_{\nu = 1}^{u - 1} \; \pi_\nu \; R(u - \nu)
+\end{align}
+$$ {#eq-predictor-resid-AR}
+
+Similarly, combing @eq-predicted-causal-form and @eq-predictor-causal-form-u we can express $R(\cdot)$ as the following finite but expanding moving average of the white noise terms.
+
+$$
+\begin{align}
+  R(u) &= \mathcal{N} (u + t_f) \; - \; \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f) \\ 
+  &= \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; W(u + t_f - \nu)
+\end{align}
+$$ {#eq-predictor-resid-MA}
+
+For fixed $u$ the residual random variable $R(u)$ has zero mean and the following finite variance.
+
+$$
+\begin{align}
+  E\{ R(u)^2 \} &= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu^2
+\end{align}
+$$ {#eq-predictor-resid-MSE}
+
+As $u \rightarrow \infty$ the residual variance approaches the variance of the original process $\mathcal{N} (\cdot)$.
+
+$$
+\begin{align}
+  \lim_{u \rightarrow \infty} E\{ R(u)^2 \} &= \sigma_W^2 \; \sum_{\nu = 0}^\infty \; \psi_\nu^2
+\end{align} = \sigma_\mathcal{N}^2
+$${#eq-lim-predictor-resid-MSE}
 
 ## Closing Remarks
 

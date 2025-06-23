@@ -166,7 +166,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">05:11 Mon 23-Jun-2025</p>
+      <p class="date">19:16 Mon 23-Jun-2025</p>
     </div>
   </div>
   
@@ -820,7 +820,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="armap-q" class="level2">
 <h2 class="anchored" data-anchor-id="armap-q">ARMA(p, q)</h2>
 <p>The <span class="math inline">\(AR(p)\)</span> and <span class="math inline">\(MA(q)\)</span> models can be combined into the following <span class="math inline">\(ARMA(p,q)\)</span> model.</p>
-<p><span id="eq-ARMA_p_q_proc"><span class="math display">\[
+<p><span id="eq-ARMA-p-q-proc"><span class="math display">\[
 \begin{align}
   \phi(\mathcal{B}) \; (X(\cdot) - \mu_X) &amp;= \theta(\mathcal{B}) \; W(\cdot) &amp; \text{with } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
@@ -974,24 +974,139 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 <section id="arma-forecastingtxt-arma-forecasting" class="level3">
 <h3 class="anchored" data-anchor-id="arma-forecastingtxt-arma-forecasting">ARMA Forecasting<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a></h3>
-<p>For presentation purposes we continue to assume that all random process parameters are known. And to simplify notation we first consider the case of a stationary Gaussian process <span class="math inline">\(\mathcal{N} (\cdot)\)</span> having mean 0. In this case we can express the intended least squares linear approximation of <span class="math inline">\(\mathcal{N}(t)\)</span> based on <span class="math inline">\(\{ \mathcal{N}(s) \}_{s \in \mathcal{S}}\)</span> as a conditional expectation. In fact it will be convenient to be able to condition on the entire past of the random process covering indices <span class="math inline">\(\mathcal{p} (t_f)\)</span> up to and including the index <span class="math inline">\(t_f\)</span> of the final observation.</p>
+<section id="notation-and-assumptions" class="level4">
+<h4 class="anchored" data-anchor-id="notation-and-assumptions">Notation and Assumptions</h4>
+<p>For presentation purposes we continue to assume that all random process parameters are known. And to simplify notation we first consider the case of a stationary Gaussian process <span class="math inline">\(\mathcal{N} (\cdot)\)</span> having mean 0.</p>
+<p><span id="eq-Gaussian-0-mean"><span class="math display">\[
+\begin{align}
+  \mathcal{N}(t) &amp;\sim N(0, \sigma_\mathcal{N}^2) \quad \forall \; t
+\end{align}
+\tag{57}\]</span></span></p>
+<p>In this case we can express the intended least squares linear approximation of <span class="math inline">\(\mathcal{N}(t)\)</span> based on <span class="math inline">\(\{ \mathcal{N}(s) \}_{s \in \mathcal{S}}\)</span> as a conditional expectation. In fact it will be convenient to be able to condition on the entire past of the random process covering indices <span class="math inline">\(\mathcal{p} (t_f)\)</span> up to and including the index <span class="math inline">\(t_f\)</span> of the final observation.</p>
 <p><span id="eq-le-tf"><span class="math display">\[
 \begin{align}
   \mathcal{p} (t_f) &amp;= \left \{ s \in \mathbb{Z} \; | \; s \le t_f \right \}
 \end{align}
-\tag{57}\]</span></span></p>
+\tag{58}\]</span></span></p>
 <p>We adopt the following notation for the expectation of <span class="math inline">\(\mathcal{N}(u + t_f)\)</span>, the process at a future time, conditioned on <span class="math inline">\(\{ \mathcal{N}(s) \}_{s \le t_f}\)</span>, the history of the process prior to and including the final observation.</p>
 <p><span id="eq-e-future-given-past"><span class="math display">\[
 \begin{align}
   \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f)) &amp;= E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
 \end{align}
-\tag{58}\]</span></span></p>
-<p>Due to the normality of <span class="math inline">\(\mathcal{N}(\cdot)\)</span> this conditional expectation coincides with the linear least squares predictor.</p>
-<p><span id="eq-e-future-given-past"><span class="math display">\[
+\tag{59}\]</span></span></p>
+<p>Due to the normality of <span class="math inline">\(\mathcal{N}(\cdot)\)</span> this conditional expectation <span class="math inline">\(\tilde{\mathcal{N}}\)</span> coincides with the linear least squares predictor <span class="math inline">\(\hat{\mathcal{N}}\)</span>, which is the relevant predictor for non-normal processes.</p>
+<p><span id="eq-lin-pred-and-condl-exp"><span class="math display">\[
 \begin{align}
   \hat{\mathcal{N}} (u \; | \; \mathcal{p} (t_f)) &amp;= \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f))
 \end{align}
-\tag{59}\]</span></span></p>
+\tag{60}\]</span></span></p>
+<p>We also assume that this Gaussian process follows an <span class="math inline">\(ARMA(p, q)\)</span> model,</p>
+<p><span id="eq-normal-ARMA-proc"><span class="math display">\[
+\begin{align}
+  \phi(\mathcal{B}) \; \mathcal{N} (\cdot) &amp;= \theta(\mathcal{B}) \; W(\cdot) &amp; \text{with iid } W(\cdot) \sim N(0, \sigma_W^2)
+\end{align}
+\tag{61}\]</span></span></p>
+<p>where the roots of both the AR polynomial, <span class="math inline">\(\phi(\cdot)\)</span>, and the MA polynomial, <span class="math inline">\(\theta(\cdot)\)</span>, have magnitudes greater than unity. This ensures that <span class="math inline">\(\phi(\mathcal{B})^{-1}\)</span> and <span class="math inline">\(\theta(\mathcal{B})^{-1}\)</span> are well defined.</p>
+</section>
+<section id="prediction-residuals" class="level4">
+<h4 class="anchored" data-anchor-id="prediction-residuals">Prediction Residuals</h4>
+<p>We now examine the residuals from the linear least squared predictors defined above. For fixed <span class="math inline">\(u\)</span> the predicted variable is <span class="math inline">\(\mathcal{N} (u + t_f)\)</span>, which we now express in both causal and inverted forms.</p>
+<p><span id="eq-predicted-causal-form"><span class="math display">\[
+\begin{align}
+  \mathcal{N} (u + t_f) &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(u + t_f - \nu), \quad \psi_0 = 1
+\end{align}
+\tag{62}\]</span></span></p>
+<p><span id="eq-predicted-inv-form"><span class="math display">\[
+\begin{align}
+  W(u + t_f) &amp;= \sum_{\nu = 0}^\infty \; \pi_\nu \; \mathcal{N} (u + t_f - \nu), \quad \pi_0 = 1
+\end{align}
+\tag{63}\]</span></span></p>
+<p>We now take the expectations in <a href="#eq-predicted-causal-form" class="quarto-xref">Equation&nbsp;62</a> conditioned on <span class="math inline">\(\{ \mathcal{N} (s) \}_{s \le t_f}\)</span>.</p>
+<p><span id="eq-predictor-causal-form-0"><span class="math display">\[
+\begin{align}
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p}(t_f)) &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; E \left \{ W(u + t_f - \nu) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
+\end{align}
+\tag{64}\]</span></span></p>
+<p>Expanding <span class="math inline">\(\mathcal{N} (s)\)</span> in causal form, we see that</p>
+<p><span class="math display">\[
+\begin{align}
+  E \left \{ W(u + t_f - \nu) \; | \; \mathcal{N} (s), \; s \le t_f \right \} &amp;=
+  \begin{cases}
+    0 &amp; \text{ for } \nu &lt; u \\
+    W(u + t_f - \nu) &amp; \text{ for } \nu \ge u
+  \end{cases}
+\end{align}
+\]</span></p>
+<p>This eliminates the first <span class="math inline">\(u\)</span> terms in <a href="#eq-predictor-causal-form-0" class="quarto-xref">Equation&nbsp;64</a> and simplifies the remaning terms.</p>
+<p><span id="eq-predictor-causal-form-u"><span class="math display">\[
+\begin{align}
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p}(t_f)) &amp;= \sum_{\nu = u}^\infty \; \psi_\nu \; W(u + t_f - \nu)
+\end{align}
+\tag{65}\]</span></span></p>
+<p>Next, applying the same conditional expectations to <a href="#eq-predicted-inv-form" class="quarto-xref">Equation&nbsp;63</a>, we have</p>
+<p><span class="math display">\[
+\begin{align}
+  0 &amp;= \sum_{\nu = 0}^\infty \; \pi_\nu \; \tilde{\mathcal{N}} (u - \nu \; | \; \mathcal{p} (t_f))
+\end{align}
+\]</span></p>
+<p>Since <span class="math inline">\(\pi_0 = 1\)</span>, this is equivalent to:</p>
+<p><span id="eq-predictor-inv-form-1"><span class="math display">\[
+\begin{align}
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f) &amp;= - \sum_{\nu = 1}^\infty \; \pi_\nu \; \tilde{\mathcal{N}} (u - \nu \; | \; \mathcal{p} (t_f))
+\end{align}
+\tag{66}\]</span></span></p>
+<p>We now note that</p>
+<p><span class="math display">\[
+\begin{align}
+  \tilde{\mathcal{N}} (u - \nu \; | \; \mathcal{p} (t_f)
+  &amp;= \mathcal{N} (u - \nu + t_f) \quad \text{for } \nu \ge u
+\end{align}
+\]</span></p>
+<p>Applying this result we have</p>
+<p><span id="eq-predictor-inv-form-u"><span class="math display">\[
+\begin{align}
+  \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f) &amp;= - \sum_{\nu = 1}^{u - 1} \; \pi_\nu \; \tilde{\mathcal{N}} (u - \nu \; | \; \mathcal{p} (t_f)) \; - \; \sum_{\nu = u}^\infty \; \pi_\nu \; \mathcal{N} (u - \nu + t_f)
+\end{align}
+\tag{67}\]</span></span></p>
+<p>We now re-express <a href="#eq-predicted-inv-form" class="quarto-xref">Equation&nbsp;63</a> as an infinite AR model.</p>
+<p><span id="eq-predicted-AR-infty"><span class="math display">\[
+\begin{align}
+  \mathcal{N} (u + t_f) &amp;= W(u + t_f) -  \sum_{\nu = 1}^\infty \; \pi_\nu \; \mathcal{N} (u + t_f - \nu)
+\end{align}
+\tag{68}\]</span></span></p>
+<p>Let <span class="math inline">\(R(\cdot)\)</span> denote the residual of the predictors.</p>
+<p><span id="eq-predictor-resid-defn"><span class="math display">\[
+\begin{align}
+  R(k) &amp;= \mathcal{N} (k + t_f) \; - \; \tilde{\mathcal{N}} (k \; | \; \mathcal{p} (t_f), \quad k \ge 1
+\end{align}
+\tag{69}\]</span></span></p>
+<p>Combining <a href="#eq-predictor-inv-form-u" class="quarto-xref">Equation&nbsp;67</a> and <a href="#eq-predicted-AR-infty" class="quarto-xref">Equation&nbsp;68</a> we can express process <span class="math inline">\(R(k)\)</span> for <span class="math inline">\(k \ge 1\)</span> in an expanding but finite auto-regressive form.</p>
+<p><span id="eq-predictor-resid-AR"><span class="math display">\[
+\begin{align}
+  R(u) &amp;= \mathcal{N} (u + t_f) \; - \; \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f) \\
+  &amp;= W(u + t_f) - \sum_{\nu = 1}^{u - 1} \; \pi_\nu \; R(u - \nu)
+\end{align}
+\tag{70}\]</span></span></p>
+<p>Similarly, combing <a href="#eq-predicted-causal-form" class="quarto-xref">Equation&nbsp;62</a> and <a href="#eq-predictor-causal-form-u" class="quarto-xref">Equation&nbsp;65</a> we can express <span class="math inline">\(R(\cdot)\)</span> as the following finite but expanding moving average of the white noise terms.</p>
+<p><span id="eq-predictor-resid-MA"><span class="math display">\[
+\begin{align}
+  R(u) &amp;= \mathcal{N} (u + t_f) \; - \; \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f) \\
+  &amp;= \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; W(u + t_f - \nu)
+\end{align}
+\tag{71}\]</span></span></p>
+<p>For fixed <span class="math inline">\(u\)</span> the residual random variable <span class="math inline">\(R(u)\)</span> has zero mean and the following finite variance.</p>
+<p><span id="eq-predictor-resid-MSE"><span class="math display">\[
+\begin{align}
+  E\{ R(u)^2 \} &amp;= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu^2
+\end{align}
+\tag{72}\]</span></span></p>
+<p>As <span class="math inline">\(u \rightarrow \infty\)</span> the residual variance approaches the variance of the original process <span class="math inline">\(\mathcal{N} (\cdot)\)</span>.</p>
+<p><span id="eq-lim-predictor-resid-MSE"><span class="math display">\[
+\begin{align}
+  \lim_{u \rightarrow \infty} E\{ R(u)^2 \} &amp;= \sigma_W^2 \; \sum_{\nu = 0}^\infty \; \psi_\nu^2
+\end{align} = \sigma_\mathcal{N}^2
+\tag{73}\]</span></span></p>
+</section>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
