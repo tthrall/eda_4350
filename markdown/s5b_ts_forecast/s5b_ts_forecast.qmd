@@ -1151,7 +1151,7 @@ $$
 \end{align}
 $$ {#eq-e-future-given-past}
 
-Due to the normality of $\mathcal{N}(\cdot)$ this conditional expectation coincides with the linear (affine) least squares predictor.
+Due to the normality of $\mathcal{N}(\cdot)$ this conditional expectation coincides with the linear least squares predictor.
 
 $$
 \begin{align}
@@ -1355,8 +1355,11 @@ $$
   \hat{X}(t \; | \; \Delta_u) 
      \quad & \quad \text{approximates } X(t) \text{ as affine function of } \{ X(t + \nu) \}_{\nu \in \Delta_u} \\ 
   \\ 
+  \hat{X} (u \; | \; \mathcal{p} (t_f)) 
+     \quad & \quad \text{predicts } X(u + t_f) \text{ as affine function of } \{ X(t) \}_{t \in \mathcal{p} (t_f)} \\ 
+  \\ 
   \hat{X} (u \; | \; \tau_T) 
-     \quad & \quad \text{predicts } X(u + t_0 + T - 1) \text{ as affine function of } \{ X(t) \}_{t \in \tau_T}
+     \quad & \quad \text{predicts } X(u + t_f) \text{ as affine function of } \{ X(t) \}_{t \in \tau_T}
 \end{align}
 $$
 
