@@ -166,7 +166,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">09:39 Tue 24-Jun-2025</p>
+      <p class="date">09:51 Tue 24-Jun-2025</p>
     </div>
   </div>
   
@@ -1068,13 +1068,13 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \mathcal{N} (u + t_f) &amp;= W(u + t_f) -  \sum_{\nu = 1}^\infty \; \pi_\nu \; \mathcal{N} (u + t_f - \nu)
 \end{align}
 \tag{67}\]</span></span></p>
-<p>Let <span class="math inline">\(R(\cdot\; | \; \mathcal{p} (t_f))\)</span> denote the residual of the predictors.</p>
+<p>Let <span class="math inline">\(R(\cdot \; | \; \mathcal{p} (t_f))\)</span> denote the residuals of the predictors.</p>
 <p><span id="eq-predictor-resid-defn"><span class="math display">\[
 \begin{align}
   R(k \; | \; \mathcal{p} (t_f)) &amp;= \mathcal{N} (k + t_f) \; - \; \tilde{\mathcal{N}} (k \; | \; \mathcal{p} (t_f)), \quad k \ge 1
 \end{align}
 \tag{68}\]</span></span></p>
-<p>Combining <a href="#eq-predictor-inv-form-u" class="quarto-xref">Equation&nbsp;66</a> and <a href="#eq-predicted-AR-infty" class="quarto-xref">Equation&nbsp;67</a> we can express process <span class="math inline">\(R(k)\)</span> for <span class="math inline">\(k \ge 1\)</span> in an expanding but finite auto-regressive form.</p>
+<p>Combining <a href="#eq-predictor-inv-form-u" class="quarto-xref">Equation&nbsp;66</a> and <a href="#eq-predicted-AR-infty" class="quarto-xref">Equation&nbsp;67</a> we can express process <span class="math inline">\(R(k \; | \; \mathcal{p} (t_f))\)</span> for <span class="math inline">\(k \ge 1\)</span> in an expanding but finite auto-regressive form.</p>
 <p><span id="eq-predictor-resid-AR"><span class="math display">\[
 \begin{align}
   R(u\; | \; \mathcal{p} (t_f)) &amp;= \mathcal{N} (u + t_f) \; - \; \tilde{\mathcal{N}} (u \; | \; \mathcal{p} (t_f)) \\
@@ -1088,13 +1088,13 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; W(u + t_f - \nu)
 \end{align}
 \tag{70}\]</span></span></p>
-<p>For fixed <span class="math inline">\(u\)</span> the residual random variable <span class="math inline">\(R(u\; | \; \mathcal{p} (t_f))\)</span> has zero mean and the following finite variance.</p>
+<p>From the last result we see that for fixed <span class="math inline">\(u\)</span> the residual random variable <span class="math inline">\(R(u\; | \; \mathcal{p} (t_f))\)</span> has zero mean and the following variance.</p>
 <p><span id="eq-predictor-resid-MSE"><span class="math display">\[
 \begin{align}
   E\{ R(u\; | \; \mathcal{p} (t_f))^2 \} &amp;= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu^2
 \end{align}
 \tag{71}\]</span></span></p>
-<p>As <span class="math inline">\(u \rightarrow \infty\)</span> the residual variance approaches the variance of the original process <span class="math inline">\(\mathcal{N} (\cdot)\)</span>.</p>
+<p>As <span class="math inline">\(u \rightarrow \infty\)</span> this residual variance approaches the variance of the original process <span class="math inline">\(\mathcal{N} (\cdot)\)</span>.</p>
 <p><span id="eq-lim-predictor-resid-MSE"><span class="math display">\[
 \begin{align}
   \lim_{u \rightarrow \infty} E\{ R(u\; | \; \mathcal{p} (t_f))^2 \} &amp;= \sigma_W^2 \; \sum_{\nu = 0}^\infty \; \psi_\nu^2

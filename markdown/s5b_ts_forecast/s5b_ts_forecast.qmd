@@ -1257,7 +1257,7 @@ $$
 \end{align}
 $$ {#eq-predicted-AR-infty}
 
-Let $R(\cdot\; | \; \mathcal{p} (t_f))$ denote the residual of the predictors.
+Let $R(\cdot \; | \; \mathcal{p} (t_f))$ denote the residuals of the predictors.
 
 $$
 \begin{align}
@@ -1265,7 +1265,7 @@ $$
 \end{align}
 $$ {#eq-predictor-resid-defn}
 
-Combining @eq-predictor-inv-form-u and @eq-predicted-AR-infty we can express process $R(k)$ for $k \ge 1$ in an expanding but finite auto-regressive form.
+Combining @eq-predictor-inv-form-u and @eq-predicted-AR-infty we can express process $R(k \; | \; \mathcal{p} (t_f))$ for $k \ge 1$ in an expanding but finite auto-regressive form.
 
 $$
 \begin{align}
@@ -1283,7 +1283,7 @@ $$
 \end{align}
 $$ {#eq-predictor-resid-MA}
 
-For fixed $u$ the residual random variable $R(u\; | \; \mathcal{p} (t_f))$ has zero mean and the following finite variance.
+From the last result we see that for fixed $u$ the residual random variable $R(u\; | \; \mathcal{p} (t_f))$ has zero mean and the following variance.
 
 $$
 \begin{align}
@@ -1291,7 +1291,7 @@ $$
 \end{align}
 $$ {#eq-predictor-resid-MSE}
 
-As $u \rightarrow \infty$ the residual variance approaches the variance of the original process $\mathcal{N} (\cdot)$.
+As $u \rightarrow \infty$ this residual variance approaches the variance of the original process $\mathcal{N} (\cdot)$.
 
 $$
 \begin{align}
