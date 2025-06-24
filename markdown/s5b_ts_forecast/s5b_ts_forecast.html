@@ -174,7 +174,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">19:53 Tue 24-Jun-2025</p>
+      <p class="date">20:06 Tue 24-Jun-2025</p>
     </div>
   </div>
   
@@ -1134,7 +1134,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="truncated-predictorstxt-trunc-arma-predictor" class="level3">
 <h3 class="anchored" data-anchor-id="truncated-predictorstxt-trunc-arma-predictor">Truncated Predictors<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a></h3>
 <p>Using the entire history of the process <span class="math inline">\(\{ \mathcal{N} (s), \; s \le t_f \}\)</span> preceding and including the observed values, we’ve expressed the linear predictor <span class="math inline">\(\tilde{\mathcal{N}} (u \; | \; \wp(t_f))\)</span> as an infinite moving average (<a href="#eq-predictor-causal-form-u" class="quarto-xref">Equation&nbsp;65</a>) and, alternatively, as an infinite auto-regression (<a href="#eq-predictor-inv-form-u" class="quarto-xref">Equation&nbsp;67</a>).</p>
-<p>Now, restricting the predictor to the available data by using the <span class="math inline">\(ARMA(p, q)\)</span> model, we recursively define the following “truncated” predictor, <span class="math inline">\(\breve{\mathcal{N}} (u \; | \; \tau_T)\)</span>.</p>
+<p>Now, restricting the predictor to the available data by using the <span class="math inline">\(ARMA(p, q)\)</span> model, we recursively define the following “truncated” predictor, <span class="math inline">\(\breve{\mathcal{N}} (t \; | \; \tau_T)\)</span>, of the process <span class="math inline">\(\mathcal{N} (t)\)</span> at time <span class="math inline">\(t\)</span>.</p>
 <p><span id="eq-trunc-predictor"><span class="math display">\[
 \begin{align}
   \breve{\mathcal{N}} (u + t_f \; | \; \tau_T) &amp;= \sum_{j = 1}^p \phi_j \; \breve{\mathcal{N}} (u - j + t_f \; | \; \tau_T) \\

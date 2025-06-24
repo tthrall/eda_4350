@@ -1331,7 +1331,7 @@ $$ {#eq-lim-predictor-resid-MSE}
 
 Using the entire history of the process $\{ \mathcal{N} (s), \; s \le t_f \}$ preceding and including the observed values, we've expressed the linear predictor $\tilde{\mathcal{N}} (u \; | \; \wp(t_f))$ as an infinite moving average (@eq-predictor-causal-form-u) and, alternatively, as an infinite auto-regression (@eq-predictor-inv-form-u).
 
-Now, restricting the predictor to the available data by using the $ARMA(p, q)$ model, we recursively define the following "truncated" predictor, $\breve{\mathcal{N}} (u \; | \; \tau_T)$.
+Now, restricting the predictor to the available data by using the $ARMA(p, q)$ model, we recursively define the following "truncated" predictor, $\breve{\mathcal{N}} (t \; | \; \tau_T)$, of the process $\mathcal{N} (t)$ at time $t$.
 
 $$
 \begin{align}
