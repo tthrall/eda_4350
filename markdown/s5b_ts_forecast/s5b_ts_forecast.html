@@ -131,6 +131,9 @@ window.Quarto = {
   <li><a href="#arma-forecastingtxt-arma-forecasting" id="toc-arma-forecastingtxt-arma-forecasting" class="nav-link" data-scroll-target="#arma-forecastingtxt-arma-forecasting">ARMA Forecasting</a>
   <ul class="collapse">
   <li><a href="#notation-and-assumptions" id="toc-notation-and-assumptions" class="nav-link" data-scroll-target="#notation-and-assumptions">Notation and Assumptions</a></li>
+  <li><a href="#predicted-variable" id="toc-predicted-variable" class="nav-link" data-scroll-target="#predicted-variable">Predicted Variable</a></li>
+  <li><a href="#predictor-causal-form" id="toc-predictor-causal-form" class="nav-link" data-scroll-target="#predictor-causal-form">Predictor: Causal Form</a></li>
+  <li><a href="#predictor-inverted-form" id="toc-predictor-inverted-form" class="nav-link" data-scroll-target="#predictor-inverted-form">Predictor: Inverted Form</a></li>
   <li><a href="#predictor-residuals" id="toc-predictor-residuals" class="nav-link" data-scroll-target="#predictor-residuals">Predictor Residuals</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
@@ -170,7 +173,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">11:22 Tue 24-Jun-2025</p>
+      <p class="date">11:45 Tue 24-Jun-2025</p>
     </div>
   </div>
   
@@ -1007,9 +1010,9 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \tag{60}\]</span></span></p>
 <p>where the roots of both the AR polynomial, <span class="math inline">\(\phi(\cdot)\)</span>, and the MA polynomial, <span class="math inline">\(\theta(\cdot)\)</span>, have magnitudes greater than unity. This ensures that <span class="math inline">\(\phi(\mathcal{B})^{-1}\)</span> and <span class="math inline">\(\theta(\mathcal{B})^{-1}\)</span> are well defined.</p>
 </section>
-<section id="predictor-residuals" class="level3">
-<h3 class="anchored" data-anchor-id="predictor-residuals">Predictor Residuals</h3>
-<p>We now examine the residuals from the linear least squares predictors defined above. For fixed <span class="math inline">\(u \ge 1\)</span> the predicted variable is <span class="math inline">\(\mathcal{N} (u + t_f)\)</span>, expressed below in both causal and inverted forms.</p>
+<section id="predicted-variable" class="level3">
+<h3 class="anchored" data-anchor-id="predicted-variable">Predicted Variable</h3>
+<p>For fixed <span class="math inline">\(u \ge 1\)</span> the predicted variable is <span class="math inline">\(\mathcal{N} (u + t_f)\)</span>, expressed below in both causal and inverted forms.</p>
 <p><span id="eq-predicted-causal-form"><span class="math display">\[
 \begin{align}
   \mathcal{N} (u + t_f) &amp;= \sum_{\nu = 0}^\infty \; \psi_\nu \; W(u + t_f - \nu), \quad \psi_0 = 1
@@ -1020,6 +1023,9 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   W(u + t_f) &amp;= \sum_{\nu = 0}^\infty \; \pi_\nu \; \mathcal{N} (u + t_f - \nu), \quad \pi_0 = 1
 \end{align}
 \tag{62}\]</span></span></p>
+</section>
+<section id="predictor-causal-form" class="level3">
+<h3 class="anchored" data-anchor-id="predictor-causal-form">Predictor: Causal Form</h3>
 <p>We now take the expectations in <a href="#eq-predicted-causal-form" class="quarto-xref">Equation&nbsp;61</a> conditioned on <span class="math inline">\(\{ \mathcal{N} (s) \}_{s \le t_f}\)</span>.</p>
 <p><span id="eq-predictor-causal-form-0"><span class="math display">\[
 \begin{align}
@@ -1042,6 +1048,9 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \tilde{\mathcal{N}} (u \; | \; \mathcal{p}(t_f)) &amp;= \sum_{\nu = u}^\infty \; \psi_\nu \; W(u + t_f - \nu)
 \end{align}
 \tag{64}\]</span></span></p>
+</section>
+<section id="predictor-inverted-form" class="level3">
+<h3 class="anchored" data-anchor-id="predictor-inverted-form">Predictor: Inverted Form</h3>
 <p>Next, applying the same conditional expectations to <a href="#eq-predicted-inv-form" class="quarto-xref">Equation&nbsp;62</a>, we have</p>
 <p><span class="math display">\[
 \begin{align}
@@ -1073,7 +1082,10 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \mathcal{N} (u + t_f) &amp;= W(u + t_f) -  \sum_{\nu = 1}^\infty \; \pi_\nu \; \mathcal{N} (u + t_f - \nu)
 \end{align}
 \tag{67}\]</span></span></p>
-<p>Let <span class="math inline">\(R(\cdot \; | \; \mathcal{p} (t_f))\)</span> denote the residuals of the predictors.</p>
+</section>
+<section id="predictor-residuals" class="level3">
+<h3 class="anchored" data-anchor-id="predictor-residuals">Predictor Residuals</h3>
+<p>We now examine the residuals from the linear least squares predictors defined above. Let <span class="math inline">\(R(\cdot \; | \; \mathcal{p} (t_f))\)</span> denote the residuals of the predictors.</p>
 <p><span id="eq-predictor-resid-defn"><span class="math display">\[
 \begin{align}
   R(k \; | \; \mathcal{p} (t_f)) &amp;= \mathcal{N} (k + t_f) \; - \; \tilde{\mathcal{N}} (k \; | \; \mathcal{p} (t_f)), \quad k \ge 1

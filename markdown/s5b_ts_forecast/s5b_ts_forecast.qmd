@@ -1174,9 +1174,9 @@ $$ {#eq-normal-ARMA-proc}
 
 where the roots of both the AR polynomial, $\phi(\cdot)$, and the MA polynomial, $\theta(\cdot)$, have magnitudes greater than unity.  This ensures that $\phi(\mathcal{B})^{-1}$ and $\theta(\mathcal{B})^{-1}$ are well defined.
 
-### Predictor Residuals
+### Predicted Variable
 
-We now examine the residuals from the linear least squares predictors defined above.  For fixed $u \ge 1$ the predicted variable is $\mathcal{N} (u + t_f)$, expressed below in both causal and inverted forms.
+For fixed $u \ge 1$ the predicted variable is $\mathcal{N} (u + t_f)$, expressed below in both causal and inverted forms.
 
 $$
 \begin{align}
@@ -1189,6 +1189,8 @@ $$
   W(u + t_f) &= \sum_{\nu = 0}^\infty \; \pi_\nu \; \mathcal{N} (u + t_f - \nu), \quad \pi_0 = 1
 \end{align}
 $$ {#eq-predicted-inv-form}
+
+### Predictor: Causal Form
 
 We now take the expectations in @eq-predicted-causal-form conditioned on $\{ \mathcal{N} (s) \}_{s \le t_f}$.
 
@@ -1217,6 +1219,8 @@ $$
   \tilde{\mathcal{N}} (u \; | \; \mathcal{p}(t_f)) &= \sum_{\nu = u}^\infty \; \psi_\nu \; W(u + t_f - \nu)
 \end{align}
 $$ {#eq-predictor-causal-form-u}
+
+### Predictor: Inverted Form
 
 Next, applying the same conditional expectations to @eq-predicted-inv-form, we have 
 
@@ -1259,7 +1263,9 @@ $$
 \end{align}
 $$ {#eq-predicted-AR-infty}
 
-Let $R(\cdot \; | \; \mathcal{p} (t_f))$ denote the residuals of the predictors.
+### Predictor Residuals
+
+We now examine the residuals from the linear least squares predictors defined above.  Let $R(\cdot \; | \; \mathcal{p} (t_f))$ denote the residuals of the predictors.
 
 $$
 \begin{align}
