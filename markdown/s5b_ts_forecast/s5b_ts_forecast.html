@@ -123,11 +123,15 @@ window.Quarto = {
   <li><a href="#inverted-form" id="toc-inverted-form" class="nav-link" data-scroll-target="#inverted-form">Inverted Form</a></li>
   <li><a href="#arimap-d-q" id="toc-arimap-d-q" class="nav-link" data-scroll-target="#arimap-d-q">ARIMA(p, d, q)</a></li>
   </ul></li>
-  <li><a href="#forecasting" id="toc-forecasting" class="nav-link" data-scroll-target="#forecasting">Forecasting</a>
+  <li><a href="#linear-predictors" id="toc-linear-predictors" class="nav-link" data-scroll-target="#linear-predictors">Linear Predictors</a>
   <ul class="collapse">
   <li><a href="#problem-statement" id="toc-problem-statement" class="nav-link" data-scroll-target="#problem-statement">Problem Statement</a></li>
   <li><a href="#linear-equations" id="toc-linear-equations" class="nav-link" data-scroll-target="#linear-equations">Linear Equations</a></li>
-  <li><a href="#arma-forecastingtxt-arma-forecasting" id="toc-arma-forecastingtxt-arma-forecasting" class="nav-link" data-scroll-target="#arma-forecastingtxt-arma-forecasting">ARMA Forecasting</a></li>
+  </ul></li>
+  <li><a href="#arma-forecastingtxt-arma-forecasting" id="toc-arma-forecastingtxt-arma-forecasting" class="nav-link" data-scroll-target="#arma-forecastingtxt-arma-forecasting">ARMA Forecasting</a>
+  <ul class="collapse">
+  <li><a href="#notation-and-assumptions" id="toc-notation-and-assumptions" class="nav-link" data-scroll-target="#notation-and-assumptions">Notation and Assumptions</a></li>
+  <li><a href="#predictor-residuals" id="toc-predictor-residuals" class="nav-link" data-scroll-target="#predictor-residuals">Predictor Residuals</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#appendix-a-glossary-of-math-symbols" id="toc-appendix-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#appendix-a-glossary-of-math-symbols">Appendix A: Glossary of Math Symbols</a></li>
@@ -166,7 +170,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">09:51 Tue 24-Jun-2025</p>
+      <p class="date">11:22 Tue 24-Jun-2025</p>
     </div>
   </div>
   
@@ -906,8 +910,8 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>If <span class="math inline">\(d \ge 1\)</span> then <span class="math inline">\(\mathcal{D}^d\)</span> removes <span class="math inline">\(\mu_X\)</span>, which can be omitted from the formula for simplificaton. As previously noted the operator <span class="math inline">\(\mathcal{D}^d\)</span> removes any polynomial trend of degree <span class="math inline">\(d\)</span> or less.</p>
 </section>
 </section>
-<section id="forecasting" class="level2">
-<h2 class="anchored" data-anchor-id="forecasting">Forecasting</h2>
+<section id="linear-predictors" class="level2">
+<h2 class="anchored" data-anchor-id="linear-predictors">Linear Predictors</h2>
 <section id="problem-statement" class="level3">
 <h3 class="anchored" data-anchor-id="problem-statement">Problem Statement</h3>
 <p>Let <span class="math inline">\(X(\cdot)\)</span> be a stationary process, whose <span class="math inline">\(T\)</span> time indices, <span class="math inline">\(\tau_T\)</span>, begin with <span class="math inline">\(t_0\)</span> and end with <span class="math inline">\(t_f\)</span> per <a href="#eq-tau-T" class="quarto-xref">Equation&nbsp;2</a>.</p>
@@ -953,7 +957,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>In vector-matrix notation we have the following linear system.<a href="#fn31" class="footnote-ref" id="fnref31" role="doc-noteref"><sup>31</sup></a></p>
 <p><span id="eq-predictor-matrix-eqn"><span class="math display">\[
 \begin{align}
-  \Gamma \; \hat{\beta}_\bullet &amp;= \tilde{\gamma}_\bullet
+  \Gamma[\cdot, \cdot] \; \hat{\beta}_\bullet &amp;= \tilde{\gamma} [\cdot]
 \end{align}
 \tag{54}\]</span></span></p>
 <p>where we set the range of vector and matrix indices to <span class="math inline">\(\nu_T = \{ 0, \dots, T-1 \}\)</span> so that</p>
@@ -963,13 +967,14 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \tilde{\gamma} [j] &amp;= \gamma_X (u - j + T - 1)
 \end{align}
 \tag{55}\]</span></span></p>
-<p><span class="math inline">\(\Gamma\)</span> is a covariance matrix, and is therefore non-negative definite. In most scenarios <span class="math inline">\(\Gamma\)</span> can be assumed to be non-singular, for otherwise we would have a degenerate process. In any case <span class="math inline">\(\hat{\beta}_\bullet\)</span> can be defined by applying the inverse (or a generalized inverse) of <span class="math inline">\(\Gamma\)</span> to <span class="math inline">\(\tilde{\gamma}_\bullet\)</span>.</p>
+<p><span class="math inline">\(\Gamma\)</span> is a covariance matrix, and is therefore non-negative definite. In fact <span class="math inline">\(\Gamma\)</span> is positive definite (non-singular) unless <span class="math inline">\(X(\cdot)\)</span> is a degenerate process<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a>. In any case <span class="math inline">\(\hat{\beta}_\bullet\)</span> can be defined by applying the inverse (or a generalized inverse) of <span class="math inline">\(\Gamma\)</span> to <span class="math inline">\(\tilde{\gamma}_\bullet\)</span>.</p>
 <p>As noted above, we have assumed for the sake of discussion that the entire auto-covariance function <span class="math inline">\(\gamma_X (\cdot)\)</span> is known. In practice such statistics must be estimated from the data, and the equations above entail <span class="math inline">\(\gamma_X(T + u - 1 - j)\)</span>, which for <span class="math inline">\(j &lt; u\)</span> cannot be directly estimated from the data. Instead we must rely on a model of the process for such estimates.</p>
 </section>
-<section id="arma-forecastingtxt-arma-forecasting" class="level3">
-<h3 class="anchored" data-anchor-id="arma-forecastingtxt-arma-forecasting">ARMA Forecasting<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a></h3>
-<section id="notation-and-assumptions" class="level4">
-<h4 class="anchored" data-anchor-id="notation-and-assumptions">Notation and Assumptions</h4>
+</section>
+<section id="arma-forecastingtxt-arma-forecasting" class="level2">
+<h2 class="anchored" data-anchor-id="arma-forecastingtxt-arma-forecasting">ARMA Forecasting<a href="#fn33" class="footnote-ref" id="fnref33" role="doc-noteref"><sup>33</sup></a></h2>
+<section id="notation-and-assumptions" class="level3">
+<h3 class="anchored" data-anchor-id="notation-and-assumptions">Notation and Assumptions</h3>
 <p>For presentation purposes we continue to assume that all random process parameters are known. And to simplify notation we first consider the case of a stationary Gaussian process <span class="math inline">\(\mathcal{N} (\cdot)\)</span> having mean 0.</p>
 <p><span id="eq-Gaussian-0-mean"><span class="math display">\[
 \begin{align}
@@ -1002,8 +1007,8 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \tag{60}\]</span></span></p>
 <p>where the roots of both the AR polynomial, <span class="math inline">\(\phi(\cdot)\)</span>, and the MA polynomial, <span class="math inline">\(\theta(\cdot)\)</span>, have magnitudes greater than unity. This ensures that <span class="math inline">\(\phi(\mathcal{B})^{-1}\)</span> and <span class="math inline">\(\theta(\mathcal{B})^{-1}\)</span> are well defined.</p>
 </section>
-<section id="prediction-residuals" class="level4">
-<h4 class="anchored" data-anchor-id="prediction-residuals">Prediction Residuals</h4>
+<section id="predictor-residuals" class="level3">
+<h3 class="anchored" data-anchor-id="predictor-residuals">Predictor Residuals</h3>
 <p>We now examine the residuals from the linear least squares predictors defined above. For fixed <span class="math inline">\(u \ge 1\)</span> the predicted variable is <span class="math inline">\(\mathcal{N} (u + t_f)\)</span>, expressed below in both causal and inverted forms.</p>
 <p><span id="eq-predicted-causal-form"><span class="math display">\[
 \begin{align}
@@ -1102,10 +1107,9 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \tag{72}\]</span></span></p>
 </section>
 </section>
-</section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
-<p>This technical note is intended as an overview of time series forecasting models based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn33" class="footnote-ref" id="fnref33" role="doc-noteref"><sup>33</sup></a></p>
+<p>This technical note is intended as an overview of time series forecasting models based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a></p>
 <p>For a more comprehensive listing of relevant <code>R</code> packages see the time series task view available from <a href="https://cran.r-project.org/web/views/TimeSeries.html">CRAN</a>, the Comprehensive R Archive Network.</p>
 <p>Also see <a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> for a more detailed introduction to the topics presented here. And see <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a> for an introduction to <code>R</code> package <code>astsa</code>.</p>
 </section>
@@ -1261,7 +1265,7 @@ Figure&nbsp;4: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a> shows the trading day closings and returns (percent change)<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;5</a> shows the trading day closings and returns (percent change)<a href="#fn35" class="footnote-ref" id="fnref35" role="doc-noteref"><sup>35</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1377,9 +1381,10 @@ Whittle, P. 1951. <em>Hypothesis Testing in Time Series Analysis</em>. Statistic
 <li id="fn29"><p>This inversion requires each root of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitude greater than unity.<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn30"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref30" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn31"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 114</a>)</span> introduce the <span class="math inline">\(\Gamma\)</span> matrix.<a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn32"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span><a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn33"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn34"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn32"><p>By “degenerate process” we mean a process <span class="math inline">\(X(\cdot)\)</span> for which there is a filter <span class="math inline">\(a(u)\)</span>, equal to zero for all but finitely many lags <span class="math inline">\(u\)</span>, that annihilates <span class="math inline">\(X(\cdot)\)</span>: <span class="math inline">\(a * (X - \mu_x) = 0\)</span>.<a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn33"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span><a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn34"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn35"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref35" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

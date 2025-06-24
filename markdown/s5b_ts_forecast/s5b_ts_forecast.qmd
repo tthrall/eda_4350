@@ -1046,7 +1046,7 @@ By convention, $d \in \{ 0, 1, 2, \ldots \}$ so that $ARIMA(p, 0, q)$ is synonym
 
 If $d \ge 1$ then $\mathcal{D}^d$ removes $\mu_X$, which can be omitted from the formula for simplificaton.  As previously noted the operator $\mathcal{D}^d$ removes any polynomial trend of degree $d$ or less.
 
-## Forecasting
+## Linear Predictors
 
 ### Problem Statement
 
@@ -1107,7 +1107,7 @@ In vector-matrix notation we have the following linear system.[^txt_Gamma_defn]
 
 $$
 \begin{align}
-  \Gamma \; \hat{\beta}_\bullet &= \tilde{\gamma}_\bullet
+  \Gamma[\cdot, \cdot] \; \hat{\beta}_\bullet &= \tilde{\gamma} [\cdot]
 \end{align}
 $$ {#eq-predictor-matrix-eqn}
 
@@ -1120,15 +1120,17 @@ $$
 \end{align}
 $$ {#eq-predictor-matrix-vars}
 
-$\Gamma$ is a covariance matrix, and is therefore non-negative definite.  In most scenarios $\Gamma$ can be assumed to be non-singular, for otherwise we would have a degenerate process.  In any case $\hat{\beta}_\bullet$ can be defined by applying the inverse (or a generalized inverse) of $\Gamma$ to $\tilde{\gamma}_\bullet$.
+$\Gamma$ is a covariance matrix, and is therefore non-negative definite.  In fact $\Gamma$ is positive definite (non-singular) unless $X(\cdot)$ is a degenerate process[^degenerate_process].  In any case $\hat{\beta}_\bullet$ can be defined by applying the inverse (or a generalized inverse) of $\Gamma$ to $\tilde{\gamma}_\bullet$.
+
+[^degenerate_process]: By "degenerate process" we mean a process $X(\cdot)$ for which there is a filter $a(u)$, equal to zero for all but finitely many lags $u$, that annihilates $X(\cdot)$: $a * (X - \mu_x) = 0$.
 
 As noted above, we have assumed for the sake of discussion that the entire auto-covariance function $\gamma_X (\cdot)$ is known.  In practice such statistics must be estimated from the data, and the equations above entail $\gamma_X(T + u - 1 - j)$, which for $j < u$ cannot be directly estimated from the data.  Instead we must rely on a model of the process for such estimates.
 
-### ARMA Forecasting[^txt-ARMA-forecasting]
+## ARMA Forecasting[^txt-ARMA-forecasting]
 
 [^txt-ARMA-forecasting]: @shumway2025 [page 117]
 
-#### Notation and Assumptions
+### Notation and Assumptions
 
 For presentation purposes we continue to assume that all random process parameters are known.  And to simplify notation we first consider the case of a stationary Gaussian process $\mathcal{N} (\cdot)$ having mean 0.
 
@@ -1172,7 +1174,7 @@ $$ {#eq-normal-ARMA-proc}
 
 where the roots of both the AR polynomial, $\phi(\cdot)$, and the MA polynomial, $\theta(\cdot)$, have magnitudes greater than unity.  This ensures that $\phi(\mathcal{B})^{-1}$ and $\theta(\mathcal{B})^{-1}$ are well defined.
 
-#### Prediction Residuals
+### Predictor Residuals
 
 We now examine the residuals from the linear least squares predictors defined above.  For fixed $u \ge 1$ the predicted variable is $\mathcal{N} (u + t_f)$, expressed below in both causal and inverted forms.
 
@@ -1298,6 +1300,8 @@ $$
   \lim_{u \rightarrow \infty} E\{ R(u\; | \; \mathcal{p} (t_f))^2 \} &= \sigma_W^2 \; \sum_{\nu = 0}^\infty \; \psi_\nu^2
 \end{align} = \sigma_\mathcal{N}^2
 $${#eq-lim-predictor-resid-MSE}
+
+
 
 ## Closing Remarks
 
