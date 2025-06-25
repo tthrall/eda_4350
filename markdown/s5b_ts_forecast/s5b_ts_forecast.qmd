@@ -1369,6 +1369,14 @@ $$
 \end{align}
 $$
 
+As previously noted, we assume all parameters to be known, so that the polynomials $\phi(\cdot)$ and $\theta(\cdot)$ are completely specified.  Then the system of equations above can be solved recursively, as illustrated in the next example.
+
+### ARMA(1, 1) Example[^txt-ARMA-1-1-xmpl]
+
+[^txt-ARMA-1-1-xmpl]: See @stoffer2025 [page 120].
+
+
+
 ## Closing Remarks
 
 This technical note presents an overview of time series forecasting based on @shumway2025 along with the supporting `R` package `astsa` [@astsa].[^2]
