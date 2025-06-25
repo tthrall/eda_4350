@@ -1111,11 +1111,11 @@ $$
 \end{align}
 $$ {#eq-predictor-matrix-eqn}
 
-where we set the range of vector and matrix indices to $\nu_T = \{ 0, \dots, T-1 \}$ so that 
+where we set the vector and matrix indices to $j, \nu \in \nu_T = \{ 0, \dots, T-1 \}$, so that 
 
 $$
 \begin{align}
-  \Gamma [j, \nu] & = \gamma_X(\nu - j) & \text{for } \nu, j \in \nu_T \\ 
+  \Gamma [j, \nu] & = \gamma_X(\nu - j) \\ 
   \tilde{\gamma} [j] &= \gamma_X (u - j + T - 1)
 \end{align}
 $$ {#eq-predictor-matrix-vars}
@@ -1126,7 +1126,7 @@ $\Gamma$ is a covariance matrix, and is therefore non-negative definite.  In fac
 
 As noted above, we have assumed for the sake of discussion that the entire auto-covariance function $\gamma_X (\cdot)$ is known.  In practice such statistics must be estimated from the data.  But direct estimation is not possible, due to the restricted range of differences in data indices.[^direct-estimates]  Instead, we must rely on a model of the process for such estimates.
 
-[^direct-estimates]: From $T$ observations, the magnitude of a difference in data indices is no more than $T-1$.  Yet the needed estimates include $\gamma_X(T + u - 1 - j)$, with $j \in [0, T-1]$ and $u \ge 1$.  For $j = 0$ and $u = 1$ we have $\gamma_X(T)$, which exceeds the limits of direct estimation.
+[^direct-estimates]: Any two time indices within the $T$ observations can differ by no more than $T-1$.  Yet the needed estimates include $\gamma_X(T + u - 1 - j)$, with $u \ge 1$ and $0 \le j < T$.  For $u = 1$ and $j = 0$ we have $\gamma_X(T)$, which exceeds the limits of direct estimation.
 
 ## ARMA Forecasting[^txt-ARMA-forecasting]
 
@@ -1480,7 +1480,7 @@ s5a_articles_tbl |>
   )
 ```
 
-## Appendix A: Glossary of Math Symbols
+## A: Glossary of Math Symbols
 
 $$
 \begin{align}
@@ -1573,7 +1573,7 @@ $$
 \end{align}
 $$
 
-## Appendix B: Data Examples
+## B: Data Examples
 
 ### Hare and Lynx Populations
 
@@ -1720,4 +1720,4 @@ text(1970, -.91, "WARM", col=6, font=4)
 g_rec <- astsa::tsplot(rec, ylab="", main="Recruitment", col=4)
 ```
 
-## Appendix C: References
+## References

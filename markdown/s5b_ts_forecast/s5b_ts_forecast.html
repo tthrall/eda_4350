@@ -138,8 +138,8 @@ window.Quarto = {
   <li><a href="#truncated-predictorstxt-trunc-arma-predictor" id="toc-truncated-predictorstxt-trunc-arma-predictor" class="nav-link" data-scroll-target="#truncated-predictorstxt-trunc-arma-predictor">Truncated Predictors</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
-  <li><a href="#appendix-a-glossary-of-math-symbols" id="toc-appendix-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#appendix-a-glossary-of-math-symbols">Appendix A: Glossary of Math Symbols</a></li>
-  <li><a href="#appendix-b-data-examples" id="toc-appendix-b-data-examples" class="nav-link" data-scroll-target="#appendix-b-data-examples">Appendix B: Data Examples</a>
+  <li><a href="#a-glossary-of-math-symbols" id="toc-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#a-glossary-of-math-symbols">A: Glossary of Math Symbols</a></li>
+  <li><a href="#b-data-examples" id="toc-b-data-examples" class="nav-link" data-scroll-target="#b-data-examples">B: Data Examples</a>
   <ul class="collapse">
   <li><a href="#hare-and-lynx-populations" id="toc-hare-and-lynx-populations" class="nav-link" data-scroll-target="#hare-and-lynx-populations">Hare and Lynx Populations</a></li>
   <li><a href="#jj-quarterly-earnings" id="toc-jj-quarterly-earnings" class="nav-link" data-scroll-target="#jj-quarterly-earnings">JJ Quarterly Earnings</a></li>
@@ -148,7 +148,7 @@ window.Quarto = {
   <li><a href="#cardiovascular-mortality-in-los-angeles" id="toc-cardiovascular-mortality-in-los-angeles" class="nav-link" data-scroll-target="#cardiovascular-mortality-in-los-angeles">Cardiovascular Mortality in Los Angeles</a></li>
   <li><a href="#el-niño-and-fish-population" id="toc-el-niño-and-fish-population" class="nav-link" data-scroll-target="#el-niño-and-fish-population">El Niño and Fish Population</a></li>
   </ul></li>
-  <li><a href="#appendix-c-references" id="toc-appendix-c-references" class="nav-link" data-scroll-target="#appendix-c-references">Appendix C: References</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
 </div>
@@ -174,7 +174,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">20:06 Tue 24-Jun-2025</p>
+      <p class="date">04:48 Wed 25-Jun-2025</p>
     </div>
   </div>
   
@@ -964,10 +964,10 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \Gamma[\cdot, \cdot] \; \hat{\beta}_\bullet &amp;= \tilde{\gamma} [\cdot]
 \end{align}
 \tag{54}\]</span></span></p>
-<p>where we set the range of vector and matrix indices to <span class="math inline">\(\nu_T = \{ 0, \dots, T-1 \}\)</span> so that</p>
+<p>where we set the vector and matrix indices to <span class="math inline">\(j, \nu \in \nu_T = \{ 0, \dots, T-1 \}\)</span>, so that</p>
 <p><span id="eq-predictor-matrix-vars"><span class="math display">\[
 \begin{align}
-  \Gamma [j, \nu] &amp; = \gamma_X(\nu - j) &amp; \text{for } \nu, j \in \nu_T \\
+  \Gamma [j, \nu] &amp; = \gamma_X(\nu - j) \\
   \tilde{\gamma} [j] &amp;= \gamma_X (u - j + T - 1)
 \end{align}
 \tag{55}\]</span></span></p>
@@ -1174,8 +1174,8 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>For a more comprehensive listing of relevant <code>R</code> packages see the time series task view available from <a href="https://cran.r-project.org/web/views/TimeSeries.html">CRAN</a>, the Comprehensive R Archive Network.</p>
 <p>Also see <a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> for a more detailed introduction to the topics presented here. And see <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a> for an introduction to <code>R</code> package <code>astsa</code>.</p>
 </section>
-<section id="appendix-a-glossary-of-math-symbols" class="level2">
-<h2 class="anchored" data-anchor-id="appendix-a-glossary-of-math-symbols">Appendix A: Glossary of Math Symbols</h2>
+<section id="a-glossary-of-math-symbols" class="level2">
+<h2 class="anchored" data-anchor-id="a-glossary-of-math-symbols">A: Glossary of Math Symbols</h2>
 <p><span class="math display">\[
 \begin{align}
   {a_{\bullet, \bullet} (u)}
@@ -1267,8 +1267,8 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \]</span></p>
 </section>
-<section id="appendix-b-data-examples" class="level2">
-<h2 class="anchored" data-anchor-id="appendix-b-data-examples">Appendix B: Data Examples</h2>
+<section id="b-data-examples" class="level2">
+<h2 class="anchored" data-anchor-id="b-data-examples">B: Data Examples</h2>
 <section id="hare-and-lynx-populations" class="level3">
 <h3 class="anchored" data-anchor-id="hare-and-lynx-populations">Hare and Lynx Populations</h3>
 <p>One of the classic studies of predator–prey interactions is based on the record of lynx (<code>astsa::Lynx</code>) and snowshoe hare (<code>astsa::Hare</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
@@ -1380,13 +1380,13 @@ Figure&nbsp;7: Southern Oscillation Index and fish recruitment
 </div>
 </section>
 </section>
-<section id="appendix-c-references" class="level2 unnumbered">
+<section id="references" class="level2 unnumbered">
 
 
 </section>
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Appendix C: References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-box1970time" class="csl-entry" role="listitem">
 Box, G. E. P., and G. M. Jenkins. 1970. <em>Time Series Analysis: Forecasting and Control</em>. Holden-Day Series in Time Series Analysis and Digital Processing. Holden-Day. <a href="https://books.google.co.uk/books?id=5BVfnXaq03oC">https://books.google.co.uk/books?id=5BVfnXaq03oC</a>.
 </div>
@@ -1442,7 +1442,7 @@ Whittle, P. 1951. <em>Hypothesis Testing in Time Series Analysis</em>. Statistic
 <li id="fn29"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn30"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 114</a>)</span> introduce the <span class="math inline">\(\Gamma\)</span> matrix.<a href="#fnref30" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn31"><p>By “degenerate process” we mean a process <span class="math inline">\(X(\cdot)\)</span> for which there is a filter <span class="math inline">\(a(u)\)</span>, equal to zero for all but finitely many lags <span class="math inline">\(u\)</span>, that annihilates <span class="math inline">\(X(\cdot)\)</span>: <span class="math inline">\(a * (X - \mu_x) = 0\)</span>.<a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn32"><p>From <span class="math inline">\(T\)</span> observations, the magnitude of a difference in data indices is no more than <span class="math inline">\(T-1\)</span>. Yet the needed estimates include <span class="math inline">\(\gamma_X(T + u - 1 - j)\)</span>, with <span class="math inline">\(j \in [0, T-1]\)</span> and <span class="math inline">\(u \ge 1\)</span>. For <span class="math inline">\(j = 0\)</span> and <span class="math inline">\(u = 1\)</span> we have <span class="math inline">\(\gamma_X(T)\)</span>, which exceeds the limits of direct estimation.<a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn32"><p>Any two time indices within the <span class="math inline">\(T\)</span> observations can differ by no more than <span class="math inline">\(T-1\)</span>. Yet the needed estimates include <span class="math inline">\(\gamma_X(T + u - 1 - j)\)</span>, with <span class="math inline">\(u \ge 1\)</span> and <span class="math inline">\(0 \le j &lt; T\)</span>. For <span class="math inline">\(u = 1\)</span> and <span class="math inline">\(j = 0\)</span> we have <span class="math inline">\(\gamma_X(T)\)</span>, which exceeds the limits of direct estimation.<a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn33"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span><a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn34"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 119</a>)</span><a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn35"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref35" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
