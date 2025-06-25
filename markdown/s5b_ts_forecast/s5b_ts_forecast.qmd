@@ -1468,6 +1468,107 @@ graphics::abline(v = 100, lty = 2, col = 4)
 graphics::lines(x)
 ```
 
+### Recruitment Forecast
+
+@fig-soi shows the Southern Oscillation Index (SOI, `astsa::soi`) and associated Recruitment (`astsa::rec`), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values during the years 1950–1987.
+
+@shumway2025 [page 111] fit the following preliminary AR(2) model to the recruitment index.
+
+$$
+\begin{align}
+  \mathcal{N} (t) &= \alpha + \phi_1 \mathcal{N} (t-1) + \phi_2 \mathcal{N} (t-2) + W(t) \\ 
+  \\ 
+  & \text{with estimated coefficients } \\ 
+  \\ 
+  \hat{\alpha} &= 6.74 \\ 
+  \hat{\phi}_1 &= 1.35 \\ 
+  \hat{\phi}_2 &= -0.46 \\ 
+  \hat{\sigma}_W^2 &= 89.72 
+\end{align} 
+$$ {#eq-rec-fit-AR2}
+
+For purposes of discussion let us accept the coefficient estimates as given constants that specify the $AR(2)$ model.  Then the truncated predictor can be determined recursively from the following formula.
+
+$$
+\begin{align}
+  \breve{\mathcal{N}} (t \; | \; \tau_T) &= \alpha +  \phi_1 \breve{\mathcal{N}} (t-1 \; | \; \tau_T) + \phi_2 \breve{\mathcal{N}} (t-2 \; | \; \tau_T) + \breve{W}(t \; | \; \tau_T) \\ 
+  \\ 
+  \text{with } \\ 
+  \\ 
+  \breve{\mathcal{N}} (t \; | \; \tau_T) &= 
+  \begin{cases}
+    \mathcal{N} (t) & \text{if } t \in \tau_T \\ 
+    0 & \text{if } t < t_0
+  \end{cases} \\ 
+  \\ 
+  \text{and } \\ 
+  \\ 
+  \breve{W}(t \; | \; \tau_T) &= 0 \quad \text{if } t \not \in \tau_T
+\end{align} 
+$$ {#eq-tp-rec-AR2}
+
+To approximate prediction variance we need the $\psi$ coefficients of the causal form of the $AR(2)$ model.  From @shumway2025 [pp. 103, 121] we have 
+
+$$
+\begin{align}
+  \psi_j &= \phi_1 \psi_{j-1} + \phi_2 \psi_{j-2} \quad \text{for } j \ge 2 \\ 
+  \\ 
+  &\text{with initial conditions } \\ 
+  \\ 
+  \psi_0 &= 1 \\ 
+  \psi_1 &= \phi_1
+\end{align} 
+$$
+
+These calculations are incorporated into the following `astsa` forecast. 
+
+```{r}
+#| label: fig-rec-AR-2
+#| fig-cap: "Recruitment index followed by a 24-month AR(2) forecast"
+
+# fit AR(2) to recruitment data
+regr <- astsa::rec |> 
+  stats::ar.ols(
+    order = 2, demean = FALSE, intercept = TRUE
+  )
+
+# forecast 24 months beyond data
+fore <- regr |> stats::predict(n.ahead = 24)
+
+# append predictions to data in time series x
+x <- ts( 
+  c(rec, fore$pred), 
+  start = 1950, 
+  frequency = 12
+)
+
+# plot x
+stats::window(x, start = 1980) |> 
+  astsa::tsplot(
+    ylab = "Recruitment", 
+    ylim = c(10, 100)
+  )
+
+# plot predictions
+graphics::lines(fore$pred, type = "o", col = 2)
+
+# confidence bounds
+U <- fore$pred + fore$se
+L <- fore$pred - fore$se
+
+# confidence region
+xx <- c(
+  stats::time(U), 
+  rev(stats::time(U))
+)
+yy <- c(L, rev(U))
+graphics::polygon(
+  xx, yy, 
+  border = 8, 
+  col = gray(0.6, alpha = 0.2)
+)
+```
+
 ## ARIMA(p, d, q)
 
 @whittle1951hypothesis introduced ARMA models.  Then, in order to treat non-stationary processes, @box1970time presented auto-regressive integrated moving average (ARIMA) models.  Here's the form of an ARIMA model having $p, d, q$ as its orders of auto-regression, differencing, and moving average, respectively.[^txt-ARIMA-p-d-q-proc]
