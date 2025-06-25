@@ -1008,7 +1008,7 @@ $$ {#eq-ARMA-p-q-causal}
 
 It is also useful to invert the MA operator in an ARMA model to obtain the white noise process $W(t)$ as a linear function of current and past values of $X(t)$.[^txt-ARMA-p-q-inv] [^MAq-inv]
 
-[^txt-ARMA_p-q-inv]: See @shumway2025 [page 97].
+[^txt-ARMA-p-q-inv]: See @shumway2025 [page 97].
 
 [^MAq-inv]: This inversion requires each root of polynomial $\theta(\cdot)$ to have magnitude greater than unity.
 
@@ -1371,11 +1371,123 @@ $$
 
 As previously noted, we assume all parameters to be known, so that the polynomials $\phi(\cdot)$ and $\theta(\cdot)$ are completely specified.  Then the system of equations above can be solved recursively, as illustrated in the next example.
 
-### ARMA(1, 1) Example[^txt-ARMA-1-1-xmpl]
+### ARMA(1, 1) Simulation[^txt-ARMA-1-1-xmpl]
 
-[^txt-ARMA-1-1-xmpl]: See @stoffer2025 [page 120].
+[^txt-ARMA-1-1-xmpl]: See @shumway2025 [page 120].
 
+We illustrate the truncated predictor for an $ARMA(1, 1)$ model:
 
+$$
+\begin{align}
+  \mathcal{N}(t) &= \phi_1 \; \mathcal{N}(t - 1) \; + \; W(t) \; + \; \theta_1 \; W(t - 1)
+\end{align}
+$$ {#eq-ARMA-1-1-xmpl}
+
+The truncated predictor is 
+
+$$
+\begin{align}
+  \breve{\mathcal{N}} (u + t_f \; | \; \tau_T) &= \phi_1 \; \breve{\mathcal{N}} (u - 1 + t_f \; | \; \tau_T) \; + \; \breve{W} (u + t_f \; | \; \tau_T) \; + \; \theta_1 \; \breve{W} (u - 1 + t_f \; | \; \tau_T)
+\end{align}
+$$ {#eq-tpu-1-1}
+
+Setting $u = 1$, we have 
+
+$$
+\begin{align}
+  \breve{\mathcal{N}} (1 + t_f \; | \; \tau_T) &= \phi_1 \; \breve{\mathcal{N}} (t_f \; | \; \tau_T) \; + \; \breve{W} (1 + t_f \; | \; \tau_T) \; + \; \theta_1 \; \breve{W} (t_f \; | \; \tau_T) \\ 
+  &= \phi_1 \; \mathcal{N} (t_f \; | \; \tau_T) \; + \; 0 \; + \; \theta_1 \; \breve{W} (t_f \; | \; \tau_T)
+\end{align}
+$$ {#eq-tp1-1-1}
+
+For $u \ge 2$ we have  
+
+$$
+\begin{align}
+  \breve{\mathcal{N}} (u + t_f \; | \; \tau_T) &= \phi_1 \; \breve{\mathcal{N}} (u - 1 + t_f \; | \; \tau_T)
+\end{align}
+$$ {#eq-tp2-1-1}
+
+which can be calculated recursively.
+
+To initialize these recursive calculations we still need to determine $\breve{W} (t_f \; | \; \tau_T)$.  To this end we re-express the ARMA model and set the following initial conditions.
+
+$$
+\begin{align}
+  \breve{W} (t) &= \mathcal{N}(t) \; - \; \phi_1 \; \mathcal{N}(t - 1) \; - \; \theta_1 \; \breve{W} (t - 1) \\ 
+  \\ 
+  &\text{for } t \in \tau_T, \text{ and setting } \\
+  \\
+  0 &= \mathcal{N} (t_0 - 1) = \breve{W} (t_0 - 1)
+\end{align} 
+$$ {#eq-ARMA-1-1-init}
+
+We can solve the last equation in a forward recursion with $t \in (t_0, \ldots, t_f)$ to obtain $\breve{W} (t_f \; | \; \tau_T)$, as required.
+
+The forecast variance can be approximated from @eq-var-predictor-resid using $\psi$ coefficients that turn out to satisfy [^txt-ARMA-psi] [^ARMA-1-1-psi]
+
+[^txt-ARMA-psi]: See @shumway2025 [page 103].
+
+[^ARMA-1-1-psi]: The formula is obtained by expanding $\frac{1 + \theta_1 z}{1 - \phi_1 z}$ in a power series.
+
+$$
+\begin{align}
+  \psi_j &= (\phi_1 + \theta_1) \; \phi_1^{j-1} \quad \text{for } j \ge 1
+\end{align} 
+$$ {#eq-ARMA-1-1-psi}
+
+We then have 
+
+$$
+\begin{align}
+  Var \{ \breve{R} (u + t_f \; | \; \tau_T) \} &= E \{ \breve{R} (u + t_f \; | \; \tau_T)^2 \} \\ 
+  &= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu^2 \\ 
+  &= \sigma_W^2 \; \left ( 1 + \frac{(\phi_1 + \theta_1)^2 (1 - \phi_1^{2 (u - 1)})}{1 - \phi_1^2} \right ) \\ 
+  \\
+  & \text{where } \\
+  \\
+  \breve{R} (u + t_f \; | \; \tau_T) &= \mathcal{N}(u + t_f) \; - \; \breve{\mathcal{N}} (u + t_f \; | \; \tau_T)
+\end{align}
+$$ {#eq-var-tp-1-1-resid}
+
+The precision of the forecast at time index $u + t_f$ can be assessed with a prediction interval of the following form
+
+$$
+\begin{align}
+  \breve{\mathcal{N}} (u + t_f \; | \; \tau_T) \; &\pm \; c_{\alpha / 2} \; \sqrt{ Var \{ \breve{R} (u + t_f \; | \; \tau_T) \} } \\ 
+  \\ 
+  & \text{where } \\ 
+  \\ 
+  c_{\alpha / 2} &= \Phi^{-1} (1 - \alpha / 2)
+\end{align} 
+$$ {#eq-trunc-pred-ivl-alpha}
+
+We now set $\phi_1 = \theta_1 = 0.5$ in order to simulate 150 observations from this model and forecast the last 50 of the 150 observations.  This example uses `astsa` functions `sarima.sim()` and `sarima.for()`.[^tp-1-1-sim]
+
+[^tp-1-1-sim]: The simulation code is based on a similar example in [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa).
+
+```{r}
+#| label: fig-tp-1-1-sim
+#| fig-cap: "ARMA(1, 1) simulation, with coefficients (.5, .5)"
+
+set.seed(12345)
+
+# 150 observations
+x <- astsa::sarima.sim(ar = .5, ma = 0.5, n = 150)
+
+# use first 100 to forecast
+y <- x |> stats::window(start = 1, end = 100)
+
+# capture the predictions and standard errors
+tp_1_0_1_sim <- y |> astsa::sarima.for(
+  n.ahead = 50, 
+  p = 1, d = 0, q = 1, 
+  plot.all = TRUE, ylab = "N"
+)
+
+graphics::abline(v = 100, lty = 2, col = 4)
+graphics::lines(x)
+```
 
 ## Closing Remarks
 
