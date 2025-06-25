@@ -1569,7 +1569,9 @@ graphics::polygon(
 )
 ```
 
-## ARIMA(p, d, q)
+## Non-Stationary Models
+
+### ARIMA(p, d, q)
 
 @whittle1951hypothesis introduced ARMA models.  Then, in order to treat non-stationary processes, @box1970time popularized auto-regressive integrated moving average (ARIMA) models.  Here's the form of an ARIMA model having $p, d, q$ as its orders of auto-regression, differencing, and moving average, respectively.[^txt-ARIMA-p-d-q-proc]
 
@@ -1589,6 +1591,8 @@ $$ {#eq-ARIMA-p-d-q-proc}
 By convention, $d \in \{ 0, 1, 2, \ldots \}$ so that $ARIMA(p, 0, q)$ is synonymous with $ARMA(p, q)$.
 
 If $d \ge 1$ then $\mathcal{D}^d$ removes $\mu_X$, which can be omitted from the formula for simplificaton.  As previously noted the operator $\mathcal{D}^d$ removes any polynomial trend of degree $d$ or less.
+
+### Random Walk with Drift
 
 In addition to removing non-random trends in the data, the differencing operator $\mathcal{D}$ can also remove a slowly varying random drift.  Consider the following model.
 
@@ -1611,9 +1615,11 @@ $$
 \end{align}
 $$
 
+### EWMA Example
+
 ### ARIMA Forecasting
 
-### Example
+### CO2 Example
 
 ## Closing Remarks
 
