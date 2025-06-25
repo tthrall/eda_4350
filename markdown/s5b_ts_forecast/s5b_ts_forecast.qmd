@@ -1435,7 +1435,7 @@ $$
 \begin{align}
   \breve{\mathcal{N}} (u + t_f \; | \; \tau_T) \; &\pm \; c_{\alpha / 2} \; \sqrt{ Var \{ \breve{R} (u + t_f \; | \; \tau_T) \} } \\ 
   \\ 
-  & \text{where } \\ 
+  & \text{where coefficient } c_{\alpha / 2} \text{ is the normal quantile:} \\ 
   \\ 
   c_{\alpha / 2} &= \Phi^{-1} (1 - \alpha / 2)
 \end{align} 
@@ -1571,7 +1571,7 @@ graphics::polygon(
 
 ## ARIMA(p, d, q)
 
-@whittle1951hypothesis introduced ARMA models.  Then, in order to treat non-stationary processes, @box1970time presented auto-regressive integrated moving average (ARIMA) models.  Here's the form of an ARIMA model having $p, d, q$ as its orders of auto-regression, differencing, and moving average, respectively.[^txt-ARIMA-p-d-q-proc]
+@whittle1951hypothesis introduced ARMA models.  Then, in order to treat non-stationary processes, @box1970time popularized auto-regressive integrated moving average (ARIMA) models.  Here's the form of an ARIMA model having $p, d, q$ as its orders of auto-regression, differencing, and moving average, respectively.[^txt-ARIMA-p-d-q-proc]
 
 [^txt-ARIMA-p-d-q-proc]: See @shumway2025 [page 146].
 
@@ -1589,6 +1589,31 @@ $$ {#eq-ARIMA-p-d-q-proc}
 By convention, $d \in \{ 0, 1, 2, \ldots \}$ so that $ARIMA(p, 0, q)$ is synonymous with $ARMA(p, q)$.
 
 If $d \ge 1$ then $\mathcal{D}^d$ removes $\mu_X$, which can be omitted from the formula for simplificaton.  As previously noted the operator $\mathcal{D}^d$ removes any polynomial trend of degree $d$ or less.
+
+In addition to removing non-random trends in the data, the differencing operator $\mathcal{D}$ can also remove a slowly varying random drift.  Consider the following model.
+
+$$
+\begin{align}
+  X(t) &= Y(t) + W(t) \\ 
+  Y(t) &= Y(t-1) + V(t) \\ 
+  \\ 
+  W(\cdot) &\sim \text{iid } wn(0, \sigma_W^2) \\ 
+  V(\cdot) &\sim \text{iid } wn(0, \sigma_V^2)
+\end{align}
+$$
+
+The process $Y(\cdot)$ is a random walk whose variance increases over time and is thus non-stationary, so that $X(\cdot)$ is also non-stationary.  But $\mathcal{D} \; X(\cdot)$ is stationary.
+
+$$
+\begin{align}
+  \mathcal{D} \; X(t) &= \mathcal{D} \; Y(t) + \mathcal{D} \; W(t) \\ 
+  &= V(t) \; + \; \mathcal{D} \; W(t)
+\end{align}
+$$
+
+### ARIMA Forecasting
+
+### Example
 
 ## Closing Remarks
 

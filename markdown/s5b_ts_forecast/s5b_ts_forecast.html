@@ -138,7 +138,11 @@ window.Quarto = {
   <li><a href="#arma1-1-simulationtxt-arma-1-1-xmpl" id="toc-arma1-1-simulationtxt-arma-1-1-xmpl" class="nav-link" data-scroll-target="#arma1-1-simulationtxt-arma-1-1-xmpl">ARMA(1, 1) Simulation</a></li>
   <li><a href="#recruitment-forecast" id="toc-recruitment-forecast" class="nav-link" data-scroll-target="#recruitment-forecast">Recruitment Forecast</a></li>
   </ul></li>
-  <li><a href="#arimap-d-q" id="toc-arimap-d-q" class="nav-link" data-scroll-target="#arimap-d-q">ARIMA(p, d, q)</a></li>
+  <li><a href="#arimap-d-q" id="toc-arimap-d-q" class="nav-link" data-scroll-target="#arimap-d-q">ARIMA(p, d, q)</a>
+  <ul class="collapse">
+  <li><a href="#arima-forecasting" id="toc-arima-forecasting" class="nav-link" data-scroll-target="#arima-forecasting">ARIMA Forecasting</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#a-glossary-of-math-symbols" id="toc-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#a-glossary-of-math-symbols">A: Glossary of Math Symbols</a></li>
   <li><a href="#b-data-examples" id="toc-b-data-examples" class="nav-link" data-scroll-target="#b-data-examples">B: Data Examples</a>
@@ -176,7 +180,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15:50 Wed 25-Jun-2025</p>
+      <p class="date">16:45 Wed 25-Jun-2025</p>
     </div>
   </div>
   
@@ -1216,7 +1220,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \begin{align}
   \breve{\mathcal{N}} (u + t_f \; | \; \tau_T) \; &amp;\pm \; c_{\alpha / 2} \; \sqrt{ Var \{ \breve{R} (u + t_f \; | \; \tau_T) \} } \\
   \\
-  &amp; \text{where } \\
+  &amp; \text{where coefficient } c_{\alpha / 2} \text{ is the normal quantile:} \\
   \\
   c_{\alpha / 2} &amp;= \Phi^{-1} (1 - \alpha / 2)
 \end{align}
@@ -1301,7 +1305,7 @@ Figure&nbsp;3: Recruitment index followed by a 24-month AR(2) forecast
 </section>
 <section id="arimap-d-q" class="level2">
 <h2 class="anchored" data-anchor-id="arimap-d-q">ARIMA(p, d, q)</h2>
-<p><span class="citation" data-cites="whittle1951hypothesis">Whittle (<a href="#ref-whittle1951hypothesis" role="doc-biblioref">1951</a>)</span> introduced ARMA models. Then, in order to treat non-stationary processes, <span class="citation" data-cites="box1970time">Box and Jenkins (<a href="#ref-box1970time" role="doc-biblioref">1970</a>)</span> presented auto-regressive integrated moving average (ARIMA) models. Here’s the form of an ARIMA model having <span class="math inline">\(p, d, q\)</span> as its orders of auto-regression, differencing, and moving average, respectively.<a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a></p>
+<p><span class="citation" data-cites="whittle1951hypothesis">Whittle (<a href="#ref-whittle1951hypothesis" role="doc-biblioref">1951</a>)</span> introduced ARMA models. Then, in order to treat non-stationary processes, <span class="citation" data-cites="box1970time">Box and Jenkins (<a href="#ref-box1970time" role="doc-biblioref">1970</a>)</span> popularized auto-regressive integrated moving average (ARIMA) models. Here’s the form of an ARIMA model having <span class="math inline">\(p, d, q\)</span> as its orders of auto-regression, differencing, and moving average, respectively.<a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a></p>
 <p><span id="eq-ARIMA-p-d-q-proc"><span class="math display">\[
 \begin{align}
   \phi(\mathcal{B}) \; \mathcal{D}^d \; (X(\cdot) - \mu_X)
@@ -1314,6 +1318,29 @@ Figure&nbsp;3: Recruitment index followed by a 24-month AR(2) forecast
 \tag{86}\]</span></span></p>
 <p>By convention, <span class="math inline">\(d \in \{ 0, 1, 2, \ldots \}\)</span> so that <span class="math inline">\(ARIMA(p, 0, q)\)</span> is synonymous with <span class="math inline">\(ARMA(p, q)\)</span>.</p>
 <p>If <span class="math inline">\(d \ge 1\)</span> then <span class="math inline">\(\mathcal{D}^d\)</span> removes <span class="math inline">\(\mu_X\)</span>, which can be omitted from the formula for simplificaton. As previously noted the operator <span class="math inline">\(\mathcal{D}^d\)</span> removes any polynomial trend of degree <span class="math inline">\(d\)</span> or less.</p>
+<p>In addition to removing non-random trends in the data, the differencing operator <span class="math inline">\(\mathcal{D}\)</span> can also remove a slowly varying random drift. Consider the following model.</p>
+<p><span class="math display">\[
+\begin{align}
+  X(t) &amp;= Y(t) + W(t) \\
+  Y(t) &amp;= Y(t-1) + V(t) \\
+  \\
+  W(\cdot) &amp;\sim \text{iid } wn(0, \sigma_W^2) \\
+  V(\cdot) &amp;\sim \text{iid } wn(0, \sigma_V^2)
+\end{align}
+\]</span></p>
+<p>The process <span class="math inline">\(Y(\cdot)\)</span> is a random walk whose variance increases over time and is thus non-stationary, so that <span class="math inline">\(X(\cdot)\)</span> is also non-stationary. But <span class="math inline">\(\mathcal{D} \; X(\cdot)\)</span> is stationary.</p>
+<p><span class="math display">\[
+\begin{align}
+  \mathcal{D} \; X(t) &amp;= \mathcal{D} \; Y(t) + \mathcal{D} \; W(t) \\
+  &amp;= V(t) \; + \; \mathcal{D} \; W(t)
+\end{align}
+\]</span></p>
+<section id="arima-forecasting" class="level3">
+<h3 class="anchored" data-anchor-id="arima-forecasting">ARIMA Forecasting</h3>
+</section>
+<section id="example" class="level3">
+<h3 class="anchored" data-anchor-id="example">Example</h3>
+</section>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
