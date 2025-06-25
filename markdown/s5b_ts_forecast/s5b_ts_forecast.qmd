@@ -1025,27 +1025,6 @@ $$
 \end{align}
 $$ {#eq-ARMA-p-q-inv}
 
-### ARIMA(p, d, q)
-
-@whittle1951hypothesis introduced ARMA models.  Then, in order to treat non-stationary processes, @box1970time presented auto-regressive integrated moving average (ARIMA) models.  Here's the form of an ARIMA model having $p, d, q$ as its orders of auto-regression, differencing, and moving average, respectively.[^txt-ARIMA-p-d-q-proc]
-
-[^txt-ARIMA-p-d-q-proc]: See @shumway2025 [page 146].
-
-$$
-\begin{align}
-  \phi(\mathcal{B}) \; \mathcal{D}^d \; (X(\cdot) - \mu_X) 
-  &= \theta(\mathcal{B}) \; W(\cdot) \\ 
-  \\ 
-  \text{where } \\ 
-  & \phi (z) = 1 - \sum_{j = 1}^p \phi_j \; z^j \\ 
-  & \theta (z) = 1 + \sum_{k = 1}^q \theta_k \; z^k
-\end{align}
-$$ {#eq-ARIMA-p-d-q-proc}
-
-By convention, $d \in \{ 0, 1, 2, \ldots \}$ so that $ARIMA(p, 0, q)$ is synonymous with $ARMA(p, q)$.
-
-If $d \ge 1$ then $\mathcal{D}^d$ removes $\mu_X$, which can be omitted from the formula for simplificaton.  As previously noted the operator $\mathcal{D}^d$ removes any polynomial trend of degree $d$ or less.
-
 ## Linear Predictors
 
 ### Problem Statement
@@ -1488,6 +1467,27 @@ tp_1_0_1_sim <- y |> astsa::sarima.for(
 graphics::abline(v = 100, lty = 2, col = 4)
 graphics::lines(x)
 ```
+
+## ARIMA(p, d, q)
+
+@whittle1951hypothesis introduced ARMA models.  Then, in order to treat non-stationary processes, @box1970time presented auto-regressive integrated moving average (ARIMA) models.  Here's the form of an ARIMA model having $p, d, q$ as its orders of auto-regression, differencing, and moving average, respectively.[^txt-ARIMA-p-d-q-proc]
+
+[^txt-ARIMA-p-d-q-proc]: See @shumway2025 [page 146].
+
+$$
+\begin{align}
+  \phi(\mathcal{B}) \; \mathcal{D}^d \; (X(\cdot) - \mu_X) 
+  &= \theta(\mathcal{B}) \; W(\cdot) \\ 
+  \\ 
+  \text{where } \\ 
+  & \phi (z) = 1 - \sum_{j = 1}^p \phi_j \; z^j \\ 
+  & \theta (z) = 1 + \sum_{k = 1}^q \theta_k \; z^k
+\end{align}
+$$ {#eq-ARIMA-p-d-q-proc}
+
+By convention, $d \in \{ 0, 1, 2, \ldots \}$ so that $ARIMA(p, 0, q)$ is synonymous with $ARMA(p, q)$.
+
+If $d \ge 1$ then $\mathcal{D}^d$ removes $\mu_X$, which can be omitted from the formula for simplificaton.  As previously noted the operator $\mathcal{D}^d$ removes any polynomial trend of degree $d$ or less.
 
 ## Closing Remarks
 
