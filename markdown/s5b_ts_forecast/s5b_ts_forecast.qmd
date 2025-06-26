@@ -1629,9 +1629,7 @@ By convention, $d \in \{ 0, 1, 2, \ldots \}$ so that $ARIMA(p, 0, q)$ is synonym
 
 If $d \ge 1$ then $\nabla^d$ removes $\mu_X$, which can be omitted from the formula for simplificaton.  As previously noted the operator $\nabla^d$ removes any polynomial trend of degree $d$ or less.
 
-### Random Walk with Drift
-
-In addition to removing non-random trends in the data, the differencing operator $\nabla$ can also remove a slowly varying random drift.  Consider the following model.
+In addition to removing non-random trends in the data, the differencing operator $\nabla$ can also remove random drift.  Consider the following model.
 
 $$
 \begin{align}
@@ -1639,11 +1637,14 @@ $$
   Y(t) &= Y(t-1) + V(t) \\ 
   \\ 
   W(\cdot) &\sim \text{iid } wn(0, \sigma_W^2) \\ 
-  V(\cdot) &\sim \text{iid } wn(0, \sigma_V^2)
+  V(\cdot) &\sim \text{iid } wn(0, \sigma_V^2) \\ 
+  W(\cdot), \; V(\cdot) &\sim \text{independent }
 \end{align}
-$$
+$$ {#eq-ARIMA-1-1-0-xmpl}
 
-The process $Y(\cdot)$ is a random walk whose variance increases over time and is thus non-stationary, so that $X(\cdot)$ is also non-stationary.  But $\nabla \; X(\cdot)$ is stationary.
+The process $Y(\cdot)$ is a _random walk_ whose variance increases over time and is thus non-stationary.  Therefore $X(\cdot)$ is also non-stationary.  But applying the differencing operator $\nabla$ to $X(\cdot)$ induces stationarity.[^ARIMA-1-1-0-xmpl]
+
+[^ARIMA-1-1-0-xmpl]: From covariance calculations, $\nabla \; W(\cdot)$ is an $AR(1)$ process, which makes $\nabla \; X(\cdot)$ an $AR(1)$ process.
 
 $$
 \begin{align}
@@ -1651,6 +1652,145 @@ $$
   &= V(t) \; + \; \nabla \; W(t)
 \end{align}
 $$
+
+### Random Walk with Drift
+
+Now consider the following model which, like the example just given, is a variation on a simple random walk.
+
+$$
+\begin{align}
+  X(t) &= \alpha \; + \; X(t-1) + \; W(t) 
+\end{align}
+$$ {#eq-RW-drift}
+
+$X(\cdot)$ is not stationary since its mean and variance change over time.  In this case, however, $\nabla X(t)$ is simply a constant plus white noise.
+
+$$
+\begin{align}
+  \nabla X(t) &= X(t) \; - \; X(t-1) \\
+  &= \alpha \; + \; W(t) 
+\end{align}
+$$ 
+
+The coefficient $\alpha$ is called _drift_ in this context.
+
+The truncated predictor at $u = 1$ (called the _one step ahead forecast_) can be determined as follows.  Consider the case in which both $X(\cdot)$ and $W(\cdot)$ are Gaussian processes.  This enables us to use conditional expectations, which yields the form of the best linear predictor in the non-Gaussian case.  We have 
+
+$$
+\begin{align}
+  \breve{X} (1 + t_f \; | \; \tau_T) &= E \left \{ X(1 + t_f) \; | \; X(t_0), \; \ldots, \; X(t_f) \right \} \\ 
+  &= E \left \{ \alpha \; + \; X(t_f) + \; W(1 + t_f) \; | \; X(t_0), \; \ldots, \; X(t_f) \right \} \\ 
+  &= \alpha \; + \; X(t_f)
+\end{align}
+$$ {#eq-RW-drift-tp-1}
+
+At $u = 2$ we have 
+
+$$
+\begin{align}
+  \breve{X} (2 + t_f \; | \; \tau_T) &= E \left \{ X(2 + t_f) \; | \; X(t_0), \; \ldots, \; X(t_f) \right \} \\ 
+  &= E \left \{ \alpha \; + \; X(1 +t_f) + \; W(2 + t_f) \; | \; X(t_0), \; \ldots, \; X(t_f) \right \} \\ 
+  &= \alpha \; + \; \breve{X} (1 + t_f \; | \; \tau_T) \\ 
+  &= 2 \alpha \; + \; X(t_f)
+\end{align}
+$$ {#eq-RW-drift-tp-2}
+
+By induction we have 
+
+$$
+\begin{align}
+  \breve{X} (u + t_f \; | \; \tau_T) &= u \times  \alpha \; + \; X(t_f) \quad \text{for } u \ge 1
+\end{align}
+$$ {#eq-RW-drift-tp-u}
+
+Thus the sequence of predictors forms a ray anchored at $X(t_f)$ having slope $\alpha$.
+
+The error bounds for this predictor are based on the mean squared prediction error, that is the expected value of the squared residual:
+
+$$
+\begin{align}
+  E \{ \breve{R} (u + t_f \; | \; \tau_T)^2 \}
+\end{align}
+$$
+
+where 
+
+$$
+\begin{align}
+  \breve{R} (u + t_f \; | \; \tau_T) &= X(u + t_f) \; - \; \breve{X} (u + t_f \; | \; \tau_T)
+\end{align}
+$$
+
+Now by induction one can show that 
+
+$$
+\begin{align}
+  X(u + t_f) &= u \times \alpha \; + \; X(t_f) + \; \sum_{\nu = 1}^u W(\nu + t_f) \\ 
+  &= \breve{X} (u + t_f \; | \; \tau_T) + \; \sum_{\nu = 1}^u W(\nu + t_f)
+\end{align}
+$$
+
+Therefore 
+
+$$
+\begin{align}
+  \breve{R} (u + t_f \; | \; \tau_T) &= X(u + t_f) \; - \; \breve{X} (u + t_f \; | \; \tau_T) \\ 
+  &= \sum_{\nu = 1}^u W(\nu + t_f)
+\end{align}
+$$
+
+so that 
+
+$$
+\begin{align}
+  E \{ \breve{R} (u + t_f \; | \; \tau_T)^2 \} &= u \times \sigma_W^2
+\end{align}
+$$
+
+We now simulate this model, setting the drift parameter $\alpha = 0.2$ and simulating $W(\cdot)$ as iid standard normal variables, so that $\sigma_W^2 = 1$.  We simulate a total of 150 values, with the first 100 serving as the observations from which the predictors are calculated and compared to the final 50 values.  The results are shown in figure @fig-rw-drift.
+
+$$
+\begin{align}
+  \breve{R} (u + t_f \; | \; \tau_T) &= X(u + t_f) \; - \; \breve{X} (u + t_f \; | \; \tau_T)
+\end{align}
+$$
+
+```{r}
+#| label: fig-rw-drift
+#| fig-cap: "Random walk with drift: cumsum of N(drift = 0.2, sd = 1)"
+
+set.seed(9999)
+
+# x: RW with drift .2 and error sd 1
+x <- ts(cumsum(rnorm(150, .2)))
+
+# y: first 100 obs
+y <- stats::window(x, end = 100)
+
+# estimated drift and error sd
+d <- mean(diff(y))
+s <- sd(diff(y))
+
+# RMS prediction error
+rmspe <- s * sqrt(1:50)
+
+# time series forecast
+yfore <- ts(y[100] + (1:50) * d, start = 101)
+
+# time series plot
+astsa::tsplot(x, ylab = "X(t)", col = 4, gg = TRUE, ylim = c(0,40))
+graphics::lines(yfore, col = 6)
+
+# confidence region
+xx <- c(101:150, 150:101)
+yy <- c(yfore - 1*rmspe, rev(yfore + 1*rmspe))
+graphics::polygon(xx, yy, border = NA, col = gray(0.6, alpha = 0.2))
+
+# graphics annotation
+graphics::text( 85, 38, "Past",   cex = .8)
+graphics::text(115, 38, "Future", cex = .8)
+graphics::abline(v = 100, lty = 2)
+```
 
 ### EWMA Example
 
