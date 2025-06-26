@@ -146,11 +146,11 @@ The random process is idealized to span all time $(t \in \mathbb{Z})$, but the d
 
 $$
 \begin{align}
-  \tau_T &=  t_0 + \nu_T \\ 
-  \nu_T &=  \{ 0, 1, \ldots, T-1 \} \\
+  \tau_T &=  \{ t_0, \; t_0 + 1, \ldots, t_f \} \\
   t_0 &=  \text{ initial data index} = \min \tau_T \\ 
   t_f &=  \text{ final data index} = \max \tau_T \\ 
-  T &=  \text{ number of observatons (data length)}
+  T &=  \text{ number of observatons } = t_f - t_0 + 1 \\ 
+  \nu_T &= \tau_T - t_0 =  \{ 0, 1, \ldots, T-1 \}
 \end{align}
 $$ {#eq-tau-T}
 
