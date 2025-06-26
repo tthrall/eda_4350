@@ -357,7 +357,9 @@ $$ {#eq-DL-algo}
 
 The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings (@fig-jj), we see that the transformed time series, $Y(t) = \log_e (X(t))$, can be more closely approximated by a linear trend.
 
-### Running Averages of Observations
+### Smoothing
+
+#### Running Average
 
 In addition to the data transformations used on independent observations, we often want to form a running average (also called a moving average) of time series data.
 
@@ -445,9 +447,19 @@ For example, consider the DJIA stock index (@fig-djia). Returns are defined as t
 
 To remove a polynomial trend of degree $d$, one can apply $\nabla^d$, in other words $d$ repeated applications of $\nabla$.
 
-To remove a seasonal component one can apply a variant of $\nabla$, namely seasonal differencing defined as $\mathcal{I} - \mathcal{B}^\sigma$, where $\sigma$ is the number of time indices that span one season.[^txt-seasonal-diff]
+### Seasonal Differencing
+
+To remove a seasonal component one can apply a variant of $\nabla$, namely seasonal differencing, $\nabla_\sigma$: [^txt-seasonal-diff]
 
 [^txt-seasonal-diff]: See @shumway2025 [page 157]. 
+
+$$
+\begin{align}
+  \nabla_\sigma &= \mathcal{I} - \mathcal{B}^s
+\end{align}
+$$ {#eq-seasonal-diff}
+
+Here $\sigma$ denotes the number of time indices that span one season.  For analyses of economic or business performance, seasonal differences are often used to show the difference between current values versus those from one year prior.  In that context one would set $sigma = 4$ for quarterly data, $\sigma = 12$ for monthly data etc.
 
 ### Filtering
 
@@ -1744,6 +1756,9 @@ $$
   \\ 
   \nabla 
      \quad & \quad \text{difference operator } \mathcal{I - B} \\ 
+  \\ 
+  \nabla_\sigma 
+     \quad & \quad \text{seasonal difference operator } \mathcal{I - B}^\sigma \\ 
   \\ 
   \Delta_u
      \quad & \quad \{ 1, 2, \ldots, u-1 \} \text{ for } u \ge 2 \\ 
