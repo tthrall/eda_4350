@@ -429,23 +429,23 @@ $$
 \end{align}
 $$ {#eq-e-diff}
 
-Here we have applied the differencing operator $\mathcal{D}$.
+Here we have applied the differencing operator $\nabla$.
 
 $$
 \begin{align}
-  \{\mathcal{D} \; X(\cdot) \} \; (t) &= X(t) - X(t-1) \\ 
+  \{\nabla \; X(\cdot) \} \; (t) &= X(t) - X(t-1) \\ 
   \\ 
   \text{where } \\
   \\
-  \mathcal{D} &= \mathcal{I} - \mathcal{B}
+  \nabla &= \mathcal{I} - \mathcal{B}
 \end{align}
 $$ {#eq-diff-op-demo}
 
 For example, consider the DJIA stock index (@fig-djia). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.
 
-To remove a polynomial trend of degree $d$, one can apply $\mathcal{D}^d$, in other words $d$ repeated applications of $\mathcal{D}$.
+To remove a polynomial trend of degree $d$, one can apply $\nabla^d$, in other words $d$ repeated applications of $\nabla$.
 
-To remove a seasonal component one can apply a variant of $\mathcal{D}$, namely seasonal differencing defined as $\mathcal{I} - \mathcal{B}^\sigma$, where $\sigma$ is the number of time indices that span one season.[^txt-seasonal-diff]
+To remove a seasonal component one can apply a variant of $\nabla$, namely seasonal differencing defined as $\mathcal{I} - \mathcal{B}^\sigma$, where $\sigma$ is the number of time indices that span one season.[^txt-seasonal-diff]
 
 [^txt-seasonal-diff]: See @shumway2025 [page 157]. 
 
@@ -476,7 +476,7 @@ $$
 $$ {#eq-ma-5-filter}
 
 
-And here's the difference operator $\mathcal{D}$ in the filtering format.
+And here's the difference operator $\nabla$ in the filtering format.
 
 $$
 \begin{align}
@@ -1579,7 +1579,7 @@ Time series models have a long history.  @whittle1951hypothesis introduced ARMA 
 
 $$
 \begin{align}
-  \phi(\mathcal{B}) \; \mathcal{D}^d \; (X(\cdot) - \mu_X) 
+  \phi(\mathcal{B}) \; \nabla^d \; (X(\cdot) - \mu_X) 
   &= \theta(\mathcal{B}) \; W(\cdot) \\ 
   \\ 
   \text{where } \\ 
@@ -1590,11 +1590,11 @@ $$ {#eq-ARIMA-p-d-q-proc}
 
 By convention, $d \in \{ 0, 1, 2, \ldots \}$ so that $ARIMA(p, 0, q)$ is synonymous with $ARMA(p, q)$.
 
-If $d \ge 1$ then $\mathcal{D}^d$ removes $\mu_X$, which can be omitted from the formula for simplificaton.  As previously noted the operator $\mathcal{D}^d$ removes any polynomial trend of degree $d$ or less.
+If $d \ge 1$ then $\nabla^d$ removes $\mu_X$, which can be omitted from the formula for simplificaton.  As previously noted the operator $\nabla^d$ removes any polynomial trend of degree $d$ or less.
 
 ### Random Walk with Drift
 
-In addition to removing non-random trends in the data, the differencing operator $\mathcal{D}$ can also remove a slowly varying random drift.  Consider the following model.
+In addition to removing non-random trends in the data, the differencing operator $\nabla$ can also remove a slowly varying random drift.  Consider the following model.
 
 $$
 \begin{align}
@@ -1606,12 +1606,12 @@ $$
 \end{align}
 $$
 
-The process $Y(\cdot)$ is a random walk whose variance increases over time and is thus non-stationary, so that $X(\cdot)$ is also non-stationary.  But $\mathcal{D} \; X(\cdot)$ is stationary.
+The process $Y(\cdot)$ is a random walk whose variance increases over time and is thus non-stationary, so that $X(\cdot)$ is also non-stationary.  But $\nabla \; X(\cdot)$ is stationary.
 
 $$
 \begin{align}
-  \mathcal{D} \; X(t) &= \mathcal{D} \; Y(t) + \mathcal{D} \; W(t) \\ 
-  &= V(t) \; + \; \mathcal{D} \; W(t)
+  \nabla \; X(t) &= \nabla \; Y(t) + \nabla \; W(t) \\ 
+  &= V(t) \; + \; \nabla \; W(t)
 \end{align}
 $$
 
@@ -1742,7 +1742,7 @@ $$
   \mathcal{B} 
      \quad & \quad \text{back-shift operator } \\ 
   \\ 
-  \mathcal{D} 
+  \nabla 
      \quad & \quad \text{difference operator } \mathcal{I - B} \\ 
   \\ 
   \Delta_u
