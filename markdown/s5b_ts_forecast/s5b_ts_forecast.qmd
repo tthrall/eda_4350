@@ -411,6 +411,31 @@ $$
 \end{align}
 $$ {#eq-ma-5}
 
+#### Exponential Smoothing
+
+Exponential smoothing (also called an exponentially weighted moving average) assigns a prescribed weight $\alpha \in (0, 1)$ to the current observation and exponentially decaying weights to prior observations.
+
+For a mathematically defined process $X(\cdot)$ spanning all time, the operation can be represented by the following formula.
+
+$$
+\begin{align}
+  Y(t) 
+  &= \alpha \; \sum_{u \ge 0} (1 - \alpha)^u X(t - u) 
+\end{align}
+$$ {#eq-exp-smooth-infty}
+
+For finite time series data the operation can be implemented by the following recursive algorithm.
+
+$$
+\begin{align}
+  Y(t) &= 
+  \begin{cases}
+    X(t) & \text{for } t = t_0 \\ 
+    \alpha \; X(t) + (1 - \alpha) \; Y(t - 1) & \text{for } t > t_0
+  \end{cases}
+\end{align}
+$$ {#eq-exp-smooth-recur}
+
 ### Differences of Successive Observations
 
 Time series data often exhibit trends over time.  The data fluctuate around some level that varies consistently and can be modeled as some function of time, $m(t)$.  Suppose we want to extract the fluctuations about $m(t)$ from the original data.  One approach is to estimate $m(t)$ and then form the residual series.  This is called "de-trending".  Another approach is to apply an operator that removes the trend directly.
@@ -455,11 +480,11 @@ To remove a seasonal component one can apply a variant of $\nabla$, namely seaso
 
 $$
 \begin{align}
-  \nabla_\sigma &= \mathcal{I} - \mathcal{B}^s
+  \nabla_\sigma &= \mathcal{I} - \mathcal{B}^\sigma
 \end{align}
 $$ {#eq-seasonal-diff}
 
-Here $\sigma$ denotes the number of time indices that span one season.  For analyses of economic or business performance, seasonal differences are often used to show the difference between current values versus those from one year prior.  In that context one would set $sigma = 4$ for quarterly data, $\sigma = 12$ for monthly data etc.
+Here $\sigma$ denotes the number of time indices that span one season.  For analyses of economic or business performance, seasonal differences are often used to show the difference between current values versus those from one year prior.  In that context one would set $\sigma = 4$ for quarterly data, $\sigma = 12$ for monthly data, etc.
 
 ### Filtering
 
