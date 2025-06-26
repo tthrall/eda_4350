@@ -14,7 +14,7 @@ params:
   file_id: "s5b"
   file_prefix: "s5b_ts_forecast"
 abstract:
-  "Introduce the components of time domain models and the forecasting that such models enable.  <br><br>"
+  "Introduce models used to forecast time series.  <br><br>"
 bibliography: s5b_references.bib
 ---
 
@@ -98,9 +98,9 @@ if (save_to_file) {
 
 ## Introduction
 
-This technical note introduces the basic components of widely used statistical models of time series data. Such models can improve the understanding of underlying processes, possibly raising new questions or refining existing questions. Such models are also heavily used to forecast future values, which is the emphasis of this note.
+This technical note introduces the basic components of widely used statistical models of time series data. Such models support the understanding of underlying processes. They are also heavily used to forecast future values, which is the emphasis of this note.
 
-The examples and methods presented here are from @shumway2025 supported by `R` package `astsa` [@astsa].
+The examples and methods presented here are from @shumway2025 and the `R` package `astsa` [@astsa].
 
 ## Mathematical Framework
 
@@ -1573,7 +1573,7 @@ graphics::polygon(
 
 ### ARIMA(p, d, q)
 
-@whittle1951hypothesis introduced ARMA models.  Then, in order to treat non-stationary processes, @box1970time popularized auto-regressive integrated moving average (ARIMA) models.  Here's the form of an ARIMA model having $p, d, q$ as its orders of auto-regression, differencing, and moving average, respectively.[^txt-ARIMA-p-d-q-proc]
+Time series models have a long history.  @whittle1951hypothesis introduced ARMA models of stationary processes.  To treat non-stationary processes, @box1970time popularized auto-regressive integrated moving average (ARIMA) models.  Here's the form of an ARIMA model having $p, d, q$ as its respective orders of auto-regression, differencing, and moving average.[^txt-ARIMA-p-d-q-proc]
 
 [^txt-ARIMA-p-d-q-proc]: See @shumway2025 [page 146].
 
