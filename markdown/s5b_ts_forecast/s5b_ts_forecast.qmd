@@ -363,7 +363,7 @@ In addition to the data transformations used on independent observations, we oft
 
 #### Running Average
 
-A running average (also called a moving average) of a random process $X(\cdot)$ is a new process $Y(\cdot)$ formed as as a local average of $X$ values.  A _weighted_ running average, with weights $\{ w_u \}_u$ takes the following form.
+A running average (also called a moving average) of a random process $X(\cdot)$ is a new process $Y(\cdot)$ formed as a local average of $X$ values.  A _weighted_ running average, with weights $\{ w_u \}_u$ takes the following form.
 
 $$
 \begin{align}
@@ -424,7 +424,7 @@ astsa::tsplot(
 
 #### Exponential Smoothing
 
-Exponential smoothing (also called an exponentially weighted moving average) assigns a prescribed weight $\alpha \in (0, 1)$ to the current observation and exponentially decaying weights to prior observations.
+Exponential smoothing (also called an exponentially weighted moving average, or EWMA) assigns a prescribed weight $\alpha \in (0, 1)$ to the current observation and exponentially decaying weights to prior observations.
 
 For a mathematically defined process $X(\cdot)$ spanning all time, the operation can be represented by the following formula.
 
@@ -499,7 +499,7 @@ Here $\sigma$ denotes the number of time indices that span one season.  For anal
 
 ### Integration: Restoring Differenced Data
 
-Time series analysis often entails differencing the original process $Y(\cdot) = \nabla \; X(\cdot)$ and then building a model of the differenced process $\hat{Y}(\cdot) \sim Y(\cdot)$.  We can apply the model to the original process using the following simple recursive algorithm. 
+Time series analysis may entail differencing the original process $Y(\cdot) = \nabla \; X(\cdot)$ and then building a model of the differenced process $\hat{Y}(\cdot) \sim Y(\cdot)$.  We can apply the model to the original process using the following simple recursive algorithm. 
 
 $$
 \begin{align}
@@ -510,6 +510,8 @@ $$
   \end{cases}
 \end{align}
 $$ {#eq-integrate}
+
+@fig-rw-drift illustrates the use of such integration to forecast values of a random walk with drift.
 
 ### Filtering
 
@@ -1817,21 +1819,127 @@ graphics::text(115, 38, "Future", cex = .8)
 graphics::abline(v = 100, lty = 2)
 ```
 
-### EWMA Example
+### EWMA Example[^txt-EWMA-xmpl]
 
-### ARIMA Forecasting
+[^txt-EWMA-xmpl]: See @shumway2025 [p. 148].
+
+The following ARIMA(0,1,1) model has been applied to many economic time series.
+
+$$
+\begin{align}
+  \nabla \; X(\cdot) &= (\mathcal{I - \lambda B}) \; W(\cdot) \\ 
+  \\ 
+  & \text{so that } \\ 
+  \\ 
+  X(t) &= X(t-1) + W(t) - \lambda \; W(t-1) \\ 
+  \\ 
+  & \text{with } \\ 
+  \\ 
+  | \lambda | &< 1
+\end{align}
+$$ {#eq-IMA-1-1-lambda}
+
+The model is also referred to as an integrated moving average model, or IMA(1, 1).  The model leads to a frequently used forecasting method called exponentially weighted moving averages (EWMA).
+
+Since the multiplicative inverse of the polynomial $1 - \lambda z$ is a geometric series in $\lambda z$ we also have the following inverted form of the model.
+
+$$
+\begin{align}
+  W(t) &= \sum_{\nu = 0}^\infty \lambda^\nu \; (X(t - \nu) \; - \; X(t - \nu - 1)) \\ 
+  &= X(t) \; - \; (X(t - 1) - \; \lambda \; X(t - 1)) \; - \cdots \\ 
+  &= X(t) \; - \; \sum_{\nu = 1}^\infty (1 - \lambda) \; \lambda^{\nu - 1} \; X(t - \nu)
+\end{align}
+$$
+
+Rearranging terms we have 
+
+$$
+\begin{align}
+  X(t) &= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu) \; + \; W(t)
+\end{align}
+$$ {#eq-EWMA-plus-wn}
+
+That is, the current value $X(t)$ is an exponential smoothing of all past values plus $W(t)$, the white noise term.  The linear prediction of the current value based on past values is thus the same exponential smoothing.
+
+$$
+\begin{align}
+  \hat{X}(1 \; | \; \wp (t-1)) &= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu)
+\end{align}
+$$
+
+This gives the following linear recursion formula.
+
+$$
+\begin{align}
+  \hat{X}(1 \; | \; \wp (t-1)) &= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 2}^\infty \lambda^{\nu - 1} \; X(t - \nu) \\ 
+  &= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^\nu \; X(t -1 - \nu) \\ 
+  &= (1 - \lambda) \; X(t - 1) \; + \; \lambda \left \{ (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^\nu \; X(t -1 - \nu) \right \}  \\ 
+  &= (1 - \lambda) \; X(t - 1) \; + \; \lambda \; \hat{X}(1 \; | \; \wp (t-2)) 
+\end{align}
+$$
+
+That is, the current one step ahead predictor is a convex combination of the most recent observation and the preceding one step ahead predictor.
+
+To calculate forecast error bounds we require $\psi$ coefficients from the causal form of the model. In this example they are the power series coefficients of the rational function $\psi(z) = (1 - \lambda \; z)(1 - z)^{-1}$.  This gives 
+
+$$
+\begin{align}
+  \psi_\nu &= 
+  \begin{cases}
+    1 & \text{for } \nu = 0 \\ 
+    1 - \lambda & \text{for } \nu \ge 1
+  \end{cases}
+\end{align}
+$$
+
+Squaring these $\psi$ coefficients we have 
+
+$$
+\begin{align}
+  Var \left\{ \hat{X}(u \; | \; \wp (t_f)) \right \} &= \sigma_W^2 \; \left \{ 1 + (u-1)\; (1 - \lambda)^2 \right \} 
+\end{align}
+$$
+
+@fig-EWMA-plus-wn shows a simulation of the IMA process $X(\cdot)$, along with the one step ahead exponential smoothing of past values.  We set $\lambda = 0.8$, equivalent to an EWMA smoothing paramter of $\alpha = 1 - \lambda = 0.2$.
+
+```{r}
+#| label: fig-EWMA-plus-wn
+#| fig-cap: "IMA(1, 1) with exponenetial smoothing (alpha = 0.2)"
+#| eval: true
+
+set.seed(666)
+
+# λ = 1 − α = .8
+x <- astsa::sarima.sim(d = 1, ma = -0.8, n = 100)
+x.ima <- stats::HoltWinters(x, beta=FALSE, gamma=FALSE)
+
+# λˆ = 1 − αˆ ≈ .81
+# Smoothing parameter: alpha: 0.1853541
+
+# plots observed and fitted
+plot(
+  x.ima, 
+  main = "Exponential Smoothing of IMA(1, 1)"
+)
+
+```
+
 
 ### CO2 Example
 
 ## Closing Remarks
 
-This technical note presents an overview of time series forecasting based on @shumway2025 along with the supporting `R` package `astsa` [@astsa].[^2]
+This technical introduces families and examples of models used to forecast time series data.  The presentation is based on @shumway2025 along with the supporting `R` package `astsa` [@astsa].[^2]
 
 [^2]: The notation in this note draws on another textbook, @brillinger2001.
 
-For a more comprehensive listing of relevant `R` packages see the time series task view available from [CRAN](https://cran.r-project.org/web/views/TimeSeries.html), the Comprehensive R Archive Network.
+This introduction does not address the building and evaluation of time series models, leaving that for another time.  Here are some additional resources for those interested.
 
-Also see [Regression and Time Series Primer](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer) for a more detailed introduction to the topics presented here. And see [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa) for an introduction to `R` package `astsa`.
+  - [Regression and Time Series Primer](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer) for a more detailed introduction to the topics presented here.
+  - [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa) introduces to `R` package `astsa`.
+  - [Forecasting: Principles and Practice (3e)](https://otexts.com/fpp3/) is another highly regarded textbook available online.
+  - [Berkeley Intro to Time Series](https://www.stat.berkeley.edu/~ryantibs/timeseries-f23/) contains excellent lecture notes.
+  - [CRAN](https://cran.r-project.org/web/views/TimeSeries.html), from the Comprehensive R Archive Network, describes time series packages in `R`.
 
 ```{r}
 #| label: s5a_books_tbl

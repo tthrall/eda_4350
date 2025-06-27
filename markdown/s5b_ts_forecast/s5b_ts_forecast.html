@@ -144,8 +144,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#arimap-d-q" id="toc-arimap-d-q" class="nav-link" data-scroll-target="#arimap-d-q">ARIMA(p, d, q)</a></li>
   <li><a href="#random-walk-with-drift" id="toc-random-walk-with-drift" class="nav-link" data-scroll-target="#random-walk-with-drift">Random Walk with Drift</a></li>
-  <li><a href="#ewma-example" id="toc-ewma-example" class="nav-link" data-scroll-target="#ewma-example">EWMA Example</a></li>
-  <li><a href="#arima-forecasting" id="toc-arima-forecasting" class="nav-link" data-scroll-target="#arima-forecasting">ARIMA Forecasting</a></li>
+  <li><a href="#ewma-exampletxt-ewma-xmpl" id="toc-ewma-exampletxt-ewma-xmpl" class="nav-link" data-scroll-target="#ewma-exampletxt-ewma-xmpl">EWMA Example</a></li>
   <li><a href="#co2-example" id="toc-co2-example" class="nav-link" data-scroll-target="#co2-example">CO2 Example</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
@@ -185,7 +184,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">10:08 Fri 27-Jun-2025</p>
+      <p class="date">16:58 Fri 27-Jun-2025</p>
     </div>
   </div>
   
@@ -212,7 +211,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="mathematical-framework">Mathematical Framework</h2>
 <section id="data-derived-from-a-random-process" class="level3">
 <h3 class="anchored" data-anchor-id="data-derived-from-a-random-process">Data derived from a random process</h3>
-<p>Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (<a href="#tbl-hl-pelts" class="quarto-xref">Table&nbsp;1</a> and <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;5</a>), based on the record of snowshoe hare (<code>astsa::Hare</code>) and lynx (<code>astsa::Lynx</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.</p>
+<p>Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (<a href="#tbl-hl-pelts" class="quarto-xref">Table&nbsp;1</a> and <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;6</a>), based on the record of snowshoe hare (<code>astsa::Hare</code>) and lynx (<code>astsa::Lynx</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.</p>
 <div id="tbl-hl-pelts" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-hl-pelts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -404,14 +403,14 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 <h2 class="anchored" data-anchor-id="operations-on-time-series">Operations on Time Series</h2>
 <section id="transformation-of-each-observation" class="level3">
 <h3 class="anchored" data-anchor-id="transformation-of-each-observation">Transformation of Each Observation</h3>
-<p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings (<a href="#fig-jj" class="quarto-xref">Figure&nbsp;6</a>), we see that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, can be more closely approximated by a linear trend.</p>
+<p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings (<a href="#fig-jj" class="quarto-xref">Figure&nbsp;7</a>), we see that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, can be more closely approximated by a linear trend.</p>
 </section>
 <section id="smoothing" class="level3">
 <h3 class="anchored" data-anchor-id="smoothing">Smoothing</h3>
 <p>In addition to the data transformations used on independent observations, we often want to smooth out local fluctuations in time series data to show the overall trend more clearly.</p>
 <section id="running-average" class="level4">
 <h4 class="anchored" data-anchor-id="running-average">Running Average</h4>
-<p>A running average (also called a moving average) of a random process <span class="math inline">\(X(\cdot)\)</span> is a new process <span class="math inline">\(Y(\cdot)\)</span> formed as as a local average of <span class="math inline">\(X\)</span> values. A <em>weighted</em> running average, with weights <span class="math inline">\(\{ w_u \}_u\)</span> takes the following form.</p>
+<p>A running average (also called a moving average) of a random process <span class="math inline">\(X(\cdot)\)</span> is a new process <span class="math inline">\(Y(\cdot)\)</span> formed as a local average of <span class="math inline">\(X\)</span> values. A <em>weighted</em> running average, with weights <span class="math inline">\(\{ w_u \}_u\)</span> takes the following form.</p>
 <p><span id="eq-ma-K"><span class="math display">\[
 \begin{align}
   Y (t) &amp;= \sum_{u = -K}^K w_u \; X (t - u) \\
@@ -429,7 +428,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   &amp;= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
 \end{align}
 \tag{18}\]</span></span></p>
-<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;7</a> shows the original global temperature data. As mentioned, the operation smooths out local fluctuations to show the overall trend more clearly.</p>
+<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;8</a> shows the original global temperature data. As mentioned, the operation smooths out local fluctuations to show the overall trend more clearly.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-gt-lo-ma5" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -447,7 +446,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 <section id="exponential-smoothing" class="level4">
 <h4 class="anchored" data-anchor-id="exponential-smoothing">Exponential Smoothing</h4>
-<p>Exponential smoothing (also called an exponentially weighted moving average) assigns a prescribed weight <span class="math inline">\(\alpha \in (0, 1)\)</span> to the current observation and exponentially decaying weights to prior observations.</p>
+<p>Exponential smoothing (also called an exponentially weighted moving average, or EWMA) assigns a prescribed weight <span class="math inline">\(\alpha \in (0, 1)\)</span> to the current observation and exponentially decaying weights to prior observations.</p>
 <p>For a mathematically defined process <span class="math inline">\(X(\cdot)\)</span> spanning all time, the operation can be represented by the following formula.</p>
 <p><span id="eq-exp-smooth-infty"><span class="math display">\[
 \begin{align}
@@ -492,7 +491,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \nabla &amp;= \mathcal{I} - \mathcal{B}
 \end{align}
 \tag{23}\]</span></span></p>
-<p>The DJIA stock index (<a href="#fig-djia" class="quarto-xref">Figure&nbsp;8</a>) illustrates the differencing operation. Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.</p>
+<p>The DJIA stock index (<a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a>) illustrates the differencing operation. Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.</p>
 <p>To remove a polynomial trend of degree <span class="math inline">\(d\)</span>, one can apply <span class="math inline">\(\nabla^d\)</span>, meaning <span class="math inline">\(d\)</span> repeated applications of <span class="math inline">\(\nabla\)</span>.</p>
 </section>
 <section id="seasonal-differencing" class="level3">
@@ -507,7 +506,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 <section id="integration-restoring-differenced-data" class="level3">
 <h3 class="anchored" data-anchor-id="integration-restoring-differenced-data">Integration: Restoring Differenced Data</h3>
-<p>Time series analysis often entails differencing the original process <span class="math inline">\(Y(\cdot) = \nabla \; X(\cdot)\)</span> and then building a model of the differenced process <span class="math inline">\(\hat{Y}(\cdot) \sim Y(\cdot)\)</span>. We can apply the model to the original process using the following simple recursive algorithm.</p>
+<p>Time series analysis may entail differencing the original process <span class="math inline">\(Y(\cdot) = \nabla \; X(\cdot)\)</span> and then building a model of the differenced process <span class="math inline">\(\hat{Y}(\cdot) \sim Y(\cdot)\)</span>. We can apply the model to the original process using the following simple recursive algorithm.</p>
 <p><span id="eq-integrate"><span class="math display">\[
 \begin{align}
   \hat{X} (t) &amp;=
@@ -517,6 +516,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \end{cases}
 \end{align}
 \tag{25}\]</span></span></p>
+<p><a href="#fig-rw-drift" class="quarto-xref">Figure&nbsp;4</a> illustrates the use of such integration to forecast values of a random walk with drift.</p>
 </section>
 <section id="filtering" class="level3">
 <h3 class="anchored" data-anchor-id="filtering">Filtering</h3>
@@ -567,7 +567,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="covariates-and-trend" class="level3">
 <h3 class="anchored" data-anchor-id="covariates-and-trend">Covariates and Trend</h3>
 <p>Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables.</p>
-<p>Consider, for example, the cardiovascular mortality data shown in <a href="#fig-cmort" class="quarto-xref">Figure&nbsp;9</a>, where mortality is modeled as a response to temperature and the level of airborne particulate matter. In this example we can formulate the expected value of mortality in the following terms.</p>
+<p>Consider, for example, the cardiovascular mortality data shown in <a href="#fig-cmort" class="quarto-xref">Figure&nbsp;10</a>, where mortality is modeled as a response to temperature and the level of airborne particulate matter. In this example we can formulate the expected value of mortality in the following terms.</p>
 <p><span class="math display">\[
 \begin{align}
   m(t, X_{2:3}(t))
@@ -1305,7 +1305,7 @@ Figure&nbsp;2: ARMA(1, 1) simulation, with coefficients (.5, .5)
 </section>
 <section id="recruitment-forecast" class="level3">
 <h3 class="anchored" data-anchor-id="recruitment-forecast">Recruitment Forecast</h3>
-<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;10</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values during the years 1950–1987.</p>
+<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;11</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values during the years 1950–1987.</p>
 <p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 111</a>)</span> fit the following preliminary AR(2) model to the recruitment index.</p>
 <p><span id="eq-rec-fit-AR2"><span class="math display">\[
 \begin{align}
@@ -1494,11 +1494,84 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 </div>
 </div>
 </section>
-<section id="ewma-example" class="level3">
-<h3 class="anchored" data-anchor-id="ewma-example">EWMA Example</h3>
-</section>
-<section id="arima-forecasting" class="level3">
-<h3 class="anchored" data-anchor-id="arima-forecasting">ARIMA Forecasting</h3>
+<section id="ewma-exampletxt-ewma-xmpl" class="level3">
+<h3 class="anchored" data-anchor-id="ewma-exampletxt-ewma-xmpl">EWMA Example<a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a></h3>
+<p>The following ARIMA(0,1,1) model has been applied to many economic time series.</p>
+<p><span id="eq-IMA-1-1-lambda"><span class="math display">\[
+\begin{align}
+  \nabla \; X(\cdot) &amp;= (\mathcal{I - \lambda B}) \; W(\cdot) \\
+  \\
+  &amp; \text{so that } \\
+  \\
+  X(t) &amp;= X(t-1) + W(t) - \lambda \; W(t-1) \\
+  \\
+  &amp; \text{with } \\
+  \\
+  | \lambda | &amp;&lt; 1
+\end{align}
+\tag{97}\]</span></span></p>
+<p>The model is also referred to as an integrated moving average model, or IMA(1, 1). The model leads to a frequently used forecasting method called exponentially weighted moving averages (EWMA).</p>
+<p>Since the multiplicative inverse of the polynomial <span class="math inline">\(1 - \lambda z\)</span> is a geometric series in <span class="math inline">\(\lambda z\)</span> we also have the following inverted form of the model.</p>
+<p><span class="math display">\[
+\begin{align}
+  W(t) &amp;= \sum_{\nu = 0}^\infty \lambda^\nu \; (X(t - \nu) \; - \; X(t - \nu - 1)) \\
+  &amp;= X(t) \; - \; (X(t - 1) - \; \lambda \; X(t - 1)) \; - \cdots \\
+  &amp;= X(t) \; - \; \sum_{\nu = 1}^\infty (1 - \lambda) \; \lambda^{\nu - 1} \; X(t - \nu)
+\end{align}
+\]</span></p>
+<p>Rearranging terms we have</p>
+<p><span id="eq-EWMA-plus-wn"><span class="math display">\[
+\begin{align}
+  X(t) &amp;= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu) \; + \; W(t)
+\end{align}
+\tag{98}\]</span></span></p>
+<p>That is, the current value <span class="math inline">\(X(t)\)</span> is an exponential smoothing of all past values plus <span class="math inline">\(W(t)\)</span>, the white noise term. The linear prediction of the current value based on past values is thus the same exponential smoothing.</p>
+<p><span class="math display">\[
+\begin{align}
+  \hat{X}(1 \; | \; \wp (t-1)) &amp;= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu)
+\end{align}
+\]</span></p>
+<p>This gives the following linear recursion formula.</p>
+<p><span class="math display">\[
+\begin{align}
+  \hat{X}(1 \; | \; \wp (t-1)) &amp;= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 2}^\infty \lambda^{\nu - 1} \; X(t - \nu) \\
+  &amp;= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^\nu \; X(t -1 - \nu) \\
+  &amp;= (1 - \lambda) \; X(t - 1) \; + \; \lambda \left \{ (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^\nu \; X(t -1 - \nu) \right \}  \\
+  &amp;= (1 - \lambda) \; X(t - 1) \; + \; \lambda \; \hat{X}(1 \; | \; \wp (t-2))
+\end{align}
+\]</span></p>
+<p>That is, the current one step ahead predictor is a convex combination of the most recent observation and the preceding one step ahead predictor.</p>
+<p>To calculate forecast error bounds we require <span class="math inline">\(\psi\)</span> coefficients from the causal form of the model. In this example they are the power series coefficients of the rational function <span class="math inline">\(\psi(z) = (1 - \lambda \; z)(1 - z)^{-1}\)</span>. This gives</p>
+<p><span class="math display">\[
+\begin{align}
+  \psi_\nu &amp;=
+  \begin{cases}
+    1 &amp; \text{for } \nu = 0 \\
+    1 - \lambda &amp; \text{for } \nu \ge 1
+  \end{cases}
+\end{align}
+\]</span></p>
+<p>Squaring these <span class="math inline">\(\psi\)</span> coefficients we have</p>
+<p><span class="math display">\[
+\begin{align}
+  Var \left\{ \hat{X}(u \; | \; \wp (t_f)) \right \} &amp;= \sigma_W^2 \; \left \{ 1 + (u-1)\; (1 - \lambda)^2 \right \}
+\end{align}
+\]</span></p>
+<p><a href="#fig-EWMA-plus-wn" class="quarto-xref">Figure&nbsp;5</a> shows a simulation of the IMA process <span class="math inline">\(X(\cdot)\)</span>, along with the one step ahead exponential smoothing of past values. We set <span class="math inline">\(\lambda = 0.8\)</span>, equivalent to an EWMA smoothing paramter of <span class="math inline">\(\alpha = 1 - \lambda = 0.2\)</span>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-EWMA-plus-wn" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-EWMA-plus-wn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-EWMA-plus-wn-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-EWMA-plus-wn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing (alpha = 0.2)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="co2-example" class="level3">
 <h3 class="anchored" data-anchor-id="co2-example">CO2 Example</h3>
@@ -1506,9 +1579,15 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
-<p>This technical note presents an overview of time series forecasting based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a></p>
-<p>For a more comprehensive listing of relevant <code>R</code> packages see the time series task view available from <a href="https://cran.r-project.org/web/views/TimeSeries.html">CRAN</a>, the Comprehensive R Archive Network.</p>
-<p>Also see <a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> for a more detailed introduction to the topics presented here. And see <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a> for an introduction to <code>R</code> package <code>astsa</code>.</p>
+<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a></p>
+<p>This introduction does not address the building and evaluation of time series models, leaving that for another time. Here are some additional resources for those interested.</p>
+<ul>
+<li><a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> for a more detailed introduction to the topics presented here.</li>
+<li><a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a> introduces to <code>R</code> package <code>astsa</code>.</li>
+<li><a href="https://otexts.com/fpp3/">Forecasting: Principles and Practice (3e)</a> is another highly regarded textbook available online.</li>
+<li><a href="https://www.stat.berkeley.edu/~ryantibs/timeseries-f23/">Berkeley Intro to Time Series</a> contains excellent lecture notes.</li>
+<li><a href="https://cran.r-project.org/web/views/TimeSeries.html">CRAN</a>, from the Comprehensive R Archive Network, describes time series packages in <code>R</code>.</li>
+</ul>
 </section>
 <section id="a-glossary-of-math-symbols" class="level2">
 <h2 class="anchored" data-anchor-id="a-glossary-of-math-symbols">A: Glossary of Math Symbols</h2>
@@ -1611,7 +1690,7 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 <section id="hare-and-lynx-populations" class="level3">
 <h3 class="anchored" data-anchor-id="hare-and-lynx-populations">Hare and Lynx Populations</h3>
 <p>One of the classic studies of predator–prey interactions is based on the record of lynx (<code>astsa::Lynx</code>) and snowshoe hare (<code>astsa::Hare</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
-<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;5</a> are thousands of pelts per year.</p>
+<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;6</a> are thousands of pelts per year.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-pred-prey" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1620,7 +1699,7 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 <img src="s5b_ts_forecast_files/figure-html/fig-pred-prey-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pred-prey-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Hare and lynx: purchased pelts
+Figure&nbsp;6: Hare and lynx: purchased pelts
 </figcaption>
 </figure>
 </div>
@@ -1629,7 +1708,7 @@ Figure&nbsp;5: Hare and lynx: purchased pelts
 </section>
 <section id="jj-quarterly-earnings" class="level3">
 <h3 class="anchored" data-anchor-id="jj-quarterly-earnings">JJ Quarterly Earnings</h3>
-<p><a href="#fig-jj" class="quarto-xref">Figure&nbsp;6</a> below shows Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980 (<code>astsa::jj</code>). The bottom panel shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
+<p><a href="#fig-jj" class="quarto-xref">Figure&nbsp;7</a> below shows Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980 (<code>astsa::jj</code>). The bottom panel shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-jj" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1638,7 +1717,7 @@ Figure&nbsp;5: Hare and lynx: purchased pelts
 <img src="s5b_ts_forecast_files/figure-html/fig-jj-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-jj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: J&amp;J: earnings per share at linear and log scales
+Figure&nbsp;7: J&amp;J: earnings per share at linear and log scales
 </figcaption>
 </figure>
 </div>
@@ -1647,7 +1726,7 @@ Figure&nbsp;6: J&amp;J: earnings per share at linear and log scales
 </section>
 <section id="global-temperatures" class="level3">
 <h3 class="anchored" data-anchor-id="global-temperatures">Global Temperatures</h3>
-<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;7</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;8</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-gtemp-lo" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1656,7 +1735,7 @@ Figure&nbsp;6: J&amp;J: earnings per share at linear and log scales
 <img src="s5b_ts_forecast_files/figure-html/fig-gtemp-lo-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gtemp-lo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Deviations in global surface temperatures
+Figure&nbsp;8: Deviations in global surface temperatures
 </figcaption>
 </figure>
 </div>
@@ -1665,7 +1744,7 @@ Figure&nbsp;7: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;8</a> shows the trading day closings and returns (percent change)<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1674,7 +1753,7 @@ Figure&nbsp;7: Deviations in global surface temperatures
 <img src="s5b_ts_forecast_files/figure-html/fig-djia-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-djia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Dow Jones Industrial Average
+Figure&nbsp;9: Dow Jones Industrial Average
 </figcaption>
 </figure>
 </div>
@@ -1683,7 +1762,7 @@ Figure&nbsp;8: Dow Jones Industrial Average
 </section>
 <section id="cardiovascular-mortality-in-los-angeles" class="level3">
 <h3 class="anchored" data-anchor-id="cardiovascular-mortality-in-los-angeles">Cardiovascular Mortality in Los Angeles</h3>
-<p><a href="#fig-cmort" class="quarto-xref">Figure&nbsp;9</a> shows data from a study <span class="citation" data-cites="shumway1988">(<a href="#ref-shumway1988" role="doc-biblioref">R. H. Shumway, Azari, and Pawitan 1988</a>)</span> of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.</p>
+<p><a href="#fig-cmort" class="quarto-xref">Figure&nbsp;10</a> shows data from a study <span class="citation" data-cites="shumway1988">(<a href="#ref-shumway1988" role="doc-biblioref">R. H. Shumway, Azari, and Pawitan 1988</a>)</span> of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-cmort" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1692,7 +1771,7 @@ Figure&nbsp;8: Dow Jones Industrial Average
 <img src="s5b_ts_forecast_files/figure-html/fig-cmort-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cmort-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Weekly levels of mortality, temperature, and particulates in Los Angeles
+Figure&nbsp;10: Weekly levels of mortality, temperature, and particulates in Los Angeles
 </figcaption>
 </figure>
 </div>
@@ -1701,7 +1780,7 @@ Figure&nbsp;9: Weekly levels of mortality, temperature, and particulates in Los 
 </section>
 <section id="el-niño-and-fish-population" class="level3">
 <h3 class="anchored" data-anchor-id="el-niño-and-fish-population">El Niño and Fish Population</h3>
-<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;10</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
+<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;11</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
 <p>The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -1711,7 +1790,7 @@ Figure&nbsp;9: Weekly levels of mortality, temperature, and particulates in Los 
 <img src="s5b_ts_forecast_files/figure-html/fig-soi-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-soi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: Southern Oscillation Index and fish recruitment
+Figure&nbsp;11: Southern Oscillation Index and fish recruitment
 </figcaption>
 </figure>
 </div>
@@ -1789,8 +1868,9 @@ Whittle, P. 1951. <em>Hypothesis Testing in Time Series Analysis</em>. Statistic
 <li id="fn37"><p>The simulation code is based on a similar example in <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a>.<a href="#fnref37" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn38"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref38" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn39"><p>From covariance calculations, <span class="math inline">\(\nabla \; W(\cdot)\)</span> is an <span class="math inline">\(AR(1)\)</span> process, which makes <span class="math inline">\(\nabla \; X(\cdot)\)</span> an <span class="math inline">\(AR(1)\)</span> process.<a href="#fnref39" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn40"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn41"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn40"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 148</a>)</span>.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn41"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn42"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
