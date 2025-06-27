@@ -145,7 +145,7 @@ window.Quarto = {
   <li><a href="#arimap-d-q" id="toc-arimap-d-q" class="nav-link" data-scroll-target="#arimap-d-q">ARIMA(p, d, q)</a></li>
   <li><a href="#random-walk-with-drift" id="toc-random-walk-with-drift" class="nav-link" data-scroll-target="#random-walk-with-drift">Random Walk with Drift</a></li>
   <li><a href="#ewma-exampletxt-ewma-xmpl" id="toc-ewma-exampletxt-ewma-xmpl" class="nav-link" data-scroll-target="#ewma-exampletxt-ewma-xmpl">EWMA Example</a></li>
-  <li><a href="#co2-example" id="toc-co2-example" class="nav-link" data-scroll-target="#co2-example">CO2 Example</a></li>
+  <li><a href="#co2-exampletxt-co2-mauna-loa" id="toc-co2-exampletxt-co2-mauna-loa" class="nav-link" data-scroll-target="#co2-exampletxt-co2-mauna-loa">CO2 Example</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#a-glossary-of-math-symbols" id="toc-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#a-glossary-of-math-symbols">A: Glossary of Math Symbols</a></li>
@@ -184,7 +184,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">16:58 Fri 27-Jun-2025</p>
+      <p class="date">17:22 Fri 27-Jun-2025</p>
     </div>
   </div>
   
@@ -1573,17 +1573,17 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing (alpha = 0.2)
 </div>
 </div>
 </section>
-<section id="co2-example" class="level3">
-<h3 class="anchored" data-anchor-id="co2-example">CO2 Example</h3>
+<section id="co2-exampletxt-co2-mauna-loa" class="level3">
+<h3 class="anchored" data-anchor-id="co2-exampletxt-co2-mauna-loa">CO2 Example<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a></h3>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
-<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a></p>
+<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a></p>
 <p>This introduction does not address the building and evaluation of time series models, leaving that for another time. Here are some additional resources for those interested.</p>
 <ul>
-<li><a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> for a more detailed introduction to the topics presented here.</li>
-<li><a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a> introduces to <code>R</code> package <code>astsa</code>.</li>
+<li><a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> gives a more detailed introduction to the topics presented here.</li>
+<li><a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a> introduces <code>R</code> package <code>astsa</code>.</li>
 <li><a href="https://otexts.com/fpp3/">Forecasting: Principles and Practice (3e)</a> is another highly regarded textbook available online.</li>
 <li><a href="https://www.stat.berkeley.edu/~ryantibs/timeseries-f23/">Berkeley Intro to Time Series</a> contains excellent lecture notes.</li>
 <li><a href="https://cran.r-project.org/web/views/TimeSeries.html">CRAN</a>, from the Comprehensive R Archive Network, describes time series packages in <code>R</code>.</li>
@@ -1744,7 +1744,7 @@ Figure&nbsp;8: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1869,8 +1869,9 @@ Whittle, P. 1951. <em>Hypothesis Testing in Time Series Analysis</em>. Statistic
 <li id="fn38"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref38" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn39"><p>From covariance calculations, <span class="math inline">\(\nabla \; W(\cdot)\)</span> is an <span class="math inline">\(AR(1)\)</span> process, which makes <span class="math inline">\(\nabla \; X(\cdot)\)</span> an <span class="math inline">\(AR(1)\)</span> process.<a href="#fnref39" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn40"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 148</a>)</span>.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn41"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn42"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn41"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn42"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn43"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
