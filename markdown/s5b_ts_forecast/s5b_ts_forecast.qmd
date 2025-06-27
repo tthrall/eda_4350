@@ -359,11 +359,33 @@ The data transformations used on independent observations are applicable to time
 
 ### Smoothing
 
+In addition to the data transformations used on independent observations, we often want to smooth out local fluctuations in time series data to show the overall trend more clearly.
+
 #### Running Average
 
-In addition to the data transformations used on independent observations, we often want to form a running average (also called a moving average) of time series data.
+A running average (also called a moving average) of a random process $X(\cdot)$ is a new process $Y(\cdot)$ formed as as a local average of $X$ values.  A _weighted_ running average, with weights $\{ w_u \}_u$ takes the following form.
 
-As an example, @fig-gt-lo-ma5 shows a 5-year moving average of global temperature data (@fig-gtemp-lo). This operation smooths out local fluctuations to show the overall trend more clearly.
+$$
+\begin{align}
+  Y (t) &= \sum_{u = -K}^K w_u \; X (t - u) \\ 
+  \\ 
+  & \text{where } \\ 
+  \\ 
+  w_u &\ge 0 \quad \text{for all } u \\
+  1 &= \sum_{u = -K}^K w_u
+\end{align}
+$$ {#eq-ma-K}
+
+As an example, @fig-gt-lo-ma5 shows a 5-year _simple_ moving average 
+
+$$
+\begin{align}
+  Y_\bullet (t) 
+  &= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u) 
+\end{align}
+$$ {#eq-ma-5}
+
+@fig-gtemp-lo shows the original global temperature data. As mentioned, the operation smooths out local fluctuations to show the overall trend more clearly.
 
 ```{r}
 #| label: gt_lo
@@ -399,17 +421,6 @@ astsa::tsplot(
   legend=c("Land Surface","Sea Surface")
 )
 ```
-
-In this case the 5-year moving average operation can be expressed as follows.[^ma-simple]
-
-[^ma-simple]: The example illustrates a simple moving average. A weighted moving average may have non-negative coefficients that sum to unity. The term "moving average" is also used more broadly to mean a component of a time series model that filters an uncorrelated noise sequence.
-
-$$
-\begin{align}
-  Y_\bullet (t) 
-  &= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u) 
-\end{align}
-$$ {#eq-ma-5}
 
 #### Exponential Smoothing
 
@@ -468,9 +479,9 @@ $$
 \end{align}
 $$ {#eq-diff-op-demo}
 
-For example, consider the DJIA stock index (@fig-djia). Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.
+The DJIA stock index (@fig-djia) illustrates the differencing operation. Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.
 
-To remove a polynomial trend of degree $d$, one can apply $\nabla^d$, in other words $d$ repeated applications of $\nabla$.
+To remove a polynomial trend of degree $d$, one can apply $\nabla^d$, meaning $d$ repeated applications of $\nabla$.
 
 ### Seasonal Differencing
 
@@ -485,6 +496,20 @@ $$
 $$ {#eq-seasonal-diff}
 
 Here $\sigma$ denotes the number of time indices that span one season.  For analyses of economic or business performance, seasonal differences are often used to show the difference between current values versus those from one year prior.  In that context one would set $\sigma = 4$ for quarterly data, $\sigma = 12$ for monthly data, etc.
+
+### Integration: Restoring Differenced Data
+
+Time series analysis often entails differencing the original process $Y(\cdot) = \nabla \; X(\cdot)$ and then building a model of the differenced process $\hat{Y}(\cdot) \sim Y(\cdot)$.  We can apply the model to the original process using the following simple recursive algorithm. 
+
+$$
+\begin{align}
+  \hat{X} (t) &= 
+  \begin{cases}
+    X(t) & \text{ for } t = t_0 \\ 
+    \hat{Y}(t) + \hat{X}(t-1) & \text{ for } t > t_0
+  \end{cases}
+\end{align}
+$$ {#eq-integrate}
 
 ### Filtering
 
