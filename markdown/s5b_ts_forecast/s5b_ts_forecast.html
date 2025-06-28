@@ -184,7 +184,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15:50 Sat 28-Jun-2025</p>
+      <p class="date">18:30 Sat 28-Jun-2025</p>
     </div>
   </div>
   
@@ -1600,15 +1600,15 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
   &amp;= \sigma_W^2 \; \left \{ 1 + \lambda^2 + (u-1)\; (1 - \lambda)^2 \right \} \quad \text{for } u \ge 1
 \end{align}
 \]</span></p>
-<p><a href="#fig-EWMA-plus-wn" class="quarto-xref">Figure&nbsp;5</a> shows a simulation of the IMA process <span class="math inline">\(X(\cdot)\)</span>, along with one step ahead exponential smoothing of past values, and the <span class="math inline">\(IMA(1, 1)\)</span> forecast of future values. We set <span class="math inline">\(\lambda =\)</span> 0.8, equivalent to an EWMA smoothing parameter of <span class="math inline">\(\alpha = 1 - \lambda =\)</span> 0.2.</p>
+<p><a href="#fig-IMA-EWMA" class="quarto-xref">Figure&nbsp;5</a> shows a simulation of the IMA process <span class="math inline">\(X(\cdot)\)</span>, along with one step ahead exponential smoothing of past values, and the <span class="math inline">\(IMA(1, 1)\)</span> forecast of future values. We set <span class="math inline">\(\lambda =\)</span> 0.8, equivalent to an EWMA smoothing parameter of <span class="math inline">\(\alpha = 1 - \lambda =\)</span> 0.2.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-EWMA-plus-wn" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-IMA-EWMA" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-EWMA-plus-wn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="s5b_ts_forecast_files/figure-html/fig-EWMA-plus-wn-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-IMA-EWMA-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-IMA-EWMA-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-EWMA-plus-wn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-IMA-EWMA-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </figcaption>
 </figure>

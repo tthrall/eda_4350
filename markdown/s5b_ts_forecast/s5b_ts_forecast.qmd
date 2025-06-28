@@ -1919,7 +1919,7 @@ $$
 \end{align}
 $$
 
-To forecast beyond the data we assume for the moment that $X(\cdot)$ and $W(\cdot)$ are Gaussian process in order to derive least squares predictors form conditional expectations.
+To forecast beyond the data we assume for the moment that $X(\cdot)$ and $W(\cdot)$ are Gaussian processes in order to derive least squares predictors form conditional expectations.
 
 $$
 \begin{align}
@@ -1928,7 +1928,7 @@ $$
 \end{align}
 $$
 
-Now based on the $IMA(1, 1)$ model we have 
+Now, based on the $IMA(1, 1)$ model we have 
 
 $$
 \begin{align}
@@ -1972,27 +1972,27 @@ EWMA_sim_params <- tibble::tibble(
 )
 ```
 
-@fig-EWMA-plus-wn shows a simulation of the IMA process $X(\cdot)$, along with one step ahead exponential smoothing of past values, and the $IMA(1, 1)$ forecast of future values.  We set $\lambda =$ `r EWMA_sim_params$ lambda`, equivalent to an EWMA smoothing parameter of $\alpha = 1 - \lambda =$ `r EWMA_sim_params$ alpha`.
+@fig-IMA-EWMA shows a simulation of the IMA process $X(\cdot)$, along with one step ahead exponential smoothing of past values, and the $IMA(1, 1)$ forecast of future values.  We set $\lambda =$ `r EWMA_sim_params$ lambda`, equivalent to an EWMA smoothing parameter of $\alpha = 1 - \lambda =$ `r EWMA_sim_params$ alpha`.
 
 ```{r}
 #| label: ima_tbl
 set.seed(666)
 
 # IMA(1, 1) process
-x <- astsa::sarima.sim(
+ima_sim <- astsa::sarima.sim(
   d  = 1, 
   ma = - EWMA_sim_params$ lambda, 
   n  = EWMA_sim_params$ n_total
 )
 
 # exponential smoothing
-x.ima <- stats::HoltWinters(x, beta=FALSE, gamma=FALSE)
+smooth_lst <- stats::HoltWinters(ima_sim, beta=FALSE, gamma=FALSE)
 
 # create tibble as input to gglot()
 ima_tbl <- tibble::tibble(
-  time   = 1:nrow(x.ima$ fitted), 
-  fitted = x.ima$ fitted [, 1], 
-  X      = x.ima$ x [time], 
+  time   = 1:nrow(smooth_lst$ fitted), 
+  fitted = smooth_lst$ fitted [, 1], 
+  X      = smooth_lst$ x [time], 
   X_hat  = dplyr::case_when(
     time <= EWMA_sim_params$ n_train ~ fitted, 
     TRUE ~ X[[EWMA_sim_params$ n_train]]
@@ -2006,13 +2006,43 @@ ima_tbl <- tibble::tibble(
 ```
 
 ```{r}
-#| label: fig-EWMA-plus-wn
+#| label: ima_bounds
+
+# initiate plotting points
+#   - time
+t_lo  <- EWMA_sim_params$ n_train + 1
+t_hi  <- EWMA_sim_params$ n_total
+t_len <- EWMA_sim_params$ n_fore
+
+#   - standard errors
+lam_2   <- (EWMA_sim_params$ lambda)^2
+alph_2  <- (EWMA_sim_params$ alpha)^2
+ima_mse <- c(1 + lam_2, 1:(t_len - 1) * alph_2)
+ima_se  <- sqrt(ima_mse)
+
+#   - confidence bounds
+alpha_c <- 0.05
+zeta_c  <- stats::qnorm(1 - (alpha_c / 2))
+upr_c   <- zeta_c * ima_se
+
+#   - final IMA process value in training data
+X_final <- ima_sim [[t_lo - 1]]
+
+# polygonal region giving IMA forecast +- bounds
+ima_bounds <- tibble::tibble(
+  t = c(t_lo:t_hi, t_hi:t_lo), 
+  y = X_final + c(upr_c, - rev(upr_c))
+)
+```
+
+```{r}
+#| label: fig-IMA-EWMA
 #| fig-cap: "IMA(1, 1) with exponenetial smoothing"
 #| eval: true
 
 # plot process with exponential smoothing
 # plot(
-#   x.ima, 
+#   smooth_lst, 
 #   main = "Exponential Smoothing of IMA(1, 1)"
 # )
 
@@ -2023,7 +2053,7 @@ g_ima <- ima_tbl |>
   geom_line(
     color = rep(
       c("grey", "red"), 
-      each = nrow(x.ima$ fitted)
+      each = nrow(smooth_lst$ fitted)
     )
   ) + 
   geom_vline(
@@ -2031,7 +2061,14 @@ g_ima <- ima_tbl |>
     linetype = 2, color = "blue"
   ) + 
   annotate("text", x =  75, y = -0.5, label = "Past") + 
-  annotate("text", x = 125, y = -0.5, label = "Future") +
+  annotate("text", x = 125, y = -0.5, label = "Future") + 
+  geom_polygon(
+    data = ima_bounds,
+    mapping = aes(x = t, y = y), 
+    fill = "red", alpha = 0.1, 
+    show.legend = FALSE,
+    inherit.aes = FALSE
+  ) +
   labs(title = EWMA_sim_params$ caption)
 g_ima
 ```
