@@ -2126,6 +2126,9 @@ $$
   \theta(\cdot) 
      \quad & \quad \text{MA polynomial, } 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\ 
   \\ 
+  W(\cdot) 
+     \quad & \quad \text{white noise process, } W(\cdot) \sim wn(0, \sigma_W^2)  \\ 
+  \\ 
   X_\bullet (t) 
      \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } \\ 
   \\ 
