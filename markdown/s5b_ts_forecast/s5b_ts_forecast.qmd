@@ -1841,11 +1841,13 @@ $$ {#eq-IMA-1-1-lambda}
 
 The model is also referred to as an integrated moving average model, or IMA(1, 1).  The model leads to a frequently used forecasting method called exponentially weighted moving averages (EWMA).
 
-Since the multiplicative inverse of the polynomial $1 - \lambda z$ is a geometric series in $\lambda z$ we also have the following inverted form of the model.
+Note that the multiplicative inverse of the polynomial $1 - \lambda z$ is a geometric series in $\lambda z$.  This gives the following inverted form of the model.
 
 $$
 \begin{align}
-  W(t) &= \sum_{\nu = 0}^\infty \lambda^\nu \; (X(t - \nu) \; - \; X(t - \nu - 1)) \\ 
+  W(t) &= \left ( \mathcal{I} - \lambda \mathcal{B} \right )^{-1} \; \nabla X (t) \\ 
+  &= \sum_{\nu = 0}^\infty \lambda^\nu \; \mathcal{B}^\nu \; \nabla X (t) \\ 
+  &= \sum_{\nu = 0}^\infty \lambda^\nu \; (X(t - \nu) \; - \; X(t - \nu - 1)) \\ 
   &= X(t) \; - \; (X(t - 1) - \; \lambda \; X(t - 1)) \; - \cdots \\ 
   &= X(t) \; - \; \sum_{\nu = 1}^\infty (1 - \lambda) \; \lambda^{\nu - 1} \; X(t - \nu)
 \end{align}
@@ -1859,7 +1861,9 @@ $$
 \end{align}
 $$ {#eq-EWMA-plus-wn}
 
-That is, the current value $X(t)$ is an exponential smoothing of all past values plus $W(t)$, the white noise term.  The linear prediction of the current value based on past values is thus the same exponential smoothing.
+That is, the current value $X(t)$ is an exponential smoothing of all past values plus $W(t)$, the white noise term.
+
+The linear prediction of the current value based on past values is thus the same exponential smoothing.
 
 $$
 \begin{align}
@@ -1873,14 +1877,14 @@ $$
 \begin{align}
   \hat{X}(1 \; | \; \wp (t-1)) &= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 2}^\infty \lambda^{\nu - 1} \; X(t - \nu) \\ 
   &= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^\nu \; X(t -1 - \nu) \\ 
-  &= (1 - \lambda) \; X(t - 1) \; + \; \lambda \left \{ (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^\nu \; X(t -1 - \nu) \right \}  \\ 
+  &= (1 - \lambda) \; X(t - 1) \; + \; \lambda \left \{ (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t -1 - \nu) \right \}  \\ 
   &= (1 - \lambda) \; X(t - 1) \; + \; \lambda \; \hat{X}(1 \; | \; \wp (t-2)) 
 \end{align}
 $$
 
-That is, the current one step ahead predictor is a convex combination of the most recent observation and the preceding one step ahead predictor.
+That is, the current one step ahead predictor is a convex combination of the most recent observation and the preceding one step ahead predictor.  The truncated predictor based on the data follows a similar recursion.
 
-To calculate forecast error bounds we require $\psi$ coefficients from the causal form of the model. In this example they are the power series coefficients of the rational function $\psi(z) = (1 - \lambda \; z)(1 - z)^{-1}$.  This gives 
+To calculate predictor error bounds we require $\psi$ coefficients from the causal form of the model. In this example they are the power series coefficients of the rational function $\psi(z) = (1 - \lambda \; z)(1 - z)^{-1}$.  This gives 
 
 $$
 \begin{align}
@@ -1896,32 +1900,75 @@ Squaring these $\psi$ coefficients we have
 
 $$
 \begin{align}
-  Var \left\{ \hat{X}(u \; | \; \wp (t_f)) \right \} &= \sigma_W^2 \; \left \{ 1 + (u-1)\; (1 - \lambda)^2 \right \} 
+  Var \left\{ \breve{X}(u + t_0 \; | \; \tau_u) \right \} &= \sigma_W^2 \; \left \{ 1 + (u-1)\; (1 - \lambda)^2 \right \} \quad \text{for } 0 < u < T
 \end{align}
 $$
 
-@fig-EWMA-plus-wn shows a simulation of the IMA process $X(\cdot)$, along with the one step ahead exponential smoothing of past values.  We set $\lambda = 0.8$, equivalent to an EWMA smoothing paramter of $\alpha = 1 - \lambda = 0.2$.
+```{r}
+#| label: EWMA-sim-params
+EWMA_sim_params <- tibble::tibble(
+  alpha = 0.2, 
+  lambda = 1 - alpha, 
+  n = 200, 
+  caption = paste0(
+    "IMA(1, 1) with exponenetial smoothing (alpha = ", 
+    alpha, 
+    ")"
+  )
+)
+```
+
+@fig-EWMA-plus-wn shows a simulation of the IMA process $X(\cdot)$, along with the one step ahead exponential smoothing of past values.  We set $\lambda =$ `r EWMA_sim_params$ lambda`, equivalent to an EWMA smoothing parameter of $\alpha = 1 - \lambda =$ `r EWMA_sim_params$ alpha`.
 
 ```{r}
 #| label: fig-EWMA-plus-wn
-#| fig-cap: "IMA(1, 1) with exponenetial smoothing (alpha = 0.2)"
+#| fig-cap: "IMA(1, 1) with exponenetial smoothing"
 #| eval: true
 
 set.seed(666)
 
-# λ = 1 − α = .8
-x <- astsa::sarima.sim(d = 1, ma = -0.8, n = 100)
-x.ima <- stats::HoltWinters(x, beta=FALSE, gamma=FALSE)
-
-# λˆ = 1 − αˆ ≈ .81
-# Smoothing parameter: alpha: 0.1853541
-
-# plots observed and fitted
-plot(
-  x.ima, 
-  main = "Exponential Smoothing of IMA(1, 1)"
+# IMA(1, 1) process
+x <- astsa::sarima.sim(
+  d  = 1, 
+  ma = - EWMA_sim_params$ lambda, 
+  n  = EWMA_sim_params$ n
 )
 
+# process with exponential smoothing
+# yields estimate of smoothing parameter alpha
+x.ima <- stats::HoltWinters(x, beta=FALSE, gamma=FALSE)
+
+# create tibble as input to gglot()
+ima_tbl <- tibble::tibble(
+  time  = 1:nrow(x.ima$ fitted), 
+  X     = x.ima$ x [time], 
+  X_hat = x.ima$ fitted [, 1]
+) |> 
+  tidyr::pivot_longer(
+    cols = X:X_hat, 
+    names_to = "variable", 
+    values_to = "level"
+  )
+
+
+# plot process with exponential smoothing
+# plot(
+#   x.ima, 
+#   main = "Exponential Smoothing of IMA(1, 1)"
+# )
+
+g_ima <- ima_tbl |> 
+  ggplot2::ggplot(mapping = aes(
+    x = time, y = level, color = variable, fill = variable
+  )) + 
+  geom_line(
+    color = rep(
+      c("grey", "red"), 
+      each = nrow(x.ima$ fitted)
+    )
+  ) + 
+  labs(title = EWMA_sim_params$ caption)
+g_ima
 ```
 
 

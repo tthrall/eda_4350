@@ -184,7 +184,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">08:19 Sat 28-Jun-2025</p>
+      <p class="date">11:40 Sat 28-Jun-2025</p>
     </div>
   </div>
   
@@ -1511,10 +1511,12 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 \end{align}
 \tag{97}\]</span></span></p>
 <p>The model is also referred to as an integrated moving average model, or IMA(1, 1). The model leads to a frequently used forecasting method called exponentially weighted moving averages (EWMA).</p>
-<p>Since the multiplicative inverse of the polynomial <span class="math inline">\(1 - \lambda z\)</span> is a geometric series in <span class="math inline">\(\lambda z\)</span> we also have the following inverted form of the model.</p>
+<p>Note that the multiplicative inverse of the polynomial <span class="math inline">\(1 - \lambda z\)</span> is a geometric series in <span class="math inline">\(\lambda z\)</span>. This gives the following inverted form of the model.</p>
 <p><span class="math display">\[
 \begin{align}
-  W(t) &amp;= \sum_{\nu = 0}^\infty \lambda^\nu \; (X(t - \nu) \; - \; X(t - \nu - 1)) \\
+  W(t) &amp;= \left ( \mathcal{I} - \lambda \mathcal{B} \right )^{-1} \; \nabla X (t) \\
+  &amp;= \sum_{\nu = 0}^\infty \lambda^\nu \; \mathcal{B}^\nu \; \nabla X (t) \\
+  &amp;= \sum_{\nu = 0}^\infty \lambda^\nu \; (X(t - \nu) \; - \; X(t - \nu - 1)) \\
   &amp;= X(t) \; - \; (X(t - 1) - \; \lambda \; X(t - 1)) \; - \cdots \\
   &amp;= X(t) \; - \; \sum_{\nu = 1}^\infty (1 - \lambda) \; \lambda^{\nu - 1} \; X(t - \nu)
 \end{align}
@@ -1525,7 +1527,8 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
   X(t) &amp;= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu) \; + \; W(t)
 \end{align}
 \tag{98}\]</span></span></p>
-<p>That is, the current value <span class="math inline">\(X(t)\)</span> is an exponential smoothing of all past values plus <span class="math inline">\(W(t)\)</span>, the white noise term. The linear prediction of the current value based on past values is thus the same exponential smoothing.</p>
+<p>That is, the current value <span class="math inline">\(X(t)\)</span> is an exponential smoothing of all past values plus <span class="math inline">\(W(t)\)</span>, the white noise term.</p>
+<p>The linear prediction of the current value based on past values is thus the same exponential smoothing.</p>
 <p><span class="math display">\[
 \begin{align}
   \hat{X}(1 \; | \; \wp (t-1)) &amp;= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu)
@@ -1536,12 +1539,12 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 \begin{align}
   \hat{X}(1 \; | \; \wp (t-1)) &amp;= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 2}^\infty \lambda^{\nu - 1} \; X(t - \nu) \\
   &amp;= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^\nu \; X(t -1 - \nu) \\
-  &amp;= (1 - \lambda) \; X(t - 1) \; + \; \lambda \left \{ (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^\nu \; X(t -1 - \nu) \right \}  \\
+  &amp;= (1 - \lambda) \; X(t - 1) \; + \; \lambda \left \{ (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t -1 - \nu) \right \}  \\
   &amp;= (1 - \lambda) \; X(t - 1) \; + \; \lambda \; \hat{X}(1 \; | \; \wp (t-2))
 \end{align}
 \]</span></p>
-<p>That is, the current one step ahead predictor is a convex combination of the most recent observation and the preceding one step ahead predictor.</p>
-<p>To calculate forecast error bounds we require <span class="math inline">\(\psi\)</span> coefficients from the causal form of the model. In this example they are the power series coefficients of the rational function <span class="math inline">\(\psi(z) = (1 - \lambda \; z)(1 - z)^{-1}\)</span>. This gives</p>
+<p>That is, the current one step ahead predictor is a convex combination of the most recent observation and the preceding one step ahead predictor. The truncated predictor based on the data follows a similar recursion.</p>
+<p>To calculate predictor error bounds we require <span class="math inline">\(\psi\)</span> coefficients from the causal form of the model. In this example they are the power series coefficients of the rational function <span class="math inline">\(\psi(z) = (1 - \lambda \; z)(1 - z)^{-1}\)</span>. This gives</p>
 <p><span class="math display">\[
 \begin{align}
   \psi_\nu &amp;=
@@ -1554,10 +1557,10 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 <p>Squaring these <span class="math inline">\(\psi\)</span> coefficients we have</p>
 <p><span class="math display">\[
 \begin{align}
-  Var \left\{ \hat{X}(u \; | \; \wp (t_f)) \right \} &amp;= \sigma_W^2 \; \left \{ 1 + (u-1)\; (1 - \lambda)^2 \right \}
+  Var \left\{ \breve{X}(u + t_0 \; | \; \tau_u) \right \} &amp;= \sigma_W^2 \; \left \{ 1 + (u-1)\; (1 - \lambda)^2 \right \} \quad \text{for } 0 &lt; u &lt; T
 \end{align}
 \]</span></p>
-<p><a href="#fig-EWMA-plus-wn" class="quarto-xref">Figure&nbsp;5</a> shows a simulation of the IMA process <span class="math inline">\(X(\cdot)\)</span>, along with the one step ahead exponential smoothing of past values. We set <span class="math inline">\(\lambda = 0.8\)</span>, equivalent to an EWMA smoothing paramter of <span class="math inline">\(\alpha = 1 - \lambda = 0.2\)</span>.</p>
+<p><a href="#fig-EWMA-plus-wn" class="quarto-xref">Figure&nbsp;5</a> shows a simulation of the IMA process <span class="math inline">\(X(\cdot)\)</span>, along with the one step ahead exponential smoothing of past values. We set <span class="math inline">\(\lambda =\)</span> 0.8, equivalent to an EWMA smoothing parameter of <span class="math inline">\(\alpha = 1 - \lambda =\)</span> 0.2.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-EWMA-plus-wn" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1566,7 +1569,7 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 <img src="s5b_ts_forecast_files/figure-html/fig-EWMA-plus-wn-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-EWMA-plus-wn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing (alpha = 0.2)
+Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </figcaption>
 </figure>
 </div>
