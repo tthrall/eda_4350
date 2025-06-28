@@ -1193,7 +1193,9 @@ $$
 \end{align}
 $$ {#eq-le-tf}
 
-We adopt the following notation for the expectation of $\mathcal{N}(u + t_f)$, the process at a future time, conditioned on $\{ \mathcal{N}(s) \}_{s \le t_f}$, the history of the process prior to and including the final observation.
+We adopt the following notation for the expectation of $\mathcal{N}(u + t_f)$, the process at a future time, conditioned on $\{ \mathcal{N}(s) \}_{s \le t_f}$, the history of the process prior to and including the final observation.[^horizon_h]
+
+[^horizon_h]: When attempting to predict future values $\mathcal{N} (u + t_f)$ from data values indexed by $t \in (t_0, \ldots, t_f)$ the index symbol $h$ is often used in place of the generic indexing difference $u$ to denote forecast _horizon_.
 
 $$
 \begin{align}
@@ -1882,7 +1884,19 @@ $$
 \end{align}
 $$
 
-That is, the current one step ahead predictor is a convex combination of the most recent observation and the preceding one step ahead predictor.  The truncated predictor based on the data follows a similar recursion.
+That is, the current one step ahead predictor is a convex combination of the most recent observation and the preceding one step ahead predictor.
+
+The truncated one step ahead predictor based on the data follows a similar recursion.
+
+$$
+\begin{align}
+  \breve{X}(u + t_0 \; | \; \tau_u) &= 
+  \begin{cases}
+    X(t_0) & \text{for } u = 1 \\ 
+    (1 - \lambda) \; X(u - 1 + t_0) + \lambda \breve{X}(u -1 + t_0 \; | \; \tau_{u-1}) & \text{for } 1 < u < T
+  \end{cases}
+\end{align}
+$$
 
 To calculate predictor error bounds we require $\psi$ coefficients from the causal form of the model. In this example they are the power series coefficients of the rational function $\psi(z) = (1 - \lambda \; z)(1 - z)^{-1}$.  This gives 
 
@@ -1900,7 +1914,45 @@ Squaring these $\psi$ coefficients we have
 
 $$
 \begin{align}
-  Var \left\{ \breve{X}(u + t_0 \; | \; \tau_u) \right \} &= \sigma_W^2 \; \left \{ 1 + (u-1)\; (1 - \lambda)^2 \right \} \quad \text{for } 0 < u < T
+  & MSE \left\{ X (u + t_0), \; \breve{X}(u + t_0 \; | \; \tau_u) \right \} \\ 
+  &= \sigma_W^2 \; \left \{ 1 + (u-1)\; (1 - \lambda)^2 \right \} \quad \text{for } 0 < u < T
+\end{align}
+$$
+
+To forecast beyond the data we assume for the moment that $X(\cdot)$ and $W(\cdot)$ are Gaussian process in order to derive least squares predictors form conditional expectations.
+
+$$
+\begin{align}
+  \breve{X}(u + t_f \; | \; \tau_T)
+  &= E \left \{ X (u + t_f) \; | \; X(s), s \in \tau_T \right \}
+\end{align}
+$$
+
+Now based on the $IMA(1, 1)$ model we have 
+
+$$
+\begin{align}
+  & X (u + t_f) \\ 
+  &= X(t_f) + W(u + t_f) - \lambda W(t_f) + (1 - \lambda) \; \sum_{\nu = 1}^{u -1} W(u - \nu + t_f)
+\end{align}
+$$
+
+Consequently 
+
+$$
+\begin{align}
+  & \breve{X}(u + t_f \; | \; \tau_T) \\ 
+  &= E \left \{ X (u + t_f) \; | \; X(s), s \in \tau_T \right \} \\ 
+  &= X(t_f)
+\end{align}
+$$
+
+The mean squared prediction error is thus the expected square of $X(u + t_f) \; - \; X(t_f)$.
+
+$$
+\begin{align}
+  & MSE \left\{ X (u + t_f), \; \breve{X}(u + t_f \; | \; \tau_T) \right \} \\ 
+  &= \sigma_W^2 \; \left \{ 1 + \lambda^2 + (u-1)\; (1 - \lambda)^2 \right \} \quad \text{for } u \ge 1
 \end{align}
 $$
 
