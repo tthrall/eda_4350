@@ -35,6 +35,7 @@ knitr::opts_chunk$set(
 
 library(assertthat)
 library(astsa)
+library(fable)
 library(here)
 library(knitr)
 library(latex2exp)
@@ -1843,7 +1844,7 @@ $$
 \end{align}
 $$ {#eq-IMA-1-1-lambda}
 
-The model is also referred to as an integrated moving average model, or IMA(1, 1).  The model leads to a frequently used forecasting method called exponentially weighted moving averages (EWMA).
+The model is also referred to as an integrated moving average model, or IMA(1, 1).  The model leads to a frequently used forecasting method called exponentially weighted moving averages (EWMA) or simple exponential smoothing (SES).
 
 Note that the multiplicative inverse of the polynomial $1 - \lambda z$ is a geometric series in $\lambda z$.  This gives the following inverted form of the model.
 
@@ -1892,13 +1893,13 @@ The truncated one step ahead predictor based on the data follows a similar recur
 
 $$
 \begin{align}
-  \breve{X}(u + t_0 \; | \; \tau_u) &= 
+  \breve{X}(1 + t \; | \; s \le t) &= 
   \begin{cases}
-    X(t_0) & \text{for } u = 1 \\ 
-    (1 - \lambda) \; X(u - 1 + t_0) + \lambda \breve{X}(u -1 + t_0 \; | \; \tau_{u-1}) & \text{for } 1 < u < T
+    X(t_0) & \text{for } t = t_0 \\ 
+    (1 - \lambda) \; X(t) + \lambda \breve{X}(t \; | \; s \le t-1) & \text{for } t_0 < t \le t_f
   \end{cases}
 \end{align}
-$$
+$$ {#eq-tp-one-step-recur}
 
 To calculate predictor error bounds we require $\psi$ coefficients from the causal form of the model. In this example they are the power series coefficients of the rational function $\psi(z) = (1 - \lambda \; z)(1 - z)^{-1}$.  This gives 
 
@@ -2075,15 +2076,121 @@ g_ima <- ima_tbl |>
 g_ima
 ```
 
-### ETS[^book-ETS]
+### ETS [^book-ETS] 
 
 [^book-ETS]: See @hyndman2021forecasting [chapter 8] and @ryantibs2023timeseries [chapter 7].
 
-The exponential smoothing (or EWMA) operation presented above is also called simple exponential smoothing (SES), and belongs to a family of methods called exponential smoothing with trend and seasonality (ETS).  ETS methods encompass (and arose from) Holt-Winters forecasting.[^art-Holt-Winters]
+#### ETS Intro
+
+Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses.[^art-Holt-Winters]
 
 [^art-Holt-Winters]: See @holt1957forecasting and @winters1960forecasting.
 
-These operations are optimal solutions to certain state-space models, distinct from the ARIMA paradigm.
+In this framework the forecast $\breve{X}(u + t \; | \; s \le t)$ consists of three components: level $\ell (t)$; local trend $\mathit{b} (t)$; and seasonality $\mathit{s} (u + t \; | \; s \le t)$, with $s, t \in \tau_T$.  The forecast equation expresses $\breve{X}(u + t \; | \; s \le t)$ as a linear combination of these components, and each component has its own linear equation.  Together these equations define a _state-space_ model.
+
+In this section we merely outline the ETS framework.  For further details see the cited resources.  Also, note that `R` function `fable::ETS()` selects and fits the models described in this section with modest guidance from the user.
+
+#### Level component
+
+We begin with simple exponential smoothing (SES), which entails the level component $\ell(\cdot)$ alone.  We re-express the one step ahead forecast recursion from the previous section (@eq-tp-one-step-recur) by setting $\alpha = 1 - \lambda$, and restricting $\alpha$ to the open unit interval.
+
+$$
+\begin{align}
+  \breve{X}(1 + t \; | \; s \le t) &= 
+  \begin{cases}
+    X(t_0) & \text{for } t = t_0 \\ 
+    \alpha \; X(t) + (1 - \alpha) \; \breve{X}(t \; | \; s \le t-1) & \text{for } t_0 < t \le t_f
+  \end{cases} \\ 
+  \\ 
+  &\text{where } \alpha \in (0, 1)
+\end{align}
+$$ {#eq-ets-ANN-one-step-recur-alpha}
+
+From the previous section we know that a forecast beyond the data is simply the final data value.
+
+$$
+\begin{align}
+  \breve{X}(u + t_f \; | \; \tau_T) &= X(t_f) \quad \text{for } u > 1
+\end{align}
+$$ {#eq-ets-ANN-flatline}
+
+The state-space or component form of this recursion is as follows (with boundary conditions to be set for $\ell (\cdot)$).
+
+$$
+\begin{align}
+  \breve{X}(u + t \; | \; s \le t) &= \ell (t) \\
+  \ell (t) &= \alpha \; X(t) + (1 - \alpha) \; \ell (t - 1)
+\end{align}
+$$ {#eq-ets-ANN-ss}
+
+#### Trend component
+
+We now add a trend component, $\mathit{b} (t)$, to this system as follows.
+
+$$
+\begin{align}
+  \breve{X}(u + t \; | \; s \le t) &= \ell (t) \; + \; \mathit{b}(t) \times u \\
+  \ell (t) &= \alpha \; X(t) + (1 - \alpha) \; \left ( \ell(t - 1) + \mathit{b}(t - 1) \right ) \\ 
+  \mathit{b} (t) &= \beta \; \left ( \ell(t) - \ell(t - 1) \right ) \; + \; (1 - \beta) \; \mathit{b}(t - 1) \\ 
+  \\ 
+  &\text{where } \alpha, \beta \in (0, 1)
+\end{align}
+$$ {#eq-ets-AAN-ss}
+
+This above forecast system is known as Holt's trend method.  Over the years a modification has been introduced to dampen the effect of the trend term $\mathit{b}(t)$ on long-term forecasts, via damping coefficient $\phi \in (0, 1)$, as follows.
+
+$$
+\begin{align}
+  \breve{X}(u + t \; | \; s \le t) &= \ell (t) \; + \; \mathit{b}(t) \times \sum_{\nu = 1}^u \phi^\nu \\
+  \ell (t) &= \alpha \; X(t) + (1 - \alpha) \; \left ( \ell(t - 1) + \phi \;  \mathit{b}(t - 1) \right ) \\ 
+  \mathit{b} (t) &= \beta \; \left ( \ell(t) - \ell(t - 1) \right ) \; + \; (1 - \beta) \; \phi \;  \mathit{b}(t - 1) \\ 
+  \\ 
+  &\text{where } \alpha, \beta, \phi \in (0, 1)
+\end{align}
+$$ {#eq-ets-AAN-dampen-ss}
+
+#### Seasonal component
+
+Starting with @eq-ets-AAN-ss, we now add a seasonal component, $\mathit{s}(u + t \; | \; s \le t)$, where a fixed positive integer $\sigma$ denotes the number of successive time indices comprising a single season.  For $t, (u + t) \in \tau_T$ we fit $\mathit{s}(u + t \; | \; s \le t)$ recursively.  Then for $(u + t) > t_f$ we refer back to the most recent fitted value $\mathit{s} (\tilde{t})$ such that $\tilde{t} \equiv (u + t) \bmod \sigma$.
+
+$$
+\begin{align}
+  \breve{X}(u + t \; | \; s \le t) &= \ell (t) \; + \; \mathit{b}(t) \times u \; + \; \mathit{s}(u + t \; | \; s \le t) \\
+  \ell (t) &= \alpha \; (X(t) - \mathit{s}(t - \sigma)) + (1 - \alpha) \; \left ( \ell(t - 1) + \mathit{b}(t - 1) \right ) \\ 
+  \mathit{b} (t) &= \beta \; \left ( \ell(t) - \ell(t - 1) \right ) \; + \; (1 - \beta) \; \mathit{b}(t - 1) \\ 
+  \mathit{s} (t) &= \gamma \left ( X(t) - \ell (t-1) - \mathit{b} (t-1) \right ) \; + \; (1 - \gamma) \mathit{s}(t - \sigma) \\ 
+  \\ 
+  &\text{where } \alpha, \beta, \gamma \in (0, 1)\\ 
+  \\ 
+  &\text{and where } \\ 
+  & \mathit{s}(u + t \; | \; s \le t) = \mathit{s} (\tilde{t}), \text{ with} \\ 
+  & \tilde{t} \equiv (u + t) \bmod \sigma, \text{ and with}  \\
+  & \tilde{t} \in (t - \sigma, \; t]
+\end{align}
+$$ {#eq-ets-AAA-ss}
+
+#### ETS model designation
+
+Each ETS model can be categorized according to the status of each potential model component: level, trend, and season.[^art-ETS-categories]
+
+[^art-ETS-categories]: See @hyndman2002state.
+
+The status of a component is one of the following:
+
+  - A: used as an additive component
+  - Ad: damped or otherwise adjusted
+  - M: used as a multiplicative component
+  - N: not used
+
+Here are some examples of this identification of ETS model-type.
+
+  - ETS(A, N, N): simple exponential smoothing
+  - ETS(A, A, N): Holt’s linear trend method
+  - ETS(A, Ad, N): damped linear trend method
+  - ETS(A, A, A): Holt-Winters with additive seasonality
+  - ETS(A, A, M): Holt-Winters with multiplicative seasonality
+
+Note: @hyndman2021forecasting recommend against certain combinations that may lead to numerical instability when estimating parameters.  For example they recommend using $ETS(M, *, M)$ rather than $ETS(A, *, M)$.  Much of this guidance is contained in the documentation (and curated options) for function `fable:ETS()`.
 
 ### CO2 Example[^txt-CO2-Mauna-Loa]
 
