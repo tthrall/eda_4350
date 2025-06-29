@@ -184,7 +184,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">10:16 Sun 29-Jun-2025</p>
+      <p class="date">10:58 Sun 29-Jun-2025</p>
     </div>
   </div>
   
@@ -1125,7 +1125,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>Note that the terms on the right can be simplified for <span class="math inline">\(\nu \ge u\)</span>.</p>
 <p><span class="math display">\[
 \begin{align}
-  \tilde{\mathcal{N}} (u - \nu \; | \; \wp (t_f)
+  \tilde{\mathcal{N}} (u - \nu +t_f \; | \; \wp (t_f)
   &amp;= \mathcal{N} (u - \nu + t_f) \quad \text{for } \nu \ge u
 \end{align}
 \]</span></p>
@@ -1141,7 +1141,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>We now examine the residuals from the linear least squares predictors defined above. Let <span class="math inline">\(R(\cdot \; | \; \wp (t_f))\)</span> denote the residuals of the predictors.</p>
 <p><span id="eq-predictor-resid-defn"><span class="math display">\[
 \begin{align}
-  R(k \; | \; \wp (t_f)) &amp;= \mathcal{N} (k + t_f) \; - \; \tilde{\mathcal{N}} (k \; | \; \wp (t_f)), \quad k \ge 1
+  R(t \; | \; \wp (t_f)) &amp;= \mathcal{N} (t) \; - \; \tilde{\mathcal{N}} (t \; | \; \wp (t_f)), \quad t &gt; t_f
 \end{align}
 \tag{72}\]</span></span></p>
 <p>Combining <a href="#eq-predicted-AR-infty" class="quarto-xref">Equation&nbsp;67</a> and <a href="#eq-predictor-inv-form-u" class="quarto-xref">Equation&nbsp;71</a> we can express process <span class="math inline">\(R(u + t_f \; | \; \wp (t_f))\)</span> for <span class="math inline">\(u \ge 1\)</span> in a finite auto-regressive form (that expands with <span class="math inline">\(u\)</span>).</p>
@@ -1164,16 +1164,16 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   E\{ R(u + t_f \; | \; \wp (t_f)) \} &amp;= 0
 \end{align}
 \tag{75}\]</span></span></p>
-<p>Also note that <span class="math inline">\(R(u + t_f \; | \; \wp (t_f))\)</span> and <span class="math inline">\(R(u + k \; | \; \wp (t_f))\)</span> are correlated in general, for <span class="math inline">\(u \ge 1\)</span> and <span class="math inline">\(k \ge 0\)</span>.</p>
+<p>Also note that <span class="math inline">\(R(u + t_f \; | \; \wp (t_f))\)</span> and <span class="math inline">\(R(u + k + t_f \; | \; \wp (t_f))\)</span> are correlated in general, for <span class="math inline">\(u \ge 1\)</span> and <span class="math inline">\(k \ge 0\)</span>.</p>
 <p><span id="eq-cov-predictor-resid"><span class="math display">\[
 \begin{align}
-  E \left \{ R(u + t_f \; | \; \wp (t_f)) \times R(u + k \; | \; \wp (t_f)) \right \} &amp;= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; \psi_{\nu + k}
+  E \left \{ R(u + t_f \; | \; \wp (t_f)) \times R(u + k + t_f \; | \; \wp (t_f)) \right \} &amp;= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; \psi_{\nu + k}
 \end{align}
 \tag{76}\]</span></span></p>
-<p>Setting <span class="math inline">\(k = 0\)</span> we obtain the following variance of <span class="math inline">\(R(u\; | \; \wp (t_f))\)</span>.</p>
+<p>Setting <span class="math inline">\(k = 0\)</span> we obtain the following expected square of <span class="math inline">\(R(u + t_f \; | \; \wp (t_f))\)</span>, called mean squared prediction error.<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a></p>
 <p><span id="eq-var-predictor-resid"><span class="math display">\[
 \begin{align}
-  E\{ R(u\; | \; \wp (t_f))^2 \} &amp;= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu^2
+  E\{ R(u + t_f \; | \; \wp (t_f))^2 \} &amp;= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu^2
 \end{align}
 \tag{77}\]</span></span></p>
 <p>As <span class="math inline">\(u \rightarrow \infty\)</span> this residual variance approaches the variance of the original process <span class="math inline">\(\mathcal{N} (\cdot)\)</span>.</p>
@@ -1184,7 +1184,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \tag{78}\]</span></span></p>
 </section>
 <section id="truncated-predictorstxt-trunc-arma-predictor" class="level3">
-<h3 class="anchored" data-anchor-id="truncated-predictorstxt-trunc-arma-predictor">Truncated Predictors<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a></h3>
+<h3 class="anchored" data-anchor-id="truncated-predictorstxt-trunc-arma-predictor">Truncated Predictors<a href="#fn35" class="footnote-ref" id="fnref35" role="doc-noteref"><sup>35</sup></a></h3>
 <p>Using the entire history of the process <span class="math inline">\(\{ \mathcal{N} (s), \; s \le t_f \}\)</span> preceding and including the observed values, we’ve expressed the linear predictor <span class="math inline">\(\tilde{\mathcal{N}} (u + t_f \; | \; \wp(t_f))\)</span> as an infinite moving average (<a href="#eq-predictor-causal-form-u" class="quarto-xref">Equation&nbsp;69</a>) and, alternatively, as an infinite auto-regression (<a href="#eq-predictor-inv-form-u" class="quarto-xref">Equation&nbsp;71</a>).</p>
 <p>Now, restricting the predictor to the available data by using the <span class="math inline">\(ARMA(p, q)\)</span> model, we recursively define the following “truncated” predictor, <span class="math inline">\(\breve{\mathcal{N}} (t \; | \; \tau_T)\)</span>, of the process <span class="math inline">\(\mathcal{N} (t)\)</span> at time <span class="math inline">\(t\)</span>.</p>
 <p><span id="eq-trunc-predictor"><span class="math display">\[
@@ -1221,7 +1221,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>As previously noted, we assume all parameters to be known, so that the polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> are completely specified. Then the system of equations above can be solved recursively, as illustrated in the next example.</p>
 </section>
 <section id="arma1-1-simulationtxt-arma-1-1-xmpl" class="level3">
-<h3 class="anchored" data-anchor-id="arma1-1-simulationtxt-arma-1-1-xmpl">ARMA(1, 1) Simulation<a href="#fn35" class="footnote-ref" id="fnref35" role="doc-noteref"><sup>35</sup></a></h3>
+<h3 class="anchored" data-anchor-id="arma1-1-simulationtxt-arma-1-1-xmpl">ARMA(1, 1) Simulation<a href="#fn36" class="footnote-ref" id="fnref36" role="doc-noteref"><sup>36</sup></a></h3>
 <p>We illustrate the truncated predictor for an <span class="math inline">\(ARMA(1, 1)\)</span> model:</p>
 <p><span id="eq-ARMA-1-1-xmpl"><span class="math display">\[
 \begin{align}
@@ -1259,7 +1259,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{85}\]</span></span></p>
 <p>We can solve the last equation in a forward recursion with <span class="math inline">\(t \in (t_0, \ldots, t_f)\)</span> to obtain <span class="math inline">\(\breve{W} (t_f \; | \; \tau_T)\)</span>, as required.</p>
-<p>The forecast variance can be approximated from <a href="#eq-var-predictor-resid" class="quarto-xref">Equation&nbsp;77</a> using <span class="math inline">\(\psi\)</span> coefficients that turn out to satisfy <a href="#fn36" class="footnote-ref" id="fnref36" role="doc-noteref"><sup>36</sup></a> <a href="#fn37" class="footnote-ref" id="fnref37" role="doc-noteref"><sup>37</sup></a></p>
+<p>The forecast variance can be approximated from <a href="#eq-var-predictor-resid" class="quarto-xref">Equation&nbsp;77</a> using <span class="math inline">\(\psi\)</span> coefficients that turn out to satisfy <a href="#fn37" class="footnote-ref" id="fnref37" role="doc-noteref"><sup>37</sup></a> <a href="#fn38" class="footnote-ref" id="fnref38" role="doc-noteref"><sup>38</sup></a></p>
 <p><span id="eq-ARMA-1-1-psi"><span class="math display">\[
 \begin{align}
   \psi_j &amp;= (\phi_1 + \theta_1) \; \phi_1^{j-1} \quad \text{for } j \ge 1
@@ -1287,7 +1287,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   c_{\alpha / 2} &amp;= \Phi^{-1} (1 - \alpha / 2)
 \end{align}
 \tag{88}\]</span></span></p>
-<p>We now set <span class="math inline">\(\phi_1 = \theta_1 = 0.5\)</span> in order to simulate 150 observations from this model and forecast the last 50 of the 150 observations. This example uses <code>astsa</code> functions <code>sarima.sim()</code> and <code>sarima.for()</code>.<a href="#fn38" class="footnote-ref" id="fnref38" role="doc-noteref"><sup>38</sup></a></p>
+<p>We now set <span class="math inline">\(\phi_1 = \theta_1 = 0.5\)</span> in order to simulate 150 observations from this model and forecast the last 50 of the 150 observations. This example uses <code>astsa</code> functions <code>sarima.sim()</code> and <code>sarima.for()</code>.<a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-tp-1-1-sim" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1369,7 +1369,7 @@ Figure&nbsp;3: Recruitment index followed by a 24-month AR(2) forecast
 <h2 class="anchored" data-anchor-id="non-stationary-models">Non-Stationary Models</h2>
 <section id="arimap-d-q" class="level3">
 <h3 class="anchored" data-anchor-id="arimap-d-q">ARIMA(p, d, q)</h3>
-<p>Time series models have a long history. <span class="citation" data-cites="whittle1951hypothesis">Whittle (<a href="#ref-whittle1951hypothesis" role="doc-biblioref">1951</a>)</span> introduced ARMA models of stationary processes. To treat non-stationary processes, <span class="citation" data-cites="box1970time">Box and Jenkins (<a href="#ref-box1970time" role="doc-biblioref">1970</a>)</span> popularized auto-regressive integrated moving average (ARIMA) models. Here’s the form of an ARIMA model having <span class="math inline">\(p, d, q\)</span> as its respective orders of auto-regression, differencing, and moving average.<a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a></p>
+<p>Time series models have a long history. <span class="citation" data-cites="whittle1951hypothesis">Whittle (<a href="#ref-whittle1951hypothesis" role="doc-biblioref">1951</a>)</span> introduced ARMA models of stationary processes. To treat non-stationary processes, <span class="citation" data-cites="box1970time">Box and Jenkins (<a href="#ref-box1970time" role="doc-biblioref">1970</a>)</span> popularized auto-regressive integrated moving average (ARIMA) models. Here’s the form of an ARIMA model having <span class="math inline">\(p, d, q\)</span> as its respective orders of auto-regression, differencing, and moving average.<a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a></p>
 <p><span id="eq-ARIMA-p-d-q-proc"><span class="math display">\[
 \begin{align}
   \phi(\mathcal{B}) \; \nabla^d \; (X(\cdot) - \mu_X)
@@ -1393,7 +1393,7 @@ Figure&nbsp;3: Recruitment index followed by a 24-month AR(2) forecast
   W(\cdot), \; V(\cdot) &amp;\sim \text{independent }
 \end{align}
 \tag{92}\]</span></span></p>
-<p>The process <span class="math inline">\(Y(\cdot)\)</span> is a <em>random walk</em> whose variance increases over time and is thus non-stationary. Therefore <span class="math inline">\(X(\cdot)\)</span> is also non-stationary. But applying the differencing operator <span class="math inline">\(\nabla\)</span> to <span class="math inline">\(X(\cdot)\)</span> induces stationarity.<a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a></p>
+<p>The process <span class="math inline">\(Y(\cdot)\)</span> is a <em>random walk</em> whose variance increases over time and is thus non-stationary. Therefore <span class="math inline">\(X(\cdot)\)</span> is also non-stationary. But applying the differencing operator <span class="math inline">\(\nabla\)</span> to <span class="math inline">\(X(\cdot)\)</span> induces stationarity.<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a></p>
 <p><span class="math display">\[
 \begin{align}
   \nabla \; X(t) &amp;= \nabla \; Y(t) + \nabla \; W(t) \\
@@ -1495,7 +1495,7 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 </div>
 </section>
 <section id="ewma-exampletxt-ewma-xmpl" class="level3">
-<h3 class="anchored" data-anchor-id="ewma-exampletxt-ewma-xmpl">EWMA Example<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a></h3>
+<h3 class="anchored" data-anchor-id="ewma-exampletxt-ewma-xmpl">EWMA Example<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a></h3>
 <p>The following ARIMA(0,1,1) model has been applied to many economic time series.</p>
 <p><span id="eq-IMA-1-1-lambda"><span class="math display">\[
 \begin{align}
@@ -1617,12 +1617,12 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </div>
 </section>
 <section id="co2-exampletxt-co2-mauna-loa" class="level3">
-<h3 class="anchored" data-anchor-id="co2-exampletxt-co2-mauna-loa">CO2 Example<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a></h3>
+<h3 class="anchored" data-anchor-id="co2-exampletxt-co2-mauna-loa">CO2 Example<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a></h3>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
-<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a></p>
+<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a></p>
 <p>This introduction does not address the building and evaluation of time series models, leaving that for another time. Here are some additional resources for those interested.</p>
 <ul>
 <li><a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> gives a more detailed introduction to the topics presented here.</li>
@@ -1790,7 +1790,7 @@ Figure&nbsp;8: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1908,17 +1908,18 @@ Whittle, P. 1951. <em>Hypothesis Testing in Time Series Analysis</em>. Statistic
 <li id="fn31"><p>Any two time indices within the <span class="math inline">\(T\)</span> observations can differ by no more than <span class="math inline">\(T-1\)</span>. Yet the needed estimates include <span class="math inline">\(\gamma_X(T + u - 1 - j)\)</span>, with <span class="math inline">\(u \ge 1\)</span> and <span class="math inline">\(0 \le j &lt; T\)</span>. For <span class="math inline">\(u = 1\)</span> and <span class="math inline">\(j = 0\)</span> we have <span class="math inline">\(\gamma_X(T)\)</span>, which exceeds the limits of direct estimation.<a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn32"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span><a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn33"><p>When attempting to predict future values <span class="math inline">\(\mathcal{N} (u + t_f)\)</span> from data values indexed by <span class="math inline">\(t \in (t_0, \ldots, t_f)\)</span> the index symbol <span class="math inline">\(h\)</span> is often used in place of the generic indexing difference <span class="math inline">\(u\)</span> to denote forecast <em>horizon</em>.<a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn34"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 119</a>)</span><a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn35"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 120</a>)</span>.<a href="#fnref35" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn36"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 103</a>)</span>.<a href="#fnref36" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn37"><p>The formula is obtained by expanding <span class="math inline">\(\frac{1 + \theta_1 z}{1 - \phi_1 z}\)</span> in a power series.<a href="#fnref37" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn38"><p>The simulation code is based on a similar example in <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a>.<a href="#fnref38" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn39"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref39" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn40"><p>From covariance calculations, <span class="math inline">\(\nabla \; W(\cdot)\)</span> is an <span class="math inline">\(AR(1)\)</span> process, which makes <span class="math inline">\(\nabla \; X(\cdot)\)</span> an <span class="math inline">\(AR(1)\)</span> process.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn41"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 148</a>)</span>.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn42"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn43"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn44"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn34"><p>Recall that the formula given here for the mean squared error of prediction assumes that the coefficients of the model and the parameters of the process are known. In applications these quantities must be estimated, which increases mean squared prediction error.<a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn35"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 119</a>)</span><a href="#fnref35" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn36"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 120</a>)</span>.<a href="#fnref36" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn37"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 103</a>)</span>.<a href="#fnref37" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn38"><p>The formula is obtained by expanding <span class="math inline">\(\frac{1 + \theta_1 z}{1 - \phi_1 z}\)</span> in a power series.<a href="#fnref38" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn39"><p>The simulation code is based on a similar example in <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a>.<a href="#fnref39" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn40"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn41"><p>From covariance calculations, <span class="math inline">\(\nabla \; W(\cdot)\)</span> is an <span class="math inline">\(AR(1)\)</span> process, which makes <span class="math inline">\(\nabla \; X(\cdot)\)</span> an <span class="math inline">\(AR(1)\)</span> process.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn42"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 148</a>)</span>.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn43"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn44"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn45"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref45" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

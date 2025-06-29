@@ -1297,7 +1297,7 @@ Note that the terms on the right can be simplified for $\nu \ge u$.
 
 $$
 \begin{align}
-  \tilde{\mathcal{N}} (u - \nu \; | \; \wp (t_f) 
+  \tilde{\mathcal{N}} (u - \nu +t_f \; | \; \wp (t_f) 
   &= \mathcal{N} (u - \nu + t_f) \quad \text{for } \nu \ge u
 \end{align}
 $$
@@ -1316,7 +1316,7 @@ We now examine the residuals from the linear least squares predictors defined ab
 
 $$
 \begin{align}
-  R(k \; | \; \wp (t_f)) &= \mathcal{N} (k + t_f) \; - \; \tilde{\mathcal{N}} (k \; | \; \wp (t_f)), \quad k \ge 1
+  R(t \; | \; \wp (t_f)) &= \mathcal{N} (t) \; - \; \tilde{\mathcal{N}} (t \; | \; \wp (t_f)), \quad t > t_f
 \end{align}
 $$ {#eq-predictor-resid-defn}
 
@@ -1346,19 +1346,21 @@ $$
 \end{align}
 $$ {#eq-e-predictor-resid-0}
 
-Also note that $R(u + t_f \; | \; \wp (t_f))$ and $R(u + k \; | \; \wp (t_f))$ are correlated in general, for $u \ge 1$ and $k \ge 0$. 
+Also note that $R(u + t_f \; | \; \wp (t_f))$ and $R(u + k + t_f \; | \; \wp (t_f))$ are correlated in general, for $u \ge 1$ and $k \ge 0$. 
 
 $$
 \begin{align}
-  E \left \{ R(u + t_f \; | \; \wp (t_f)) \times R(u + k \; | \; \wp (t_f)) \right \} &= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; \psi_{\nu + k}
+  E \left \{ R(u + t_f \; | \; \wp (t_f)) \times R(u + k + t_f \; | \; \wp (t_f)) \right \} &= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; \psi_{\nu + k}
 \end{align}
 $$ {#eq-cov-predictor-resid}
 
-Setting $k = 0$ we obtain the following variance of $R(u\; | \; \wp (t_f))$.
+Setting $k = 0$ we obtain the following expected square of $R(u + t_f \; | \; \wp (t_f))$, called mean squared prediction error.[^caveat-msep]
+
+[^caveat-msep]: Recall that the formula given here for the mean squared error of prediction assumes that the coefficients of the model and the parameters of the process are known.  In applications these quantities must be estimated, which increases mean squared prediction error.
 
 $$
 \begin{align}
-  E\{ R(u\; | \; \wp (t_f))^2 \} &= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu^2
+  E\{ R(u + t_f \; | \; \wp (t_f))^2 \} &= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu^2
 \end{align}
 $$ {#eq-var-predictor-resid}
 
