@@ -1199,7 +1199,7 @@ We adopt the following notation for the expectation of $\mathcal{N}(u + t_f)$, t
 
 $$
 \begin{align}
-  \tilde{\mathcal{N}} (u + t_f \; | \; \wp (t_f)) &= E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
+  \tilde{\mathcal{N}} (u \; | \; \wp (t_f)) &= E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
 \end{align}
 $$ {#eq-e-future-given-past}
 
@@ -1207,7 +1207,7 @@ Due to the normality of $\mathcal{N}(\cdot)$ this conditional expectation $\tild
 
 $$
 \begin{align}
-  \hat{\mathcal{N}} (u + t_f \; | \; \wp (t_f)) &= \tilde{\mathcal{N}} (u + t_f \; | \; \wp (t_f))
+  \hat{\mathcal{N}} (u \; | \; \wp (t_f)) &= \tilde{\mathcal{N}} (u \; | \; \wp (t_f))
 \end{align}
 $$ {#eq-lin-pred-and-condl-exp}
 
@@ -1271,7 +1271,7 @@ This eliminates the first $u$ terms in @eq-predictor-causal-form-0 and simplifie
 
 $$
 \begin{align}
-  \tilde{\mathcal{N}} (u + t_f \; | \; \wp(t_f)) &= \sum_{\nu = u}^\infty \; \psi_\nu \; W(u + t_f - \nu)
+  \tilde{\mathcal{N}} (u \; | \; \wp(t_f)) &= \sum_{\nu = u}^\infty \; \psi_\nu \; W(u + t_f - \nu)
 \end{align}
 $$ {#eq-predictor-causal-form-u}
 
@@ -1281,7 +1281,7 @@ Next, applying the same conditional expectations to @eq-predicted-inv-form, we h
 
 $$
 \begin{align}
-  0 &= \sum_{\nu = 0}^\infty \; \pi_\nu \; \tilde{\mathcal{N}} (u + t_f - \nu \; | \; \wp (t_f))
+  0 &= \sum_{\nu = 0}^\infty \; \pi_\nu \; \tilde{\mathcal{N}} (u - \nu \; | \; \wp (t_f))
 \end{align}
 $$
 
@@ -1289,7 +1289,7 @@ Since $\pi_0 = 1$, this is equivalent to:
 
 $$
 \begin{align}
-  \tilde{\mathcal{N}} (u + t_f \; | \; \wp (t_f) &= - \sum_{\nu = 1}^\infty \; \pi_\nu \; \tilde{\mathcal{N}} (u + t_f - \nu \; | \; \wp (t_f))
+  \tilde{\mathcal{N}} (u \; | \; \wp (t_f) &= - \sum_{\nu = 1}^\infty \; \pi_\nu \; \tilde{\mathcal{N}} (u - \nu \; | \; \wp (t_f))
 \end{align}
 $$ {#eq-predictor-inv-form-1}
 
@@ -1306,7 +1306,7 @@ Applying this result we have
 
 $$
 \begin{align}
-  \tilde{\mathcal{N}} (u + t_f \; | \; \wp (t_f) &= - \sum_{\nu = 1}^{u - 1} \; \pi_\nu \; \tilde{\mathcal{N}} (u + t_f - \nu \; | \; \wp (t_f)) \; - \; \sum_{\nu = u}^\infty \; \pi_\nu \; \mathcal{N} (u + t_f - \nu)
+  \tilde{\mathcal{N}} (u \; | \; \wp (t_f) &= - \sum_{\nu = 1}^{u - 1} \; \pi_\nu \; \tilde{\mathcal{N}} (u - \nu \; | \; \wp (t_f)) \; - \; \sum_{\nu = u}^\infty \; \pi_\nu \; \mathcal{N} (u - \nu + t_f)
 \end{align}
 $$ {#eq-predictor-inv-form-u}
 
@@ -1320,37 +1320,37 @@ $$
 \end{align}
 $$ {#eq-predictor-resid-defn}
 
-Combining @eq-predicted-AR-infty and @eq-predictor-inv-form-u we can express process $R(u + t_f \; | \; \wp (t_f))$ for $u \ge 1$ in a finite auto-regressive form (that expands with $u$).
+Combining @eq-predicted-AR-infty and @eq-predictor-inv-form-u we can express process $R(u \; | \; \wp (t_f))$ for $u \ge 1$ in a finite auto-regressive form (that expands with $u$).
 
 $$
 \begin{align}
-  R(u + t_f \; | \; \wp (t_f)) &= \mathcal{N} (u + t_f) \; - \; \tilde{\mathcal{N}} (u + t_f \; | \; \wp (t_f)) \\ 
+  R(u \; | \; \wp (t_f)) &= \mathcal{N} (u + t_f) \; - \; \tilde{\mathcal{N}} (u \; | \; \wp (t_f)) \\ 
   &= W(u + t_f) - \sum_{\nu = 1}^{u - 1} \; \pi_\nu \; R(u - \nu\; | \; \wp (t_f))
 \end{align}
 $$ {#eq-predictor-resid-AR}
 
-Similarly, combing @eq-predicted-causal-form and @eq-predictor-causal-form-u we can express $R(u + t_f \; | \; \wp (t_f))$ as the following finite moving average of the white noise terms (where the number of terms again increases with $u$).
+Similarly, combing @eq-predicted-causal-form and @eq-predictor-causal-form-u we can express $R(u \; | \; \wp (t_f))$ as the following finite moving average of the white noise terms (where the number of terms again increases with $u$).
 
 $$
 \begin{align}
-  R(u + t_f \; | \; \wp (t_f)) &= \mathcal{N} (u + t_f) \; - \; \tilde{\mathcal{N}} (u \; | \; \wp (t_f) \\ 
+  R(u \; | \; \wp (t_f)) &= \mathcal{N} (u + t_f) \; - \; \tilde{\mathcal{N}} (u \; | \; \wp (t_f) \\ 
   &= \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; W(u + t_f - \nu)
 \end{align}
 $$ {#eq-predictor-resid-MA}
 
-From this last result we see that the residual random variable $R(u + t_f \; | \; \wp (t_f))$ has zero mean.
+From this last result we see that the residual random variable $R(u \; | \; \wp (t_f))$ has zero mean.
 
 $$
 \begin{align}
-  E\{ R(u + t_f \; | \; \wp (t_f)) \} &= 0
+  E\{ R(u \; | \; \wp (t_f)) \} &= 0
 \end{align}
 $$ {#eq-e-predictor-resid-0}
 
-Also note that $R(u + t_f \; | \; \wp (t_f))$ and $R(u + k \; | \; \wp (t_f))$ are correlated in general, for $u \ge 1$ and $k \ge 0$. 
+Also note that $R(u \; | \; \wp (t_f))$ and $R(u + k \; | \; \wp (t_f))$ are correlated in general, for $u \ge 1$ and $k \ge 0$. 
 
 $$
 \begin{align}
-  E \left \{ R(u + t_f \; | \; \wp (t_f)) \times R(u + k \; | \; \wp (t_f)) \right \} &= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; \psi_{\nu + k}
+  E \left \{ R(u \; | \; \wp (t_f)) \times R(u + k \; | \; \wp (t_f)) \right \} &= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; \psi_{\nu + k}
 \end{align}
 $$ {#eq-cov-predictor-resid}
 
@@ -1374,7 +1374,7 @@ $$ {#eq-lim-predictor-resid-MSE}
 
 [^txt-trunc-ARMA-predictor]: @shumway2025 [page 119]
 
-Using the entire history of the process $\{ \mathcal{N} (s), \; s \le t_f \}$ preceding and including the observed values, we've expressed the linear predictor $\tilde{\mathcal{N}} (u + t_f \; | \; \wp(t_f))$ as an infinite moving average (@eq-predictor-causal-form-u) and, alternatively, as an infinite auto-regression (@eq-predictor-inv-form-u).
+Using the entire history of the process $\{ \mathcal{N} (s), \; s \le t_f \}$ preceding and including the observed values, we've expressed the linear predictor $\tilde{\mathcal{N}} (u \; | \; \wp(t_f))$ as an infinite moving average (@eq-predictor-causal-form-u) and, alternatively, as an infinite auto-regression (@eq-predictor-inv-form-u).
 
 Now, restricting the predictor to the available data by using the $ARMA(p, q)$ model, we recursively define the following "truncated" predictor, $\breve{\mathcal{N}} (t \; | \; \tau_T)$, of the process $\mathcal{N} (t)$ at time $t$.
 
@@ -1459,11 +1459,11 @@ To initialize these recursive calculations we still need to determine $\breve{W}
 
 $$
 \begin{align}
-  \breve{W} (t \; | \; \tau_T) &= \mathcal{N}(t) \; - \; \phi_1 \; \mathcal{N}(t - 1) \; - \; \theta_1 \; \breve{W} (t - 1 \; | \; \tau_T) \\ 
+  \breve{W} (t) &= \mathcal{N}(t) \; - \; \phi_1 \; \mathcal{N}(t - 1) \; - \; \theta_1 \; \breve{W} (t - 1) \\ 
   \\ 
   &\text{for } t \in \tau_T, \text{ and setting } \\
   \\
-  0 &= \mathcal{N} (t_0 - 1) = \breve{W} (t_0 - 1 \; | \; \tau_T)
+  0 &= \mathcal{N} (t_0 - 1) = \breve{W} (t_0 - 1)
 \end{align} 
 $$ {#eq-ARMA-1-1-init}
 
@@ -1703,7 +1703,7 @@ $$
 
 The coefficient $\alpha$ is called _drift_ in this context.
 
-The truncated predictor at $u = 1$ (called the _one step ahead forecast_) can be determined as follows.  Consider the case in which both $X(\cdot)$ and $W(\cdot)$ are Gaussian processes.  This enables us to use conditional expectations to derive the form of the best linear predictor in the non-Gaussian case.  We have 
+The truncated predictor at $u = 1$ (called the _one step ahead forecast_) can be determined as follows.  Consider the case in which both $X(\cdot)$ and $W(\cdot)$ are Gaussian processes.  This enables us to use conditional expectations, which yields the form of the best linear predictor in the non-Gaussian case.  We have 
 
 $$
 \begin{align}
@@ -1869,7 +1869,7 @@ The linear prediction of the current value based on past values is thus the same
 
 $$
 \begin{align}
-  \hat{X}(t \; | \; \wp (t-1)) &= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu)
+  \hat{X}(1 \; | \; \wp (t-1)) &= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu)
 \end{align}
 $$
 
@@ -1877,10 +1877,10 @@ This gives the following linear recursion formula.
 
 $$
 \begin{align}
-  \hat{X}(t \; | \; \wp (t-1)) &= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 2}^\infty \lambda^{\nu - 1} \; X(t - \nu) \\ 
+  \hat{X}(1 \; | \; \wp (t-1)) &= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 2}^\infty \lambda^{\nu - 1} \; X(t - \nu) \\ 
   &= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^\nu \; X(t -1 - \nu) \\ 
   &= (1 - \lambda) \; X(t - 1) \; + \; \lambda \left \{ (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t -1 - \nu) \right \}  \\ 
-  &= (1 - \lambda) \; X(t - 1) \; + \; \lambda \; \hat{X}(t -1 \; | \; \wp (t-2)) 
+  &= (1 - \lambda) \; X(t - 1) \; + \; \lambda \; \hat{X}(1 \; | \; \wp (t-2)) 
 \end{align}
 $$
 
@@ -2239,7 +2239,7 @@ $$
   \mathcal{N}(\cdot)
      \quad & \quad \text{a univariate, stationary, Gaussian process having mean 0} \\ 
   \\   
-  \tilde{\mathcal{N}} (u + t_f \; | \; \wp (t_f))
+  \tilde{\mathcal{N}} (u \; | \; \wp (t_f))
      \quad & \quad E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \} \\ 
   \\ 
   \nu_T 
@@ -2284,7 +2284,7 @@ $$
   \hat{X}(t \; | \; \Delta_u) 
      \quad & \quad \text{approximates } X(t) \text{ as affine function of } \{ X(t + \nu) \}_{\nu \in \Delta_u} \\ 
   \\ 
-  \hat{X} (u + t_f \; | \; \wp (t_f)) 
+  \hat{X} (u \; | \; \wp (t_f)) 
      \quad & \quad \text{predicts } X(u + t_f) \text{ as affine function of } \{ X(t) \}_{t \in \wp (t_f)} \\ 
   \\ 
   \breve{X} (t \; | \; \tau_T) 
