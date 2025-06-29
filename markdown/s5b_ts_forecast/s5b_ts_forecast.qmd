@@ -2075,6 +2075,15 @@ g_ima <- ima_tbl |>
 g_ima
 ```
 
+### ETS[^book-ETS]
+
+[^book-ETS]: See @hyndman2021forecasting [chapter 8] and @ryantibs2023timeseries [chapter 7].
+
+The exponential smoothing (or EWMA) operation presented above is also called simple exponential smoothing (SES), and belongs to a family of methods called exponential smoothing with trend and seasonality (ETS).  ETS methods encompass (and arose from) Holt-Winters forecasting.[^art-Holt-Winters]
+
+[^art-Holt-Winters]: See @holt1957forecasting and @winters1960forecasting.
+
+These operations are optimal solutions to certain state-space models, distinct from the ARIMA paradigm.
 
 ### CO2 Example[^txt-CO2-Mauna-Loa]
 
@@ -2084,9 +2093,9 @@ g_ima
 
 This technical introduces families and examples of models used to forecast time series data.  The presentation is based on @shumway2025 along with the supporting `R` package `astsa` [@astsa].[^2]
 
-[^2]: The notation in this note draws on another textbook, @brillinger2001.
+[^2]: Another textbook, @brillinger2001, treats a time series as a function of time, denoted $X(t)$, which is the practice followed in this note.
 
-This introduction does not address the building and evaluation of time series models, leaving that for another time.  Here are some additional resources for those interested.
+This introduction does not address the building and evaluation of time series models, leaving that for another time.  Here are some online resources for those interested.
 
   - [Regression and Time Series Primer](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer) gives a more detailed introduction to the topics presented here.
   - [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa) introduces `R` package `astsa`.

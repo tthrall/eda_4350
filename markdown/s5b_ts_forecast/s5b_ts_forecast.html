@@ -145,6 +145,7 @@ window.Quarto = {
   <li><a href="#arimap-d-q" id="toc-arimap-d-q" class="nav-link" data-scroll-target="#arimap-d-q">ARIMA(p, d, q)</a></li>
   <li><a href="#random-walk-with-drift" id="toc-random-walk-with-drift" class="nav-link" data-scroll-target="#random-walk-with-drift">Random Walk with Drift</a></li>
   <li><a href="#ewma-exampletxt-ewma-xmpl" id="toc-ewma-exampletxt-ewma-xmpl" class="nav-link" data-scroll-target="#ewma-exampletxt-ewma-xmpl">EWMA Example</a></li>
+  <li><a href="#etsbook-ets" id="toc-etsbook-ets" class="nav-link" data-scroll-target="#etsbook-ets">ETS</a></li>
   <li><a href="#co2-exampletxt-co2-mauna-loa" id="toc-co2-exampletxt-co2-mauna-loa" class="nav-link" data-scroll-target="#co2-exampletxt-co2-mauna-loa">CO2 Example</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
@@ -184,7 +185,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">10:58 Sun 29-Jun-2025</p>
+      <p class="date">13:17 Sun 29-Jun-2025</p>
     </div>
   </div>
   
@@ -1616,14 +1617,19 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </div>
 </div>
 </section>
+<section id="etsbook-ets" class="level3">
+<h3 class="anchored" data-anchor-id="etsbook-ets">ETS<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a></h3>
+<p>The exponential smoothing (or EWMA) operation presented above is also called simple exponential smoothing (SES), and belongs to a family of methods called exponential smoothing with trend and seasonality (ETS). ETS methods encompass (and arose from) Holt-Winters forecasting.<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a></p>
+<p>These operations are optimal solutions to certain state-space models, distinct from the ARIMA paradigm.</p>
+</section>
 <section id="co2-exampletxt-co2-mauna-loa" class="level3">
-<h3 class="anchored" data-anchor-id="co2-exampletxt-co2-mauna-loa">CO2 Example<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a></h3>
+<h3 class="anchored" data-anchor-id="co2-exampletxt-co2-mauna-loa">CO2 Example<a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a></h3>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
-<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a></p>
-<p>This introduction does not address the building and evaluation of time series models, leaving that for another time. Here are some additional resources for those interested.</p>
+<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a></p>
+<p>This introduction does not address the building and evaluation of time series models, leaving that for another time. Here are some online resources for those interested.</p>
 <ul>
 <li><a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> gives a more detailed introduction to the topics presented here.</li>
 <li><a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a> introduces <code>R</code> package <code>astsa</code>.</li>
@@ -1790,7 +1796,7 @@ Figure&nbsp;8: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1860,6 +1866,12 @@ Brillinger, David R. 2001. <em>Time Series: Data Analysis and Theory</em>. USA: 
 <div id="ref-hamming1989" class="csl-entry" role="listitem">
 Hamming, R. W. 1989. <em>Digital Filters (3rd Ed.)</em>. GBR: Prentice Hall International (UK) Ltd.
 </div>
+<div id="ref-holt1957forecasting" class="csl-entry" role="listitem">
+Holt, Charles C. 2004. <span>“Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages.”</span> <em>International Journal of Forecasting</em> 20 (1): 5–10. https://doi.org/<a href="https://doi.org/10.1016/j.ijforecast.2003.09.015">https://doi.org/10.1016/j.ijforecast.2003.09.015</a>.
+</div>
+<div id="ref-hyndman2021forecasting" class="csl-entry" role="listitem">
+Hyndman, R. J., and G. Athanasopoulos. 2021. <em>Forecasting: Principles and Practice</em>. OTexts. <a href="https://otexts.com/fpp3/">https://otexts.com/fpp3/</a>.
+</div>
 <div id="ref-shumway1988" class="csl-entry" role="listitem">
 Shumway, R. H., A. S. Azari, and Y. Pawitan. 1988. <span>“Modeling Mortality Fluctuations in Los Angeles as Functions of Pollution and Weather Effects.”</span> <em>Environmental Research</em> 45 (2): 224–41. <a href="https://doi.org/10.1016/s0013-9351(88)80049-5">https://doi.org/10.1016/s0013-9351(88)80049-5</a>.
 </div>
@@ -1869,8 +1881,14 @@ Shumway, and Stoffer. 2025. <em>Time Series Analysis and Its Applications</em>. 
 <div id="ref-astsa" class="csl-entry" role="listitem">
 Stoffer, David. 2025. <span>“Astsa: Applied Statistical Time Series Analysis.”</span> <a href="https://doi.org/10.32614/CRAN.package.astsa">https://doi.org/10.32614/CRAN.package.astsa</a>.
 </div>
+<div id="ref-ryantibs2023timeseries" class="csl-entry" role="listitem">
+Tibshirani, Ryan. 2025. <span>“Introduction to Time Series: Fall 2023.”</span> <a href="https://www.stat.berkeley.edu/~ryantibs/timeseries-f23/">https://www.stat.berkeley.edu/~ryantibs/timeseries-f23/</a>.
+</div>
 <div id="ref-whittle1951hypothesis" class="csl-entry" role="listitem">
 Whittle, P. 1951. <em>Hypothesis Testing in Time Series Analysis</em>. Statistics Upsala. Almqvist &amp; Wiksells. <a href="https://books.google.co.uk/books?id=AaIzvQEACAAJ">https://books.google.co.uk/books?id=AaIzvQEACAAJ</a>.
+</div>
+<div id="ref-winters1960forecasting" class="csl-entry" role="listitem">
+Winters, Peter R. 1960. <span>“Forecasting Sales by Exponentially Weighted Moving Averages.”</span> <em>Manage. Sci.</em> 6 (3): 324–42. <a href="https://doi.org/10.1287/mnsc.6.3.324">https://doi.org/10.1287/mnsc.6.3.324</a>.
 </div>
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
@@ -1917,9 +1935,11 @@ Whittle, P. 1951. <em>Hypothesis Testing in Time Series Analysis</em>. Statistic
 <li id="fn40"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn41"><p>From covariance calculations, <span class="math inline">\(\nabla \; W(\cdot)\)</span> is an <span class="math inline">\(AR(1)\)</span> process, which makes <span class="math inline">\(\nabla \; X(\cdot)\)</span> an <span class="math inline">\(AR(1)\)</span> process.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn42"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 148</a>)</span>.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn43"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn44"><p>The notation in this note draws on another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>.<a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn45"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref45" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn43"><p>See <span class="citation" data-cites="hyndman2021forecasting">Hyndman and Athanasopoulos (<a href="#ref-hyndman2021forecasting" role="doc-biblioref">2021, chap. 8</a>)</span> and <span class="citation" data-cites="ryantibs2023timeseries">Tibshirani (<a href="#ref-ryantibs2023timeseries" role="doc-biblioref">2025, chap. 7</a>)</span>.<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn44"><p>See <span class="citation" data-cites="holt1957forecasting">Holt (<a href="#ref-holt1957forecasting" role="doc-biblioref">2004</a>)</span> and <span class="citation" data-cites="winters1960forecasting">Winters (<a href="#ref-winters1960forecasting" role="doc-biblioref">1960</a>)</span>.<a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn45"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref45" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn46"><p>Another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>, treats a time series as a function of time, denoted <span class="math inline">\(X(t)\)</span>, which is the practice followed in this note.<a href="#fnref46" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn47"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref47" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
