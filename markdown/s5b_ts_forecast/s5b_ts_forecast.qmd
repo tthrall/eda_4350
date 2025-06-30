@@ -1824,11 +1824,11 @@ graphics::text(115, 38, "Future", cex = .8)
 graphics::abline(v = 100, lty = 2)
 ```
 
-### EWMA Example[^txt-EWMA-xmpl]
+### EWMA Example {#sec-EWMA} 
+
+The following $ARIMA(0, 1, 1)$ model has been applied to many economic time series.[^txt-EWMA-xmpl]
 
 [^txt-EWMA-xmpl]: See @shumway2025 [p. 148].
-
-The following ARIMA(0,1,1) model has been applied to many economic time series.
 
 $$
 \begin{align}
@@ -1838,13 +1838,11 @@ $$
   \\ 
   X(t) &= X(t-1) + W(t) - \lambda \; W(t-1) \\ 
   \\ 
-  & \text{with } \\ 
-  \\ 
-  | \lambda | &< 1
+  & \text{with } | \lambda | < 1, \text{ and } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
 $$ {#eq-IMA-1-1-lambda}
 
-The model is also referred to as an integrated moving average model, or IMA(1, 1).  The model leads to a frequently used forecasting method called exponentially weighted moving averages (EWMA) or simple exponential smoothing (SES).
+The model is also referred to as an integrated moving average model, or $IMA(1, 1)$.  The model leads to a frequently used forecasting method called exponentially weighted moving averages (EWMA), and also called simple exponential smoothing (SES).
 
 Note that the multiplicative inverse of the polynomial $1 - \lambda z$ is a geometric series in $\lambda z$.  This gives the following inverted form of the model.
 
@@ -1868,15 +1866,25 @@ $$ {#eq-EWMA-plus-wn}
 
 That is, the current value $X(t)$ is an exponential smoothing of all past values plus $W(t)$, the white noise term.
 
-The linear prediction of the current value based on past values is thus the same exponential smoothing.
+The linear prediction of the current value based on past values is thus the same exponential smoothing of past values.[^W-given-past-X]
+
+[^W-given-past-X]: We assume here that $E \left \{ W(t) \; | \; \{ X(s) \}_{s < t} \right \} = 0$.
 
 $$
 \begin{align}
   \hat{X}(t \; | \; \wp (t-1)) &= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu)
 \end{align}
-$$
+$$ {#eq-SES}
 
-This gives the following linear recursion formula.
+so that 
+
+$$
+\begin{align}
+  X(t) &= \hat{X}(t \; | \; \wp (t-1)) \; + \; W(t)
+\end{align}
+$$ {#eq-SES-plus-wn}
+
+The predictor $\hat{X}(t \; | \; \wp (t-1))$ is called the _one step ahead linear predictor_.  We now have the following linear recursion formula.
 
 $$
 \begin{align}
@@ -1885,18 +1893,52 @@ $$
   &= (1 - \lambda) \; X(t - 1) \; + \; \lambda \left \{ (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t -1 - \nu) \right \}  \\ 
   &= (1 - \lambda) \; X(t - 1) \; + \; \lambda \; \hat{X}(t -1 \; | \; \wp (t-2)) 
 \end{align}
-$$
+$$ {#eq-EWMA-recur-1}
 
-That is, the current one step ahead predictor is a convex combination of the most recent observation and the preceding one step ahead predictor.
+That is, the one step ahead predictor of the current process value $X(t)$ based on the past is a convex combination of $X(t-1)$, the most recent process value, and the preceding one step ahead predictor.
 
-The truncated one step ahead predictor based on the data follows a similar recursion.
+In order to predict two steps ahead we modify @eq-IMA-1-1-lambda by changing $t$ to $t + 1$, while continuing to take conditional expectations with respect to $\{X(s), \; s \le t - 1 \}$.
 
 $$
 \begin{align}
-  \breve{X}(1 + t \; | \; s \le t) &= 
+  X(t+1) - X(t) &= W(t+1) - \lambda \; W(t)
+\end{align}
+$$
+
+so that 
+
+$$
+\begin{align}
+  \hat{X}(t + 1 \; | \; \wp (t-1)) \; - \; \hat{X}(t \; | \; \wp (t-1) &= 0
+\end{align}
+$$
+
+That is, 
+
+$$
+\begin{align}
+  \hat{X}(t + 1 \; | \; \wp (t-1)) &= \hat{X}(t \; | \; \wp (t-1)
+\end{align}
+$$ {#eq-EWMA-recur-2}
+
+Then by induction on $u \ge 1$ we obtain 
+
+$$
+\begin{align}
+  \hat{X}(t + u \; | \; \wp (t-1)) &= \hat{X}(t \; | \; \wp (t-1) \quad \text{for } u \ge 1
+\end{align}
+$$ {#eq-EWMA-flatline}
+
+In words, forecasting beyond one step reverts back to the one step ahead predictor.
+
+Now, the truncated one step ahead predictor based on the data follows a similar recursion.
+
+$$
+\begin{align}
+  \breve{X} \left ( 1 + t \; | \; [t_0, \; t] \right ) &= 
   \begin{cases}
     X(t_0) & \text{for } t = t_0 \\ 
-    (1 - \lambda) \; X(t) + \lambda \breve{X}(t \; | \; s \le t-1) & \text{for } t_0 < t \le t_f
+    (1 - \lambda) \; X(t) + \lambda \breve{X}(t \; | \; [t_0, \; t - 1] & \text{for } t_0 < t < t_f
   \end{cases}
 \end{align}
 $$ {#eq-tp-one-step-recur}
@@ -1931,12 +1973,18 @@ $$
 \end{align}
 $$
 
-Now, based on the $IMA(1, 1)$ model we have 
+Now, based on the $IMA(1, 1)$ model we have [^empty-sum-is-0]
+
+[^empty-sum-is-0]: In the case $u = 1$ the sum is over an empty set of indices $\nu$ such that $\nu \ge 1$ and $\nu \le 0$.  We define such empty sums to be zero.
 
 $$
 \begin{align}
   & X (u + t_f) \\ 
-  &= X(t_f) + W(u + t_f) - \lambda W(t_f) + (1 - \lambda) \; \sum_{\nu = 1}^{u -1} W(u - \nu + t_f)
+  &= X(u - 1 + t_f) + W(u + t_f) - \lambda W(u - 1 + t_f) \\ 
+  & \vdots \\ 
+  &= X(t_f) + W(u + t_f) - \lambda W(t_f) + (1 - \lambda) \; \sum_{\nu = 1}^{u -1} W(u - \nu + t_f) \\ 
+  \\ 
+  & \text{where } u \ge 1
 \end{align}
 $$
 
@@ -1958,6 +2006,19 @@ $$
   &= \sigma_W^2 \; \left \{ 1 + \lambda^2 + (u-1)\; (1 - \lambda)^2 \right \} \quad \text{for } u \ge 1
 \end{align}
 $$
+
+Having determined the MSE, we summarize results for the one step ahead truncated predictor itself.
+
+$$
+\begin{align}
+  \breve{X} \left ( 1 + t \; | \; [t_0, \; t] \cap \tau_T \right ) &= 
+  \begin{cases}
+    X(t_0) & \text{for } t = t_0 \\ 
+    (1 - \lambda) \; X(t) + \lambda \breve{X}(t \; | \; [t_0, \; t - 1] & \text{for } t_0 < t < t_f \\ 
+    X(t_f) & \text{for } t_f \le t
+  \end{cases}
+\end{align}
+$$ {#eq-tp-one-step-all-cases}
 
 ```{r}
 #| label: EWMA-sim-params
@@ -2092,15 +2153,15 @@ In this section we merely outline the ETS framework.  For further details see th
 
 #### Level component
 
-We begin with simple exponential smoothing (SES), which entails the level component $\ell(\cdot)$ alone.  We now combine results from the previous section and change parameters by setting $\alpha = 1 - \lambda$, with $\alpha$ restricted to the open unit interval.  Then we have the following linear recursion for the one step ahead predictor.
+We begin with simple exponential smoothing (SES), which entails the level component $\ell(\cdot)$ alone, a case covered from the ARIMA perspective in @sec-EWMA.  Following ETS conventions we change parameters by setting $\alpha = 1 - \lambda$, with $\alpha$ restricted to the open unit interval.  Then we have the following linear recursion for the one step ahead predictor.
 
 $$
 \begin{align}
-  \breve{X}(1 + t \; | \; s \le t) &= 
+  \breve{X} \left ( 1 + t \; | \; [t_0, \; t] \cap \tau_T \right ) &= 
   \begin{cases}
     X(t_0) & \text{for } t = t_0 \\ 
-    \alpha \; X(t) + (1 - \alpha) \; \breve{X}(t \; | \; s \le t-1) & \text{for } t_0 < t \le t_f \\ 
-    X(t_f) & \text{for } t > t_f
+    \alpha \; X(t) + (1 - \alpha) \breve{X}(t \; | \; [t_0, \; t - 1] & \text{for } t_0 < t < t_f \\ 
+    X(t_f) & \text{for } t_f \le t
   \end{cases} \\ 
   \\ 
   &\text{where } \alpha \in (0, 1)

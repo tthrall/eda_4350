@@ -144,7 +144,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#arimap-d-q" id="toc-arimap-d-q" class="nav-link" data-scroll-target="#arimap-d-q">ARIMA(p, d, q)</a></li>
   <li><a href="#random-walk-with-drift" id="toc-random-walk-with-drift" class="nav-link" data-scroll-target="#random-walk-with-drift">Random Walk with Drift</a></li>
-  <li><a href="#ewma-exampletxt-ewma-xmpl" id="toc-ewma-exampletxt-ewma-xmpl" class="nav-link" data-scroll-target="#ewma-exampletxt-ewma-xmpl">EWMA Example</a></li>
+  <li><a href="#sec-EWMA" id="toc-sec-EWMA" class="nav-link" data-scroll-target="#sec-EWMA">EWMA Example</a></li>
   <li><a href="#ets-book-ets" id="toc-ets-book-ets" class="nav-link" data-scroll-target="#ets-book-ets">ETS </a></li>
   <li><a href="#co2-exampletxt-co2-mauna-loa" id="toc-co2-exampletxt-co2-mauna-loa" class="nav-link" data-scroll-target="#co2-exampletxt-co2-mauna-loa">CO2 Example</a></li>
   </ul></li>
@@ -185,7 +185,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">01:53 Mon 30-Jun-2025</p>
+      <p class="date">15:54 Mon 30-Jun-2025</p>
     </div>
   </div>
   
@@ -1495,9 +1495,9 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 </div>
 </div>
 </section>
-<section id="ewma-exampletxt-ewma-xmpl" class="level3">
-<h3 class="anchored" data-anchor-id="ewma-exampletxt-ewma-xmpl">EWMA Example<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a></h3>
-<p>The following ARIMA(0,1,1) model has been applied to many economic time series.</p>
+<section id="sec-EWMA" class="level3">
+<h3 class="anchored" data-anchor-id="sec-EWMA">EWMA Example</h3>
+<p>The following <span class="math inline">\(ARIMA(0, 1, 1)\)</span> model has been applied to many economic time series.<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a></p>
 <p><span id="eq-IMA-1-1-lambda"><span class="math display">\[
 \begin{align}
   \nabla \; X(\cdot) &amp;= (\mathcal{I - \lambda B}) \; W(\cdot) \\
@@ -1506,12 +1506,10 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
   \\
   X(t) &amp;= X(t-1) + W(t) - \lambda \; W(t-1) \\
   \\
-  &amp; \text{with } \\
-  \\
-  | \lambda | &amp;&lt; 1
+  &amp; \text{with } | \lambda | &lt; 1, \text{ and } W(\cdot) \sim wn(0, \sigma_W^2)
 \end{align}
 \tag{97}\]</span></span></p>
-<p>The model is also referred to as an integrated moving average model, or IMA(1, 1). The model leads to a frequently used forecasting method called exponentially weighted moving averages (EWMA) or simple exponential smoothing (SES).</p>
+<p>The model is also referred to as an integrated moving average model, or <span class="math inline">\(IMA(1, 1)\)</span>. The model leads to a frequently used forecasting method called exponentially weighted moving averages (EWMA), and also called simple exponential smoothing (SES).</p>
 <p>Note that the multiplicative inverse of the polynomial <span class="math inline">\(1 - \lambda z\)</span> is a geometric series in <span class="math inline">\(\lambda z\)</span>. This gives the following inverted form of the model.</p>
 <p><span class="math display">\[
 \begin{align}
@@ -1529,32 +1527,63 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 \end{align}
 \tag{98}\]</span></span></p>
 <p>That is, the current value <span class="math inline">\(X(t)\)</span> is an exponential smoothing of all past values plus <span class="math inline">\(W(t)\)</span>, the white noise term.</p>
-<p>The linear prediction of the current value based on past values is thus the same exponential smoothing.</p>
-<p><span class="math display">\[
+<p>The linear prediction of the current value based on past values is thus the same exponential smoothing of past values.<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a></p>
+<p><span id="eq-SES"><span class="math display">\[
 \begin{align}
   \hat{X}(t \; | \; \wp (t-1)) &amp;= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu)
 \end{align}
-\]</span></p>
-<p>This gives the following linear recursion formula.</p>
-<p><span class="math display">\[
+\tag{99}\]</span></span></p>
+<p>so that</p>
+<p><span id="eq-SES-plus-wn"><span class="math display">\[
+\begin{align}
+  X(t) &amp;= \hat{X}(t \; | \; \wp (t-1)) \; + \; W(t)
+\end{align}
+\tag{100}\]</span></span></p>
+<p>The predictor <span class="math inline">\(\hat{X}(t \; | \; \wp (t-1))\)</span> is called the <em>one step ahead linear predictor</em>. We now have the following linear recursion formula.</p>
+<p><span id="eq-EWMA-recur-1"><span class="math display">\[
 \begin{align}
   \hat{X}(t \; | \; \wp (t-1)) &amp;= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 2}^\infty \lambda^{\nu - 1} \; X(t - \nu) \\
   &amp;= (1 - \lambda) \; X(t - 1) \; + \; (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^\nu \; X(t -1 - \nu) \\
   &amp;= (1 - \lambda) \; X(t - 1) \; + \; \lambda \left \{ (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t -1 - \nu) \right \}  \\
   &amp;= (1 - \lambda) \; X(t - 1) \; + \; \lambda \; \hat{X}(t -1 \; | \; \wp (t-2))
 \end{align}
+\tag{101}\]</span></span></p>
+<p>That is, the one step ahead predictor of the current process value <span class="math inline">\(X(t)\)</span> based on the past is a convex combination of <span class="math inline">\(X(t-1)\)</span>, the most recent process value, and the preceding one step ahead predictor.</p>
+<p>In order to predict two steps ahead we modify <a href="#eq-IMA-1-1-lambda" class="quarto-xref">Equation&nbsp;97</a> by changing <span class="math inline">\(t\)</span> to <span class="math inline">\(t + 1\)</span>, while continuing to take conditional expectations with respect to <span class="math inline">\(\{X(s), \; s \le t - 1 \}\)</span>.</p>
+<p><span class="math display">\[
+\begin{align}
+  X(t+1) - X(t) &amp;= W(t+1) - \lambda \; W(t)
+\end{align}
 \]</span></p>
-<p>That is, the current one step ahead predictor is a convex combination of the most recent observation and the preceding one step ahead predictor.</p>
-<p>The truncated one step ahead predictor based on the data follows a similar recursion.</p>
+<p>so that</p>
+<p><span class="math display">\[
+\begin{align}
+  \hat{X}(t + 1 \; | \; \wp (t-1)) \; - \; \hat{X}(t \; | \; \wp (t-1) &amp;= 0
+\end{align}
+\]</span></p>
+<p>That is,</p>
+<p><span id="eq-EWMA-recur-2"><span class="math display">\[
+\begin{align}
+  \hat{X}(t + 1 \; | \; \wp (t-1)) &amp;= \hat{X}(t \; | \; \wp (t-1)
+\end{align}
+\tag{102}\]</span></span></p>
+<p>Then by induction on <span class="math inline">\(u \ge 1\)</span> we obtain</p>
+<p><span id="eq-EWMA-flatline"><span class="math display">\[
+\begin{align}
+  \hat{X}(t + u \; | \; \wp (t-1)) &amp;= \hat{X}(t \; | \; \wp (t-1) \quad \text{for } u \ge 1
+\end{align}
+\tag{103}\]</span></span></p>
+<p>In words, forecasting beyond one step reverts back to the one step ahead predictor.</p>
+<p>Now, the truncated one step ahead predictor based on the data follows a similar recursion.</p>
 <p><span id="eq-tp-one-step-recur"><span class="math display">\[
 \begin{align}
-  \breve{X}(1 + t \; | \; s \le t) &amp;=
+  \breve{X} \left ( 1 + t \; | \; [t_0, \; t] \right ) &amp;=
   \begin{cases}
     X(t_0) &amp; \text{for } t = t_0 \\
-    (1 - \lambda) \; X(t) + \lambda \breve{X}(t \; | \; s \le t-1) &amp; \text{for } t_0 &lt; t \le t_f
+    (1 - \lambda) \; X(t) + \lambda \breve{X}(t \; | \; [t_0, \; t - 1] &amp; \text{for } t_0 &lt; t &lt; t_f
   \end{cases}
 \end{align}
-\tag{99}\]</span></span></p>
+\tag{104}\]</span></span></p>
 <p>To calculate predictor error bounds we require <span class="math inline">\(\psi\)</span> coefficients from the causal form of the model. In this example they are the power series coefficients of the rational function <span class="math inline">\(\psi(z) = (1 - \lambda \; z)(1 - z)^{-1}\)</span>. This gives</p>
 <p><span class="math display">\[
 \begin{align}
@@ -1579,11 +1608,15 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
   &amp;= E \left \{ X (u + t_f) \; | \; X(s), s \in \tau_T \right \}
 \end{align}
 \]</span></p>
-<p>Now, based on the <span class="math inline">\(IMA(1, 1)\)</span> model we have</p>
+<p>Now, based on the <span class="math inline">\(IMA(1, 1)\)</span> model we have <a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a></p>
 <p><span class="math display">\[
 \begin{align}
   &amp; X (u + t_f) \\
-  &amp;= X(t_f) + W(u + t_f) - \lambda W(t_f) + (1 - \lambda) \; \sum_{\nu = 1}^{u -1} W(u - \nu + t_f)
+  &amp;= X(u - 1 + t_f) + W(u + t_f) - \lambda W(u - 1 + t_f) \\
+  &amp; \vdots \\
+  &amp;= X(t_f) + W(u + t_f) - \lambda W(t_f) + (1 - \lambda) \; \sum_{\nu = 1}^{u -1} W(u - \nu + t_f) \\
+  \\
+  &amp; \text{where } u \ge 1
 \end{align}
 \]</span></p>
 <p>Consequently</p>
@@ -1601,6 +1634,17 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
   &amp;= \sigma_W^2 \; \left \{ 1 + \lambda^2 + (u-1)\; (1 - \lambda)^2 \right \} \quad \text{for } u \ge 1
 \end{align}
 \]</span></p>
+<p>Having determined the MSE, we summarize results for the one step ahead truncated predictor itself.</p>
+<p><span id="eq-tp-one-step-all-cases"><span class="math display">\[
+\begin{align}
+  \breve{X} \left ( 1 + t \; | \; [t_0, \; t] \cap \tau_T \right ) &amp;=
+  \begin{cases}
+    X(t_0) &amp; \text{for } t = t_0 \\
+    (1 - \lambda) \; X(t) + \lambda \breve{X}(t \; | \; [t_0, \; t - 1] &amp; \text{for } t_0 &lt; t &lt; t_f \\
+    X(t_f) &amp; \text{for } t_f \le t
+  \end{cases}
+\end{align}
+\tag{105}\]</span></span></p>
 <p><a href="#fig-IMA-EWMA" class="quarto-xref">Figure&nbsp;5</a> shows a simulation of the IMA process <span class="math inline">\(X(\cdot)\)</span>, along with one step ahead exponential smoothing of past values, and the <span class="math inline">\(IMA(1, 1)\)</span> forecast of future values. We set <span class="math inline">\(\lambda =\)</span> 0.8, equivalent to an EWMA smoothing parameter of <span class="math inline">\(\alpha = 1 - \lambda =\)</span> 0.2.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -1618,35 +1662,35 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </div>
 </section>
 <section id="ets-book-ets" class="level3">
-<h3 class="anchored" data-anchor-id="ets-book-ets">ETS <a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a></h3>
+<h3 class="anchored" data-anchor-id="ets-book-ets">ETS <a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a></h3>
 <section id="ets-intro" class="level4">
 <h4 class="anchored" data-anchor-id="ets-intro">ETS Intro</h4>
-<p>Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses.<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a></p>
+<p>Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses.<a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a></p>
 <p>In this framework the forecast <span class="math inline">\(\breve{X}(u + t \; | \; s \le t)\)</span> consists of three components: level <span class="math inline">\(\ell (t)\)</span>; local trend <span class="math inline">\(\mathit{b} (t)\)</span>; and seasonality <span class="math inline">\(\mathit{s} (u + t \; | \; s \le t)\)</span>, with <span class="math inline">\(s, t \in \tau_T\)</span>. The forecast equation expresses <span class="math inline">\(\breve{X}(u + t \; | \; s \le t)\)</span> as a linear combination of these components, and each component has its own linear equation. Together these equations define a <em>state-space</em> model.</p>
 <p>In this section we merely outline the ETS framework. For further details see the cited resources. Also, note that <code>R</code> function <code>fable::ETS()</code> selects and fits the models described in this section, requiring only modest guidance from the user.</p>
 </section>
 <section id="level-component" class="level4">
 <h4 class="anchored" data-anchor-id="level-component">Level component</h4>
-<p>We begin with simple exponential smoothing (SES), which entails the level component <span class="math inline">\(\ell(\cdot)\)</span> alone. We now combine results from the previous section and change parameters by setting <span class="math inline">\(\alpha = 1 - \lambda\)</span>, with <span class="math inline">\(\alpha\)</span> restricted to the open unit interval. Then we have the following linear recursion for the one step ahead predictor.</p>
+<p>We begin with simple exponential smoothing (SES), which entails the level component <span class="math inline">\(\ell(\cdot)\)</span> alone, a case covered from the ARIMA perspective in <a href="#sec-EWMA" class="quarto-xref">Section&nbsp;8.3</a>. Following ETS conventions We change parameters by setting <span class="math inline">\(\alpha = 1 - \lambda\)</span>, with <span class="math inline">\(\alpha\)</span> restricted to the open unit interval. Then we have the following linear recursion for the one step ahead predictor.</p>
 <p><span id="eq-ets-ANN-one-step-recur-alpha"><span class="math display">\[
 \begin{align}
-  \breve{X}(1 + t \; | \; s \le t) &amp;=
+  \breve{X} \left ( 1 + t \; | \; [t_0, \; t] \cap \tau_T \right ) &amp;=
   \begin{cases}
     X(t_0) &amp; \text{for } t = t_0 \\
-    \alpha \; X(t) + (1 - \alpha) \; \breve{X}(t \; | \; s \le t-1) &amp; \text{for } t_0 &lt; t \le t_f \\
-    X(t_f) &amp; \text{for } t &gt; t_f
+    \alpha \; X(t) + (1 - \alpha) \breve{X}(t \; | \; [t_0, \; t - 1] &amp; \text{for } t_0 &lt; t &lt; t_f \\
+    X(t_f) &amp; \text{for } t_f \le t
   \end{cases} \\
   \\
   &amp;\text{where } \alpha \in (0, 1)
 \end{align}
-\tag{100}\]</span></span></p>
+\tag{106}\]</span></span></p>
 <p>Now setting aside these boundary conditons for the moment, the state-space form of this linear recursion is as follows.</p>
 <p><span id="eq-ets-ANN-ss"><span class="math display">\[
 \begin{align}
   \breve{X}(u + t \; | \; s \le t) &amp;= \ell (t) \\
   \ell (t) &amp;= \alpha \; X(t) + (1 - \alpha) \; \ell (t - 1)
 \end{align}
-\tag{101}\]</span></span></p>
+\tag{107}\]</span></span></p>
 <p>where <span class="math inline">\(\ell (t)\)</span> predicts <span class="math inline">\(X(t + 1)\)</span> based on <span class="math inline">\(\{ X(s) \}_{s \le t}\)</span>. We model the difference <span class="math inline">\(X(t) - \ell (t - 1)\)</span> as a Gaussian white noise process, <span class="math inline">\(W(t)\)</span>.</p>
 <p><span id="eq-ets-ANN-ss-wn"><span class="math display">\[
 \begin{align}
@@ -1658,7 +1702,7 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
   \\
   &amp; \text{with } W(\cdot) \sim \text{iid } N(0, \sigma_W^2)
 \end{align}
-\tag{102}\]</span></span></p>
+\tag{108}\]</span></span></p>
 <p>The white noise term <span class="math inline">\(W(t)\)</span> is also called an error term, and this state space model is said to have <em>additive error</em>. Equivalently, the level component <span class="math inline">\(\ell (\cdot)\)</span> is said to be additive.</p>
 </section>
 <section id="trend-component" class="level4">
@@ -1672,7 +1716,7 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
   \\
   &amp;\text{where } \alpha, \beta \in (0, 1)
 \end{align}
-\tag{103}\]</span></span></p>
+\tag{109}\]</span></span></p>
 <p>This forecast system is known as Holt’s trend method, published decades ago. Since then a modification has been introduced to dampen the effect of the trend term <span class="math inline">\(\mathit{b}(t)\)</span> on long-term forecasts, via damping coefficient <span class="math inline">\(\phi \in (0, 1)\)</span>, as follows.</p>
 <p><span id="eq-ets-AAN-dampen-ss"><span class="math display">\[
 \begin{align}
@@ -1682,11 +1726,11 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
   \\
   &amp;\text{where } \alpha, \beta, \phi \in (0, 1)
 \end{align}
-\tag{104}\]</span></span></p>
+\tag{110}\]</span></span></p>
 </section>
 <section id="seasonal-component" class="level4">
 <h4 class="anchored" data-anchor-id="seasonal-component">Seasonal component</h4>
-<p>Starting with <a href="#eq-ets-AAN-ss" class="quarto-xref">Equation&nbsp;103</a>, we now add a seasonal component, <span class="math inline">\(\mathit{s}(u + t \; | \; s \le t)\)</span>, where a fixed positive integer <span class="math inline">\(\sigma\)</span> denotes the number of successive time indices comprising a single season. For <span class="math inline">\(t, (u + t) \in \tau_T\)</span> we fit <span class="math inline">\(\mathit{s}(u + t \; | \; s \le t)\)</span> recursively. Then for <span class="math inline">\((u + t) &gt; t_f\)</span> we refer back to the most recent fitted value <span class="math inline">\(\mathit{s} (\tilde{t})\)</span> such that <span class="math inline">\(\tilde{t} \equiv (u + t) \bmod \sigma\)</span>.</p>
+<p>Starting with <a href="#eq-ets-AAN-ss" class="quarto-xref">Equation&nbsp;109</a>, we now add a seasonal component, <span class="math inline">\(\mathit{s}(u + t \; | \; s \le t)\)</span>, where a fixed positive integer <span class="math inline">\(\sigma\)</span> denotes the number of successive time indices comprising a single season. For <span class="math inline">\(t, (u + t) \in \tau_T\)</span> we fit <span class="math inline">\(\mathit{s}(u + t \; | \; s \le t)\)</span> recursively. Then for <span class="math inline">\((u + t) &gt; t_f\)</span> we refer back to the most recent fitted value <span class="math inline">\(\mathit{s} (\tilde{t})\)</span> such that <span class="math inline">\(\tilde{t} \equiv (u + t) \bmod \sigma\)</span>.</p>
 <p><span id="eq-ets-AAA-ss"><span class="math display">\[
 \begin{align}
   \breve{X}(u + t \; | \; s \le t) &amp;= \ell (t) \; + \; \mathit{b}(t) \times u \; + \; \mathit{s}(u + t \; | \; s \le t) \\
@@ -1701,11 +1745,11 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
   &amp; \tilde{t} \equiv (u + t) \bmod \sigma, \text{ and with}  \\
   &amp; \tilde{t} \in (t - \sigma, \; t]
 \end{align}
-\tag{105}\]</span></span></p>
+\tag{111}\]</span></span></p>
 </section>
 <section id="ets-model-designation" class="level4">
 <h4 class="anchored" data-anchor-id="ets-model-designation">ETS model designation</h4>
-<p>Each ETS model can be categorized according to the status of each potential model component: level, trend, and season.<a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a></p>
+<p>Each ETS model can be categorized according to the status of each potential model component: level, trend, and season.<a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a></p>
 <p>The status of a component is one of the following:</p>
 <ul>
 <li>A: used as an additive component</li>
@@ -1725,12 +1769,12 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </section>
 </section>
 <section id="co2-exampletxt-co2-mauna-loa" class="level3">
-<h3 class="anchored" data-anchor-id="co2-exampletxt-co2-mauna-loa">CO2 Example<a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a></h3>
+<h3 class="anchored" data-anchor-id="co2-exampletxt-co2-mauna-loa">CO2 Example<a href="#fn48" class="footnote-ref" id="fnref48" role="doc-noteref"><sup>48</sup></a></h3>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
-<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a></p>
+<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn49" class="footnote-ref" id="fnref49" role="doc-noteref"><sup>49</sup></a></p>
 <p>This introduction does not address the building and evaluation of time series models, leaving that for another time. Here are some online resources for those interested.</p>
 <ul>
 <li><a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> gives a more detailed introduction to the topics presented here.</li>
@@ -1898,7 +1942,7 @@ Figure&nbsp;8: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn48" class="footnote-ref" id="fnref48" role="doc-noteref"><sup>48</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn50" class="footnote-ref" id="fnref50" role="doc-noteref"><sup>50</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2040,12 +2084,14 @@ Winters, Peter R. 1960. <span>“Forecasting Sales by Exponentially Weighted Mov
 <li id="fn40"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn41"><p>From covariance calculations, <span class="math inline">\(\nabla \; W(\cdot)\)</span> is an <span class="math inline">\(AR(1)\)</span> process, which makes <span class="math inline">\(\nabla \; X(\cdot)\)</span> an <span class="math inline">\(AR(1)\)</span> process.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn42"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 148</a>)</span>.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn43"><p>See <span class="citation" data-cites="hyndman2021forecasting">R. J. Hyndman and Athanasopoulos (<a href="#ref-hyndman2021forecasting" role="doc-biblioref">2021, chap. 8</a>)</span> and <span class="citation" data-cites="ryantibs2023timeseries">Tibshirani (<a href="#ref-ryantibs2023timeseries" role="doc-biblioref">2025, chap. 7</a>)</span>.<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn44"><p>See <span class="citation" data-cites="holt1957forecasting">Holt (<a href="#ref-holt1957forecasting" role="doc-biblioref">2004</a>)</span> and <span class="citation" data-cites="winters1960forecasting">Winters (<a href="#ref-winters1960forecasting" role="doc-biblioref">1960</a>)</span>.<a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn45"><p>See <span class="citation" data-cites="hyndman2002state">Rob J. Hyndman et al. (<a href="#ref-hyndman2002state" role="doc-biblioref">2002</a>)</span>.<a href="#fnref45" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn46"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref46" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn47"><p>Another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>, treats a time series as a function of time, denoted <span class="math inline">\(X(t)\)</span>, which is the practice followed in this note.<a href="#fnref47" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn48"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref48" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn43"><p>We assume here that <span class="math inline">\(E \left \{ W(t) \; | \; \{ X(s) \}_{s &lt; t} \right \} = 0\)</span>.<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn44"><p>In the case <span class="math inline">\(u = 1\)</span> the sum is over an empty set of indices <span class="math inline">\(\nu\)</span> such that <span class="math inline">\(\nu \ge 1\)</span> and <span class="math inline">\(\nu \le 0\)</span>. We define such empty sums to be zero.<a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn45"><p>See <span class="citation" data-cites="hyndman2021forecasting">R. J. Hyndman and Athanasopoulos (<a href="#ref-hyndman2021forecasting" role="doc-biblioref">2021, chap. 8</a>)</span> and <span class="citation" data-cites="ryantibs2023timeseries">Tibshirani (<a href="#ref-ryantibs2023timeseries" role="doc-biblioref">2025, chap. 7</a>)</span>.<a href="#fnref45" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn46"><p>See <span class="citation" data-cites="holt1957forecasting">Holt (<a href="#ref-holt1957forecasting" role="doc-biblioref">2004</a>)</span> and <span class="citation" data-cites="winters1960forecasting">Winters (<a href="#ref-winters1960forecasting" role="doc-biblioref">1960</a>)</span>.<a href="#fnref46" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn47"><p>See <span class="citation" data-cites="hyndman2002state">Rob J. Hyndman et al. (<a href="#ref-hyndman2002state" role="doc-biblioref">2002</a>)</span>.<a href="#fnref47" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn48"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref48" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn49"><p>Another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>, treats a time series as a function of time, denoted <span class="math inline">\(X(t)\)</span>, which is the practice followed in this note.<a href="#fnref49" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn50"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref50" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
