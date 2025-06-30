@@ -185,7 +185,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">18:11 Mon 30-Jun-2025</p>
+      <p class="date">18:21 Mon 30-Jun-2025</p>
     </div>
   </div>
   
@@ -521,7 +521,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 <section id="filtering" class="level3">
 <h3 class="anchored" data-anchor-id="filtering">Filtering</h3>
-<p>Running averages and successive differences are each an example of a linear, time-invariant <em>filter</em>, having the following general form.</p>
+<p>Running averages and successive differences are each an example of a linear, time-invariant <em>filter</em>, having the following general form.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
 <p><span id="eq-filter"><span class="math display">\[
 \begin{align}
   Y_\bullet (t)
@@ -583,7 +583,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
     X_3(t) = P(t) &amp;= \text{level of airborne particulate matter in week } t
 \end{align}
 \]</span></p>
-<p>Each of the three components of <span class="math inline">\(X_\bullet (t)\)</span> exhibits an annual periodicity, as one might expect. The textbook authors initially propose a model for <span class="math inline">\(X_1(t)\)</span> of the following form<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>.</p>
+<p>Each of the three components of <span class="math inline">\(X_\bullet (t)\)</span> exhibits an annual periodicity, as one might expect. The textbook authors initially propose a model for <span class="math inline">\(X_1(t)\)</span> of the following form<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>.</p>
 <p><span class="math display">\[
 \begin{align}
   X_1(t) &amp;= m(t, X_{2:3}(t)) + W(t)\\
@@ -596,7 +596,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \]</span></p>
 <p>Here <span class="math inline">\(wn(0, \sigma_W^2)\)</span> denotes an uncorrelated sequence having zero mean and variance <span class="math inline">\(\sigma_W^2\)</span>, referred to as white noise.</p>
-<p>According to this model<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 (t) - m(t, X_{2:3}(t))\)</span> is modeled as being free of autocorrelation. The model is consistent with the assumption that, apart from a trend component, weekly numbers of cardiovascular deaths are independent, conditioned on temperature and particulate levels.</p>
+<p>According to this model<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> the pattern over time of <span class="math inline">\(X_1(t)\)</span> is captured by the mean over time, <span class="math inline">\(m(t, X_{2:3}(t))\)</span>. Once the mean level is accounted for, the residual series <span class="math inline">\(W(t) = X_1 (t) - m(t, X_{2:3}(t))\)</span> is modeled as being free of autocorrelation. The model is consistent with the assumption that, apart from a trend component, weekly numbers of cardiovascular deaths are independent, conditioned on temperature and particulate levels.</p>
 <p>Later in the text (page 155) the authors refine this initial model. After examining the autocorrelation function (ACF) of the residual series (no longer labeled <span class="math inline">\(W(t)\)</span>), they develop an autocorrelated (<span class="math inline">\(AR(2)\)</span>) model.</p>
 <p>This is an example of the cyclic model-building process previously outlined. A model is developed, examined, and revised.</p>
 </section>
@@ -628,7 +628,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{30}\]</span></span></p>
 <p>The polynomial <span class="math inline">\(\phi(\cdot)\)</span> applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> is an <em>auto-regressive operator of order</em> <span class="math inline">\(p\)</span>.</p>
-<p>Now, the <span class="math inline">\(AR(p)\)</span> model is defined to be that of a <em>stationary</em> process <span class="math inline">\(X(t)\)</span>, which constrains the coefficients of polynomial <span class="math inline">\(\phi(\cdot)\)</span>. Additional requirements that the model be <em>causal</em><a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> and <em>invertible</em><a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> restrict attention to polynomials <span class="math inline">\(\phi(\cdot)\)</span> whose roots are all greater than unity in magnitude. This ensures that the multiplicative inverse function <span class="math inline">\(\phi (z)^{-1}\)</span> is well defined and has a power series expansion for <span class="math inline">\(|z| \le 1\)</span>.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a></p>
+<p>Now, the <span class="math inline">\(AR(p)\)</span> model is defined to be that of a <em>stationary</em> process <span class="math inline">\(X(t)\)</span>, which constrains the coefficients of polynomial <span class="math inline">\(\phi(\cdot)\)</span>. Additional requirements that the model be <em>causal</em><a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> and <em>invertible</em><a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> restrict attention to polynomials <span class="math inline">\(\phi(\cdot)\)</span> whose roots are all greater than unity in magnitude. This ensures that the multiplicative inverse function <span class="math inline">\(\phi (z)^{-1}\)</span> is well defined and has a power series expansion for <span class="math inline">\(|z| \le 1\)</span>.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a></p>
 </section>
 <section id="ar1" class="level4">
 <h4 class="anchored" data-anchor-id="ar1">AR(1)</h4>
@@ -682,7 +682,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= \sum_{\nu = 0}^\infty \phi_1^\nu \; z^\nu &amp; \text{ for } |z| \le 1
 \end{align}
 \]</span></p>
-<p>Based on these expressions one can show<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> that the auto-covariance and autocorrelation functions of <span class="math inline">\(X(\cdot)\)</span> take the following forms.</p>
+<p>Based on these expressions one can show<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> that the auto-covariance and autocorrelation functions of <span class="math inline">\(X(\cdot)\)</span> take the following forms.</p>
 <p><span id="eq-AR1-rho"><span class="math display">\[
 \begin{align}
   \gamma_X (u) &amp;= \frac{\phi_1^{|u|}}{1 - \phi_1^2} \; \sigma_W^2\\
@@ -690,7 +690,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \rho_X (u) &amp;= \phi_1^{|u|}
 \end{align}
 \tag{33}\]</span></span></p>
-<p>Using the Durbin-Levinson algorithm, one can go on to show<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> that the partial autocorrelation function (PACF) of <span class="math inline">\(X(\cdot)\)</span> has the following simple form.</p>
+<p>Using the Durbin-Levinson algorithm, one can go on to show<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> that the partial autocorrelation function (PACF) of <span class="math inline">\(X(\cdot)\)</span> has the following simple form.</p>
 <p><span id="eq-AR1-PACF"><span class="math display">\[
 \begin{align}
   \rho_X (u | u) &amp;=
@@ -711,7 +711,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{35}\]</span></span></p>
 <p>Also as previously mentioned, we require the roots of <span class="math inline">\(\phi(\cdot)\)</span> to lie outside the closed unit disc, that is, to be greater than unity in magnitude. This requirement ensures that the model is stationary, causal, and invertible.</p>
-<p>Consequently we have the following causal form of the model.<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> <a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a></p>
+<p>Consequently we have the following causal form of the model.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> <a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a></p>
 <p><span id="eq-ARp-causal-form"><span class="math display">\[
 \begin{align}
   X(t) - \mu_X &amp;= \left \{ \phi(\mathcal{B})^{-1} \; W(\cdot) \right \} (t) \\
@@ -786,7 +786,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>That is, <span class="math inline">\(X(\cdot)\)</span> is filtered white noise, and is therefore stationary for any finite set of filter coefficients. But some constraint on polynomial <span class="math inline">\(\theta(\cdot)\)</span> is required to eliminate ambiguity.</p>
 <section id="invertibility" class="level4">
 <h4 class="anchored" data-anchor-id="invertibility">Invertibility</h4>
-<p>Consider the following two MA(1) models.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a></p>
+<p>Consider the following two MA(1) models.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a></p>
 <p><span class="math display">\[
 \begin{align}
   X(t) &amp;= W(t) + \frac{1}{5} W(t-1) &amp; \text{with } W(\cdot) \sim N(0, 25) \\
@@ -794,7 +794,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   Y(t) &amp;= V(t) + 5 \; V(t-1) &amp; \text{with } V(\cdot) \sim N(0, 1)
 \end{align}
 \]</span></p>
-<p>The probability distributions of the two processes <span class="math inline">\(X(\cdot)\)</span> and <span class="math inline">\(Y(\cdot)\)</span> are identical<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a>, so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.</p>
+<p>The probability distributions of the two processes <span class="math inline">\(X(\cdot)\)</span> and <span class="math inline">\(Y(\cdot)\)</span> are identical<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a>, so anyone attempting to identify the respective models could not distinguish them based on their realizations as time series data.</p>
 <p>A solution to this conundrum is to follow the example set by AR models, namely by requiring the MA model to be invertible. That is, we require the roots of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitude greater than unity. In the example above we therefore choose the model for <span class="math inline">\(X(\cdot)\)</span> rather than the model for <span class="math inline">\(Y(\cdot)\)</span>.</p>
 </section>
 <section id="ma1" class="level4">
@@ -820,7 +820,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \gamma_X (u) &amp;= 0 \quad \text{for } |u| \ge 2
 \end{align}
 \tag{38}\]</span></span></p>
-<p>And here is the corresponding autocorrelation function (ACF)<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a>.</p>
+<p>And here is the corresponding autocorrelation function (ACF)<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a>.</p>
 <p><span id="eq-MA1-ACF"><span class="math display">\[
 \begin{align}
   \rho_X (u) &amp;=
@@ -831,7 +831,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \end{cases}
 \end{align}
 \tag{39}\]</span></span></p>
-<p>The PACF turns out to have the following form<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a>.</p>
+<p>The PACF turns out to have the following form<a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a>.</p>
 <p><span id="eq-MA1-PACF"><span class="math display">\[
 \begin{align}
   \rho_X (u | u) &amp;=  \frac{(- \theta_1)^u(1 - \theta_1^2)}{1 - \theta_1^{2 (u+1)}} &amp; \text{ for } u \ge 2
@@ -919,7 +919,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="co-prime-polynomials" class="level3">
 <h3 class="anchored" data-anchor-id="co-prime-polynomials">Co-prime Polynomials</h3>
 <p>We must impose a restriction on the polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> in addition to requiring their respective roots to all have magnitude greater than unity. The additional requirement is that they have no roots in common.</p>
-<p>Consider for example the following putative <span class="math inline">\(ARMA(1,1)\)</span> model.<a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a></p>
+<p>Consider for example the following putative <span class="math inline">\(ARMA(1,1)\)</span> model.<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a></p>
 <p><span id="eq-ARMA-1-1-not"><span class="math display">\[
 \begin{align}
   X(t) &amp;= \beta_1 \; X(t - 1) \; + \; W(t) \; - \; \beta_1 \; W(t - 1) \\   \\
@@ -936,7 +936,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 <section id="causal-form" class="level3">
 <h3 class="anchored" data-anchor-id="causal-form">Causal Form</h3>
-<p>The <span class="math inline">\(ARMA(p,q)\)</span> model can be expressed in causal form as follows.<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a> <a href="#fn26" class="footnote-ref" id="fnref26" role="doc-noteref"><sup>26</sup></a></p>
+<p>The <span class="math inline">\(ARMA(p,q)\)</span> model can be expressed in causal form as follows.<a href="#fn26" class="footnote-ref" id="fnref26" role="doc-noteref"><sup>26</sup></a> <a href="#fn27" class="footnote-ref" id="fnref27" role="doc-noteref"><sup>27</sup></a></p>
 <p><span id="eq-ARMA-p-q-causal"><span class="math display">\[
 \begin{align}
   X(t) - \mu_X &amp;= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(t) \\
@@ -952,7 +952,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 </section>
 <section id="inverted-form" class="level3">
 <h3 class="anchored" data-anchor-id="inverted-form">Inverted Form</h3>
-<p>It is also useful to invert the MA operator in an ARMA model to obtain the white noise process <span class="math inline">\(W(t)\)</span> as a linear function of current and past values of <span class="math inline">\(X(t)\)</span>.<a href="#fn27" class="footnote-ref" id="fnref27" role="doc-noteref"><sup>27</sup></a> <a href="#fn28" class="footnote-ref" id="fnref28" role="doc-noteref"><sup>28</sup></a></p>
+<p>It is also useful to invert the MA operator in an ARMA model to obtain the white noise process <span class="math inline">\(W(t)\)</span> as a linear function of current and past values of <span class="math inline">\(X(t)\)</span>.<a href="#fn28" class="footnote-ref" id="fnref28" role="doc-noteref"><sup>28</sup></a> <a href="#fn29" class="footnote-ref" id="fnref29" role="doc-noteref"><sup>29</sup></a></p>
 <p><span id="eq-ARMA-p-q-inv"><span class="math display">\[
 \begin{align}
   W(t) &amp;= \theta(\mathcal{B})^{-1} \phi(\mathcal{B}) \; (X(t) - \mu_X) \\
@@ -1011,7 +1011,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   &amp;= \gamma_X(u - j + T - 1) \; - \; \sum_{\nu = 0}^{T-1} \hat{\beta}_\nu \; \gamma_X(\nu - j)
 \end{align}
 \tag{57}\]</span></span></p>
-<p>In vector-matrix notation we have the following linear system.<a href="#fn29" class="footnote-ref" id="fnref29" role="doc-noteref"><sup>29</sup></a></p>
+<p>In vector-matrix notation we have the following linear system.<a href="#fn30" class="footnote-ref" id="fnref30" role="doc-noteref"><sup>30</sup></a></p>
 <p><span id="eq-predictor-matrix-eqn"><span class="math display">\[
 \begin{align}
   \Gamma[\cdot, \cdot] \; \hat{\beta}_\bullet &amp;= \tilde{\gamma} [\cdot]
@@ -1024,12 +1024,12 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \tilde{\gamma} [j] &amp;= \gamma_X (u - j + T - 1)
 \end{align}
 \tag{59}\]</span></span></p>
-<p><span class="math inline">\(\Gamma\)</span> is a covariance matrix, and is therefore non-negative definite. In fact <span class="math inline">\(\Gamma\)</span> is positive definite (non-singular) unless <span class="math inline">\(X(\cdot)\)</span> is a degenerate process<a href="#fn30" class="footnote-ref" id="fnref30" role="doc-noteref"><sup>30</sup></a>. In any case <span class="math inline">\(\hat{\beta}_\bullet\)</span> can be defined by applying the inverse (or a generalized inverse) of <span class="math inline">\(\Gamma\)</span> to <span class="math inline">\(\tilde{\gamma} [\cdot]\)</span>.</p>
-<p>As noted above, we have assumed for the sake of discussion that the entire auto-covariance function <span class="math inline">\(\gamma_X (\cdot)\)</span> is known. In practice such statistics must be estimated from the data. But direct estimation is not possible, due to the restricted range of differences in data indices.<a href="#fn31" class="footnote-ref" id="fnref31" role="doc-noteref"><sup>31</sup></a> Instead, we must rely on a model of the process for such estimates.</p>
+<p><span class="math inline">\(\Gamma\)</span> is a covariance matrix, and is therefore non-negative definite. In fact <span class="math inline">\(\Gamma\)</span> is positive definite (non-singular) unless <span class="math inline">\(X(\cdot)\)</span> is a degenerate process<a href="#fn31" class="footnote-ref" id="fnref31" role="doc-noteref"><sup>31</sup></a>. In any case <span class="math inline">\(\hat{\beta}_\bullet\)</span> can be defined by applying the inverse (or a generalized inverse) of <span class="math inline">\(\Gamma\)</span> to <span class="math inline">\(\tilde{\gamma} [\cdot]\)</span>.</p>
+<p>As noted above, we have assumed for the sake of discussion that the entire auto-covariance function <span class="math inline">\(\gamma_X (\cdot)\)</span> is known. In practice such statistics must be estimated from the data. But direct estimation is not possible, due to the restricted range of differences in data indices.<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a> Instead, we must rely on a model of the process for such estimates.</p>
 </section>
 </section>
 <section id="arma-forecastingtxt-arma-forecasting" class="level2">
-<h2 class="anchored" data-anchor-id="arma-forecastingtxt-arma-forecasting">ARMA Forecasting<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a></h2>
+<h2 class="anchored" data-anchor-id="arma-forecastingtxt-arma-forecasting">ARMA Forecasting<a href="#fn33" class="footnote-ref" id="fnref33" role="doc-noteref"><sup>33</sup></a></h2>
 <section id="notation-and-assumptions" class="level3">
 <h3 class="anchored" data-anchor-id="notation-and-assumptions">Notation and Assumptions</h3>
 <p>For presentation purposes we continue to assume that all random process parameters are known. And to simplify notation we first consider the case of a stationary Gaussian process <span class="math inline">\(\mathcal{N} (\cdot)\)</span> having mean 0.</p>
@@ -1044,7 +1044,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \wp (t_f) &amp;= \left \{ s \in \mathbb{Z} \; | \; s \le t_f \right \}
 \end{align}
 \tag{61}\]</span></span></p>
-<p>We adopt the following notation for the expectation of <span class="math inline">\(\mathcal{N}(u + t_f)\)</span>, the process at a future time, conditioned on <span class="math inline">\(\{ \mathcal{N}(s) \}_{s \le t_f}\)</span>, the history of the process prior to and including the final observation.<a href="#fn33" class="footnote-ref" id="fnref33" role="doc-noteref"><sup>33</sup></a></p>
+<p>We adopt the following notation for the expectation of <span class="math inline">\(\mathcal{N}(u + t_f)\)</span>, the process at a future time, conditioned on <span class="math inline">\(\{ \mathcal{N}(s) \}_{s \le t_f}\)</span>, the history of the process prior to and including the final observation.<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a></p>
 <p><span id="eq-e-future-given-past"><span class="math display">\[
 \begin{align}
   \tilde{\mathcal{N}} (u + t_f \; | \; \wp (t_f)) &amp;= E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \}
@@ -1171,7 +1171,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   E \left \{ R(u + t_f \; | \; \wp (t_f)) \times R(u + k + t_f \; | \; \wp (t_f)) \right \} &amp;= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu \; \psi_{\nu + k}
 \end{align}
 \tag{76}\]</span></span></p>
-<p>Setting <span class="math inline">\(k = 0\)</span> we obtain the following expected square of <span class="math inline">\(R(u + t_f \; | \; \wp (t_f))\)</span>, called mean squared prediction error.<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a></p>
+<p>Setting <span class="math inline">\(k = 0\)</span> we obtain the following expected square of <span class="math inline">\(R(u + t_f \; | \; \wp (t_f))\)</span>, called mean squared prediction error.<a href="#fn35" class="footnote-ref" id="fnref35" role="doc-noteref"><sup>35</sup></a></p>
 <p><span id="eq-var-predictor-resid"><span class="math display">\[
 \begin{align}
   E\{ R(u + t_f \; | \; \wp (t_f))^2 \} &amp;= \sigma_W^2 \; \sum_{\nu = 0}^{u - 1} \; \psi_\nu^2
@@ -1185,7 +1185,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \tag{78}\]</span></span></p>
 </section>
 <section id="truncated-predictorstxt-trunc-arma-predictor" class="level3">
-<h3 class="anchored" data-anchor-id="truncated-predictorstxt-trunc-arma-predictor">Truncated Predictors<a href="#fn35" class="footnote-ref" id="fnref35" role="doc-noteref"><sup>35</sup></a></h3>
+<h3 class="anchored" data-anchor-id="truncated-predictorstxt-trunc-arma-predictor">Truncated Predictors<a href="#fn36" class="footnote-ref" id="fnref36" role="doc-noteref"><sup>36</sup></a></h3>
 <p>Using the entire history of the process <span class="math inline">\(\{ \mathcal{N} (s), \; s \le t_f \}\)</span> preceding and including the observed values, we’ve expressed the linear predictor <span class="math inline">\(\tilde{\mathcal{N}} (u + t_f \; | \; \wp(t_f))\)</span> as an infinite moving average (<a href="#eq-predictor-causal-form-u" class="quarto-xref">Equation&nbsp;69</a>) and, alternatively, as an infinite auto-regression (<a href="#eq-predictor-inv-form-u" class="quarto-xref">Equation&nbsp;71</a>).</p>
 <p>Now, restricting the predictor to the available data by using the <span class="math inline">\(ARMA(p, q)\)</span> model, we recursively define the following “truncated” predictor, <span class="math inline">\(\breve{\mathcal{N}} (t \; | \; \tau_T)\)</span>, of the process <span class="math inline">\(\mathcal{N} (t)\)</span> at time <span class="math inline">\(t\)</span>.</p>
 <p><span id="eq-trunc-predictor"><span class="math display">\[
@@ -1222,7 +1222,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <p>As previously noted, we assume all parameters to be known, so that the polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> are completely specified. Then the system of equations above can be solved recursively, as illustrated in the next example.</p>
 </section>
 <section id="arma1-1-simulationtxt-arma-1-1-xmpl" class="level3">
-<h3 class="anchored" data-anchor-id="arma1-1-simulationtxt-arma-1-1-xmpl">ARMA(1, 1) Simulation<a href="#fn36" class="footnote-ref" id="fnref36" role="doc-noteref"><sup>36</sup></a></h3>
+<h3 class="anchored" data-anchor-id="arma1-1-simulationtxt-arma-1-1-xmpl">ARMA(1, 1) Simulation<a href="#fn37" class="footnote-ref" id="fnref37" role="doc-noteref"><sup>37</sup></a></h3>
 <p>We illustrate the truncated predictor for an <span class="math inline">\(ARMA(1, 1)\)</span> model:</p>
 <p><span id="eq-ARMA-1-1-xmpl"><span class="math display">\[
 \begin{align}
@@ -1260,7 +1260,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 \end{align}
 \tag{85}\]</span></span></p>
 <p>We can solve the last equation in a forward recursion with <span class="math inline">\(t \in (t_0, \ldots, t_f)\)</span> to obtain <span class="math inline">\(\breve{W} (t_f \; | \; \tau_T)\)</span>, as required.</p>
-<p>The forecast variance can be approximated from <a href="#eq-var-predictor-resid" class="quarto-xref">Equation&nbsp;77</a> using <span class="math inline">\(\psi\)</span> coefficients that turn out to satisfy <a href="#fn37" class="footnote-ref" id="fnref37" role="doc-noteref"><sup>37</sup></a> <a href="#fn38" class="footnote-ref" id="fnref38" role="doc-noteref"><sup>38</sup></a></p>
+<p>The forecast variance can be approximated from <a href="#eq-var-predictor-resid" class="quarto-xref">Equation&nbsp;77</a> using <span class="math inline">\(\psi\)</span> coefficients that turn out to satisfy <a href="#fn38" class="footnote-ref" id="fnref38" role="doc-noteref"><sup>38</sup></a> <a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a></p>
 <p><span id="eq-ARMA-1-1-psi"><span class="math display">\[
 \begin{align}
   \psi_j &amp;= (\phi_1 + \theta_1) \; \phi_1^{j-1} \quad \text{for } j \ge 1
@@ -1288,7 +1288,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   c_{\alpha / 2} &amp;= \Phi^{-1} (1 - \alpha / 2)
 \end{align}
 \tag{88}\]</span></span></p>
-<p>We now set <span class="math inline">\(\phi_1 = \theta_1 = 0.5\)</span> in order to simulate 150 observations from this model and forecast the last 50 of the 150 observations. This example uses <code>astsa</code> functions <code>sarima.sim()</code> and <code>sarima.for()</code>.<a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a></p>
+<p>We now set <span class="math inline">\(\phi_1 = \theta_1 = 0.5\)</span> in order to simulate 150 observations from this model and forecast the last 50 of the 150 observations. This example uses <code>astsa</code> functions <code>sarima.sim()</code> and <code>sarima.for()</code>.<a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-tp-1-1-sim" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1370,7 +1370,7 @@ Figure&nbsp;3: Recruitment index followed by a 24-month AR(2) forecast
 <h2 class="anchored" data-anchor-id="non-stationary-models">Non-Stationary Models</h2>
 <section id="arimap-d-q" class="level3">
 <h3 class="anchored" data-anchor-id="arimap-d-q">ARIMA(p, d, q)</h3>
-<p>Time series models have a long history. <span class="citation" data-cites="whittle1951hypothesis">Whittle (<a href="#ref-whittle1951hypothesis" role="doc-biblioref">1951</a>)</span> introduced ARMA models of stationary processes. To treat non-stationary processes, <span class="citation" data-cites="box1970time">Box and Jenkins (<a href="#ref-box1970time" role="doc-biblioref">1970</a>)</span> popularized auto-regressive integrated moving average (ARIMA) models. Here’s the form of an ARIMA model having <span class="math inline">\(p, d, q\)</span> as its respective orders of auto-regression, differencing, and moving average.<a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a></p>
+<p>Time series models have a long history. <span class="citation" data-cites="whittle1951hypothesis">Whittle (<a href="#ref-whittle1951hypothesis" role="doc-biblioref">1951</a>)</span> introduced ARMA models of stationary processes. To treat non-stationary processes, <span class="citation" data-cites="box1970time">Box and Jenkins (<a href="#ref-box1970time" role="doc-biblioref">1970</a>)</span> popularized auto-regressive integrated moving average (ARIMA) models. Here’s the form of an ARIMA model having <span class="math inline">\(p, d, q\)</span> as its respective orders of auto-regression, differencing, and moving average.<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a></p>
 <p><span id="eq-ARIMA-p-d-q-proc"><span class="math display">\[
 \begin{align}
   \phi(\mathcal{B}) \; \nabla^d \; (X(\cdot) - \mu_X)
@@ -1394,7 +1394,7 @@ Figure&nbsp;3: Recruitment index followed by a 24-month AR(2) forecast
   W(\cdot), \; V(\cdot) &amp;\sim \text{independent }
 \end{align}
 \tag{92}\]</span></span></p>
-<p>The process <span class="math inline">\(Y(\cdot)\)</span> is a <em>random walk</em> whose variance increases over time and is thus non-stationary. Therefore <span class="math inline">\(X(\cdot)\)</span> is also non-stationary. But applying the differencing operator <span class="math inline">\(\nabla\)</span> to <span class="math inline">\(X(\cdot)\)</span> induces stationarity.<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a></p>
+<p>The process <span class="math inline">\(Y(\cdot)\)</span> is a <em>random walk</em> whose variance increases over time and is thus non-stationary. Therefore <span class="math inline">\(X(\cdot)\)</span> is also non-stationary. But applying the differencing operator <span class="math inline">\(\nabla\)</span> to <span class="math inline">\(X(\cdot)\)</span> induces stationarity.<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a></p>
 <p><span class="math display">\[
 \begin{align}
   \nabla \; X(t) &amp;= \nabla \; Y(t) + \nabla \; W(t) \\
@@ -1497,7 +1497,7 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 </section>
 <section id="sec-EWMA" class="level3">
 <h3 class="anchored" data-anchor-id="sec-EWMA">EWMA Example</h3>
-<p>The following <span class="math inline">\(ARIMA(0, 1, 1)\)</span> model has been applied to many economic time series.<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a></p>
+<p>The following <span class="math inline">\(ARIMA(0, 1, 1)\)</span> model has been applied to many economic time series.<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a></p>
 <p><span id="eq-IMA-1-1-lambda"><span class="math display">\[
 \begin{align}
   \nabla \; X(\cdot) &amp;= (\mathcal{I - \lambda B}) \; W(\cdot) \\
@@ -1527,7 +1527,7 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
 \end{align}
 \tag{98}\]</span></span></p>
 <p>That is, the current value <span class="math inline">\(X(t)\)</span> is an exponential smoothing of all past values plus <span class="math inline">\(W(t)\)</span>, the white noise term.</p>
-<p>The linear prediction of the current value based on past values is thus the same exponential smoothing of past values.<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a></p>
+<p>The linear prediction of the current value based on past values is thus the same exponential smoothing of past values.<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a></p>
 <p><span id="eq-SES"><span class="math display">\[
 \begin{align}
   \hat{X}(t \; | \; \wp (t-1)) &amp;= (1 - \lambda) \; \sum_{\nu = 1}^\infty \lambda^{\nu - 1} \; X(t - \nu)
@@ -1608,7 +1608,7 @@ Figure&nbsp;4: Random walk with drift: cumsum of N(drift = 0.2, sd = 1)
   &amp;= E \left \{ X (u + t_f) \; | \; X(s), s \in \tau_T \right \}
 \end{align}
 \]</span></p>
-<p>Now, based on the <span class="math inline">\(IMA(1, 1)\)</span> model we have <a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a></p>
+<p>Now, based on the <span class="math inline">\(IMA(1, 1)\)</span> model we have <a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a></p>
 <p><span class="math display">\[
 \begin{align}
   &amp; X (u + t_f) \\
@@ -1662,10 +1662,10 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </div>
 </section>
 <section id="ets-book-ets" class="level3">
-<h3 class="anchored" data-anchor-id="ets-book-ets">ETS <a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a></h3>
+<h3 class="anchored" data-anchor-id="ets-book-ets">ETS <a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a></h3>
 <section id="ets-intro" class="level4">
 <h4 class="anchored" data-anchor-id="ets-intro">ETS Intro</h4>
-<p>Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses.<a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a></p>
+<p>Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses.<a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a></p>
 <p>In this framework the forecast <span class="math inline">\(\breve{X}(u + t \; | \; s \le t)\)</span>, with <span class="math inline">\(s, t \in \tau_T\)</span>, consists of three components:</p>
 <ul>
 <li>level <span class="math inline">\(\ell (t)\)</span>;</li>
@@ -1705,7 +1705,7 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
   \ell (t) &amp;= \alpha \; X(t) + (1 - \alpha) \; \ell (t - 1)
 \end{align}
 \tag{108}\]</span></span></p>
-<p>We model the difference <span class="math inline">\(X(t) - \ell (t - 1)\)</span> as a Gaussian white noise process, <span class="math inline">\(W(t)\)</span>. <a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a></p>
+<p>We model the difference <span class="math inline">\(X(t) - \ell (t - 1)\)</span> as a Gaussian white noise process, <span class="math inline">\(W(t)\)</span>. <a href="#fn48" class="footnote-ref" id="fnref48" role="doc-noteref"><sup>48</sup></a></p>
 <p><span id="eq-ets-ANN-ss-wn"><span class="math display">\[
 \begin{align}
   W(t) &amp;= X(t) - \ell (t - 1) \\
@@ -1763,7 +1763,7 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </section>
 <section id="ets-model-designation" class="level4">
 <h4 class="anchored" data-anchor-id="ets-model-designation">ETS model designation</h4>
-<p>Each ETS model can be categorized according to the status of model components level, trend, and season.<a href="#fn48" class="footnote-ref" id="fnref48" role="doc-noteref"><sup>48</sup></a></p>
+<p>Each ETS model can be categorized according to the status of model components level, trend, and season.<a href="#fn49" class="footnote-ref" id="fnref49" role="doc-noteref"><sup>49</sup></a></p>
 <p>The status of a component is one of the following:</p>
 <ul>
 <li><span class="math inline">\(\mathbf{A}\)</span>: used as an additive component</li>
@@ -1783,12 +1783,12 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </section>
 </section>
 <section id="co2-exampletxt-co2-mauna-loa" class="level3">
-<h3 class="anchored" data-anchor-id="co2-exampletxt-co2-mauna-loa">CO2 Example<a href="#fn49" class="footnote-ref" id="fnref49" role="doc-noteref"><sup>49</sup></a></h3>
+<h3 class="anchored" data-anchor-id="co2-exampletxt-co2-mauna-loa">CO2 Example<a href="#fn50" class="footnote-ref" id="fnref50" role="doc-noteref"><sup>50</sup></a></h3>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
-<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn50" class="footnote-ref" id="fnref50" role="doc-noteref"><sup>50</sup></a></p>
+<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn51" class="footnote-ref" id="fnref51" role="doc-noteref"><sup>51</sup></a></p>
 <p>This introduction does not address the building and evaluation of time series models, leaving that for another time. Here are some online resources for those interested.</p>
 <ul>
 <li><a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> gives a more detailed introduction to the topics presented here.</li>
@@ -1956,7 +1956,7 @@ Figure&nbsp;8: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn51" class="footnote-ref" id="fnref51" role="doc-noteref"><sup>51</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn52" class="footnote-ref" id="fnref52" role="doc-noteref"><sup>52</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2066,47 +2066,48 @@ Winters, Peter R. 1960. <span>“Forecasting Sales by Exponentially Weighted Mov
 <li id="fn8"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 110</a>)</span>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 115</a>)</span>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn10"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 157</a>)</span>.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn11"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 55</a>)</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn12"><p>The authors consider various forms for the function <span class="math inline">\(f(t)\)</span>: a linear function, a quadratic function, or a locally smoothed version of <span class="math inline">\(X_1(t)\)</span>.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn13"><p>An ARMA model is said to be <em>causal</em> if the modeled process <span class="math inline">\(X(t)\)</span> can be expressed as a function of current and past white noise terms, <span class="math inline">\(\{ W(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 96</a>)</span>.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn14"><p>A model is said to be <em>invertible</em> if the model’s white noise process <span class="math inline">\(W(t)\)</span> can be expressed as a function of current and past terms of the modeled process, <span class="math inline">\(\{ X(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 94</a>)</span>.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn15"><p>Requiring the roots of a polynomial <span class="math inline">\(p(\cdot)\)</span> to be greater than unity in magnitude ensures that <span class="math inline">\(p(z)^{-1}\)</span> is finite and analytic for <span class="math inline">\(|z| \le 1\)</span> and thus has a power series expansion whose radius of convergence is the minimum magnitude of the roots of <span class="math inline">\(p(\cdot)\)</span>. As a consequence the coefficients of that power series are absolutely summable.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn16"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 88</a>)</span>.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn17"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 110</a>)</span>.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn18"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span>.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn19"><p>To expand <span class="math inline">\(\phi(z)^{-1}\)</span> in a power series, define polynomial <span class="math inline">\(f(\cdot) = 1 - \phi(\cdot)\)</span> so that <span class="math inline">\(f(z) = \phi_1 z + \cdots + \phi_p z^p\)</span>. We then have <span class="math inline">\(\phi(z)^{-1} = (1 - f(z))^{-1}\)</span> as a geometric series in <span class="math inline">\(f(z)\)</span> which can be re-expressed as a power series in <span class="math inline">\(z\)</span>.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn20"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 92</a>)</span>.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn21"><p>Transform the second equation into the first as follows. For all time indices <span class="math inline">\(\nu\)</span> set <span class="math inline">\(U(\nu) = 5 V(\nu - 1)\)</span>, and then reverse time by setting <span class="math inline">\(Y'(\nu) = Y(- \nu)\)</span> and <span class="math inline">\(U'(\nu) = U(- \nu)\)</span>.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn22"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 93</a>)</span>.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn23"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 111</a>)</span>.<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn24"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 95</a>)</span>.<a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn25"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 97</a>)</span>.<a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn26"><p>The rational function <span class="math inline">\(\theta(z) \; \div \phi(z)\)</span> can be expressed as a power series, namely the power series of <span class="math inline">\(\phi(z)^{-1}\)</span> multiplied by the polynomial <span class="math inline">\(\theta(z)\)</span>.<a href="#fnref26" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn27"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 97</a>)</span>.<a href="#fnref27" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn28"><p>This inversion requires each root of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitude greater than unity.<a href="#fnref28" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn29"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 114</a>)</span> introduce the <span class="math inline">\(\Gamma\)</span> matrix.<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn30"><p>By “degenerate process” we mean a process <span class="math inline">\(X(\cdot)\)</span> for which there is a filter <span class="math inline">\(a(u)\)</span>, equal to zero for all but finitely many lags <span class="math inline">\(u\)</span>, that annihilates <span class="math inline">\(X(\cdot)\)</span>: <span class="math inline">\(a * (X - \mu_x) = 0\)</span>.<a href="#fnref30" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn31"><p>Any two time indices within the <span class="math inline">\(T\)</span> observations can differ by no more than <span class="math inline">\(T-1\)</span>. Yet the needed estimates include <span class="math inline">\(\gamma_X(T + u - 1 - j)\)</span>, with <span class="math inline">\(u \ge 1\)</span> and <span class="math inline">\(0 \le j &lt; T\)</span>. For <span class="math inline">\(u = 1\)</span> and <span class="math inline">\(j = 0\)</span> we have <span class="math inline">\(\gamma_X(T)\)</span>, which exceeds the limits of direct estimation.<a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn32"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span><a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn33"><p>When attempting to predict future values <span class="math inline">\(\mathcal{N} (u + t_f)\)</span> from data values indexed by <span class="math inline">\(t \in (t_0, \ldots, t_f)\)</span> the index symbol <span class="math inline">\(h\)</span> is often used in place of the generic indexing difference <span class="math inline">\(u\)</span> to denote forecast <em>horizon</em>.<a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn34"><p>Recall that the formula given here for the mean squared error of prediction assumes that the coefficients of the model and the parameters of the process are known. In applications these quantities must be estimated, which increases mean squared prediction error.<a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn35"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 119</a>)</span><a href="#fnref35" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn36"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 120</a>)</span>.<a href="#fnref36" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn37"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 103</a>)</span>.<a href="#fnref37" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn38"><p>The formula is obtained by expanding <span class="math inline">\(\frac{1 + \theta_1 z}{1 - \phi_1 z}\)</span> in a power series.<a href="#fnref38" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn39"><p>The simulation code is based on a similar example in <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a>.<a href="#fnref39" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn40"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn41"><p>From covariance calculations, <span class="math inline">\(\nabla \; W(\cdot)\)</span> is an <span class="math inline">\(AR(1)\)</span> process, which makes <span class="math inline">\(\nabla \; X(\cdot)\)</span> an <span class="math inline">\(AR(1)\)</span> process.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn42"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 148</a>)</span>.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn43"><p>We assume here that <span class="math inline">\(E \left \{ W(t) \; | \; \{ X(s) \}_{s &lt; t} \right \} = 0\)</span>.<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn44"><p>In the case <span class="math inline">\(u = 1\)</span> the sum is over an empty set of indices <span class="math inline">\(\nu\)</span> such that <span class="math inline">\(\nu \ge 1\)</span> and <span class="math inline">\(\nu \le 0\)</span>. We define such empty sums to be zero.<a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn45"><p>See <span class="citation" data-cites="hyndman2021forecasting">R. J. Hyndman and Athanasopoulos (<a href="#ref-hyndman2021forecasting" role="doc-biblioref">2021, chap. 8</a>)</span> and <span class="citation" data-cites="ryantibs2023timeseries">Tibshirani (<a href="#ref-ryantibs2023timeseries" role="doc-biblioref">2025, chap. 7</a>)</span>.<a href="#fnref45" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn46"><p>See <span class="citation" data-cites="holt1957forecasting">Holt (<a href="#ref-holt1957forecasting" role="doc-biblioref">2004</a>)</span> and <span class="citation" data-cites="winters1960forecasting">Winters (<a href="#ref-winters1960forecasting" role="doc-biblioref">1960</a>)</span>.<a href="#fnref46" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn47"><p><a href="#eq-ets-ANN-ss-wn" class="quarto-xref">Equation&nbsp;109</a> is the state-space version of <a href="#eq-SES-plus-wn" class="quarto-xref">Equation&nbsp;100</a>.<a href="#fnref47" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn48"><p>See <span class="citation" data-cites="hyndman2002state">Rob J. Hyndman et al. (<a href="#ref-hyndman2002state" role="doc-biblioref">2002</a>)</span>.<a href="#fnref48" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn49"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref49" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn50"><p>Another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>, treats a time series as a function of time, denoted <span class="math inline">\(X(t)\)</span>, which is the practice followed in this note.<a href="#fnref50" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn51"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref51" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>The filters described here are called “auto-regressive” or “finite impulse response”. Filtering is a large subject only touched on here.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 55</a>)</span>.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>The authors consider various forms for the function <span class="math inline">\(f(t)\)</span>: a linear function, a quadratic function, or a locally smoothed version of <span class="math inline">\(X_1(t)\)</span>.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>An ARMA model is said to be <em>causal</em> if the modeled process <span class="math inline">\(X(t)\)</span> can be expressed as a function of current and past white noise terms, <span class="math inline">\(\{ W(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 96</a>)</span>.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>A model is said to be <em>invertible</em> if the model’s white noise process <span class="math inline">\(W(t)\)</span> can be expressed as a function of current and past terms of the modeled process, <span class="math inline">\(\{ X(t-u) \}\)</span> for <span class="math inline">\(u \ge 0\)</span>. See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 94</a>)</span>.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Requiring the roots of a polynomial <span class="math inline">\(p(\cdot)\)</span> to be greater than unity in magnitude ensures that <span class="math inline">\(p(z)^{-1}\)</span> is finite and analytic for <span class="math inline">\(|z| \le 1\)</span> and thus has a power series expansion whose radius of convergence is the minimum magnitude of the roots of <span class="math inline">\(p(\cdot)\)</span>. As a consequence the coefficients of that power series are absolutely summable.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 88</a>)</span>.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 110</a>)</span>.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span>.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>To expand <span class="math inline">\(\phi(z)^{-1}\)</span> in a power series, define polynomial <span class="math inline">\(f(\cdot) = 1 - \phi(\cdot)\)</span> so that <span class="math inline">\(f(z) = \phi_1 z + \cdots + \phi_p z^p\)</span>. We then have <span class="math inline">\(\phi(z)^{-1} = (1 - f(z))^{-1}\)</span> as a geometric series in <span class="math inline">\(f(z)\)</span> which can be re-expressed as a power series in <span class="math inline">\(z\)</span>.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 92</a>)</span>.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>Transform the second equation into the first as follows. For all time indices <span class="math inline">\(\nu\)</span> set <span class="math inline">\(U(\nu) = 5 V(\nu - 1)\)</span>, and then reverse time by setting <span class="math inline">\(Y'(\nu) = Y(- \nu)\)</span> and <span class="math inline">\(U'(\nu) = U(- \nu)\)</span>.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn23"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 93</a>)</span>.<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn24"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 111</a>)</span>.<a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn25"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 95</a>)</span>.<a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn26"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 97</a>)</span>.<a href="#fnref26" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn27"><p>The rational function <span class="math inline">\(\theta(z) \; \div \phi(z)\)</span> can be expressed as a power series, namely the power series of <span class="math inline">\(\phi(z)^{-1}\)</span> multiplied by the polynomial <span class="math inline">\(\theta(z)\)</span>.<a href="#fnref27" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn28"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 97</a>)</span>.<a href="#fnref28" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn29"><p>This inversion requires each root of polynomial <span class="math inline">\(\theta(\cdot)\)</span> to have magnitude greater than unity.<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn30"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 114</a>)</span> introduce the <span class="math inline">\(\Gamma\)</span> matrix.<a href="#fnref30" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn31"><p>By “degenerate process” we mean a process <span class="math inline">\(X(\cdot)\)</span> for which there is a filter <span class="math inline">\(a(u)\)</span>, equal to zero for all but finitely many lags <span class="math inline">\(u\)</span>, that annihilates <span class="math inline">\(X(\cdot)\)</span>: <span class="math inline">\(a * (X - \mu_x) = 0\)</span>.<a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn32"><p>Any two time indices within the <span class="math inline">\(T\)</span> observations can differ by no more than <span class="math inline">\(T-1\)</span>. Yet the needed estimates include <span class="math inline">\(\gamma_X(T + u - 1 - j)\)</span>, with <span class="math inline">\(u \ge 1\)</span> and <span class="math inline">\(0 \le j &lt; T\)</span>. For <span class="math inline">\(u = 1\)</span> and <span class="math inline">\(j = 0\)</span> we have <span class="math inline">\(\gamma_X(T)\)</span>, which exceeds the limits of direct estimation.<a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn33"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 117</a>)</span><a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn34"><p>When attempting to predict future values <span class="math inline">\(\mathcal{N} (u + t_f)\)</span> from data values indexed by <span class="math inline">\(t \in (t_0, \ldots, t_f)\)</span> the index symbol <span class="math inline">\(h\)</span> is often used in place of the generic indexing difference <span class="math inline">\(u\)</span> to denote forecast <em>horizon</em>.<a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn35"><p>Recall that the formula given here for the mean squared error of prediction assumes that the coefficients of the model and the parameters of the process are known. In applications these quantities must be estimated, which increases mean squared prediction error.<a href="#fnref35" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn36"><p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 119</a>)</span><a href="#fnref36" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn37"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 120</a>)</span>.<a href="#fnref37" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn38"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 103</a>)</span>.<a href="#fnref38" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn39"><p>The formula is obtained by expanding <span class="math inline">\(\frac{1 + \theta_1 z}{1 - \phi_1 z}\)</span> in a power series.<a href="#fnref39" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn40"><p>The simulation code is based on a similar example in <a href="https://github.com/nickpoison/astsa/tree/master/fun_with_astsa">Fun with asta</a>.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn41"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 146</a>)</span>.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn42"><p>From covariance calculations, <span class="math inline">\(\nabla \; W(\cdot)\)</span> is an <span class="math inline">\(AR(1)\)</span> process, which makes <span class="math inline">\(\nabla \; X(\cdot)\)</span> an <span class="math inline">\(AR(1)\)</span> process.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn43"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 148</a>)</span>.<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn44"><p>We assume here that <span class="math inline">\(E \left \{ W(t) \; | \; \{ X(s) \}_{s &lt; t} \right \} = 0\)</span>.<a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn45"><p>In the case <span class="math inline">\(u = 1\)</span> the sum is over an empty set of indices <span class="math inline">\(\nu\)</span> such that <span class="math inline">\(\nu \ge 1\)</span> and <span class="math inline">\(\nu \le 0\)</span>. We define such empty sums to be zero.<a href="#fnref45" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn46"><p>See <span class="citation" data-cites="hyndman2021forecasting">R. J. Hyndman and Athanasopoulos (<a href="#ref-hyndman2021forecasting" role="doc-biblioref">2021, chap. 8</a>)</span> and <span class="citation" data-cites="ryantibs2023timeseries">Tibshirani (<a href="#ref-ryantibs2023timeseries" role="doc-biblioref">2025, chap. 7</a>)</span>.<a href="#fnref46" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn47"><p>See <span class="citation" data-cites="holt1957forecasting">Holt (<a href="#ref-holt1957forecasting" role="doc-biblioref">2004</a>)</span> and <span class="citation" data-cites="winters1960forecasting">Winters (<a href="#ref-winters1960forecasting" role="doc-biblioref">1960</a>)</span>.<a href="#fnref47" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn48"><p><a href="#eq-ets-ANN-ss-wn" class="quarto-xref">Equation&nbsp;109</a> is the state-space version of <a href="#eq-SES-plus-wn" class="quarto-xref">Equation&nbsp;100</a>.<a href="#fnref48" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn49"><p>See <span class="citation" data-cites="hyndman2002state">Rob J. Hyndman et al. (<a href="#ref-hyndman2002state" role="doc-biblioref">2002</a>)</span>.<a href="#fnref49" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn50"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref50" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn51"><p>Another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>, treats a time series as a function of time, denoted <span class="math inline">\(X(t)\)</span>, which is the practice followed in this note.<a href="#fnref51" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn52"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref52" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

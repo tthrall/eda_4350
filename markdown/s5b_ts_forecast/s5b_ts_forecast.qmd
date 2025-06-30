@@ -516,7 +516,9 @@ $$ {#eq-integrate}
 
 ### Filtering
 
-Running averages and successive differences are each an example of a linear, time-invariant *filter*, having the following general form.
+Running averages and successive differences are each an example of a linear, time-invariant *filter*, having the following general form.[^caveat-filter]
+
+[^caveat-filter]: The filters described here are called "auto-regressive" or "finite impulse response".  Filtering is a large subject only touched on here.
 
 $$
 \begin{align}
