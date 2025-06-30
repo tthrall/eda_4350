@@ -2147,7 +2147,13 @@ Exponential smoothing with trend and seasonality (ETS) is a modeling framework, 
 
 [^art-Holt-Winters]: See @holt1957forecasting and @winters1960forecasting.
 
-In this framework the forecast $\breve{X}(u + t \; | \; s \le t)$ consists of three components: level $\ell (t)$; local trend $\mathit{b} (t)$; and seasonality $\mathit{s} (u + t \; | \; s \le t)$, with $s, t \in \tau_T$.  The forecast equation expresses $\breve{X}(u + t \; | \; s \le t)$ as a linear combination of these components, and each component has its own linear equation.  Together these equations define a _state-space_ model.
+In this framework the forecast $\breve{X}(u + t \; | \; s \le t)$, with $s, t \in \tau_T$, consists of three components: 
+
+  - level $\ell (t)$; 
+  - local trend $\mathit{b} (t)$; and 
+  - seasonality $\mathscr{s} (u + t \; | \; s \le t)$.
+  
+The forecast equation expresses $\breve{X}(u + t \; | \; s \le t)$ as a linear combination of these components, and each component has its own linear equation.  Together these equations define a _state-space_ model.
 
 In this section we merely outline the ETS framework.  For further details see the cited resources.  Also, note that `R` function `fable::ETS()` selects and fits the models described in this section, requiring only modest guidance from the user.
 
@@ -2234,19 +2240,19 @@ $$ {#eq-ets-AAN-dampen-ss}
 
 #### Seasonal component
 
-Starting with @eq-ets-AAN-ss, we now add a seasonal component, $\mathit{s}(u + t \; | \; s \le t)$, where a fixed positive integer $\sigma$ denotes the number of successive time indices comprising a single season.  For $t, (u + t) \in \tau_T$ we fit $\mathit{s}(u + t \; | \; s \le t)$ recursively.  Then for $(u + t) > t_f$ we refer back to the most recent fitted value $\mathit{s} (\tilde{t})$ such that $\tilde{t} \equiv (u + t) \bmod \sigma$.
+Starting with @eq-ets-AAN-ss, we now add a seasonal component, $\mathscr{s}(u + t \; | \; s \le t)$, where a fixed positive integer $\sigma$ denotes the number of successive time indices comprising a single season.  For $t, (u + t) \in \tau_T$ we fit $\mathscr{s}(u + t \; | \; s \le t)$ recursively.  Then for $(u + t) > t_f$ we refer back to the most recent fitted value $\mathscr{s} (\tilde{t})$ such that $\tilde{t} \equiv (u + t) \bmod \sigma$.
 
 $$
 \begin{align}
-  \breve{X}(u + t \; | \; s \le t) &= \ell (t) \; + \; \mathit{b}(t) \times u \; + \; \mathit{s}(u + t \; | \; s \le t) \\
-  \ell (t) &= \alpha \; (X(t) - \mathit{s}(t - \sigma)) + (1 - \alpha) \; \left ( \ell(t - 1) + \mathit{b}(t - 1) \right ) \\ 
+  \breve{X}(u + t \; | \; s \le t) &= \ell (t) \; + \; \mathit{b}(t) \times u \; + \; \mathscr{s}(u + t \; | \; s \le t) \\
+  \ell (t) &= \alpha \; (X(t) - \mathscr{s}(t - \sigma)) + (1 - \alpha) \; \left ( \ell(t - 1) + \mathit{b}(t - 1) \right ) \\ 
   \mathit{b} (t) &= \beta \; \left ( \ell(t) - \ell(t - 1) \right ) \; + \; (1 - \beta) \; \mathit{b}(t - 1) \\ 
-  \mathit{s} (t) &= \gamma \left ( X(t) - \ell (t-1) - \mathit{b} (t-1) \right ) \; + \; (1 - \gamma) \mathit{s}(t - \sigma) \\ 
+  \mathscr{s} (t) &= \gamma \left ( X(t) - \ell (t-1) - \mathit{b} (t-1) \right ) \; + \; (1 - \gamma) \mathscr{s}(t - \sigma) \\ 
   \\ 
   &\text{where } \alpha, \beta, \gamma \in (0, 1)\\ 
   \\ 
   &\text{and where } \\ 
-  & \mathit{s}(u + t \; | \; s \le t) = \mathit{s} (\tilde{t}), \text{ with} \\ 
+  & \mathscr{s}(u + t \; | \; s \le t) = \mathscr{s} (\tilde{t}), \text{ with} \\ 
   & \tilde{t} \equiv (u + t) \bmod \sigma, \text{ and with}  \\
   & \tilde{t} \in (t - \sigma, \; t]
 \end{align}
@@ -2273,7 +2279,7 @@ Here are some examples of this scheme.
   - ETS(A, A, A): Holt-Winters with additive seasonality
   - ETS(A, A, M): Holt-Winters with multiplicative seasonality
 
-Note: @hyndman2021forecasting recommend against certain combinations that may lead to numerical instability when estimating parameters.  For example they recommend using $ETS(M, *, M)$ rather than $ETS(A, *, M)$.  Much of this guidance is contained in the documentation (and curated options) for function `fable:ETS()`.
+Note: @hyndman2021forecasting warn that certain combinations may lead to numerical instability when estimating parameters.  For example they recommend using $ETS(M, *, M)$ rather than $ETS(A, *, M)$.  Much of this guidance is contained in the documentation (and curated options) for function `fable:ETS()`.
 
 ### CO2 Example[^txt-CO2-Mauna-Loa]
 

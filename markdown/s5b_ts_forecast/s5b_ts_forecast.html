@@ -185,7 +185,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">17:20 Mon 30-Jun-2025</p>
+      <p class="date">18:11 Mon 30-Jun-2025</p>
     </div>
   </div>
   
@@ -1666,7 +1666,13 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 <section id="ets-intro" class="level4">
 <h4 class="anchored" data-anchor-id="ets-intro">ETS Intro</h4>
 <p>Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses.<a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a></p>
-<p>In this framework the forecast <span class="math inline">\(\breve{X}(u + t \; | \; s \le t)\)</span> consists of three components: level <span class="math inline">\(\ell (t)\)</span>; local trend <span class="math inline">\(\mathit{b} (t)\)</span>; and seasonality <span class="math inline">\(\mathit{s} (u + t \; | \; s \le t)\)</span>, with <span class="math inline">\(s, t \in \tau_T\)</span>. The forecast equation expresses <span class="math inline">\(\breve{X}(u + t \; | \; s \le t)\)</span> as a linear combination of these components, and each component has its own linear equation. Together these equations define a <em>state-space</em> model.</p>
+<p>In this framework the forecast <span class="math inline">\(\breve{X}(u + t \; | \; s \le t)\)</span>, with <span class="math inline">\(s, t \in \tau_T\)</span>, consists of three components:</p>
+<ul>
+<li>level <span class="math inline">\(\ell (t)\)</span>;</li>
+<li>local trend <span class="math inline">\(\mathit{b} (t)\)</span>; and</li>
+<li>seasonality <span class="math inline">\(\mathscr{s} (u + t \; | \; s \le t)\)</span>.</li>
+</ul>
+<p>The forecast equation expresses <span class="math inline">\(\breve{X}(u + t \; | \; s \le t)\)</span> as a linear combination of these components, and each component has its own linear equation. Together these equations define a <em>state-space</em> model.</p>
 <p>In this section we merely outline the ETS framework. For further details see the cited resources. Also, note that <code>R</code> function <code>fable::ETS()</code> selects and fits the models described in this section, requiring only modest guidance from the user.</p>
 </section>
 <section id="level-component" class="level4">
@@ -1738,18 +1744,18 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </section>
 <section id="seasonal-component" class="level4">
 <h4 class="anchored" data-anchor-id="seasonal-component">Seasonal component</h4>
-<p>Starting with <a href="#eq-ets-AAN-ss" class="quarto-xref">Equation&nbsp;110</a>, we now add a seasonal component, <span class="math inline">\(\mathit{s}(u + t \; | \; s \le t)\)</span>, where a fixed positive integer <span class="math inline">\(\sigma\)</span> denotes the number of successive time indices comprising a single season. For <span class="math inline">\(t, (u + t) \in \tau_T\)</span> we fit <span class="math inline">\(\mathit{s}(u + t \; | \; s \le t)\)</span> recursively. Then for <span class="math inline">\((u + t) &gt; t_f\)</span> we refer back to the most recent fitted value <span class="math inline">\(\mathit{s} (\tilde{t})\)</span> such that <span class="math inline">\(\tilde{t} \equiv (u + t) \bmod \sigma\)</span>.</p>
+<p>Starting with <a href="#eq-ets-AAN-ss" class="quarto-xref">Equation&nbsp;110</a>, we now add a seasonal component, <span class="math inline">\(\mathscr{s}(u + t \; | \; s \le t)\)</span>, where a fixed positive integer <span class="math inline">\(\sigma\)</span> denotes the number of successive time indices comprising a single season. For <span class="math inline">\(t, (u + t) \in \tau_T\)</span> we fit <span class="math inline">\(\mathscr{s}(u + t \; | \; s \le t)\)</span> recursively. Then for <span class="math inline">\((u + t) &gt; t_f\)</span> we refer back to the most recent fitted value <span class="math inline">\(\mathscr{s} (\tilde{t})\)</span> such that <span class="math inline">\(\tilde{t} \equiv (u + t) \bmod \sigma\)</span>.</p>
 <p><span id="eq-ets-AAA-ss"><span class="math display">\[
 \begin{align}
-  \breve{X}(u + t \; | \; s \le t) &amp;= \ell (t) \; + \; \mathit{b}(t) \times u \; + \; \mathit{s}(u + t \; | \; s \le t) \\
-  \ell (t) &amp;= \alpha \; (X(t) - \mathit{s}(t - \sigma)) + (1 - \alpha) \; \left ( \ell(t - 1) + \mathit{b}(t - 1) \right ) \\
+  \breve{X}(u + t \; | \; s \le t) &amp;= \ell (t) \; + \; \mathit{b}(t) \times u \; + \; \mathscr{s}(u + t \; | \; s \le t) \\
+  \ell (t) &amp;= \alpha \; (X(t) - \mathscr{s}(t - \sigma)) + (1 - \alpha) \; \left ( \ell(t - 1) + \mathit{b}(t - 1) \right ) \\
   \mathit{b} (t) &amp;= \beta \; \left ( \ell(t) - \ell(t - 1) \right ) \; + \; (1 - \beta) \; \mathit{b}(t - 1) \\
-  \mathit{s} (t) &amp;= \gamma \left ( X(t) - \ell (t-1) - \mathit{b} (t-1) \right ) \; + \; (1 - \gamma) \mathit{s}(t - \sigma) \\
+  \mathscr{s} (t) &amp;= \gamma \left ( X(t) - \ell (t-1) - \mathit{b} (t-1) \right ) \; + \; (1 - \gamma) \mathscr{s}(t - \sigma) \\
   \\
   &amp;\text{where } \alpha, \beta, \gamma \in (0, 1)\\
   \\
   &amp;\text{and where } \\
-  &amp; \mathit{s}(u + t \; | \; s \le t) = \mathit{s} (\tilde{t}), \text{ with} \\
+  &amp; \mathscr{s}(u + t \; | \; s \le t) = \mathscr{s} (\tilde{t}), \text{ with} \\
   &amp; \tilde{t} \equiv (u + t) \bmod \sigma, \text{ and with}  \\
   &amp; \tilde{t} \in (t - \sigma, \; t]
 \end{align}
@@ -1773,7 +1779,7 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 <li>ETS(A, A, A): Holt-Winters with additive seasonality</li>
 <li>ETS(A, A, M): Holt-Winters with multiplicative seasonality</li>
 </ul>
-<p>Note: <span class="citation" data-cites="hyndman2021forecasting">R. J. Hyndman and Athanasopoulos (<a href="#ref-hyndman2021forecasting" role="doc-biblioref">2021</a>)</span> recommend against certain combinations that may lead to numerical instability when estimating parameters. For example they recommend using <span class="math inline">\(ETS(M, *, M)\)</span> rather than <span class="math inline">\(ETS(A, *, M)\)</span>. Much of this guidance is contained in the documentation (and curated options) for function <code>fable:ETS()</code>.</p>
+<p>Note: <span class="citation" data-cites="hyndman2021forecasting">R. J. Hyndman and Athanasopoulos (<a href="#ref-hyndman2021forecasting" role="doc-biblioref">2021</a>)</span> warn that certain combinations may lead to numerical instability when estimating parameters. For example they recommend using <span class="math inline">\(ETS(M, *, M)\)</span> rather than <span class="math inline">\(ETS(A, *, M)\)</span>. Much of this guidance is contained in the documentation (and curated options) for function <code>fable:ETS()</code>.</p>
 </section>
 </section>
 <section id="co2-exampletxt-co2-mauna-loa" class="level3">
