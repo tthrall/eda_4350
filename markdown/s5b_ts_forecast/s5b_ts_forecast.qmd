@@ -2130,7 +2130,7 @@ $$
 \end{align}
 $$ {#eq-ets-ANN-ss-wn}
 
-The white noise term $W(t)$ is also called an error term, and this state space model is said to have _additive error_.
+The white noise term $W(t)$ is also called an error term, and this state space model is said to have _additive error_.  Equivalently, the level component $\ell (\cdot)$ is said to be additive.
 
 #### Trend component
 
