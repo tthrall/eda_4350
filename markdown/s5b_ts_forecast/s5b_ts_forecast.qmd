@@ -2157,7 +2157,7 @@ We begin with simple exponential smoothing (SES), which entails the level compon
 
 $$
 \begin{align}
-  \breve{X} \left ( 1 + t \; | \; [t_0, \; t] \cap \tau_T \right ) &= 
+  \breve{X} \left ( t + 1 \; | \; [t_0, \; t] \cap \tau_T \right ) &= 
   \begin{cases}
     X(t_0) & \text{for } t = t_0 \\ 
     \alpha \; X(t) + (1 - \alpha) \breve{X}(t \; | \; [t_0, \; t - 1] & \text{for } t_0 < t < t_f \\ 
@@ -2168,16 +2168,29 @@ $$
 \end{align}
 $$ {#eq-ets-ANN-one-step-recur-alpha}
 
-Now setting aside these boundary conditons for the moment, the state-space form of this linear recursion is as follows.
+Now setting aside these boundary conditions for the moment, the state-space form of this linear recursion is as follows.
 
 $$
 \begin{align}
-  \breve{X}(u + t \; | \; s \le t) &= \ell (t) \\
+  \breve{X}(t + 1 \; | \; s \le t) &= \ell (t) \\
   \ell (t) &= \alpha \; X(t) + (1 - \alpha) \; \ell (t - 1)
 \end{align}
 $$ {#eq-ets-ANN-ss}
 
-where $\ell (t)$ predicts $X(t + 1)$ based on $\{ X(s) \}_{s \le t}$.  We model the difference $X(t) - \ell (t - 1)$ as a Gaussian white noise process, $W(t)$.
+where $\ell (t)$ predicts $X(t + 1)$ based on $\{ X(s) \}_{s \le t}$.
+
+From @eq-EWMA-flatline and @eq-ets-ANN-one-step-recur-alpha we see that for $u \ge 1$, $\breve{X}(t + u \; | \; s \le t)$ reverts to $\breve{X}(t + 1 \; | \; s \le t)$. Thus we have 
+
+$$
+\begin{align}
+  \breve{X}(t + u \; | \; s \le t) &= \ell (t) \\
+  \ell (t) &= \alpha \; X(t) + (1 - \alpha) \; \ell (t - 1)
+\end{align}
+$$ {#eq-ets-ANN-u-steps-ahead}
+
+We model the difference $X(t) - \ell (t - 1)$ as a Gaussian white noise process, $W(t)$. [^cf-eq-SES-plus-wn]
+
+[^cf-eq-SES-plus-wn]: @eq-ets-ANN-ss-wn is the state-space version of @eq-SES-plus-wn.
 
 $$
 \begin{align}
@@ -2199,7 +2212,7 @@ We now add a trend component, $\mathit{b} (t)$, to this system as follows.
 
 $$
 \begin{align}
-  \breve{X}(u + t \; | \; s \le t) &= \ell (t) \; + \; \mathit{b}(t) \times u \\
+  \breve{X}(t + u \; | \; s \le t) &= \ell (t) \; + \; \mathit{b}(t) \times u \\
   \ell (t) &= \alpha \; X(t) + (1 - \alpha) \; \left ( \ell(t - 1) + \mathit{b}(t - 1) \right ) \\ 
   \mathit{b} (t) &= \beta \; \left ( \ell(t) - \ell(t - 1) \right ) \; + \; (1 - \beta) \; \mathit{b}(t - 1) \\ 
   \\ 
@@ -2241,18 +2254,18 @@ $$ {#eq-ets-AAA-ss}
 
 #### ETS model designation
 
-Each ETS model can be categorized according to the status of each potential model component: level, trend, and season.[^art-ETS-categories]
+Each ETS model can be categorized according to the status of model components level, trend, and season.[^art-ETS-categories]
 
 [^art-ETS-categories]: See @hyndman2002state.
 
 The status of a component is one of the following:
 
-  - A: used as an additive component
-  - Ad: damped or otherwise adjusted
-  - M: used as a multiplicative component
-  - N: not used
+  - $\mathbf{A}$: used as an additive component
+  - $\mathbf{Ad}$: damped or otherwise adjusted
+  - $\mathbf{M}$: used as a multiplicative component
+  - $\mathbf{N}$: not used
 
-Here are some examples of this identification of ETS model-type.
+Here are some examples of this scheme.
 
   - ETS(A, N, N): simple exponential smoothing
   - ETS(A, A, N): Holt’s linear trend method
