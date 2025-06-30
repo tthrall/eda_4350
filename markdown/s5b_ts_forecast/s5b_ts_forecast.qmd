@@ -2088,33 +2088,26 @@ Exponential smoothing with trend and seasonality (ETS) is a modeling framework, 
 
 In this framework the forecast $\breve{X}(u + t \; | \; s \le t)$ consists of three components: level $\ell (t)$; local trend $\mathit{b} (t)$; and seasonality $\mathit{s} (u + t \; | \; s \le t)$, with $s, t \in \tau_T$.  The forecast equation expresses $\breve{X}(u + t \; | \; s \le t)$ as a linear combination of these components, and each component has its own linear equation.  Together these equations define a _state-space_ model.
 
-In this section we merely outline the ETS framework.  For further details see the cited resources.  Also, note that `R` function `fable::ETS()` selects and fits the models described in this section with modest guidance from the user.
+In this section we merely outline the ETS framework.  For further details see the cited resources.  Also, note that `R` function `fable::ETS()` selects and fits the models described in this section, requiring only modest guidance from the user.
 
 #### Level component
 
-We begin with simple exponential smoothing (SES), which entails the level component $\ell(\cdot)$ alone.  We re-express the one step ahead forecast recursion from the previous section (@eq-tp-one-step-recur) by setting $\alpha = 1 - \lambda$, and restricting $\alpha$ to the open unit interval.
+We begin with simple exponential smoothing (SES), which entails the level component $\ell(\cdot)$ alone.  We now combine results from the previous section and change parameters by setting $\alpha = 1 - \lambda$, with $\alpha$ restricted to the open unit interval.  Then we have the following linear recursion for the one step ahead predictor.
 
 $$
 \begin{align}
   \breve{X}(1 + t \; | \; s \le t) &= 
   \begin{cases}
     X(t_0) & \text{for } t = t_0 \\ 
-    \alpha \; X(t) + (1 - \alpha) \; \breve{X}(t \; | \; s \le t-1) & \text{for } t_0 < t \le t_f
+    \alpha \; X(t) + (1 - \alpha) \; \breve{X}(t \; | \; s \le t-1) & \text{for } t_0 < t \le t_f \\ 
+    X(t_f) & \text{for } t > t_f
   \end{cases} \\ 
   \\ 
   &\text{where } \alpha \in (0, 1)
 \end{align}
 $$ {#eq-ets-ANN-one-step-recur-alpha}
 
-From the previous section we know that a forecast beyond the data is simply the final data value.
-
-$$
-\begin{align}
-  \breve{X}(u + t_f \; | \; \tau_T) &= X(t_f) \quad \text{for } u > 1
-\end{align}
-$$ {#eq-ets-ANN-flatline}
-
-The state-space or component form of this recursion is as follows (with boundary conditions to be set for $\ell (\cdot)$).
+Now setting aside these boundary conditons for the moment, the state-space form of this linear recursion is as follows.
 
 $$
 \begin{align}
@@ -2122,6 +2115,22 @@ $$
   \ell (t) &= \alpha \; X(t) + (1 - \alpha) \; \ell (t - 1)
 \end{align}
 $$ {#eq-ets-ANN-ss}
+
+where $\ell (t)$ predicts $X(t + 1)$ based on $\{ X(s) \}_{s \le t}$.  We model the difference $X(t) - \ell (t - 1)$ as a Gaussian white noise process, $W(t)$.
+
+$$
+\begin{align}
+  W(t) &= X(t) - \ell (t - 1) \\ 
+  \\ 
+  & \text{so that } \\ 
+  \\ 
+  X(t) &= \ell(t-1) + W(t) \\ 
+  \\ 
+  & \text{with } W(\cdot) \sim \text{iid } N(0, \sigma_W^2)
+\end{align}
+$$ {#eq-ets-ANN-ss-wn}
+
+The white noise term $W(t)$ is also called an error term, and this state space model is said to have _additive error_.
 
 #### Trend component
 
@@ -2137,7 +2146,7 @@ $$
 \end{align}
 $$ {#eq-ets-AAN-ss}
 
-This above forecast system is known as Holt's trend method.  Over the years a modification has been introduced to dampen the effect of the trend term $\mathit{b}(t)$ on long-term forecasts, via damping coefficient $\phi \in (0, 1)$, as follows.
+This forecast system is known as Holt's trend method, published decades ago.  Since then a modification has been introduced to dampen the effect of the trend term $\mathit{b}(t)$ on long-term forecasts, via damping coefficient $\phi \in (0, 1)$, as follows.
 
 $$
 \begin{align}

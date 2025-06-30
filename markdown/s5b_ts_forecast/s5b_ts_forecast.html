@@ -185,7 +185,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">21:11 Sun 29-Jun-2025</p>
+      <p class="date">01:45 Mon 30-Jun-2025</p>
     </div>
   </div>
   
@@ -1623,35 +1623,43 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 <h4 class="anchored" data-anchor-id="ets-intro">ETS Intro</h4>
 <p>Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses.<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a></p>
 <p>In this framework the forecast <span class="math inline">\(\breve{X}(u + t \; | \; s \le t)\)</span> consists of three components: level <span class="math inline">\(\ell (t)\)</span>; local trend <span class="math inline">\(\mathit{b} (t)\)</span>; and seasonality <span class="math inline">\(\mathit{s} (u + t \; | \; s \le t)\)</span>, with <span class="math inline">\(s, t \in \tau_T\)</span>. The forecast equation expresses <span class="math inline">\(\breve{X}(u + t \; | \; s \le t)\)</span> as a linear combination of these components, and each component has its own linear equation. Together these equations define a <em>state-space</em> model.</p>
-<p>In this section we merely outline the ETS framework. For further details see the cited resources. Also, note that <code>R</code> function <code>fable::ETS()</code> selects and fits the models described in this section with modest guidance from the user.</p>
+<p>In this section we merely outline the ETS framework. For further details see the cited resources. Also, note that <code>R</code> function <code>fable::ETS()</code> selects and fits the models described in this section, requiring only modest guidance from the user.</p>
 </section>
 <section id="level-component" class="level4">
 <h4 class="anchored" data-anchor-id="level-component">Level component</h4>
-<p>We begin with simple exponential smoothing (SES), which entails the level component <span class="math inline">\(\ell(\cdot)\)</span> alone. We re-express the one step ahead forecast recursion from the previous section (<a href="#eq-tp-one-step-recur" class="quarto-xref">Equation&nbsp;99</a>) by setting <span class="math inline">\(\alpha = 1 - \lambda\)</span>, and restricting <span class="math inline">\(\alpha\)</span> to the open unit interval.</p>
+<p>We begin with simple exponential smoothing (SES), which entails the level component <span class="math inline">\(\ell(\cdot)\)</span> alone. We now combine results from the previous section and change parameters by setting <span class="math inline">\(\alpha = 1 - \lambda\)</span>, with <span class="math inline">\(\alpha\)</span> restricted to the open unit interval. Then we have the following linear recursion for the one step ahead predictor.</p>
 <p><span id="eq-ets-ANN-one-step-recur-alpha"><span class="math display">\[
 \begin{align}
   \breve{X}(1 + t \; | \; s \le t) &amp;=
   \begin{cases}
     X(t_0) &amp; \text{for } t = t_0 \\
-    \alpha \; X(t) + (1 - \alpha) \; \breve{X}(t \; | \; s \le t-1) &amp; \text{for } t_0 &lt; t \le t_f
+    \alpha \; X(t) + (1 - \alpha) \; \breve{X}(t \; | \; s \le t-1) &amp; \text{for } t_0 &lt; t \le t_f \\
+    X(t_f) &amp; \text{for } t &gt; t_f
   \end{cases} \\
   \\
   &amp;\text{where } \alpha \in (0, 1)
 \end{align}
 \tag{100}\]</span></span></p>
-<p>From the previous section we know that a forecast beyond the data is simply the final data value.</p>
-<p><span id="eq-ets-ANN-flatline"><span class="math display">\[
-\begin{align}
-  \breve{X}(u + t_f \; | \; \tau_T) &amp;= X(t_f) \quad \text{for } u &gt; 1
-\end{align}
-\tag{101}\]</span></span></p>
-<p>The state-space or component form of this recursion is as follows (with boundary conditions to be set for <span class="math inline">\(\ell (\cdot)\)</span>).</p>
+<p>Now setting aside these boundary conditons for the moment, the state-space form of this linear recursion is as follows.</p>
 <p><span id="eq-ets-ANN-ss"><span class="math display">\[
 \begin{align}
   \breve{X}(u + t \; | \; s \le t) &amp;= \ell (t) \\
   \ell (t) &amp;= \alpha \; X(t) + (1 - \alpha) \; \ell (t - 1)
 \end{align}
+\tag{101}\]</span></span></p>
+<p>where <span class="math inline">\(\ell (t)\)</span> predicts <span class="math inline">\(X(t + 1)\)</span> based on <span class="math inline">\(\{ X(s) \}_{s \le t}\)</span>. We model the difference <span class="math inline">\(X(t) - \ell (t - 1)\)</span> as a Gaussian white noise process, <span class="math inline">\(W(t)\)</span>.</p>
+<p><span id="eq-ets-ANN-ss-wn"><span class="math display">\[
+\begin{align}
+  W(t) &amp;= X(t) - \ell (t - 1) \\
+  \\
+  &amp; \text{so that } \\
+  \\
+  X(t) &amp;= \ell(t-1) + W(t) \\
+  \\
+  &amp; \text{with } W(\cdot) \sim \text{iid } N(0, \sigma_W^2)
+\end{align}
 \tag{102}\]</span></span></p>
+<p>The white noise term <span class="math inline">\(W(t)\)</span> is also called an error term, and this state space model is said to have <em>additive error</em>.</p>
 </section>
 <section id="trend-component" class="level4">
 <h4 class="anchored" data-anchor-id="trend-component">Trend component</h4>
@@ -1665,7 +1673,7 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
   &amp;\text{where } \alpha, \beta \in (0, 1)
 \end{align}
 \tag{103}\]</span></span></p>
-<p>This above forecast system is known as Holt’s trend method. Over the years a modification has been introduced to dampen the effect of the trend term <span class="math inline">\(\mathit{b}(t)\)</span> on long-term forecasts, via damping coefficient <span class="math inline">\(\phi \in (0, 1)\)</span>, as follows.</p>
+<p>This forecast system is known as Holt’s trend method, published decades ago. Since then a modification has been introduced to dampen the effect of the trend term <span class="math inline">\(\mathit{b}(t)\)</span> on long-term forecasts, via damping coefficient <span class="math inline">\(\phi \in (0, 1)\)</span>, as follows.</p>
 <p><span id="eq-ets-AAN-dampen-ss"><span class="math display">\[
 \begin{align}
   \breve{X}(u + t \; | \; s \le t) &amp;= \ell (t) \; + \; \mathit{b}(t) \times \sum_{\nu = 1}^u \phi^\nu \\
