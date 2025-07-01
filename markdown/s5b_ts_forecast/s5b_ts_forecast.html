@@ -145,8 +145,9 @@ window.Quarto = {
   <li><a href="#arimap-d-q" id="toc-arimap-d-q" class="nav-link" data-scroll-target="#arimap-d-q">ARIMA(p, d, q)</a></li>
   <li><a href="#random-walk-with-drift" id="toc-random-walk-with-drift" class="nav-link" data-scroll-target="#random-walk-with-drift">Random Walk with Drift</a></li>
   <li><a href="#sec-EWMA" id="toc-sec-EWMA" class="nav-link" data-scroll-target="#sec-EWMA">EWMA Example</a></li>
-  <li><a href="#ets-book-ets" id="toc-ets-book-ets" class="nav-link" data-scroll-target="#ets-book-ets">ETS </a></li>
-  <li><a href="#co2-exampletxt-co2-mauna-loa" id="toc-co2-exampletxt-co2-mauna-loa" class="nav-link" data-scroll-target="#co2-exampletxt-co2-mauna-loa">CO2 Example</a></li>
+  <li><a href="#sec-ETS" id="toc-sec-ETS" class="nav-link" data-scroll-target="#sec-ETS">ETS</a></li>
+  <li><a href="#seasonal-arima-models-txt-arima-seasonal" id="toc-seasonal-arima-models-txt-arima-seasonal" class="nav-link" data-scroll-target="#seasonal-arima-models-txt-arima-seasonal">Seasonal ARIMA Models </a></li>
+  <li><a href="#co2-example-txt-co2-mauna-loa" id="toc-co2-example-txt-co2-mauna-loa" class="nav-link" data-scroll-target="#co2-example-txt-co2-mauna-loa">CO2 Example </a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#a-glossary-of-math-symbols" id="toc-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#a-glossary-of-math-symbols">A: Glossary of Math Symbols</a></li>
@@ -185,7 +186,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">18:21 Mon 30-Jun-2025</p>
+      <p class="date">01:01 Tue 1-Jul-2025</p>
     </div>
   </div>
   
@@ -1661,11 +1662,11 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </div>
 </div>
 </section>
-<section id="ets-book-ets" class="level3">
-<h3 class="anchored" data-anchor-id="ets-book-ets">ETS <a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a></h3>
+<section id="sec-ETS" class="level3">
+<h3 class="anchored" data-anchor-id="sec-ETS">ETS</h3>
 <section id="ets-intro" class="level4">
 <h4 class="anchored" data-anchor-id="ets-intro">ETS Intro</h4>
-<p>Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses.<a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a></p>
+<p>Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses. <a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a> <a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a></p>
 <p>In this framework the forecast <span class="math inline">\(\breve{X}(u + t \; | \; s \le t)\)</span>, with <span class="math inline">\(s, t \in \tau_T\)</span>, consists of three components:</p>
 <ul>
 <li>level <span class="math inline">\(\ell (t)\)</span>;</li>
@@ -1782,13 +1783,28 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 <p>Note: <span class="citation" data-cites="hyndman2021forecasting">R. J. Hyndman and Athanasopoulos (<a href="#ref-hyndman2021forecasting" role="doc-biblioref">2021</a>)</span> warn that certain combinations may lead to numerical instability when estimating parameters. For example they recommend using <span class="math inline">\(ETS(M, *, M)\)</span> rather than <span class="math inline">\(ETS(A, *, M)\)</span>. Much of this guidance is contained in the documentation (and curated options) for function <code>fable:ETS()</code>.</p>
 </section>
 </section>
-<section id="co2-exampletxt-co2-mauna-loa" class="level3">
-<h3 class="anchored" data-anchor-id="co2-exampletxt-co2-mauna-loa">CO2 Example<a href="#fn50" class="footnote-ref" id="fnref50" role="doc-noteref"><sup>50</sup></a></h3>
+<section id="seasonal-arima-models-txt-arima-seasonal" class="level3">
+<h3 class="anchored" data-anchor-id="seasonal-arima-models-txt-arima-seasonal">Seasonal ARIMA Models <a href="#fn50" class="footnote-ref" id="fnref50" role="doc-noteref"><sup>50</sup></a></h3>
+<p>Both societies and natural phenomena follow cycles determined by earth’s daily rotation and annual revolution about the sun. Other cycles also arise naturally or through societal conventions. In modeling a random process one can account for these cycles in several ways. In this section we introduce methods and notation for incorporating seasonality into ARIMA models.</p>
+<p>As in <a href="#sec-ETS" class="quarto-xref">Section&nbsp;8.4</a> we denote by <span class="math inline">\(\sigma\)</span> the number of consecutive time indices that comprise one season (or cycle). <span class="math inline">\(ARMA(P, Q)_\sigma\)</span> (with capital letters and a <span class="math inline">\(\sigma\)</span> subscript) denotes the following form of pure seasonal ARMA model.</p>
+<p><span id="eq-ARMA-pure-seasonal"><span class="math display">\[
+\begin{align}
+  \Phi ( \mathcal{B}^\sigma ) \; X(t) &amp;= \Theta ( \mathcal{B}^\sigma ) \; W(t) \\
+  \\
+  &amp; \text{where } \\
+  \\
+  \Phi (z) &amp;= 1 - \sum_{j = 1}^P \Phi_j z^j \\
+  \Theta (z) &amp;= 1 - \sum_{k = 1}^Q \Theta_k z^k
+\end{align}
+\tag{113}\]</span></span></p>
+</section>
+<section id="co2-example-txt-co2-mauna-loa" class="level3">
+<h3 class="anchored" data-anchor-id="co2-example-txt-co2-mauna-loa">CO2 Example <a href="#fn51" class="footnote-ref" id="fnref51" role="doc-noteref"><sup>51</sup></a></h3>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
-<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn51" class="footnote-ref" id="fnref51" role="doc-noteref"><sup>51</sup></a></p>
+<p>This technical introduces families and examples of models used to forecast time series data. The presentation is based on <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025</a>)</span> along with the supporting <code>R</code> package <code>astsa</code> <span class="citation" data-cites="astsa">(<a href="#ref-astsa" role="doc-biblioref">Stoffer 2025</a>)</span>.<a href="#fn52" class="footnote-ref" id="fnref52" role="doc-noteref"><sup>52</sup></a></p>
 <p>This introduction does not address the building and evaluation of time series models, leaving that for another time. Here are some online resources for those interested.</p>
 <ul>
 <li><a href="https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer">Regression and Time Series Primer</a> gives a more detailed introduction to the topics presented here.</li>
@@ -1956,7 +1972,7 @@ Figure&nbsp;8: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn52" class="footnote-ref" id="fnref52" role="doc-noteref"><sup>52</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn53" class="footnote-ref" id="fnref53" role="doc-noteref"><sup>53</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2105,9 +2121,10 @@ Winters, Peter R. 1960. <span>“Forecasting Sales by Exponentially Weighted Mov
 <li id="fn47"><p>See <span class="citation" data-cites="holt1957forecasting">Holt (<a href="#ref-holt1957forecasting" role="doc-biblioref">2004</a>)</span> and <span class="citation" data-cites="winters1960forecasting">Winters (<a href="#ref-winters1960forecasting" role="doc-biblioref">1960</a>)</span>.<a href="#fnref47" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn48"><p><a href="#eq-ets-ANN-ss-wn" class="quarto-xref">Equation&nbsp;109</a> is the state-space version of <a href="#eq-SES-plus-wn" class="quarto-xref">Equation&nbsp;100</a>.<a href="#fnref48" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn49"><p>See <span class="citation" data-cites="hyndman2002state">Rob J. Hyndman et al. (<a href="#ref-hyndman2002state" role="doc-biblioref">2002</a>)</span>.<a href="#fnref49" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn50"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref50" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn51"><p>Another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>, treats a time series as a function of time, denoted <span class="math inline">\(X(t)\)</span>, which is the practice followed in this note.<a href="#fnref51" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn52"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref52" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn50"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 157</a>)</span>.<a href="#fnref50" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn51"><p>See <span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 163</a>)</span>.<a href="#fnref51" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn52"><p>Another textbook, <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>)</span>, treats a time series as a function of time, denoted <span class="math inline">\(X(t)\)</span>, which is the practice followed in this note.<a href="#fnref52" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn53"><p>The return is here calculated as <span class="math inline">\(log_e\)</span> of the ratio: current day’s closing price divided by that of the preceding day. The median value is about 6 basis points.<a href="#fnref53" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

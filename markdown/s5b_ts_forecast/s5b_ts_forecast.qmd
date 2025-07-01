@@ -2139,13 +2139,13 @@ g_ima <- ima_tbl |>
 g_ima
 ```
 
-### ETS [^book-ETS] 
-
-[^book-ETS]: See @hyndman2021forecasting [chapter 8] and @ryantibs2023timeseries [chapter 7].
+### ETS {#sec-ETS} 
 
 #### ETS Intro
 
-Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses.[^art-Holt-Winters]
+Exponential smoothing with trend and seasonality (ETS) is a modeling framework, distinct from ARIMA, based on Holt-Winters forecasting, which is widely used in economic analyses. [^book-ETS] [^art-Holt-Winters]
+
+[^book-ETS]: See @hyndman2021forecasting [chapter 8] and @ryantibs2023timeseries [chapter 7].
 
 [^art-Holt-Winters]: See @holt1957forecasting and @winters1960forecasting.
 
@@ -2283,7 +2283,26 @@ Here are some examples of this scheme.
 
 Note: @hyndman2021forecasting warn that certain combinations may lead to numerical instability when estimating parameters.  For example they recommend using $ETS(M, *, M)$ rather than $ETS(A, *, M)$.  Much of this guidance is contained in the documentation (and curated options) for function `fable:ETS()`.
 
-### CO2 Example[^txt-CO2-Mauna-Loa]
+### Seasonal ARIMA Models [^txt-ARIMA-seasonal]
+
+[^txt-ARIMA-seasonal]: See @shumway2025 [p. 157].
+
+Both societies and natural phenomena follow cycles determined by earth's daily rotation and annual revolution about the sun.  Other cycles also arise naturally or through societal conventions.  In modeling a random process one can account for these cycles in several ways.  In this section we introduce methods and notation for incorporating seasonality into ARIMA models.
+
+As in @sec-ETS we denote by $\sigma$ the number of consecutive time indices that comprise one season (or cycle).  $ARMA(P, Q)_\sigma$ (with capital letters and a $\sigma$ subscript) denotes the following form of pure seasonal ARMA model.
+
+$$
+\begin{align}
+  \Phi ( \mathcal{B}^\sigma ) \; X(t) &= \Theta ( \mathcal{B}^\sigma ) \; W(t) \\ 
+  \\ 
+  & \text{where } \\ 
+  \\ 
+  \Phi (z) &= 1 - \sum_{j = 1}^P \Phi_j z^j \\ 
+  \Theta (z) &= 1 - \sum_{k = 1}^Q \Theta_k z^k
+\end{align}
+$$ {#eq-ARMA-pure-seasonal}
+
+### CO2 Example [^txt-CO2-Mauna-Loa]
 
 [^txt-CO2-Mauna-Loa]: See @shumway2025 [p. 163].
 
