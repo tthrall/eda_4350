@@ -186,7 +186,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">14:40 Tue 1-Jul-2025</p>
+      <p class="date">15:15 Tue 1-Jul-2025</p>
     </div>
   </div>
   
@@ -1803,7 +1803,7 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 <p>ARMA polynomial requirements: As with a standard ARMA model, this pure seasonal model has a causal form (in which <span class="math inline">\(X(t)\)</span> is expressed in terms of current and past white noise terms <span class="math inline">\(W(\cdot)\)</span>) if and only if <span class="math inline">\(\Phi (\mathcal{B})^{-1}\)</span> exists. It has an inverted form (in which <span class="math inline">\(W(t)\)</span> is expressed in terms of current and past process terms <span class="math inline">\(X(\cdot)\)</span>) if and only if <span class="math inline">\(\Theta (\mathcal{B})^{-1}\)</span> exists. The existence of these multiplicative inverses is equivalent to the roots of the respective polynomials having magnitudes greater than unity, which we shall assume. To ensure the model is expressed as simply as possible, we also require that the two polynomials have no common factors, that is, have no roots in common.</p>
 </section>
 <section id="mixed-seasonal-arma-model" class="level4">
-<h4 class="anchored" data-anchor-id="mixed-seasonal-arma-model">Mixed Seasonal ARMA model</h4>
+<h4 class="anchored" data-anchor-id="mixed-seasonal-arma-model">Mixed Seasonal ARMA Model</h4>
 <p>We can combine the seasonal and nonseasonal operators into the following <em>multiplicative seasonal auto-regressive moving average model</em>, denoted by <span class="math inline">\(ARMA(p, q) \times (P, Q)_\sigma\)</span></p>
 <p><span id="eq-ARMA-mixed-seasonal"><span class="math display">\[
 \begin{align}
@@ -1820,6 +1820,27 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 \end{align}
 \tag{114}\]</span></span></p>
 <p>Multiplicative seasonal ARMA polynomial requirements: We require that the seasonal and non-seasonal components separately meet the ARMA requirements described above. Now, the seasonal component acts on <span class="math inline">\(\mathcal{B}^\sigma\)</span>, with <span class="math inline">\(\sigma &gt; 1\)</span>, whereas the non-seasonal component acts on <span class="math inline">\(\mathcal{B}\)</span>. We want to ensure that the polynomial <span class="math inline">\(\Phi (z^\sigma) \times \phi (z)\)</span> has no roots in common with the polynomial <span class="math inline">\(\Theta (z^\sigma) \times \theta (z)\)</span>. Therefore the additional requirements here are that: (1) <span class="math inline">\(\{ \Phi (z^\sigma), \theta (z) \}\)</span> have no roots in common; and (2) <span class="math inline">\(\{ \Theta (z^\sigma), \phi (z) \}\)</span> also have no roots in common.</p>
+</section>
+<section id="sarima-model" class="level4">
+<h4 class="anchored" data-anchor-id="sarima-model">SARIMA Model</h4>
+<p>We now add seasonal and non-seasonal differencing to the previous model to define the following <em>multiplicative seasonal auto-regressive integrated moving average model</em> (also called SARIMA), denoted by <span class="math inline">\(ARIMA(p, d, q) \times (P, D, Q)_\sigma\)</span></p>
+<p><span id="eq-SARIMA"><span class="math display">\[
+\begin{align}
+  \Phi ( \mathcal{B}^\sigma ) \; \phi ( \mathcal{B} ) \; \nabla_\sigma^D \; \nabla^d \; X(t)
+  &amp;= \Theta ( \mathcal{B}^\sigma ) \; \theta ( \mathcal{B} ) \; W(t) \\
+  \\
+  &amp; \text{where } \\
+  \\
+  \Phi (z) &amp;= 1 - \sum_{j = 1}^P \Phi_j z^j \\
+  \Theta (z) &amp;= 1 + \sum_{k = 1}^Q \Theta_k z^k \\
+  \nabla_\sigma^D &amp;= (\mathcal{I} - \mathcal{B}^\sigma)^D \\
+  \\
+  \phi (z) &amp;= 1 - \sum_{j = 1}^p \phi_j z^j \\
+  \theta (z) &amp;= 1 + \sum_{k = 1}^q \theta_k z^k \\
+  \nabla^d &amp;= (\mathcal{I} - \mathcal{B})^d
+\end{align}
+\tag{115}\]</span></span></p>
+<p>The polynomial requirements remain unchanged from the seasonal ARMA case described above.</p>
 </section>
 </section>
 <section id="co2-example-txt-co2-mauna-loa" class="level3">
