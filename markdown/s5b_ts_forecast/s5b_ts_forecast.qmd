@@ -2717,4 +2717,17 @@ text(1970, -.91, "WARM", col=6, font=4)
 g_rec <- astsa::tsplot(rec, ylab="", main="Recruitment", col=4)
 ```
 
+### CO2, Mauna Loa Observatory
+
+fig-xxx shows
+
+
+```{r}
+#| label: fig-cardox
+#| fig-cap: "Monthly mean carbon dioxide (in ppm) measured at Mauna Loa Observatory, Hawaii."
+
+g_cardox <- astsa::tsplot(cardox, ylab="", main="CO2, Mauna Loa", col=4)
+```
+
+
 ## References
