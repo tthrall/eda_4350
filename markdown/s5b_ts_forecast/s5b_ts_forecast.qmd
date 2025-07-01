@@ -2287,9 +2287,13 @@ Note: @hyndman2021forecasting warn that certain combinations may lead to numeric
 
 [^txt-ARIMA-seasonal]: See @shumway2025 [p. 157].
 
-Both societies and natural phenomena follow cycles determined by earth's daily rotation and annual revolution about the sun.  Other cycles also arise naturally or through societal conventions.  In modeling a random process one can account for these cycles in several ways.  In this section we introduce methods and notation for incorporating seasonality into ARIMA models.
+Both societies and natural phenomena follow cycles determined by the earth's daily rotation and annual revolution about the sun.  Other cycles also arise naturally or through societal conventions.  In modeling a random process one can account for these cycles in several ways.  In this section we introduce methods and notation for incorporating seasonality into ARIMA models.
 
-As in @sec-ETS we denote by $\sigma$ the number of consecutive time indices that comprise one season (or cycle).  $ARMA(P, Q)_\sigma$ (with capital letters and a $\sigma$ subscript) denotes the following form of pure seasonal ARMA model.
+#### Pure Seasonal ARMA model
+
+As in @sec-ETS we denote by $\sigma > 1$ the number of consecutive time indices that comprise one season (or cycle).  The phase of time index $t$ in this cycle is $t \bmod \sigma$.
+
+$ARMA(P, Q)_\sigma$ (with capital letters and a $\sigma$ subscript) denotes the following form of pure seasonal ARMA model.
 
 $$
 \begin{align}
@@ -2298,9 +2302,32 @@ $$
   & \text{where } \\ 
   \\ 
   \Phi (z) &= 1 - \sum_{j = 1}^P \Phi_j z^j \\ 
-  \Theta (z) &= 1 - \sum_{k = 1}^Q \Theta_k z^k
+  \Theta (z) &= 1 + \sum_{k = 1}^Q \Theta_k z^k
 \end{align}
 $$ {#eq-ARMA-pure-seasonal}
+
+ARMA polynomial requirements: As with a standard ARMA model, this pure seasonal model has a causal form (in which $X(t)$ is expressed in terms of current and past white noise terms $W(\cdot)$) if and only if $\Phi (\mathcal{B})^{-1}$ exists.  It has an inverted form (in which $W(t)$ is expressed in terms of current and past process terms $X(\cdot)$) if and only if $\Theta (\mathcal{B})^{-1}$ exists.  The existence of these multiplicative inverses is equivalent to the roots of the respective polynomials having magnitudes greater than unity, which we shall assume.  To ensure the model is expressed as simply as possible, we also require that the two polynomials have no common factors, that is, have no roots in common.
+
+#### Mixed Seasonal ARMA model
+
+We can combine the seasonal and nonseasonal operators into the following _multiplicative seasonal auto-regressive moving average model_, denoted by $ARMA(p, q) \times (P, Q)_\sigma$
+
+$$
+\begin{align}
+  \Phi ( \mathcal{B}^\sigma ) \; \phi ( \mathcal{B} ) \; X(t) 
+  &= \Theta ( \mathcal{B}^\sigma ) \; \theta ( \mathcal{B} ) \; W(t) \\ 
+  \\ 
+  & \text{where } \\ 
+  \\ 
+  \Phi (z) &= 1 - \sum_{j = 1}^P \Phi_j z^j \\ 
+  \Theta (z) &= 1 + \sum_{k = 1}^Q \Theta_k z^k \\ 
+  \\ 
+  \phi (z) &= 1 - \sum_{j = 1}^p \phi_j z^j \\ 
+  \theta (z) &= 1 + \sum_{k = 1}^q \theta_k z^k
+\end{align}
+$$ {#eq-ARMA-mixed-seasonal}
+
+Multiplicative seasonal ARMA polynomial requirements: We require that the seasonal and non-seasonal components separately meet the ARMA requirements described above.  Now, the seasonal component acts on $\mathcal{B}^\sigma$, with $\sigma > 1$, whereas the non-seasonal component acts on $\mathcal{B}$.  We want to ensure that the polynomial $\Phi (z^\sigma) \times \phi (z)$ has no roots in common with the polynomial $\Theta (z^\sigma) \times \theta (z)$.  Therefore the additional requirements here are that: (1) $\{ \Phi (z^\sigma), \theta (z) \}$ have no roots in common; and (2) $\{ \Theta (z^\sigma), \phi (z) \}$ also have no roots in common.
 
 ### CO2 Example [^txt-CO2-Mauna-Loa]
 
