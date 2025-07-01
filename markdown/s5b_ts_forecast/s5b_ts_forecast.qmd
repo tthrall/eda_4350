@@ -2356,6 +2356,103 @@ The polynomial requirements remain unchanged from the seasonal ARMA case describ
 
 [^txt-CO2-Mauna-Loa]: See @shumway2025 [p. 163].
 
+@fig-cardox shows the atmospheric concentration of carbon dioxide $(CO_2)$ in parts per million (ppm).  These are monthly averages from March 1958 to March 2023 provided by the Mauna Loa Observatory.  The data are available in `R` as the module `asta::cardox`.
+
+Here's another view of the same data to show the trend and annual seasonality more distinctly.
+
+```{r}
+#| label: shumway2025-fig-3-22
+#| eval: false
+
+# template?
+# spaghetti plot for gtemp.month
+# code from textbook figure 3.22, pp 161-162
+
+# tsplot(gtemp.month, spaghetti=TRUE, col=rainbow(49, start=.2, v=.8, rev=TRUE),
+# ylab="\u00b0C", xlab="Month", xaxt="n", main="Mean Monthly Global
+# Temperature")
+# axis(1, labels=Months, at=1:12)
+# lines(gtemp.month[,1], lwd=2, col=6)
+# lines(gtemp.month[,49], lwd=2, col=3)
+# text(10, 13, "1975")
+# text(10.3, 15.5, "2023")
+```
+
+```{r}
+#| label: cardox-params
+
+# str(astsa::cardox)
+#  Time-Series [1:781] from 1958 to 2023: 316 317 318 317 316 ...
+
+ymd_lst <- function(ymd_string) {
+  dt <- lubridate::ymd(ymd_string)
+  if (! assertthat::is.date(dt)) { 
+    return(NULL)
+  } else {
+    mo <- lubridate::month(dt) |> as.integer()
+    yr <- lubridate::year(dt)  |> as.integer()
+  }
+  return(list(
+    chr = ymd_string, 
+    dt  = dt, 
+    mo  = mo, 
+    yr  = yr
+  ))
+}
+
+cardox_lst_first <- ymd_lst("1958-03-31")
+
+cardox_lst_last  <- ymd_lst("2023-03-31")
+
+n_cardox <- length(astsa::cardox)
+
+```
+
+```{r}
+#| label: cardox-tibble
+cardox_tbl <- tibble::tibble(
+  idx = 1:n_cardox, 
+  dt  = cardox_lst_first$dt %m+% months(idx - 1L), 
+  mo  = lubridate::month(dt) |> as.integer(), 
+  yr  = lubridate::year(dt) |> as.integer(), 
+  ppm = astsa::cardox |> as.vector()
+)
+```
+
+```{r}
+#| label: fig-cardox-per-month-spaghetti
+#| fig-cap: "CO2 per month within each year"
+
+g_cardox_spaghetti <- cardox_tbl |> 
+  mutate(yr = forcats::as_factor(yr)) |> 
+  ggplot2::ggplot(mapping = aes(
+    x = mo, y = ppm, color = yr, fill = yr
+  )) + 
+  ggplot2::geom_line(show.legend = FALSE) + 
+  ggplot2::scale_x_discrete(
+    name = "month", 
+    limits = 1:12 |> as.character()
+  ) + 
+  ggplot2::annotate("text", x = 1, y = 310, label = "1958") + 
+  ggplot2::annotate("text", x = 1, y = 425, label = "2023") + 
+  ggplot2::labs(title = "CO2 ppm per month, 1958-2023")
+g_cardox_spaghetti
+```
+
+To build a SARIMA model of the data we first remove (or at least reduce) trend and seasonality by applying differencing operators $\nabla$ and $\nabla_{12}$.  @fig-cardox-diff-diff-12 shows the residuals, $R(t) = \nabla \nabla_{12} X(t)$ from this double differencing.
+
+```{r}
+#| label: fig-cardox-diff-diff-12
+#| fig-cap: "Residuals from applying trend and seasonal differencing"
+
+diff(diff(x = cardox, lag = 12)) |> 
+  astsa::tsplot(
+    col = 4, ylab = "CO2 > diff > diff(12)"
+  )
+```
+
+After furthe analysis the authors arrive at an $ARMA(1, 1) \times ARMA(0, 1)_{12}$ model for the residuals $R(t)$.  For the process $X(t)$ this is an $ARIMA(1, 1, 1) \times ARIMA(0, 1, 1)_{12}$ model.
+
 ## Closing Remarks
 
 This technical introduces families and examples of models used to forecast time series data.  The presentation is based on @shumway2025 along with the supporting `R` package `astsa` [@astsa].[^2]
@@ -2719,7 +2816,9 @@ g_rec <- astsa::tsplot(rec, ylab="", main="Recruitment", col=4)
 
 ### CO2, Mauna Loa Observatory
 
-fig-xxx shows
+The concentration of $CO_2$ in the atmosphere is a key indicator of global warming, and in recent years has reached unprecedented levels. In March 2015, the average of all of the global measuring sites showed a concentration above 400 parts per million (ppm). The observatory at Mauna Loa has recorded monthly $CO_2$ concentrations consistently above 400 ppm since late 2015.
+
+@fig-cardox shows the monthly Mauna Loa readings, $X(t)$ (`asta::cardox`), from March 1958 to March 2023 at the Mauna Loa Observatory. The trend and seasonal persistence are evident in the plot.
 
 
 ```{r}

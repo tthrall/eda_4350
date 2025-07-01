@@ -187,7 +187,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">16:05 Tue 1-Jul-2025</p>
+      <p class="date">21:20 Tue 1-Jul-2025</p>
     </div>
   </div>
   
@@ -214,7 +214,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="mathematical-framework">Mathematical Framework</h2>
 <section id="data-derived-from-a-random-process" class="level3">
 <h3 class="anchored" data-anchor-id="data-derived-from-a-random-process">Data derived from a random process</h3>
-<p>Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (<a href="#tbl-hl-pelts" class="quarto-xref">Table&nbsp;1</a> and <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;6</a>), based on the record of snowshoe hare (<code>astsa::Hare</code>) and lynx (<code>astsa::Lynx</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.</p>
+<p>Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. Consider for example the following predator-prey data (<a href="#tbl-hl-pelts" class="quarto-xref">Table&nbsp;1</a> and <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;8</a>), based on the record of snowshoe hare (<code>astsa::Hare</code>) and lynx (<code>astsa::Lynx</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935.</p>
 <div id="tbl-hl-pelts" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-hl-pelts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -406,7 +406,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
 <h2 class="anchored" data-anchor-id="operations-on-time-series">Operations on Time Series</h2>
 <section id="transformation-of-each-observation" class="level3">
 <h3 class="anchored" data-anchor-id="transformation-of-each-observation">Transformation of Each Observation</h3>
-<p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings (<a href="#fig-jj" class="quarto-xref">Figure&nbsp;7</a>), we see that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, can be more closely approximated by a linear trend.</p>
+<p>The data transformations used on independent observations are applicable to time series data. For example, in the case of Johnson and Johnson quarterly earnings (<a href="#fig-jj" class="quarto-xref">Figure&nbsp;9</a>), we see that the transformed time series, <span class="math inline">\(Y(t) = \log_e (X(t))\)</span>, can be more closely approximated by a linear trend.</p>
 </section>
 <section id="smoothing" class="level3">
 <h3 class="anchored" data-anchor-id="smoothing">Smoothing</h3>
@@ -431,7 +431,7 @@ Table&nbsp;1: Hare and lynx pelts (thousands)
   &amp;= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
 \end{align}
 \tag{18}\]</span></span></p>
-<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;8</a> shows the original global temperature data. As mentioned, the operation smooths out local fluctuations to show the overall trend more clearly.</p>
+<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;10</a> shows the original global temperature data. As mentioned, the operation smooths out local fluctuations to show the overall trend more clearly.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-gt-lo-ma5" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -494,7 +494,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
   \nabla &amp;= \mathcal{I} - \mathcal{B}
 \end{align}
 \tag{23}\]</span></span></p>
-<p>The DJIA stock index (<a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a>) illustrates the differencing operation. Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.</p>
+<p>The DJIA stock index (<a href="#fig-djia" class="quarto-xref">Figure&nbsp;11</a>) illustrates the differencing operation. Returns are defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values.</p>
 <p>To remove a polynomial trend of degree <span class="math inline">\(d\)</span>, one can apply <span class="math inline">\(\nabla^d\)</span>, meaning <span class="math inline">\(d\)</span> repeated applications of <span class="math inline">\(\nabla\)</span>.</p>
 </section>
 <section id="seasonal-differencing" class="level3">
@@ -570,7 +570,7 @@ Figure&nbsp;1: Global temperatures: 5-year moving average
 <section id="covariates-and-trend" class="level3">
 <h3 class="anchored" data-anchor-id="covariates-and-trend">Covariates and Trend</h3>
 <p>Time series and other statistical data sets are often collected in order to study the possible effects of one set of variables on one or more of the remaining variables.</p>
-<p>Consider, for example, the cardiovascular mortality data shown in <a href="#fig-cmort" class="quarto-xref">Figure&nbsp;10</a>, where mortality is modeled as a response to temperature and the level of airborne particulate matter. In this example we can formulate the expected value of mortality in the following terms.</p>
+<p>Consider, for example, the cardiovascular mortality data shown in <a href="#fig-cmort" class="quarto-xref">Figure&nbsp;12</a>, where mortality is modeled as a response to temperature and the level of airborne particulate matter. In this example we can formulate the expected value of mortality in the following terms.</p>
 <p><span class="math display">\[
 \begin{align}
   m(t, X_{2:3}(t))
@@ -1308,7 +1308,7 @@ Figure&nbsp;2: ARMA(1, 1) simulation, with coefficients (.5, .5)
 </section>
 <section id="recruitment-forecast" class="level3">
 <h3 class="anchored" data-anchor-id="recruitment-forecast">Recruitment Forecast</h3>
-<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;11</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values during the years 1950–1987.</p>
+<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;13</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values during the years 1950–1987.</p>
 <p><span class="citation" data-cites="shumway2025">Shumway and Stoffer (<a href="#ref-shumway2025" role="doc-biblioref">2025, 111</a>)</span> fit the following preliminary AR(2) model to the recruitment index.</p>
 <p><span id="eq-rec-fit-AR2"><span class="math display">\[
 \begin{align}
@@ -1846,6 +1846,38 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 </section>
 <section id="co2-example-txt-co2-mauna-loa" class="level3">
 <h3 class="anchored" data-anchor-id="co2-example-txt-co2-mauna-loa">CO2 Example <a href="#fn51" class="footnote-ref" id="fnref51" role="doc-noteref"><sup>51</sup></a></h3>
+<p><a href="#fig-cardox" class="quarto-xref">Figure&nbsp;14</a> shows the atmospheric concentration of carbon dioxide <span class="math inline">\((CO_2)\)</span> in parts per million (ppm). These are monthly averages from March 1958 to March 2023 provided by the Mauna Loa Observatory. The data are available in <code>R</code> as the module <code>asta::cardox</code>.</p>
+<p>Here’s another view of the same data to show the trend and annual seasonality more distinctly.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-cardox-per-month-spaghetti" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cardox-per-month-spaghetti-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-cardox-per-month-spaghetti-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cardox-per-month-spaghetti-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: CO2 per month within each year
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>To build a SARIMA model of the data we first remove (or at least reduce) trend and seasonality by applying differencing operators <span class="math inline">\(\nabla\)</span> and <span class="math inline">\(\nabla_{12}\)</span>. <a href="#fig-cardox-diff-diff-12" class="quarto-xref">Figure&nbsp;7</a> shows the residuals, <span class="math inline">\(R(t) = \nabla \nabla_{12} X(t)\)</span> from this double differencing.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-cardox-diff-diff-12" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cardox-diff-diff-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5b_ts_forecast_files/figure-html/fig-cardox-diff-diff-12-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cardox-diff-diff-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Residuals from applying trend and seasonal differencing
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>After furthe analysis the authors arrive at an <span class="math inline">\(ARMA(1, 1) \times ARMA(0, 1)_{12}\)</span> model for the residuals <span class="math inline">\(R(t)\)</span>. For the process <span class="math inline">\(X(t)\)</span> this is an <span class="math inline">\(ARIMA(1, 1, 1) \times ARIMA(0, 1, 1)_{12}\)</span> model.</p>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
@@ -1964,7 +1996,7 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 <section id="hare-and-lynx-populations" class="level3">
 <h3 class="anchored" data-anchor-id="hare-and-lynx-populations">Hare and Lynx Populations</h3>
 <p>One of the classic studies of predator–prey interactions is based on the record of lynx (<code>astsa::Lynx</code>) and snowshoe hare (<code>astsa::Hare</code>) pelts purchased by the Hudson’s Bay Company of Canada from 1845 to 1935. Assuming pelt purchases are proportional to animals in the wild, the data are an indirect measure of predation.</p>
-<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;6</a> are thousands of pelts per year.</p>
+<p>These predator–prey interactions often lead to cyclical patterns of predator and prey abundance. The units of the data shown in <a href="#fig-pred-prey" class="quarto-xref">Figure&nbsp;8</a> are thousands of pelts per year.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-pred-prey" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1973,7 +2005,7 @@ Figure&nbsp;5: IMA(1, 1) with exponenetial smoothing
 <img src="s5b_ts_forecast_files/figure-html/fig-pred-prey-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pred-prey-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Hare and lynx: purchased pelts
+Figure&nbsp;8: Hare and lynx: purchased pelts
 </figcaption>
 </figure>
 </div>
@@ -1982,7 +2014,7 @@ Figure&nbsp;6: Hare and lynx: purchased pelts
 </section>
 <section id="jj-quarterly-earnings" class="level3">
 <h3 class="anchored" data-anchor-id="jj-quarterly-earnings">JJ Quarterly Earnings</h3>
-<p><a href="#fig-jj" class="quarto-xref">Figure&nbsp;7</a> below shows Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980 (<code>astsa::jj</code>). The bottom panel shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
+<p><a href="#fig-jj" class="quarto-xref">Figure&nbsp;9</a> below shows Johnson &amp; Johnson quarterly earnings per share in US dollars from 1960 through 1980 (<code>astsa::jj</code>). The bottom panel shows the same data on a <span class="math inline">\(\log_e\)</span> scale. Superimposed on the upward trend is an annual pattern, including a sharp rise to first quarter earnings from those of the previous quarter.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-jj" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1991,7 +2023,7 @@ Figure&nbsp;6: Hare and lynx: purchased pelts
 <img src="s5b_ts_forecast_files/figure-html/fig-jj-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-jj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: J&amp;J: earnings per share at linear and log scales
+Figure&nbsp;9: J&amp;J: earnings per share at linear and log scales
 </figcaption>
 </figure>
 </div>
@@ -2000,7 +2032,7 @@ Figure&nbsp;7: J&amp;J: earnings per share at linear and log scales
 </section>
 <section id="global-temperatures" class="level3">
 <h3 class="anchored" data-anchor-id="global-temperatures">Global Temperatures</h3>
-<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;8</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
+<p><a href="#fig-gtemp-lo" class="quarto-xref">Figure&nbsp;10</a> below shows the time series <code>gtemp_land</code> and <code>gtemp_ocean</code>, annual temperature deviations (in ◦C) from averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-gtemp-lo" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2009,7 +2041,7 @@ Figure&nbsp;7: J&amp;J: earnings per share at linear and log scales
 <img src="s5b_ts_forecast_files/figure-html/fig-gtemp-lo-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gtemp-lo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Deviations in global surface temperatures
+Figure&nbsp;10: Deviations in global surface temperatures
 </figcaption>
 </figure>
 </div>
@@ -2018,7 +2050,7 @@ Figure&nbsp;8: Deviations in global surface temperatures
 </section>
 <section id="dow-jones-industrial-average" class="level3">
 <h3 class="anchored" data-anchor-id="dow-jones-industrial-average">Dow Jones Industrial Average</h3>
-<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;9</a> shows the trading day closings and returns (percent change)<a href="#fn53" class="footnote-ref" id="fnref53" role="doc-noteref"><sup>53</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
+<p><a href="#fig-djia" class="quarto-xref">Figure&nbsp;11</a> shows the trading day closings and returns (percent change)<a href="#fn53" class="footnote-ref" id="fnref53" role="doc-noteref"><sup>53</sup></a> of the Dow Jones Industrial Average (DJIA, <code>astsa::djia</code>) from 2006 to 2016. It is easy to spot the financial crisis of 2008.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-djia" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2027,7 +2059,7 @@ Figure&nbsp;8: Deviations in global surface temperatures
 <img src="s5b_ts_forecast_files/figure-html/fig-djia-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-djia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Dow Jones Industrial Average
+Figure&nbsp;11: Dow Jones Industrial Average
 </figcaption>
 </figure>
 </div>
@@ -2036,7 +2068,7 @@ Figure&nbsp;9: Dow Jones Industrial Average
 </section>
 <section id="cardiovascular-mortality-in-los-angeles" class="level3">
 <h3 class="anchored" data-anchor-id="cardiovascular-mortality-in-los-angeles">Cardiovascular Mortality in Los Angeles</h3>
-<p><a href="#fig-cmort" class="quarto-xref">Figure&nbsp;10</a> shows data from a study <span class="citation" data-cites="shumway1988">(<a href="#ref-shumway1988" role="doc-biblioref">R. H. Shumway, Azari, and Pawitan 1988</a>)</span> of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.</p>
+<p><a href="#fig-cmort" class="quarto-xref">Figure&nbsp;12</a> shows data from a study <span class="citation" data-cites="shumway1988">(<a href="#ref-shumway1988" role="doc-biblioref">R. H. Shumway, Azari, and Pawitan 1988</a>)</span> of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-cmort" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2045,7 +2077,7 @@ Figure&nbsp;9: Dow Jones Industrial Average
 <img src="s5b_ts_forecast_files/figure-html/fig-cmort-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cmort-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: Weekly levels of mortality, temperature, and particulates in Los Angeles
+Figure&nbsp;12: Weekly levels of mortality, temperature, and particulates in Los Angeles
 </figcaption>
 </figure>
 </div>
@@ -2054,7 +2086,7 @@ Figure&nbsp;10: Weekly levels of mortality, temperature, and particulates in Los
 </section>
 <section id="el-niño-and-fish-population" class="level3">
 <h3 class="anchored" data-anchor-id="el-niño-and-fish-population">El Niño and Fish Population</h3>
-<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;11</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
+<p><a href="#fig-soi" class="quarto-xref">Figure&nbsp;13</a> shows the Southern Oscillation Index (SOI, <code>astsa::soi</code>) and associated Recruitment (<code>astsa::rec</code>), an index of the number of young fish entering the cohort available for commercial fishing. Both series consist of 453 monthly values ranging over the years 1950–1987.</p>
 <p>The two time series show two types of oscillation: an annual cycle (warm in the summer, cool in the winter), and a slower cycle that seems to repeat about every 4 years.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -2064,7 +2096,7 @@ Figure&nbsp;10: Weekly levels of mortality, temperature, and particulates in Los
 <img src="s5b_ts_forecast_files/figure-html/fig-soi-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-soi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11: Southern Oscillation Index and fish recruitment
+Figure&nbsp;13: Southern Oscillation Index and fish recruitment
 </figcaption>
 </figure>
 </div>
@@ -2073,7 +2105,8 @@ Figure&nbsp;11: Southern Oscillation Index and fish recruitment
 </section>
 <section id="co2-mauna-loa-observatory" class="level3">
 <h3 class="anchored" data-anchor-id="co2-mauna-loa-observatory">CO2, Mauna Loa Observatory</h3>
-<p>fig-xxx shows</p>
+<p>The concentration of <span class="math inline">\(CO_2\)</span> in the atmosphere is a key indicator of global warming, and in recent years has reached unprecedented levels. In March 2015, the average of all of the global measuring sites showed a concentration above 400 parts per million (ppm). The observatory at Mauna Loa has recorded monthly <span class="math inline">\(CO_2\)</span> concentrations consistently above 400 ppm since late 2015.</p>
+<p><a href="#fig-cardox" class="quarto-xref">Figure&nbsp;14</a> shows the monthly Mauna Loa readings, <span class="math inline">\(X(t)\)</span> (<code>asta::cardox</code>), from March 1958 to March 2023 at the Mauna Loa Observatory. The trend and seasonal persistence are evident in the plot.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-cardox" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2082,7 +2115,7 @@ Figure&nbsp;11: Southern Oscillation Index and fish recruitment
 <img src="s5b_ts_forecast_files/figure-html/fig-cardox-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cardox-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;12: Monthly mean carbon dioxide (in ppm) measured at Mauna Loa Observatory, Hawaii.
+Figure&nbsp;14: Monthly mean carbon dioxide (in ppm) measured at Mauna Loa Observatory, Hawaii.
 </figcaption>
 </figure>
 </div>
