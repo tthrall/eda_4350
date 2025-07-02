@@ -2478,7 +2478,7 @@ graphics::abline(v=2023.17, lty=6)
 
 ## Closing Remarks
 
-This technical introduces families and examples of models used to forecast time series data.  The presentation is based on @shumway2025 along with the supporting `R` package `astsa` [@astsa].[^2]
+This technical note introduces families and examples of models used to forecast time series data.  The presentation is based on @shumway2025 along with the supporting `R` package `astsa` [@astsa].[^2]
 
 [^2]: Another textbook, @brillinger2001, treats a time series as a function of time, denoted $X(t)$, which is the practice followed in this note.
 
