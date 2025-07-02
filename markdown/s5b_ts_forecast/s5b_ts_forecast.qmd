@@ -2481,7 +2481,7 @@ This technical introduces families and examples of models used to forecast time 
 
 [^2]: Another textbook, @brillinger2001, treats a time series as a function of time, denoted $X(t)$, which is the practice followed in this note.
 
-This introduction does not address the building and evaluation of time series models, leaving that for another time.  Here are some online resources for those interested.
+This introduction sets aside for another time the building and evaluation of time series models.  Here are some online resources for those interested.
 
   - [Regression and Time Series Primer](https://dsstoffer.github.io/Rtoot.html#regression-and-time-series-primer) gives a more detailed introduction to the topics presented here.
   - [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa) introduces `R` package `astsa`.
