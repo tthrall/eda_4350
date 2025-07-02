@@ -1868,9 +1868,9 @@ $$ {#eq-EWMA-plus-wn}
 
 That is, the current value $X(t)$ is an exponential smoothing of all past values plus $W(t)$, the white noise term.
 
-The linear prediction of the current value based on past values is thus the same exponential smoothing of past values.[^W-given-past-X]
+The linear prediction of the current value based on past values is thus the same exponential smoothing of past values.[^project-X-onto-its-past]
 
-[^W-given-past-X]: We assume here that $E \left \{ W(t) \; | \; \{ X(s) \}_{s < t} \right \} = 0$.
+[^project-X-onto-its-past]: $\hat{X}(t \; | \; \wp (t-1))$ is the orthogonal projection of $X(t)$ onto the space spanned by $\{ X(s), s < t \}$.  See @shumway2025 [sec. B.1].
 
 $$
 \begin{align}
