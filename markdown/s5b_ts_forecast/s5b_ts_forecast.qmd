@@ -2358,7 +2358,7 @@ The polynomial requirements remain unchanged from the seasonal ARMA case describ
 
 @fig-cardox shows the atmospheric concentration of carbon dioxide $(CO_2)$ in parts per million (ppm).  These are monthly averages from March 1958 to March 2023 provided by the Mauna Loa Observatory.  The data are available in `R` as the module `asta::cardox`.
 
-Here's another view of the same data to show the trend and annual seasonality more distinctly.
+@fig-cardox-per-month-spaghetti distinguishes the trend from the seasonality of the same data.
 
 ```{r}
 #| label: shumway2025-fig-3-22
@@ -2435,7 +2435,8 @@ g_cardox_spaghetti <- cardox_tbl |>
   ) + 
   ggplot2::annotate("text", x = 1, y = 310, label = "1958") + 
   ggplot2::annotate("text", x = 1, y = 425, label = "2023") + 
-  ggplot2::labs(title = "CO2 ppm per month, 1958-2023")
+  ggplot2::labs(title = "CO2 ppm per month, 1958-2023") + 
+  ggplot2::ylab("CO2 ppm")
 g_cardox_spaghetti
 ```
 
@@ -2447,7 +2448,7 @@ To build a SARIMA model of the data we first remove (or at least reduce) trend a
 
 diff(diff(x = cardox, lag = 12)) |> 
   astsa::tsplot(
-    col = 4, ylab = "CO2 > diff > diff(12)"
+    col = 4, ylab = "CO2 ppm > diff > diff(12)"
   )
 ```
 
