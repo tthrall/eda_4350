@@ -52,5 +52,8 @@
   },
   "markdown/s5b_ts_forecast/s5b_ts_forecast.qmd": {
     "s5b_ts_forecast.html": "8f2e11a3"
+  },
+  "markdown/xtra_Dirichlet_dstn/xtra_Dirichlet_dstn.qmd": {
+    "xtra_Dirichlet_dstn.html": "54bbb878"
   }
 }
