@@ -2778,7 +2778,7 @@ plot(djia_return, col=4, main="DJIA Returns")
 
 ### Cardiovascular Mortality in Los Angeles
 
-@fig-cmort shows data from a study [@shumway1988] of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.
+@fig-cmort shows data from a study [@shumway1988] of the possible effects of temperature and pollution on weekly cardiovascular mortality in Los Angeles County. Note the strong seasonal components in all of the series corresponding to winter–summer variations and the downward trend in the cardiovascular mortality over the 10-year period.  The data are available as `R` module `astsa::cmort`.
 
 ```{r}
 #| label: fig-cmort
