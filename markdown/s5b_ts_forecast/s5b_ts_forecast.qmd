@@ -2439,7 +2439,7 @@ g_cardox_spaghetti <- cardox_tbl |>
 g_cardox_spaghetti
 ```
 
-To build a SARIMA model of the data we first remove (or at least reduce) trend and seasonality by applying differencing operators $\nabla$ and $\nabla_{12}$.  @fig-cardox-diff-diff-12 shows the residuals, $R(t) = \nabla \nabla_{12} X(t)$ from this double differencing.
+To build a SARIMA model of the data we first remove (or at least reduce) trend and seasonality by applying differencing operators $\nabla$ and $\nabla_{12}$.  @fig-cardox-diff-diff-12 shows the residuals, $R(t) = \nabla \nabla_{12} X(t)$, from this double differencing.
 
 ```{r}
 #| label: fig-cardox-diff-diff-12
@@ -2451,7 +2451,29 @@ diff(diff(x = cardox, lag = 12)) |>
   )
 ```
 
-After furthe analysis the authors arrive at an $ARMA(1, 1) \times ARMA(0, 1)_{12}$ model for the residuals $R(t)$.  For the process $X(t)$ this is an $ARIMA(1, 1, 1) \times ARIMA(0, 1, 1)_{12}$ model.
+Using `R` function `astsa::sarima()` the authors arrive at an $ARMA(1, 1) \times ARMA(0, 1)_{12}$ model of the residuals $R(t)$.  For the process $X(t)$ this is an $ARIMA(1, 1, 1) \times ARIMA(0, 1, 1)_{12}$ model.  A five-year forecast is shown below, using `R` function `astsa::sarima.for()`.
+
+```{r}
+#| label: cardox-model
+#| eval: false
+
+cardox_model <- astsa::cardox |> 
+  astsa::sarima(1,1,1, 0,1,1,12)
+```
+
+```{r}
+#| label: fig-cardox-forecast
+#| fig-cap: "CO2 5-year forecast based on ARIMA(1, 1, 1) * (0, 1, 1)_12"
+
+cardox_forecast <- astsa::cardox |> 
+  astsa::sarima.for(
+    n.ahead = 60, 
+    1,1,1, 0,1,1,12, 
+    col=4, ylab = "CO2 ppm", 
+    main = "CO2, SARIMA forecast"
+  )
+graphics::abline(v=2023.17, lty=6)
+```
 
 ## Closing Remarks
 
