@@ -62,7 +62,7 @@ library(tufte)
 
 ## Background
 
-Latent Dirichlet Allocation (LDA) was proposed as a method of topic modeling in 2003 in a paper by Blei, Ng, and Jordan.  The method is briefly mentioned in Part 1 of the course.  Several course participants requested a more detailed description.  This note prepares for the requested response by introducing the Dirichlet and Multinomial distributions.
+Latent Dirichlet Allocation (LDA) was proposed as a method of topic modeling in 2003 in a paper by Blei, Ng, and Jordan. The method is briefly mentioned in Part 1 of the course. Several course participants requested a more detailed description. This note prepares for the requested response by introducing the Dirichlet and Multinomial distributions.
 
 ## The Multinomial Distribution
 
@@ -80,9 +80,9 @@ $$
 
 Probability vector $p_{\bullet} = (p_1, \ldots, p_K)$ is thus the probability distribution of $X$ on $\{c_1, \ldots, c_K \}$.
 
-If the categories are ordered, we might represent $X$ numerically as a random index $k \in \{1, \ldots, K \}$.  But for present purposes we suppose the categories are not ordered, and we represent $X$ as a vector of random indicator variables[^one-hot].
+If the categories are ordered, we might represent $X$ numerically as a random index $k \in \{1, \ldots, K \}$. But for present purposes we suppose the categories are not ordered, and we represent $X$ as a vector of random indicator variables[^1].
 
-[^one-hot]: In machine learning this mapping of a categorical variable to an indicator vector is called "one-hot encoding".
+[^1]: In machine learning this mapping of a categorical variable to an indicator vector is called "one-hot encoding".
 
 $$
 \begin{align}
@@ -112,7 +112,7 @@ $$
 \end{align}
 $$
 
-Now suppose that $(X_1, \ldots, X_n)$ are independent random variables all having the same distribution as $X$.  Corresponding to $X_{\nu}$ we have an indicator vector that we'll denote as $I_{\bullet}^{(\nu)}$.  Let $S_{\bullet}$ denote the sum over the $n$ indicator vectors $\{ I_{\bullet}^{(\nu)} \}_{\nu}$.
+Now suppose that $(X_1, \ldots, X_n)$ are independent random variables all having the same distribution as $X$. Corresponding to $X_{\nu}$ we have an indicator vector that we'll denote as $I_{\bullet}^{(\nu)}$. Let $S_{\bullet}$ denote the sum over the $n$ indicator vectors $\{ I_{\bullet}^{(\nu)} \}_{\nu}$.
 
 $$
 \begin{align}
@@ -131,7 +131,7 @@ $$
 \end{align}
 $$
 
-where 
+where
 
 $$
 \begin{align}
@@ -141,19 +141,19 @@ $$
 
 gives the number of assignments of $n$ objects to the $K$ categories such that each category $c_k$ receives the prescribed number $s_k$ of objects.
 
-The probability distribution of $S_{\bullet}$ is called the _multinomial distribution_.
+The probability distribution of $S_{\bullet}$ is called the *multinomial distribution*.
 
-For $K = 2$, this simplifies to the binomial distribution, with parameters $(n, p)$, where $(p_1, p_2) = (p, \; 1 - p)$.  If $\nu$ denotes the observed number of succeses in $n$ Bernoulli trials, then $(s_1, s_2) = (\nu, \; n - \nu)$.
+For $K = 2$, this simplifies to the binomial distribution, with parameters $(n, p)$, where $(p_1, p_2) = (p, \; 1 - p)$. If $\nu$ denotes the observed number of succeses in $n$ Bernoulli trials, then $(s_1, s_2) = (\nu, \; n - \nu)$.
 
 ## Bayesian Inference
 
 The Bayesian approach to statistical estimation provides a framework for representing the state of knowledge, or degree of uncertainty, about a model parameter before and after collecting relevant data.
 
-As an example consider the binomial distribution mentioned above, where we are estimating the probability $p$ of success based on a sequence of $n$ independent Bernoulli trials.  Following the notation above, we use two dependent indicator random variables $(I_1, I_2)$ to represent success and failure respectively, with $I_2 = 1- I_1$, and with $(p_1, p_2) = (p, \; 1-p)$.
+As an example consider the binomial distribution mentioned above, where we are estimating the probability $p$ of success based on a sequence of $n$ independent Bernoulli trials. Following the notation above, we use two dependent indicator random variables $(I_1, I_2)$ to represent success and failure respectively, with $I_2 = 1- I_1$, and with $(p_1, p_2) = (p, \; 1-p)$.
 
-Prior to observing the sequence of Bernoulli trials, we might represent the state of information about $p$ as a uniform distribution, so that each possible value of $p \in [0, 1]$ is deemed equally likely.  Alternatively, if the Bernoulli sequence represents the outcomes of tossing a coin that is presumed fair, or nearly fair, we might represent that information as a probability distribution having a mode at the value $p = 1/2$.
+Prior to observing the sequence of Bernoulli trials, we might represent the state of information about $p$ as a uniform distribution, so that each possible value of $p \in [0, 1]$ is deemed equally likely. Alternatively, if the Bernoulli sequence represents the outcomes of tossing a coin that is presumed fair, or nearly fair, we might represent that information as a probability distribution having a mode at the value $p = 1/2$.
 
-More specifically, it turns out to be mathematically convenient to represent prior information about probability $p$ as a member of the beta family of probability distributions over the unit interval.  The uniform distribution is the special case of setting beta shape parameters to the values $(1, 1)$.  Alternatively setting the shape parameters to $(2, 2)$ gives a density function symmetric about the mode at $p = 1/2$.
+More specifically, it turns out to be mathematically convenient to represent prior information about probability $p$ as a member of the beta family of probability distributions over the unit interval. The uniform distribution is the special case of setting beta shape parameters to the values $(1, 1)$. Alternatively setting the shape parameters to $(2, 2)$ gives a density function symmetric about the mode at $p = 1/2$.
 
 ```{r beta_xmpl}
 # choices of beta shape parameters (a, b)
@@ -201,7 +201,7 @@ $$
 \end{align}
 $$
 
-Suppose now that we adopt the distribution just mentioned, $\mathcal{Beta}(\alpha, \beta)$, as the prior distribution of success probability $p$, for some specified positive parameter values $(\alpha, \beta)$.  We then observe $s_1$ successes and $s_2$ failures from $n = s_1 + s_2$ independent Bernoulli trials.  Based on these observations we update the prior distribution to form the posterior distribution of $p$ as follows.
+Suppose now that we adopt the distribution just mentioned, $\mathcal{Beta}(\alpha, \beta)$, as the prior distribution of success probability $p$, for some specified positive parameter values $(\alpha, \beta)$. We then observe $s_1$ successes and $s_2$ failures from $n = s_1 + s_2$ independent Bernoulli trials. Based on these observations we update the prior distribution to form the posterior distribution of $p$ as follows.
 
 $$
 \begin{align}
@@ -210,7 +210,7 @@ $$
 \end{align}
 $$
 
-Note that 
+Note that
 
 $$
 \begin{align}
@@ -220,7 +220,7 @@ $$
 \end{align}
 $$
 
-so that 
+so that
 
 $$
 \begin{align}
@@ -230,7 +230,7 @@ $$
 \end{align}
 $$
 
-Consequently, the ratio of the last two expressions gives 
+Consequently, the ratio of the last two expressions gives
 
 $$
 \begin{align}
@@ -242,13 +242,13 @@ $$
 
 That is, the posterior distribution is $\mathcal{Beta}(\alpha + s_1, \beta + s_2)$.
 
-This is the "mathematical convenience" previously alluded to: the prior and posterior probability distributions of $p$ belong to the same family of parametric probability distributions, namely the $\mathcal{Beta}$ family.  For this reason the $\mathcal{Beta}$ family is said to be _conjugate_ to the binomial family.
+This is the "mathematical convenience" previously alluded to: the prior and posterior probability distributions of $p$ belong to the same family of parametric probability distributions, namely the $\mathcal{Beta}$ family. For this reason the $\mathcal{Beta}$ family is said to be *conjugate* to the binomial family.
 
 ## The Dirichlet Probability Distribution
 
 ### Definition
 
-The binomial distribution is a special case of the multinomial distribution in which the number of categories $K$ is equal to 2.  (In the discussion above we referred to the categories as success and failue, respectively.)  More generally, for a fixed integer $K \ge 2$, the family of distributions conjugate to the multinomial family of distributions over $K$ categories is the following _Dirichlet_ family.
+The binomial distribution is a special case of the multinomial distribution in which the number of categories $K$ is equal to 2. (In the discussion above we referred to the categories as success and failue, respectively.) More generally, for a fixed integer $K \ge 2$, the family of distributions conjugate to the multinomial family of distributions over $K$ categories is the following *Dirichlet* family.
 
 $$
 \begin{align}
@@ -262,9 +262,9 @@ This is the $\mathcal{Dirichlet}(\alpha_{\bullet})$ distribution over $p_{\bulle
 
 ### Special Case: $\alpha_k = \frac{\alpha_{+}}{K}$
 
-We will denote the sum of the components of $\alpha_{\bullet} = (\alpha_1, \ldots, \alpha_K)$ as $\alpha_{+}$.[^alpha_plus]
+We will denote the sum of the components of $\alpha_{\bullet} = (\alpha_1, \ldots, \alpha_K)$ as $\alpha_{+}$.[^2]
 
-[^alpha_plus]: An alternative notation for the sum of $(\alpha_1, \ldots, \alpha_K)$ is $\alpha_0$.
+[^2]: An alternative notation for the sum of $(\alpha_1, \ldots, \alpha_K)$ is $\alpha_0$.
 
 $$
 \begin{align}
@@ -272,7 +272,7 @@ $$
 \end{align}
 $$
 
-Consider the special case in which all the components of $\alpha_{\bullet}$ have the same value 
+Consider the special case in which all the components of $\alpha_{\bullet}$ have the same value
 
 $$
 \begin{align}
@@ -281,7 +281,7 @@ $$
 \end{align}
 $$
 
-The probability distribution is then symmetric in the components of $p_{\bullet}$, and $\alpha_{+}$ is referred to as the _concentration parameter_.  The uniform distribution over the domain of $p_{\bullet}$ (that is, over the $K - 1$ dimensional simplex) is obtained by setting $\alpha_{+} = K$.  Setting $\alpha_{+} > K$ concentrates the distribution around the centroid 
+The probability distribution is then symmetric in the components of $p_{\bullet}$, and $\alpha_{+}$ is referred to as the *concentration parameter*. The uniform distribution over the domain of $p_{\bullet}$ (that is, over the $K - 1$ dimensional simplex) is obtained by setting $\alpha_{+} = K$. Setting $\alpha_{+} > K$ concentrates the distribution around the centroid
 
 $$
 \begin{align}
@@ -295,9 +295,9 @@ Alternatively, setting $\alpha_{+} < K$ concentrates the distribution away from 
 
 ### Posterior Distribution
 
-Recall that $S_{\bullet}$ constructed above has a multinomial distribution if it can be represented as the sum of $n$ independent trials, each trial yielding one of the Euclidean basis vectors $\mathbb{e}_k$ with probability $p_k$.  Then $S_k$, the $k^{th}$ component of $S_{\bullet}$, counts the number of trials yielding $\mathbb{e}_k$.
+Recall that $S_{\bullet}$ constructed above has a multinomial distribution if it can be represented as the sum of $n$ independent trials, each trial yielding one of the Euclidean basis vectors $\mathbb{e}_k$ with probability $p_k$. Then $S_k$, the $k^{th}$ component of $S_{\bullet}$, counts the number of trials yielding $\mathbb{e}_k$.
 
-Now suppose that $p_{\bullet}$ has prior distribution $\mathcal{Dirichlet}(\alpha_{\bullet})$, for some specification of $\alpha_{\bullet}$, and that the observed outcome of the $n$ trials is a given vector $s_{\bullet}$ of counts.  What is the posterior distribution of $p_{\bullet}$ given the observation $S_{\bullet} = s_{\bullet}$?  This turns out to be 
+Now suppose that $p_{\bullet}$ has prior distribution $\mathcal{Dirichlet}(\alpha_{\bullet})$, for some specification of $\alpha_{\bullet}$, and that the observed outcome of the $n$ trials is a given vector $s_{\bullet}$ of counts. What is the posterior distribution of $p_{\bullet}$ given the observation $S_{\bullet} = s_{\bullet}$? This turns out to be
 
 $$
 \begin{align}
@@ -310,4 +310,3 @@ That is, the Dirichlet family is conjugate to the multinomial family, just as th
 ## Resources
 
 [Dirichlet distribution - Wikipedia](https://en.wikipedia.org/wiki/Dirichlet_distribution)
-
