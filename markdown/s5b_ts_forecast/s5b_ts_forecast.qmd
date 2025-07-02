@@ -2735,7 +2735,7 @@ g_jj_log <- astsa::tsplot(
 
 ### Global Temperatures
 
-@fig-gtemp-lo below shows the time series `gtemp_land` and `gtemp_ocean`, annual temperature deviations (in ◦C) from averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.
+@fig-gtemp-lo below shows the time series `gtemp_land` and `gtemp_ocean` from `R` package `astsa`.  The series are annual temperature deviations (in ◦C) from averages for the period 1991-2020. The temperatures are based on averages over the Earth’s land area and over the part of the ocean that is free of ice at all times (open ocean). The time period is from 1850 to 2023. Note that the trend is not linear, with periods of leveling off followed by sharp increases.
 
 ```{r}
 #| label: fig-gtemp-lo
