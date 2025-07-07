@@ -1,0 +1,104 @@
+s_5b_footnotes
+
+[^1001]: We assume the components of $X_\bullet(t)$ to be real-valued, unless stated otherwise.
+
+[^uni-subscripts]: For a univariate time series $X(t)$ we denote distributional parameters either omitting a subscript or else using the subscript $X$.
+
+[^stationary]: The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of *strict stationarity*. This means that for any finite set of times $(t_1, \ldots, t_K)$ and any time-shift $s$, the joint probability distribution of $(X_\bullet (t_1), \ldots, X_\bullet (t_K))$ is identical to that of $(X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))$.
+
+[^txt-PACF-intro]: See @shumway2025 [page 108].
+
+[^Gaussian]: That is, we assume that $\mathcal{N}(t)$ is a stationary, mean-zero, autocorrelated process such that for any set of distinct time indices $t_1, \ldots, t_K$ the joint probability distribtuion of $(\mathcal{N}(t_1), \ldots, \mathcal{N}(t_K)$ is multivariate normal.
+
+[^non-Gaussian]: Normality allows us to define approximations as conditional expectations. To define PACF more generally, replace conditional expectation with the affine function that minimizes mean squared approximation error.
+
+[^rho-even]: Recall that for a univariate process the auto-covariance and autocorrelation functions are even, e.g., $\rho (-u) = \rho (u)$. The PACF of a univariate process is also defined to be an even function.
+
+[^txt-PACF-defn]: See @shumway2025 [page 110].
+
+[^txt-DL-algo]: See @shumway2025 [page 115].
+
+[^txt-seasonal-diff]: See @shumway2025 [page 157].
+
+[^caveat-filter]: The filters described here are called "auto-regressive" or "finite impulse response". Filtering is a large subject only touched on here.
+
+[^txt-cmort-model]: See @shumway2025 [page 55].
+
+[^cmort-trend-models]: The authors consider various forms for the function $f(t)$: a linear function, a quadratic function, or a locally smoothed version of $X_1(t)$.
+
+[^causal]: An ARMA model is said to be *causal* if the modeled process $X(t)$ can be expressed as a function of current and past white noise terms, $\{ W(t-u) \}$ for $u \ge 0$. See @shumway2025 [page 96].
+
+[^invertible]: A model is said to be *invertible* if the model's white noise process $W(t)$ can be expressed as a function of current and past terms of the modeled process, $\{ X(t-u) \}$ for $u \ge 0$. See @shumway2025 [page 94].
+
+[^poly-roots]: Requiring the roots of a polynomial $p(\cdot)$ to be greater than unity in magnitude ensures that $p(z)^{-1}$ is finite and analytic for $|z| \le 1$ and thus has a power series expansion whose radius of convergence is the minimum magnitude of the roots of $p(\cdot)$. As a consequence the coefficients of that power series are absolutely summable.
+
+[^txt-AR1-ACF]: See @shumway2025 [page 88].
+
+[^txt-AR1-PACF]: See @shumway2025 [page 110].
+
+[^txt-ARp-inverse]: See @shumway2025 [page 117].
+
+[^ARp-inverse]: To expand $\phi(z)^{-1}$ in a power series, define polynomial $f(\cdot) = 1 - \phi(\cdot)$ so that $f(z) = \phi_1 z + \cdots + \phi_p z^p$. We then have $\phi(z)^{-1} = (1 - f(z))^{-1}$ as a geometric series in $f(z)$ which can be re-expressed as a power series in $z$. [[REMOVED]]
+
+[^txt-MA1-roots]: See @shumway2025 [page 92].
+
+[^MA1-roots]: Transform the second equation into the first as follows. For all time indices $\nu$ set $U(\nu) = 5 V(\nu - 1)$, and then reverse time by setting $Y'(\nu) = Y(- \nu)$ and $U'(\nu) = U(- \nu)$.
+
+[^txt-MA1-ACF]: See @shumway2025 [page 93].
+
+[^txt-MA1-rho]: See @shumway2025 [page 111].
+
+[^txt-co-prime-polys]: See @shumway2025 [page 95].
+
+[^txt-ARMApq-causal]: See @shumway2025 [page 97].
+
+[^ARMApq-causal]: The rational function $\theta(z) \; \div \phi(z)$ can be expressed as a power series, namely the power series of $\phi(z)^{-1}$ multiplied by the polynomial $\theta(z)$.
+
+[^txt-Gamma-matrix]: @shumway2025 [page 114] introduce the $\Gamma$ matrix.
+
+[^singular-Gamma-matrix]: By "degenerate process" we mean a process $X(\cdot)$ for which there is a filter $a(u)$, equal to zero for all but finitely many lags $u$, that annihilates $X(\cdot)$: $a * (X - \mu_x) = 0$.
+
+[^ACF-est-limitations]: Any two time indices within the $T$ observations can differ by no more than $T-1$. Yet the needed estimates include $\gamma_X(T + u - 1 - j)$, with $u \ge 1$ and $0 \le j < T$. For $u = 1$ and $j = 0$ we have $\gamma_X(T)$, which exceeds the limits of direct estimation.
+
+[^txt-ARMA-forecasting]: @shumway2025 [page 117]
+
+[^e-future-given-past-notation]: When attempting to predict future values $\mathcal{N} (u + t_f)$ from data values indexed by $t \in (t_0, \ldots, t_f)$ the index symbol $h$ is often used in place of the generic indexing difference $u$ to denote forecast *horizon*.
+
+[^mspe-caveat]: Recall that the formula given here for the mean squared error of prediction assumes that the coefficients of the model and the parameters of the process are known. In applications these quantities must be estimated, which increases mean squared prediction error.
+
+[^txt-trunc-predict]: @shumway2025 [page 119]
+
+[^txt-ARMA_1_1_sim]: See @shumway2025 [page 120].
+
+[^txt-var-predictor-resid]: See @shumway2025 [page 103].
+
+[^var-predictor-resid]: The formula is obtained by expanding $\frac{1 + \theta_1 z}{1 - \phi_1 z}$ in a power series.
+
+[^sarima-sim-script]: The simulation code is based on a similar example in [Fun with asta](https://github.com/nickpoison/astsa/tree/master/fun_with_astsa).
+
+[^txt-ARIMApdq]: See @shumway2025 [page 146].
+
+[^diff-is-AR1]: From covariance calculations, $\nabla \; X(\cdot)$ is an $AR(1)$ process.
+
+[^txt-ARIMA-0-1-1]: See @shumway2025 [p. 148].
+
+[^txt-SES-as-projection]: $\hat{X}(t \; | \; \wp (t-1))$ is the orthogonal projection of $X(t)$ onto the space spanned by $\{ X(s), s < t \}$. See @shumway2025 [sec. B.1].
+
+[^empty-sum]: In the case $u = 1$ the sum is over an empty set of indices $\nu$ such that $\nu \ge 1$ and $\nu \le 0$. We define such empty sums to be zero.
+
+[^book-ETS]: See @hyndman2021forecasting \[chapter 8\] and @ryantibs2023timeseries [chapter 7].
+
+[^art-Holt-Winters]: See @holt1957forecasting and @winters1960forecasting.
+
+[^ETS-ANN-ss-wn]: @eq-ets-ANN-ss-wn is the state-space version of @eq-SES-plus-wn.
+
+[^book-ETS-category]: See @hyndman2002state.
+
+[^txt-SARIMA-models]: See @shumway2025 [p. 157].
+
+[^txt-cardox-xmpl]: See @shumway2025 [p. 163].
+
+[^1002]: Another textbook, @brillinger2001, treats a time series as a function of time, denoted $X(t)$, which is the practice followed in this note.
+
+[^djia-returns]: The return is here calculated as $log_e$ of the ratio: current day's closing price divided by that of the preceding day. The median value is about 6 basis points.
+
