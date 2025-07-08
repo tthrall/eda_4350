@@ -88,8 +88,8 @@ source(here("code", "city_temperatures.R"))
 # missing temperatures imputed as variable t_imp 
 # via function imputeTS::na.ma()
 
-HNL_NYC_t_imp <- readr::read_tsv(here::here(
-  "data", "retain", "HNL_NYC_t_imp.txt"
+HNL_NYC_t_imp <- readr::read_rds(here::here(
+  "data", "rds", "HNL_NYC_t_imp.rds"
 ))
 ```
 
