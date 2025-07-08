@@ -265,6 +265,9 @@ get_city_slices <- function(
 #
 #  replace missing temperatures with moving average
 #
+#  caveat:
+#    assumes city name uniquely identifies city within tibble x
+#
 #  return: city_t_imp as tibble
 ##
 impute_temp <- function(
