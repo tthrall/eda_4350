@@ -60,7 +60,7 @@ library(zip)
 
 # city_temperatures
 # summaries and examples of daily temps from 300+ cities
-source(here("code", "city_temperatures.R"))
+# source(here("code", "city_temperatures.R"))
 ```
 
 ```{r}
