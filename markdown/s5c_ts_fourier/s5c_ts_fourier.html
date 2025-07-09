@@ -75,10 +75,19 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#mathematical-framework" id="toc-mathematical-framework" class="nav-link" data-scroll-target="#mathematical-framework">Mathematical Framework</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#sunspots" id="toc-sunspots" class="nav-link" data-scroll-target="#sunspots">Sunspots</a></li>
+  <li><a href="#average-daily-temperatures" id="toc-average-daily-temperatures" class="nav-link" data-scroll-target="#average-daily-temperatures">Average Daily Temperatures</a></li>
+  </ul></li>
+  <li><a href="#sec-math-fmwk" id="toc-sec-math-fmwk" class="nav-link" data-scroll-target="#sec-math-fmwk">Mathematical Framework</a></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#a-glossary-of-math-symbols" id="toc-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#a-glossary-of-math-symbols">A: Glossary of Math Symbols</a></li>
+  <li><a href="#b-data-examples" id="toc-b-data-examples" class="nav-link" data-scroll-target="#b-data-examples">B: Data Examples</a>
+  <ul class="collapse">
+  <li><a href="#sunspot-numbers-monthly-averages-1749---present" id="toc-sunspot-numbers-monthly-averages-1749---present" class="nav-link" data-scroll-target="#sunspot-numbers-monthly-averages-1749---present">Sunspot Numbers: Monthly Averages, 1749 - Present</a></li>
+  <li><a href="#daily-city-temperatures-1995-2020" id="toc-daily-city-temperatures-1995-2020" class="nav-link" data-scroll-target="#daily-city-temperatures-1995-2020">Daily City Temperatures: 1995-2020</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -105,7 +114,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">10:53 Wed 9-Jul-2025</p>
+      <p class="date">18:04 Wed 9-Jul-2025</p>
     </div>
   </div>
   
@@ -125,9 +134,21 @@ window.Quarto = {
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The analysis of time series has proved to have both pragmatic and scientific value. For time series that track business activity or broader economic activity, the ability to forecast future values with some degree of reliability has evident practical value. The potential of such forecasting has influenced the development of time domain models, notably auto-regressive moving average (ARMA) models.</p>
+<p>On the other hand, natural processes often exhibit periodic behavior, and have given rise to the Fourier decomposition of such time series, that is, the representation of the process as a sum of sine waves over a range of frequencies.</p>
+<section id="sunspots" class="level3">
+<h3 class="anchored" data-anchor-id="sunspots">Sunspots</h3>
+<p>An early example of such periodic behavior is shown in <a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;1</a>, the time series of monthly sunspot numbers. Sunspots have been observed for millennia, but systematic scientific observations began in the 1600’s.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Sunspots are a key indicator of the solar magnetic activity cycle in which the sun’s magnetic polarity reverses every 11 years or so. At the peak of a cycle the sun emits bursts of charged particles (solar flares) across the solar system that affect the Earth. Consequently, understanding the solar cycle has both scientific and practical value.</p>
+<p>Gaps between peak sunspot numbers vary, so a simple sinusoidal wave (or other function) having a fixed period does not fit the data well. On the other hand, the variability of the data is clarified by Fourier decomposition and subsequent grouping of fitted sine waves within successive bands of frequencies. This approach is discussed in <a href="#sec-math-fmwk" class="quarto-xref">Section&nbsp;2</a>.</p>
 </section>
-<section id="mathematical-framework" class="level2">
-<h2 class="anchored" data-anchor-id="mathematical-framework">Mathematical Framework</h2>
+<section id="average-daily-temperatures" class="level3">
+<h3 class="anchored" data-anchor-id="average-daily-temperatures">Average Daily Temperatures</h3>
+<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;2</a> shows average daily temperatures for Honolulu and New York City over a 25-year period (1995-2020). The overall average temperature in NYC is about 56 (F), well below that of Honolulu (77). Also note that the standard deviation of NYC temperatures, roughly 17.1 (F), is well above that of Honolulu (3.4). So Honolulu temperatures are higher than those of NYC and fluctuate less (as visitors to those two cities may testify). Less clear, however, is the degree to which seasonal variation accounts for the overall variation in each city. This is a question that can be addressed by Fourier decomposition.</p>
+</section>
+</section>
+<section id="sec-math-fmwk" class="level2">
+<h2 class="anchored" data-anchor-id="sec-math-fmwk">Mathematical Framework</h2>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
@@ -231,11 +252,76 @@ window.Quarto = {
 \end{align}
 \]</span></p>
 </section>
+<section id="b-data-examples" class="level2">
+<h2 class="anchored" data-anchor-id="b-data-examples">B: Data Examples</h2>
+<section id="sunspot-numbers-monthly-averages-1749---present" class="level3">
+<h3 class="anchored" data-anchor-id="sunspot-numbers-monthly-averages-1749---present">Sunspot Numbers: Monthly Averages, 1749 - Present</h3>
+<section id="description" class="level4">
+<h4 class="anchored" data-anchor-id="description">Description</h4>
+<p><a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;1</a> below shows <code>sunspot.month</code>, monthly average sunspot numbers, in <code>R</code> package <code>datasets</code>. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-sunspots" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sunspots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5c_ts_fourier_files/figure-html/fig-sunspots-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sunspots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Sunspot numbers: monthly average
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives">Context: Questions and Objectives</h4>
+<p>As described in <a href="https://link.springer.com/article/10.1007/s11207-023-02136-3">Recalibration of the Sunspot-Number: Status Report | Solar Physics</a>, the record of sunspot numbers links past and present solar behavior, and is the primary input for reconstructions of total solar irradiance (TSI) for years before 1978.</p>
+</section>
+</section>
+<section id="daily-city-temperatures-1995-2020" class="level3">
+<h3 class="anchored" data-anchor-id="daily-city-temperatures-1995-2020">Daily City Temperatures: 1995-2020</h3>
+<section id="description-1" class="level4">
+<h4 class="anchored" data-anchor-id="description-1">Description</h4>
+<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;2</a> below shows the daily average temperature in Honolulu and New York City from 1995-01-01 to 2020-05-13.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-hnl-nyc-temps" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-hnl-nyc-temps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5c_ts_fourier_files/figure-html/fig-hnl-nyc-temps-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hnl-nyc-temps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Daily Average Temperature (F), HNL and NYC, 1995-2020
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="context-questions-and-objectives-1" class="level4">
+<h4 class="anchored" data-anchor-id="context-questions-and-objectives-1">Context: Questions and Objectives</h4>
+<p>The temperatures shown are available from <a href="https://www.kaggle.com/datasets/sudalairajkumar/daily-temperature-of-major-cities">Kaggle</a> (obtained from the University of Dayton) as part of a collection of temperatures at 157 cities in the US and 167 cities across the globe. These surface temperatures are one of several variables that are used to model weather systems worldwide.</p>
+<p>Also see the following R packages:</p>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/GSODR/readme/README.html">GSOD</a>, Global Surface Summary of the Day</li>
+<li><a href="https://cran.r-project.org/web/packages/climate/vignettes/getstarted.html">climate</a></li>
+</ul>
+</section>
+</section>
+</section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>See <a href="https://chandra.harvard.edu/edu/formal/icecore/The_Historical_Sunspot_Record.pdf">The Historical Sunspot Record</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>For convenience missing values have been imputed (estimated) with a weighted running average spanning 7 days. This was done with <code>R</code> function <code>imputeTS::na.ma()</code>. Of the 9265 days shown, there were 18 missing values for Honolulu and 20 missing values for NYC.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

@@ -64,27 +64,7 @@ library(zip)
 ```
 
 ```{r}
-#| label: HNL_NYC_inspect
-#| eval: false
-
-# -- calculated in separate project --
-
-# inspect HNL-NYC summary for compatible dates
-# kgl_city_smy |> 
-#   dplyr::filter(
-#     City %in% c("Honolulu", "New York City")
-#   )
-# # A tibble: 2 × 7
-#   City          n_days n_miss dt_min     dt_max     t_avg  t_sd
-#   <chr>          <int>  <int> <date>     <date>     <dbl> <dbl>
-# 1 Honolulu        9265     18 1995-01-01 2020-05-13  77.4  3.40
-# 2 New York City   9265     20 1995-01-01 2020-05-13  56.0 17.1 
-
-```
-
-```{r}
 #| label: HNL_NYC_t_imp
-
 # daily temperatures at Honolulu and NYC, 1995 - 2020
 
 # missing temperatures previously imputed as 
@@ -99,10 +79,66 @@ HNL_NYC_t_imp <- readr::read_tsv(here::here(
   ))
 ```
 
+```{r}
+#| label: HNL_NYC_smy
+# stats for temps at Honolulu and NYC, 1995 - 2020
+
+HNL_NYC_smy <- HNL_NYC_t_imp |>
+    group_by(City) |>
+    summarize(
+      n_days = n(),
+      n_miss = is.na(temp) |> sum() |> as.integer(),
+      dt_min = min(dt, na.rm = TRUE),
+      dt_max = max(dt, na.rm = TRUE),
+      t_avg  = mean(temp, na.rm = TRUE),
+      t_sd   = sd(temp, na.rm = TRUE)
+    ) |>
+    dplyr::ungroup()
+
+# HNL_NYC_smy
+# # A tibble: 2 × 7
+#   City          n_days n_miss dt_min     dt_max     t_avg  t_sd
+#   <chr>          <int>  <int> <date>     <date>     <dbl> <dbl>
+# 1 Honolulu        9265     18 1995-01-01 2020-05-13  77.4  3.40
+# 2 New York City   9265     20 1995-01-01 2020-05-13  56.0 17.1
+
+# isolate stats for use in narrative
+min_dt_HNL <- (HNL_NYC_smy$ dt_min) [[1]]
+max_dt_HNL <- (HNL_NYC_smy$ dt_max) [[1]]
+n_days_HNL <- (HNL_NYC_smy$ n_days) [[1]]
+
+n_miss_HNL <- (HNL_NYC_smy$ n_miss) [[1]]
+n_miss_NYC <- (HNL_NYC_smy$ n_miss) [[2]]
+
+avg_HNL <- (HNL_NYC_smy$ t_avg) [[1]] |> round()
+avg_NYC <- (HNL_NYC_smy$ t_avg) [[2]] |> round()
+
+sd_HNL <- (HNL_NYC_smy$ t_sd) [[1]] |> round(digits = 1)
+sd_NYC <- (HNL_NYC_smy$ t_sd) [[2]] |> round(digits = 1)
+
+```
+
 ## Introduction
 
+The analysis of time series has proved to have both pragmatic and scientific value.  For time series that track business activity or broader economic activity, the ability to forecast future values with some degree of reliability has evident practical value.  The potential of such forecasting has influenced the development of time domain models, notably auto-regressive moving average (ARMA) models.
 
-## Mathematical Framework
+On the other hand, natural processes often exhibit periodic behavior, and have given rise to the Fourier decomposition of such time series, that is, the representation of the process as a sum of sine waves over a range of frequencies.
+
+### Sunspots
+
+An early example of such periodic behavior is shown in @fig-sunspots, the time series of monthly sunspot numbers.  Sunspots have been observed for millennia, but systematic scientific observations began in the 1600's.[^sunspot-history]
+
+[^sunspot-history]: See [The Historical Sunspot Record](https://chandra.harvard.edu/edu/formal/icecore/The_Historical_Sunspot_Record.pdf).
+
+Sunspots are a key indicator of the solar magnetic activity cycle in which the sun's magnetic polarity reverses every 11 years or so.  At the peak of a cycle the sun emits bursts of charged particles (solar flares) across the solar system that affect the Earth.  Consequently, understanding the solar cycle has both scientific and practical value.
+
+Gaps between peak sunspot numbers vary, so a simple sinusoidal wave (or other function) having a fixed period does not fit the data well.  On the other hand, the variability of the data is clarified by Fourier decomposition and subsequent grouping of fitted sine waves within successive bands of frequencies. This approach is discussed in @sec-math-fmwk.
+
+### Average Daily Temperatures
+
+@fig-hnl-nyc-temps shows average daily temperatures for Honolulu and New York City over a 25-year period (1995-2020).  The overall average temperature in NYC is about `r avg_NYC` (F), well below that of Honolulu (`r avg_HNL`).  Also note that the standard deviation of NYC temperatures, roughly `r sd_NYC` (F), is well above that of Honolulu (`r sd_HNL`).  So Honolulu temperatures are higher than those of NYC and fluctuate less (as visitors to those two cities may testify).  Less clear, however, is the degree to which seasonal variation accounts for the overall variation in each city.  This is a question that can be addressed by Fourier decomposition.
+
+## Mathematical Framework {#sec-math-fmwk}
 
 
 ## Closing Remarks
@@ -205,5 +241,63 @@ $$
      \quad & \quad \text{trucnated predictor of } X(t) \text{ based on } \{ X(t) \}_{t \in \tau_T}
 \end{align}
 $$
+
+## B: Data Examples
+
+### Sunspot Numbers: Monthly Averages, 1749 - Present
+
+#### Description
+
+@fig-sunspots below shows `sunspot.month`, monthly average sunspot numbers, in `R` package `datasets`. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.
+
+```{r}
+#| label: fig-sunspots
+#| fig-cap: "Sunspot numbers: monthly average"
+
+g_sunspots <- astsa::tsplot(
+  x = datasets::sunspot.month, 
+  ylab = "sunspot number", 
+  col = 4)
+```
+
+#### Context: Questions and Objectives
+
+As described in [Recalibration of the Sunspot-Number: Status Report \| Solar Physics](https://link.springer.com/article/10.1007/s11207-023-02136-3), the record of sunspot numbers links past and present solar behavior, and is the primary input for reconstructions of total solar irradiance (TSI) for years before 1978.
+
+### Daily City Temperatures: 1995-2020
+
+#### Description
+
+@fig-hnl-nyc-temps below shows the daily average temperature in Honolulu and New York City from `r min_dt_HNL` to `r max_dt_HNL`.[^hnl-nyc-impute]
+
+[^hnl-nyc-impute]: For convenience missing values have been imputed (estimated) with a weighted running average spanning 7 days.  This was done with `R` function `imputeTS::na.ma()`.  Of the `r n_days_HNL` days shown, there were `r n_miss_HNL` missing values for Honolulu and `r n_miss_NYC` missing values for NYC.
+
+```{r}
+#| label: fig-hnl-nyc-temps
+#| fig-cap: "Daily Average Temperature (F), HNL and NYC, 1995-2020"
+
+g_HNL_NYC_t_imp <- HNL_NYC_t_imp |> 
+  dplyr::group_by(City) |> 
+  ggplot2::ggplot(mapping = aes(
+    x = dt, y = t_imp, color = City, fill = City
+  )) + 
+  ggplot2::geom_line(show.legend = FALSE) + 
+  ggplot2::facet_grid(rows = dplyr::vars(City)) + 
+  ggplot2::labs(
+    title = "Daily Average Temperature for HNL, NYC, 1995-2020") + 
+  ggplot2::xlab("Year") + 
+  ggplot2::ylab("Temperature (F)")
+g_HNL_NYC_t_imp
+```
+
+
+#### Context: Questions and Objectives
+
+The temperatures shown are available from [Kaggle](https://www.kaggle.com/datasets/sudalairajkumar/daily-temperature-of-major-cities) (obtained from the University of Dayton) as part of a collection of temperatures at 157 cities in the US and 167 cities across the globe.  These surface temperatures are one of several variables that are used to model weather systems worldwide.
+
+Also see the following R packages:
+
+  - [GSOD](https://cran.r-project.org/web/packages/GSODR/readme/README.html), Global Surface Summary of the Day
+  - [climate](https://cran.r-project.org/web/packages/climate/vignettes/getstarted.html)
 
 ## References
