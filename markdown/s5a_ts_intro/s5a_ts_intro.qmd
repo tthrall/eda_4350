@@ -5,6 +5,7 @@ author:
   - name: "Send comments to: Tony T (tthrall)"
 date: last-modified
 date-format: HH:mm ddd D-MMM-YYYY
+editor: source
 toc: true
 toc-depth: 3
 format:
