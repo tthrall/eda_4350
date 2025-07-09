@@ -8,7 +8,7 @@
 
 <meta name="author" content="Send comments to: Tony T (tthrall)">
 
-<title>Time Series Fourier Analysis</title>
+<title>Time Series Spectrum Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -35,20 +35,59 @@ ul.task-list li input[type="checkbox"] {
 <link href="s5c_ts_fourier_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="s5c_ts_fourier_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
 <body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-  
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#mathematical-framework" id="toc-mathematical-framework" class="nav-link" data-scroll-target="#mathematical-framework">Mathematical Framework</a></li>
+  <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
+  <li><a href="#a-glossary-of-math-symbols" id="toc-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#a-glossary-of-math-symbols">A: Glossary of Math Symbols</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
 </div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Time Series Fourier Analysis</h1>
+<h1 class="title">Time Series Spectrum Analysis</h1>
 <p class="subtitle lead">An Introduction</p>
 </div>
 
@@ -66,7 +105,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">19:16 Tue 8-Jul-2025</p>
+      <p class="date">10:53 Wed 9-Jul-2025</p>
     </div>
   </div>
   
@@ -76,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
 <div>
   <div class="abstract">
     <div class="block-title">Abstract</div>
-    Introduce the Fourier decompositon of a time series. <br><br>
+    Introduce the Fourier spectrum of a time series. <br><br>
   </div>
 </div>
 
@@ -84,7 +123,117 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+</section>
+<section id="mathematical-framework" class="level2">
+<h2 class="anchored" data-anchor-id="mathematical-framework">Mathematical Framework</h2>
+</section>
+<section id="closing-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
+</section>
+<section id="a-glossary-of-math-symbols" class="level2">
+<h2 class="anchored" data-anchor-id="a-glossary-of-math-symbols">A: Glossary of Math Symbols</h2>
+<p><span class="math display">\[
+\begin{align}
+  {a_{\bullet, \bullet} (u)}
+    \quad &amp; \quad \text{matrix of filter coefficients at time-shift } u \\
+  \\
+  \mathcal{B}
+     \quad &amp; \quad \text{back-shift operator } \\
+  \\
+  \nabla
+     \quad &amp; \quad \text{difference operator } \mathcal{I - B} \\
+  \\
+  \nabla_\sigma
+     \quad &amp; \quad \text{seasonal difference operator } \mathcal{I - B}^\sigma \\
+  \\
+  \Delta_u
+     \quad &amp; \quad \{ 1, 2, \ldots, u-1 \} \text{ for } u \ge 2 \\
+  \\
+  \phi(\cdot)
+     \quad &amp; \quad \text{AR polynomial, } 1 - \sum_{\nu = 1}^p \phi_\nu \; z^\nu \\
+  \\
+  \Gamma
+     \quad &amp; \quad \text{auto-covariance matrix, } \Gamma [j, \nu] = \gamma_X (\nu - j) \text{, for } j, \nu \in \nu_T \\
+  \\
+  \gamma_{\bullet, \bullet} (u)
+     \quad &amp; \quad \text{auto-covariance matrix at time-shift } u \\
+  \\
+  \mathcal{I}
+     \quad &amp; \quad \text{identity operator } \\
+  \\
+  MSE
+     \quad &amp; \quad \text{mean squared error } \\
+  \\
+  m_\bullet (t)
+     \quad &amp; \quad E \{ X_\bullet (t) \} \text{, expected value of } X_\bullet (t) \\
+  \\
+  \mu_X
+     \quad &amp; \quad E\{ X (t_0) \} \text{, expected value of } X (t_0) \\
+  \\   
+  \hat{\mu}_X
+     \quad &amp; \quad \text{sample mean, } S_{X, T} / T \\
+  \\   
+  \mathcal{N}(\cdot)
+     \quad &amp; \quad \text{a univariate, stationary, Gaussian process having mean 0} \\
+  \\   
+  \tilde{\mathcal{N}} (u + t_f \; | \; \wp (t_f))
+     \quad &amp; \quad E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \} \\
+  \\
+  \nu_T
+     \quad &amp; \quad \{ 0, 1, \dots, T-1 \} \\
+  \\
+  \wp (t_f)
+     \quad &amp; \quad \{ s \in \mathbb{Z} \; | \; s \le t_f \} \\
+  \\
+  \rho_{\bullet, \bullet} (u)
+     \quad &amp; \quad \text{autocorrelation matrix at time-shift } u \\
+  \\
+  \rho (u | u)
+     \quad &amp; \quad corr(X(t+u) - \hat{X}(t+u \; | \; - \Delta_u), \; X(t) - \hat{X}(t \; | \; \Delta_u)) \\
+  \\
+  S_{X, T}
+     \quad &amp; \quad \text{the sample sum of T observations of } X (\cdot) \\
+  \\
+  \sigma_X^2
+     \quad &amp; \quad Var \{ X (t_0) \} \text{, variance of } X (t_0) \\
+  \\
+  T
+     \quad &amp; \quad \text{number of time series observations } \\
+  \\
+  t_0
+     \quad &amp; \quad \text{initial time index of time series observations } \\
+  \\
+  t_f
+     \quad &amp; \quad \text{final time index of time series observations } \\
+  \\
+  \tau_T
+     \quad &amp; \quad t_0 + \{ 0, 1, \ldots, T-1  \} \\
+  \\
+  \theta(\cdot)
+     \quad &amp; \quad \text{MA polynomial, } 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\
+  \\
+  W(\cdot)
+     \quad &amp; \quad \text{white noise process, } W(\cdot) \sim wn(0, \sigma_W^2)  \\
+  \\
+  X_\bullet (t)
+     \quad &amp; \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } \\
+  \\
+  \hat{X}(t \; | \; \Delta_u)
+     \quad &amp; \quad \text{approximates } X(t) \text{ as affine function of } \{ X(t + \nu) \}_{\nu \in \Delta_u} \\
+  \\
+  \hat{X} (u + t_f \; | \; \wp (t_f))
+     \quad &amp; \quad \text{predicts } X(u + t_f) \text{ as affine function of } \{ X(t) \}_{t \in \wp (t_f)} \\
+  \\
+  \breve{X} (t \; | \; \tau_T)
+     \quad &amp; \quad \text{trucnated predictor of } X(t) \text{ based on } \{ X(t) \}_{t \in \tau_T}
+\end{align}
+\]</span></p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+</section>
 
 </main>
 <!-- /main column -->

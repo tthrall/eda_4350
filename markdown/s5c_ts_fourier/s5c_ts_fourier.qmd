@@ -99,3 +99,111 @@ HNL_NYC_t_imp <- readr::read_tsv(here::here(
   ))
 ```
 
+## Introduction
+
+
+## Mathematical Framework
+
+
+## Closing Remarks
+
+## A: Glossary of Math Symbols
+
+$$
+\begin{align}
+  {a_{\bullet, \bullet} (u)} 
+    \quad & \quad \text{matrix of filter coefficients at time-shift } u \\ 
+  \\ 
+  \mathcal{B} 
+     \quad & \quad \text{back-shift operator } \\ 
+  \\ 
+  \nabla 
+     \quad & \quad \text{difference operator } \mathcal{I - B} \\ 
+  \\ 
+  \nabla_\sigma 
+     \quad & \quad \text{seasonal difference operator } \mathcal{I - B}^\sigma \\ 
+  \\ 
+  \Delta_u
+     \quad & \quad \{ 1, 2, \ldots, u-1 \} \text{ for } u \ge 2 \\ 
+  \\ 
+  \phi(\cdot)
+     \quad & \quad \text{AR polynomial, } 1 - \sum_{\nu = 1}^p \phi_\nu \; z^\nu \\ 
+  \\ 
+  \Gamma 
+     \quad & \quad \text{auto-covariance matrix, } \Gamma [j, \nu] = \gamma_X (\nu - j) \text{, for } j, \nu \in \nu_T \\ 
+  \\ 
+  \gamma_{\bullet, \bullet} (u) 
+     \quad & \quad \text{auto-covariance matrix at time-shift } u \\ 
+  \\ 
+  \mathcal{I} 
+     \quad & \quad \text{identity operator } \\ 
+  \\ 
+  MSE 
+     \quad & \quad \text{mean squared error } \\ 
+  \\ 
+  m_\bullet (t) 
+     \quad & \quad E \{ X_\bullet (t) \} \text{, expected value of } X_\bullet (t) \\ 
+  \\ 
+  \mu_X 
+     \quad & \quad E\{ X (t_0) \} \text{, expected value of } X (t_0) \\ 
+  \\   
+  \hat{\mu}_X
+     \quad & \quad \text{sample mean, } S_{X, T} / T \\ 
+  \\   
+  \mathcal{N}(\cdot)
+     \quad & \quad \text{a univariate, stationary, Gaussian process having mean 0} \\ 
+  \\   
+  \tilde{\mathcal{N}} (u + t_f \; | \; \wp (t_f))
+     \quad & \quad E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \} \\ 
+  \\ 
+  \nu_T 
+     \quad & \quad \{ 0, 1, \dots, T-1 \} \\ 
+  \\ 
+  \wp (t_f) 
+     \quad & \quad \{ s \in \mathbb{Z} \; | \; s \le t_f \} \\ 
+  \\ 
+  \rho_{\bullet, \bullet} (u) 
+     \quad & \quad \text{autocorrelation matrix at time-shift } u \\ 
+  \\ 
+  \rho (u | u) 
+     \quad & \quad corr(X(t+u) - \hat{X}(t+u \; | \; - \Delta_u), \; X(t) - \hat{X}(t \; | \; \Delta_u)) \\ 
+  \\ 
+  S_{X, T} 
+     \quad & \quad \text{the sample sum of T observations of } X (\cdot) \\ 
+  \\ 
+  \sigma_X^2 
+     \quad & \quad Var \{ X (t_0) \} \text{, variance of } X (t_0) \\ 
+  \\ 
+  T 
+     \quad & \quad \text{number of time series observations } \\ 
+  \\ 
+  t_0 
+     \quad & \quad \text{initial time index of time series observations } \\ 
+  \\ 
+  t_f 
+     \quad & \quad \text{final time index of time series observations } \\ 
+  \\ 
+  \tau_T 
+     \quad & \quad t_0 + \{ 0, 1, \ldots, T-1  \} \\ 
+  \\ 
+  \theta(\cdot) 
+     \quad & \quad \text{MA polynomial, } 1 + \sum_{\nu = 1}^q \theta_\nu \; z^\nu \\ 
+  \\ 
+  W(\cdot) 
+     \quad & \quad \text{white noise process, } W(\cdot) \sim wn(0, \sigma_W^2)  \\ 
+  \\ 
+  X_\bullet (t) 
+     \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } \\ 
+  \\ 
+  \hat{X}(t \; | \; \Delta_u) 
+     \quad & \quad \text{approximates } X(t) \text{ as affine function of } \{ X(t + \nu) \}_{\nu \in \Delta_u} \\ 
+  \\ 
+  \hat{X} (u + t_f \; | \; \wp (t_f)) 
+     \quad & \quad \text{predicts } X(u + t_f) \text{ as affine function of } \{ X(t) \}_{t \in \wp (t_f)} \\ 
+  \\ 
+  \breve{X} (t \; | \; \tau_T) 
+     \quad & \quad \text{trucnated predictor of } X(t) \text{ based on } \{ X(t) \}_{t \in \tau_T}
+\end{align}
+$$
+
+## References
