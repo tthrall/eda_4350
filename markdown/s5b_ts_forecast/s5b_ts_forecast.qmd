@@ -2729,7 +2729,7 @@ g_jj <- astsa::tsplot(
   type="o")
 
 g_jj_log <- astsa::tsplot(
-  jj, col=4, ylab="USD", type="o", log="y")
+  jj, col=4, ylab="ln(USD)", type="o", log="y")
 ```
 
 ### Global Temperatures
