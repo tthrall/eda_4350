@@ -1,5 +1,5 @@
 ---
-title: "Time Series Fourier Analysis"
+title: "Time Series Spectrum Analysis"
 subtitle: "An Introduction"
 author:
   - name: "Send comments to: Tony T (tthrall)"
@@ -15,7 +15,7 @@ params:
   file_id: "s5c"
   file_prefix: "s5c_ts_fourier"
 abstract:
-  "Introduce the Fourier decompositon of a time series.  <br><br>"
+  "Introduce the Fourier spectrum of a time series.  <br><br>"
 bibliography: s5c_references.bib
 ---
 
@@ -58,7 +58,7 @@ library(zip)
 ```{r}
 #| label: local_source
 
-# city_temperatures
+# city_temperatures (now moved to separate project)
 # summaries and examples of daily temps from 300+ cities
 # source(here("code", "city_temperatures.R"))
 ```
@@ -66,6 +66,8 @@ library(zip)
 ```{r}
 #| label: HNL_NYC_inspect
 #| eval: false
+
+# -- calculated in separate project --
 
 # inspect HNL-NYC summary for compatible dates
 # kgl_city_smy |> 
@@ -85,11 +87,15 @@ library(zip)
 
 # daily temperatures at Honolulu and NYC, 1995 - 2020
 
-# missing temperatures imputed as variable t_imp 
-# via function imputeTS::na.ma()
+# missing temperatures previously imputed as 
+# variable t_imp via function imputeTS::na.ma()
 
-HNL_NYC_t_imp <- readr::read_rds(here::here(
-  "data", "rds", "HNL_NYC_t_imp.rds"
-))
+HNL_NYC_t_imp <- readr::read_tsv(here::here(
+  "data", "retain", "HNL_NYC_t_imp.txt"
+)) |> 
+  dplyr::mutate(across(
+    .cols = c(Month, Day, Year), 
+    .fns  = as.integer
+  ))
 ```
 
