@@ -294,7 +294,7 @@ The term "spectrum" in its modern sense was introduced by Sir Isaac Newton[^art-
 
 [^intensity-power]: In other contexts the term "intensity" is replaced by "power".  @wiener1930GHA introduced the term "power spectrum" of a signal.
 
-#### Definition
+### Spectral density functions
 
 The _spectral density function_, $f_{\bullet, \bullet} (\lambda)$, of the random process $X_\bullet(\cdot)$ is defined as the Fourier transform of the auto-covariance function $\gamma_{\bullet, \bullet} (u)$.
 
@@ -317,7 +317,7 @@ $$ {#eq-ACF-sum}
 
 Setting $b = a$, we obtain $f_{a, a} (\lambda)$, called the _power spectrum_ of $X_a (\cdot)$.  If $b \ne a$ then $f_{a, b} (\lambda)$ is called the _cross-spectrum_ of $\{ X_a (\cdot), X_b (\cdot) \}$.
 
-#### Cramér representation
+### Cramér representation
 
 It turns out[^Cramér-rep] that @eq-ACF-sum implies the following Cramér representation of a centered version of $X_\bullet (\cdot)$.
 
@@ -349,7 +349,7 @@ $$
 \end{align}
 $$ {#eq-var-Z}
 
-#### Filtering
+### Filtering
 
 Suppose that $X(t)$ is a univariate random process satisfying @eq-ACF-sum and having mean zero.  Let $a(\nu)$ be a non-random summable sequence, and let $Y(\cdot)$ denote the convolution of $a(\cdot)$ with $X(\cdot)$.
 
@@ -397,7 +397,7 @@ $$
 \end{align}
 $$ {#eq-var-Z-Y}
 
-#### Mathematical Examples
+### White noise
 
 Let $W(\cdot)$ denote a univariate "white noise" process, that is, a process having zero mean and having the following auto-covariance function.
 
@@ -429,6 +429,8 @@ $$
 \end{align}
 $$ {#eq-wn-spec-dens}
 
+### White noise filtered
+
 Now suppose that $X(\cdot)$ can be represented as the following filtered version of $W(\cdot)$.
 
 $$
@@ -454,6 +456,8 @@ $$
   \psi (z) &= \sum_{\nu = 0}^\infty \psi_\nu \times z^\nu \quad \text{for } |z| \le 1
 \end{align}
 $$ {#eq-psi-power-series}
+
+### ARMA models
 
 To elaborate, let's define auto-regressive moving average (ARMA) models to develop such filtered versions of the white noise process $W(\cdot)$.  These models are define by polynomials $\phi(\cdot)$ and $\theta(\cdot)$ applied to the back-shift operator $\mathcal{B}$ as follows.  (We set the mean of each process to zero in order to simplify the notation.)
 
@@ -481,6 +485,8 @@ $$ {#eq-ARMA-p-q-causal}
 
 The power-series expansion of the rational function $\psi(\cdot)$ requires the roots of polynomial $\phi(\cdot)$ to all have magnitude greater than unity, which we assume to be the case.
 
+### AR(1)
+
 Now let us specify some simple examples.  First we define $X(\cdot)$ to be the following simple auto-regressive model, abbreviated $AR(1)$.
 
 $$
@@ -492,6 +498,8 @@ $$
 \end{align}
 $$ {#eq-AR-1-causal}
 
+### MA(1)
+
 Next, let $Y(\cdot)$ denote the following simple moving average model $(MA(1))$.
 
 $$
@@ -501,6 +509,8 @@ $$
   \psi (z) &= 1 + \theta_1 z
 \end{align}
 $$ {#eq-MA-1}
+
+### ARMA(1, 1)
 
 Finally we let $Z(\cdot)$ denote the following $(ARMA(1, 1))$ model.
 
@@ -513,6 +523,8 @@ $$
   &= 1 \; + \; \sum_{k = 1}^\infty (\phi_1^k + \theta_1 \; \phi_1^{k - 1}) \times z^k
 \end{align}
 $$ {#eq-ARMA-1-1-causal}
+
+### Simulations from ARMA models
 
 ```{r}
 #| label: ARMA-sim-params
@@ -584,6 +596,9 @@ g_sim_long <- sim_long |>
   )
 g_sim_long
 ```
+
+
+### Spectral densities of ARMA models
 
 ```{r}
 #| label: ARMA-sim-spec-dens

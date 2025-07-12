@@ -106,6 +106,17 @@ window.Quarto = {
   <li><a href="#stationarity" id="toc-stationarity" class="nav-link" data-scroll-target="#stationarity">Stationarity</a></li>
   <li><a href="#acf-autocorrelation-function" id="toc-acf-autocorrelation-function" class="nav-link" data-scroll-target="#acf-autocorrelation-function">ACF: autocorrelation function</a></li>
   <li><a href="#spectrum" id="toc-spectrum" class="nav-link" data-scroll-target="#spectrum">Spectrum</a></li>
+  <li><a href="#spectral-density-functions" id="toc-spectral-density-functions" class="nav-link" data-scroll-target="#spectral-density-functions">Spectral density functions</a></li>
+  <li><a href="#cramér-representation" id="toc-cramér-representation" class="nav-link" data-scroll-target="#cramér-representation">Cramér representation</a></li>
+  <li><a href="#filtering" id="toc-filtering" class="nav-link" data-scroll-target="#filtering">Filtering</a></li>
+  <li><a href="#white-noise" id="toc-white-noise" class="nav-link" data-scroll-target="#white-noise">White noise</a></li>
+  <li><a href="#white-noise-filtered" id="toc-white-noise-filtered" class="nav-link" data-scroll-target="#white-noise-filtered">White noise filtered</a></li>
+  <li><a href="#arma-models" id="toc-arma-models" class="nav-link" data-scroll-target="#arma-models">ARMA models</a></li>
+  <li><a href="#ar1" id="toc-ar1" class="nav-link" data-scroll-target="#ar1">AR(1)</a></li>
+  <li><a href="#ma1" id="toc-ma1" class="nav-link" data-scroll-target="#ma1">MA(1)</a></li>
+  <li><a href="#arma1-1" id="toc-arma1-1" class="nav-link" data-scroll-target="#arma1-1">ARMA(1, 1)</a></li>
+  <li><a href="#simulations-from-arma-models" id="toc-simulations-from-arma-models" class="nav-link" data-scroll-target="#simulations-from-arma-models">Simulations from ARMA models</a></li>
+  <li><a href="#spectral-densities-of-arma-models" id="toc-spectral-densities-of-arma-models" class="nav-link" data-scroll-target="#spectral-densities-of-arma-models">Spectral densities of ARMA models</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#a-glossary-of-math-symbols" id="toc-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#a-glossary-of-math-symbols">A: Glossary of Math Symbols</a></li>
@@ -140,7 +151,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">22:38 Fri 11-Jul-2025</p>
+      <p class="date">08:54 Sat 12-Jul-2025</p>
     </div>
   </div>
   
@@ -285,8 +296,9 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 <section id="spectrum" class="level3">
 <h3 class="anchored" data-anchor-id="spectrum">Spectrum</h3>
 <p>The term “spectrum” in its modern sense was introduced by Sir Isaac Newton<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>, who used a prism to decompose sunlight into a rainbow of colors (light of different wavelengths or frequencies). The term came to mean the intensity<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> (denoted “I”) of light (or other wave phenomena) as a function of wavelength or frequency. This note uses “spectrum” in this sense (although the term has been further generalized).</p>
-<section id="definition" class="level4">
-<h4 class="anchored" data-anchor-id="definition">Definition</h4>
+</section>
+<section id="spectral-density-functions" class="level3">
+<h3 class="anchored" data-anchor-id="spectral-density-functions">Spectral density functions</h3>
 <p>The <em>spectral density function</em>, <span class="math inline">\(f_{\bullet, \bullet} (\lambda)\)</span>, of the random process <span class="math inline">\(X_\bullet(\cdot)\)</span> is defined as the Fourier transform of the auto-covariance function <span class="math inline">\(\gamma_{\bullet, \bullet} (u)\)</span>.</p>
 <p><span id="eq-spec-dens"><span class="math display">\[
 \begin{align}
@@ -303,8 +315,8 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 <p><a href="#eq-ACF-sum" class="quarto-xref">Equation&nbsp;10</a> is an example of a “mixing” condition. It implies that <span class="math inline">\(X_\bullet(t)\)</span> and <span class="math inline">\(X_\bullet(t + u)\)</span> have vanishingly small correlation as <span class="math inline">\(|u| \rightarrow \infty\)</span>.</p>
 <p>Setting <span class="math inline">\(b = a\)</span>, we obtain <span class="math inline">\(f_{a, a} (\lambda)\)</span>, called the <em>power spectrum</em> of <span class="math inline">\(X_a (\cdot)\)</span>. If <span class="math inline">\(b \ne a\)</span> then <span class="math inline">\(f_{a, b} (\lambda)\)</span> is called the <em>cross-spectrum</em> of <span class="math inline">\(\{ X_a (\cdot), X_b (\cdot) \}\)</span>.</p>
 </section>
-<section id="cramér-representation" class="level4">
-<h4 class="anchored" data-anchor-id="cramér-representation">Cramér representation</h4>
+<section id="cramér-representation" class="level3">
+<h3 class="anchored" data-anchor-id="cramér-representation">Cramér representation</h3>
 <p>It turns out<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> that <a href="#eq-ACF-sum" class="quarto-xref">Equation&nbsp;10</a> implies the following Cramér representation of a centered version of <span class="math inline">\(X_\bullet (\cdot)\)</span>.</p>
 <p><span id="eq-Cramér-rep"><span class="math display">\[
 \begin{align}
@@ -326,8 +338,8 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \end{align}
 \tag{13}\]</span></span></p>
 </section>
-<section id="filtering" class="level4">
-<h4 class="anchored" data-anchor-id="filtering">Filtering</h4>
+<section id="filtering" class="level3">
+<h3 class="anchored" data-anchor-id="filtering">Filtering</h3>
 <p>Suppose that <span class="math inline">\(X(t)\)</span> is a univariate random process satisfying <a href="#eq-ACF-sum" class="quarto-xref">Equation&nbsp;10</a> and having mean zero. Let <span class="math inline">\(a(\nu)\)</span> be a non-random summable sequence, and let <span class="math inline">\(Y(\cdot)\)</span> denote the convolution of <span class="math inline">\(a(\cdot)\)</span> with <span class="math inline">\(X(\cdot)\)</span>.</p>
 <p><span id="eq-filter-demo"><span class="math display">\[
 \begin{align}
@@ -364,8 +376,8 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \end{align}
 \tag{17}\]</span></span></p>
 </section>
-<section id="mathematical-examples" class="level4">
-<h4 class="anchored" data-anchor-id="mathematical-examples">Mathematical Examples</h4>
+<section id="white-noise" class="level3">
+<h3 class="anchored" data-anchor-id="white-noise">White noise</h3>
 <p>Let <span class="math inline">\(W(\cdot)\)</span> denote a univariate “white noise” process, that is, a process having zero mean and having the following auto-covariance function.</p>
 <p><span id="eq-ACF-wn"><span class="math display">\[
 \begin{align}
@@ -390,6 +402,9 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \sigma_W^2
 \end{align}
 \tag{20}\]</span></span></p>
+</section>
+<section id="white-noise-filtered" class="level3">
+<h3 class="anchored" data-anchor-id="white-noise-filtered">White noise filtered</h3>
 <p>Now suppose that <span class="math inline">\(X(\cdot)\)</span> can be represented as the following filtered version of <span class="math inline">\(W(\cdot)\)</span>.</p>
 <p><span id="eq-causal-form"><span class="math display">\[
 \begin{align}
@@ -410,6 +425,9 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \psi (z) &amp;= \sum_{\nu = 0}^\infty \psi_\nu \times z^\nu \quad \text{for } |z| \le 1
 \end{align}
 \tag{23}\]</span></span></p>
+</section>
+<section id="arma-models" class="level3">
+<h3 class="anchored" data-anchor-id="arma-models">ARMA models</h3>
 <p>To elaborate, let’s define auto-regressive moving average (ARMA) models to develop such filtered versions of the white noise process <span class="math inline">\(W(\cdot)\)</span>. These models are define by polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> as follows. (We set the mean of each process to zero in order to simplify the notation.)</p>
 <p><span id="eq-ARMA-p-q"><span class="math display">\[
 \begin{align}
@@ -431,6 +449,9 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \end{align}
 \tag{25}\]</span></span></p>
 <p>The power-series expansion of the rational function <span class="math inline">\(\psi(\cdot)\)</span> requires the roots of polynomial <span class="math inline">\(\phi(\cdot)\)</span> to all have magnitude greater than unity, which we assume to be the case.</p>
+</section>
+<section id="ar1" class="level3">
+<h3 class="anchored" data-anchor-id="ar1">AR(1)</h3>
 <p>Now let us specify some simple examples. First we define <span class="math inline">\(X(\cdot)\)</span> to be the following simple auto-regressive model, abbreviated <span class="math inline">\(AR(1)\)</span>.</p>
 <p><span id="eq-AR-1-causal"><span class="math display">\[
 \begin{align}
@@ -440,6 +461,9 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu
 \end{align}
 \tag{26}\]</span></span></p>
+</section>
+<section id="ma1" class="level3">
+<h3 class="anchored" data-anchor-id="ma1">MA(1)</h3>
 <p>Next, let <span class="math inline">\(Y(\cdot)\)</span> denote the following simple moving average model <span class="math inline">\((MA(1))\)</span>.</p>
 <p><span id="eq-MA-1"><span class="math display">\[
 \begin{align}
@@ -448,6 +472,9 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \psi (z) &amp;= 1 + \theta_1 z
 \end{align}
 \tag{27}\]</span></span></p>
+</section>
+<section id="arma1-1" class="level3">
+<h3 class="anchored" data-anchor-id="arma1-1">ARMA(1, 1)</h3>
 <p>Finally we let <span class="math inline">\(Z(\cdot)\)</span> denote the following <span class="math inline">\((ARMA(1, 1))\)</span> model.</p>
 <p><span id="eq-ARMA-1-1-causal"><span class="math display">\[
 \begin{align}
@@ -458,6 +485,9 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= 1 \; + \; \sum_{k = 1}^\infty (\phi_1^k + \theta_1 \; \phi_1^{k - 1}) \times z^k
 \end{align}
 \tag{28}\]</span></span></p>
+</section>
+<section id="simulations-from-arma-models" class="level3">
+<h3 class="anchored" data-anchor-id="simulations-from-arma-models">Simulations from ARMA models</h3>
 <p><a href="#fig-ARMA-sim-ts" class="quarto-xref">Figure&nbsp;1</a> shows the respective time series simulated from these simple ARMA models.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -473,6 +503,9 @@ Figure&nbsp;1: Simulation from simple ARMA models
 </div>
 </div>
 </div>
+</section>
+<section id="spectral-densities-of-arma-models" class="level3">
+<h3 class="anchored" data-anchor-id="spectral-densities-of-arma-models">Spectral densities of ARMA models</h3>
 <p><a href="#fig-ARMA-sim-spec-dens" class="quarto-xref">Figure&nbsp;2</a> shows the estimated density function of each simulated ARMA process.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -488,7 +521,6 @@ Figure&nbsp;2: Estimated spectral density function of each ARMA simulation
 </div>
 </div>
 </div>
-</section>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
