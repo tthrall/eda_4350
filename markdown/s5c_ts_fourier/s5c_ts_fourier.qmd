@@ -317,6 +317,68 @@ $$ {#eq-ACF-sum}
 
 Setting $b = a$, we obtain $f_{a, a} (\lambda)$, called the _power spectrum_ of $X_a (\cdot)$.  If $b \ne a$ then $f_{a, b} (\lambda)$ is called the _cross-spectrum_ of $\{ X_a (\cdot), X_b (\cdot) \}$.
 
+From @eq-spec-dens we see that $f$ is periodic with period $2 \pi$.
+
+$$
+\begin{align}
+  f_{\bullet, \bullet} (\lambda + 2 \pi) &= f_{\bullet, \bullet} (\lambda)
+\end{align}
+$$ {#eq-spec-periodic}
+
+Due to the symmetries of the auto-covariance function (@eq-ACovF-symm), the spectral density matrix is Hermitian, that is, equal to its own conjugate transpose.
+
+$$
+\begin{align}
+  f_{\bullet, \bullet} (\lambda)^* &= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (u)^* \times e^{i \lambda u} \\ 
+  &= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (-u) \times e^{i \lambda u} \\ 
+  &= \sum_{\nu = -\infty}^\infty \gamma_{\bullet, \bullet} (\nu) \times e^{- i \lambda \nu} \\ 
+  &= f_{\bullet, \bullet} (\lambda)
+\end{align}
+$$ {#eq-spec-hermitian}
+
+We also have that matrix $f_{\bullet, \bullet} (- \lambda)$ is the transpose of $f_{\bullet, \bullet} (\lambda)$.
+
+$$
+\begin{align}
+  f_{\bullet, \bullet} (- \lambda) &= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (u) \times e^{i \lambda u} \\ 
+  &= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (-u)^\prime \times e^{i \lambda u} \\ 
+  &= \sum_{\nu = -\infty}^\infty \gamma_{\bullet, \bullet} (\nu)^\prime \times e^{- i \lambda \nu} \\ 
+  &= f_{\bullet, \bullet} (\lambda)^\prime
+\end{align}
+$$ {#eq-spec-transpose}
+
+That is 
+
+$$
+\begin{align}
+  f_{a, b} (- \lambda) &= f_{b, a} (\lambda)
+\end{align}
+$$ {#eq-spec-elt-transpose}
+
+Setting $b = a$ we see that the power spectrum is an even function.
+
+$$
+\begin{align}
+  f_{a, a} (- \lambda) &= f_{a, a} (\lambda)
+\end{align}
+$$ {#eq-poweer-spec-even}
+
+Lastly, @eq-spec-dens has the following inverse.
+
+$$
+\begin{align}
+  \gamma_{\bullet, \bullet} (u) &= \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \times e^{i \lambda u} \; d\lambda
+\end{align}
+$$ {#eq-ACovF-from-spec-dens}
+
+Setting $u = 0$ we see that the variance-covariance matrix $\gamma_{\bullet, \bullet} (0)$ of $X_\bullet (t)$ is the integral of $f_{\bullet, \bullet} (\cdot)$.
+
+$$
+\begin{align}
+  \gamma_{\bullet, \bullet} (0) &= \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \; d\lambda
+\end{align}
+$$ {#eq-cov-from-spec-dens}
+
 ### Cramér representation
 
 It turns out[^Cramér-rep] that @eq-ACF-sum implies the following Cramér representation of a centered version of $X_\bullet (\cdot)$.
@@ -445,7 +507,7 @@ From @eq-var-Z-Y we see that
 
 $$
 \begin{align}
-  f_{X, X} (\lambda) &= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2 (\lambda)
+  f_{X, X} (\lambda) &= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2
 \end{align}
 $$ {#eq-spec-dens-causal}
 
@@ -459,7 +521,7 @@ $$ {#eq-psi-power-series}
 
 ### ARMA models
 
-To elaborate, let's define auto-regressive moving average (ARMA) models to develop such filtered versions of the white noise process $W(\cdot)$.  These models are define by polynomials $\phi(\cdot)$ and $\theta(\cdot)$ applied to the back-shift operator $\mathcal{B}$ as follows.  (We set the mean of each process to zero in order to simplify the notation.)
+To elaborate, let's define auto-regressive moving average (ARMA) models to develop such filtered versions of the white noise process $W(\cdot)$.  These models are defined by polynomials $\phi(\cdot)$ and $\theta(\cdot)$ applied to the back-shift operator $\mathcal{B}$ as follows.  (We set the mean of each process to zero in order to simplify the notation.)
 
 $$
 \begin{align}
@@ -483,20 +545,36 @@ $$
 \end{align}
 $$ {#eq-ARMA-p-q-causal}
 
-The power-series expansion of the rational function $\psi(\cdot)$ requires the roots of polynomial $\phi(\cdot)$ to all have magnitude greater than unity, which we assume to be the case.
+The power-series expansion of the rational function $\psi(\cdot)$ requires the roots of polynomial $\phi(\cdot)$ to all have magnitude greater than unity, which we assume to be the case.  Now let us specify some simple examples.
 
 ### AR(1)
 
-Now let us specify some simple examples.  First we define $X(\cdot)$ to be the following simple auto-regressive model, abbreviated $AR(1)$.
+First we define $X(\cdot)$ to be the following simple auto-regressive model, abbreviated $AR(1)$.
 
 $$
 \begin{align}
-  X(t) &= \phi_1 \; X(t - 1) \; + \; W(t) \quad \text{with } | \phi_1 | < 1  \\ \\ 
-  \text{ so that } \\ \\ 
+  X(t) &= \phi_1 \; X(t - 1) \; + \; W(t) \quad \text{with } | \phi_1 | < 1
+\end{align}
+$$ {#eq-AR-1}
+
+so that 
+
+$$
+\begin{align}
   \psi (z) &= \frac{1}{1 - \phi_1 z} \\ 
   &= \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu
 \end{align}
-$$ {#eq-AR-1-causal}
+$$ {#eq-AR-1-psi}
+
+and 
+
+$$
+\begin{align}
+  f_{X, X} (\lambda) &= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2 \\ 
+  &= \left | \frac{1}{1 - \phi_1 e^{-i \lambda}} \right |^2 \; \sigma_W^2 \\ 
+  &= \frac{\sigma_W^2}{1 - 2 \phi_1 \cos(\lambda) + \phi_1^2}
+\end{align}
+$$ {#eq-AR-1-spec}
 
 ### MA(1)
 
@@ -504,11 +582,27 @@ Next, let $Y(\cdot)$ denote the following simple moving average model $(MA(1))$.
 
 $$
 \begin{align}
-  Y(t) &= W(t) \; + \; \theta_1 W(t - 1) \quad \text{with } | \theta_1 | < 1  \\ \\ 
-  \text{ so that } \\ \\ 
-  \psi (z) &= 1 + \theta_1 z
+  Y(t) &= W(t) \; + \; \theta_1 W(t - 1) \quad \text{with } | \theta_1 | < 1
 \end{align}
 $$ {#eq-MA-1}
+
+so that 
+
+$$
+\begin{align}
+  \psi (z) &= 1 + \theta_1 z
+\end{align}
+$$ {#eq-MA-1-psi}
+
+and 
+
+$$
+\begin{align}
+  f_{Y, Y} (\lambda) &= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2 \\ 
+  &= \left | 1 + \theta_1 e^{-i \lambda} \right |^2 \; \sigma_W^2 \\ 
+  &= \left ( 1 + 2 \theta_1 \cos(\lambda) + \theta_1^2 \right ) \; \sigma_W^2 \\ 
+\end{align}
+$$ {#eq-MA-1-spec}
 
 ### ARMA(1, 1)
 
@@ -516,15 +610,31 @@ Finally we let $Z(\cdot)$ denote the following $(ARMA(1, 1))$ model.
 
 $$
 \begin{align}
-  Z(t) &= \phi_1 Z(t - 1) \; + \; W(t) \; + \; \theta_1 W(t - 1)  \\ \\ 
-  \text{ so that } \\ \\ 
-  \psi (z) &= \frac{1 + \theta_1 z}{1 - \theta_1 z} \\ 
+  Z(t) &= \phi_1 Z(t - 1) \; + \; W(t) \; + \; \theta_1 W(t - 1)
+\end{align}
+$$ {#eq-ARMA-1-1}
+
+so that 
+
+$$
+\begin{align}
+  \psi (z) &= \frac{1 + \theta_1 z}{1 - \phi_1 z} \\ 
   &= (1 + \theta_1 z) \; \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu \\ 
   &= 1 \; + \; \sum_{k = 1}^\infty (\phi_1^k + \theta_1 \; \phi_1^{k - 1}) \times z^k
 \end{align}
-$$ {#eq-ARMA-1-1-causal}
+$$ {#eq-ARMA-1-1-psi}
 
-### Simulations from ARMA models
+and 
+
+$$
+\begin{align}
+  f_{Z, Z} (\lambda) &= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2 \\ 
+  &= \left | \frac{1 + \theta_1 e^{-i \lambda}}{1 - \phi_1 e^{-i \lambda}} \right |^2 \; \sigma_W^2 \\ 
+  &= \frac{1 + 2 \theta_1 \cos(\lambda) + \theta_1^2}{1 - 2 \phi_1 \cos(\lambda) + \phi_1^2} \; \sigma_W^2
+\end{align}
+$$ {#eq-ARMA-1-1-spec}
+
+### Comparison of ARMA models
 
 ```{r}
 #| label: ARMA-sim-params
@@ -576,6 +686,7 @@ sim_long <- sim_tbl |>
 
 @fig-ARMA-sim-ts shows the respective time series simulated from these simple ARMA models.
 
+
 ```{r}
 #| label: fig-ARMA-sim-ts
 #| fig-cap: "Simulation from simple ARMA models"
@@ -593,27 +704,108 @@ g_sim_long <- sim_long |>
   ggplot2::labs(
     title = "Simulated ARMA models", 
     subtitle = "W = White Noise, X = AR(1), Y = MA(1), Z = ARMA(1, 1)"
-  )
+  ) + 
+  ggplot2::xlab("time index")
 g_sim_long
 ```
 
+The trajectory of the white noise process $W(\cdot)$ is indeed noisy; it would remain qualitatively unchanged by any permutation of its values.  The MA(1) model generating $Y(\cdot)$ also displays a rather noisy trajectory.  The remaining models, the AR(1) model generating $X(\cdot)$ and the ARMA(1, 1) model generating $Z(\cdot)$ show greater continuity.
 
-### Spectral densities of ARMA models
+@fig-ARMA-spec shows the respective spectral density functions of these ARMA models.  The spectral densities of the AR(1) model and the ARMA(1, 1) model are concentrated at lower frequencies, correponding to greater wavelengths.  Note that the horizontal axis labeled "freq" is a scaled version of $\lambda$, namely $\mathcal{f} = \frac{\lambda}{2 \pi}$, which is the inverse of wavelength.
 
 ```{r}
-#| label: ARMA-sim-spec-dens
+#| label: ARMA-model-spec
+
+wn_spec_lst <- astsa::arma.spec(
+    var.noise = wn_sd^2, 
+    n.freq    = n_sim/2L, 
+    plot      = FALSE)
+freq_model <- wn_spec_lst$ freq
+
+# extract spectral density from listed results
+spec_arma_spec <- function(
+    ar = 0, # AR coefficients of z^j, j > 0  
+    ma = 0  # MA coefficients of z^k, k > 0  
+) {
+  spec_lst <- astsa::arma.spec(
+    ar        = ar, 
+    ma        = ma, 
+    var.noise = wn_sd^2, 
+    n.freq    = n_sim/2L, 
+    plot      = FALSE)
+  return(spec_lst$ spec)
+}
+
+arma_spec_tbl <- tibble::tibble(
+  freq = freq_model, 
+  
+  W = spec_arma_spec(), 
+  X = spec_arma_spec(ar = phi_sim), 
+  Y = spec_arma_spec(ma = theta_sim), 
+  Z = spec_arma_spec(
+    ar = phi_sim, 
+    ma = theta_sim)
+)
+```
+
+```{r}
+#| label: arma-spec-long
+
+arma_spec_long <- arma_spec_tbl |> 
+  tidyr::pivot_longer(
+    cols = W:Z, 
+    names_to = "var", 
+    values_to = "spec"
+  ) |> 
+  dplyr::mutate(
+    tag = case_when(
+      var == "W" ~ "wn", 
+      var == "X" ~ "AR_1", 
+      var == "Y" ~ "MA_1", 
+      var == "Z" ~ "ARMA_1_1")
+  ) |> 
+  dplyr::select(freq, var, tag, spec)
+  
+```
+
+```{r}
+#| label: fig-ARMA-spec
+#| fig-cap: "Spectral density function of each ARMA model"
+
+g_arma_spec <- arma_spec_long |> 
+  dplyr::group_by(var) |> 
+  ggplot2::ggplot(mapping = aes(
+    x = freq, y = spec, color = var, fill = var
+  )) + 
+  ggplot2::geom_line(show.legend = FALSE) + 
+  ggplot2::facet_grid(
+    rows   = vars(var), 
+    scales = "free_y"
+  ) + 
+  ggplot2::labs(
+    title = "Spectral density of simple ARMA models", 
+    subtitle = "W = White Noise, X = AR(1), Y = MA(1), Z = ARMA(1, 1)"
+  ) + 
+  ggplot2::ylab("spectral density")
+g_arma_spec
+```
+
+
+
+```{r}
+#| label: ARMA-sim-spec-est
 
 spec_W_lst <- sim_tbl$ W |> 
-  spec.pgram(detrend = FALSE, plot = FALSE, taper = 1/4)
+  stats::spec.pgram(detrend = FALSE, plot = FALSE, taper = 1/4)
 freq_sim   <- spec_W_lst$ freq
 spec_W     <- spec_W_lst$ spec
 
 # extract estimated spectral density from listed results
-spec_strip <- function(
+spec_pgram_spec <- function(
   x # univariate time series  
   ) {
   spec_lst <- x |> 
-    spec.pgram(
+    stats::spec.pgram(
       detrend = FALSE, 
       plot    = FALSE, 
       taper   = 1/4, 
@@ -624,10 +816,10 @@ spec_strip <- function(
 spec_sim <- tibble::tibble(
   freq = freq_sim, 
   
-  W = sim_tbl$ W |> spec_strip(), 
-  X = sim_tbl$ X |> spec_strip(), 
-  Y = sim_tbl$ Y |> spec_strip(), 
-  Z = sim_tbl$ Z |> spec_strip()
+  W = sim_tbl$ W |> spec_pgram_spec(), 
+  X = sim_tbl$ X |> spec_pgram_spec(), 
+  Y = sim_tbl$ Y |> spec_pgram_spec(), 
+  Z = sim_tbl$ Z |> spec_pgram_spec()
 )
 
 ```
@@ -652,11 +844,10 @@ spec_long <- spec_sim |>
   
 ```
 
-@fig-ARMA-sim-spec-dens shows the estimated density function of each simulated ARMA process.
-
 ```{r}
-#| label: fig-ARMA-sim-spec-dens
+#| label: fig-ARMA-sim-spec-est
 #| fig-cap: "Estimated spectral density function of each ARMA simulation"
+#| eval: false
 
 g_spec_sim <- spec_long |> 
   dplyr::group_by(var) |> 

@@ -115,8 +115,7 @@ window.Quarto = {
   <li><a href="#ar1" id="toc-ar1" class="nav-link" data-scroll-target="#ar1">AR(1)</a></li>
   <li><a href="#ma1" id="toc-ma1" class="nav-link" data-scroll-target="#ma1">MA(1)</a></li>
   <li><a href="#arma1-1" id="toc-arma1-1" class="nav-link" data-scroll-target="#arma1-1">ARMA(1, 1)</a></li>
-  <li><a href="#simulations-from-arma-models" id="toc-simulations-from-arma-models" class="nav-link" data-scroll-target="#simulations-from-arma-models">Simulations from ARMA models</a></li>
-  <li><a href="#spectral-densities-of-arma-models" id="toc-spectral-densities-of-arma-models" class="nav-link" data-scroll-target="#spectral-densities-of-arma-models">Spectral densities of ARMA models</a></li>
+  <li><a href="#comparison-of-arma-models" id="toc-comparison-of-arma-models" class="nav-link" data-scroll-target="#comparison-of-arma-models">Comparison of ARMA models</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#a-glossary-of-math-symbols" id="toc-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#a-glossary-of-math-symbols">A: Glossary of Math Symbols</a></li>
@@ -151,7 +150,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">08:54 Sat 12-Jul-2025</p>
+      <p class="date">15:33 Sat 12-Jul-2025</p>
     </div>
   </div>
   
@@ -314,6 +313,54 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \tag{10}\]</span></span></p>
 <p><a href="#eq-ACF-sum" class="quarto-xref">Equation&nbsp;10</a> is an example of a “mixing” condition. It implies that <span class="math inline">\(X_\bullet(t)\)</span> and <span class="math inline">\(X_\bullet(t + u)\)</span> have vanishingly small correlation as <span class="math inline">\(|u| \rightarrow \infty\)</span>.</p>
 <p>Setting <span class="math inline">\(b = a\)</span>, we obtain <span class="math inline">\(f_{a, a} (\lambda)\)</span>, called the <em>power spectrum</em> of <span class="math inline">\(X_a (\cdot)\)</span>. If <span class="math inline">\(b \ne a\)</span> then <span class="math inline">\(f_{a, b} (\lambda)\)</span> is called the <em>cross-spectrum</em> of <span class="math inline">\(\{ X_a (\cdot), X_b (\cdot) \}\)</span>.</p>
+<p>From <a href="#eq-spec-dens" class="quarto-xref">Equation&nbsp;9</a> we see that <span class="math inline">\(f\)</span> is periodic with period <span class="math inline">\(2 \pi\)</span>.</p>
+<p><span id="eq-spec-periodic"><span class="math display">\[
+\begin{align}
+  f_{\bullet, \bullet} (\lambda + 2 \pi) &amp;= f_{\bullet, \bullet} (\lambda)
+\end{align}
+\tag{11}\]</span></span></p>
+<p>Due to the symmetries of the auto-covariance function (<a href="#eq-ACovF-symm" class="quarto-xref">Equation&nbsp;7</a>), the spectral density matrix is Hermitian, that is, equal to its own conjugate transpose.</p>
+<p><span id="eq-spec-hermitian"><span class="math display">\[
+\begin{align}
+  f_{\bullet, \bullet} (\lambda)^* &amp;= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (u)^* \times e^{i \lambda u} \\
+  &amp;= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (-u) \times e^{i \lambda u} \\
+  &amp;= \sum_{\nu = -\infty}^\infty \gamma_{\bullet, \bullet} (\nu) \times e^{- i \lambda \nu} \\
+  &amp;= f_{\bullet, \bullet} (\lambda)
+\end{align}
+\tag{12}\]</span></span></p>
+<p>We also have that matrix <span class="math inline">\(f_{\bullet, \bullet} (- \lambda)\)</span> is the transpose of <span class="math inline">\(f_{\bullet, \bullet} (\lambda)\)</span>.</p>
+<p><span id="eq-spec-transpose"><span class="math display">\[
+\begin{align}
+  f_{\bullet, \bullet} (- \lambda) &amp;= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (u) \times e^{i \lambda u} \\
+  &amp;= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (-u)^\prime \times e^{i \lambda u} \\
+  &amp;= \sum_{\nu = -\infty}^\infty \gamma_{\bullet, \bullet} (\nu)^\prime \times e^{- i \lambda \nu} \\
+  &amp;= f_{\bullet, \bullet} (\lambda)^\prime
+\end{align}
+\tag{13}\]</span></span></p>
+<p>That is</p>
+<p><span id="eq-spec-elt-transpose"><span class="math display">\[
+\begin{align}
+  f_{a, b} (- \lambda) &amp;= f_{b, a} (\lambda)
+\end{align}
+\tag{14}\]</span></span></p>
+<p>Setting <span class="math inline">\(b = a\)</span> we see that the power spectrum is an even function.</p>
+<p><span id="eq-poweer-spec-even"><span class="math display">\[
+\begin{align}
+  f_{a, a} (- \lambda) &amp;= f_{a, a} (\lambda)
+\end{align}
+\tag{15}\]</span></span></p>
+<p>Lastly, <a href="#eq-spec-dens" class="quarto-xref">Equation&nbsp;9</a> has the following inverse.</p>
+<p><span id="eq-ACovF-from-spec-dens"><span class="math display">\[
+\begin{align}
+  \gamma_{\bullet, \bullet} (u) &amp;= \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \times e^{i \lambda u} \; d\lambda
+\end{align}
+\tag{16}\]</span></span></p>
+<p>Setting <span class="math inline">\(u = 0\)</span> we see that the variance-covariance matrix <span class="math inline">\(\gamma_{\bullet, \bullet} (0)\)</span> of <span class="math inline">\(X_\bullet (t)\)</span> is the integral of <span class="math inline">\(f_{\bullet, \bullet} (\cdot)\)</span>.</p>
+<p><span id="eq-cov-from-spec-dens"><span class="math display">\[
+\begin{align}
+  \gamma_{\bullet, \bullet} (0) &amp;= \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \; d\lambda
+\end{align}
+\tag{17}\]</span></span></p>
 </section>
 <section id="cramér-representation" class="level3">
 <h3 class="anchored" data-anchor-id="cramér-representation">Cramér representation</h3>
@@ -322,7 +369,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   X_\bullet (t) - m_\bullet (t) &amp;= \int_{0}^{2 \pi} e^{i \lambda t} \; dZ_\bullet (\lambda)
 \end{align}
-\tag{11}\]</span></span></p>
+\tag{18}\]</span></span></p>
 <p>where <span class="math inline">\(Z_\bullet (\cdot)\)</span> is a random complex-valued measure having mean value zero and having orthogonal increments<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>:</p>
 <p><span id="eq-ortho-incr"><span class="math display">\[
 \begin{align}
@@ -330,13 +377,13 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{whenever } \\ \\
   \Delta_1 \; \cap \; \Delta_2 &amp;= \emptyset
 \end{align}
-\tag{12}\]</span></span></p>
+\tag{19}\]</span></span></p>
 <p>The magnitude of <span class="math inline">\(dZ_\bullet (\lambda)\)</span> (which has mean zero) can be measured by the following complex-valued version of variance.</p>
 <p><span id="eq-var-Z"><span class="math display">\[
 \begin{align}
   E \left \{ dZ_\bullet ( \lambda ) \; dZ_\bullet ( \lambda )^* \right \} &amp;= f_{\bullet, \bullet} (\lambda) \; d \lambda
 \end{align}
-\tag{13}\]</span></span></p>
+\tag{20}\]</span></span></p>
 </section>
 <section id="filtering" class="level3">
 <h3 class="anchored" data-anchor-id="filtering">Filtering</h3>
@@ -349,22 +396,22 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \\
   Y(t) &amp;= \sum_{\nu = - \infty}^\infty a(\nu) \times X(t - \nu)
 \end{align}
-\tag{14}\]</span></span></p>
+\tag{21}\]</span></span></p>
 <p>Then <span class="math inline">\(Y(\cdot)\)</span> is said to be a <em>filtered</em> version of <span class="math inline">\(X(\cdot)\)</span>. One can show<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> that <span class="math inline">\(Y(\cdot)\)</span> has the following Cramér representation.</p>
 <p><span id="eq-filtered-Cramér"><span class="math display">\[
 \begin{align}
   Y (t) &amp;= \int_{0}^{2 \pi} e^{i \lambda t} \; dZ_Y (\lambda) \\
   &amp;= \int_{0}^{2 \pi} e^{i \lambda t} \; A(\lambda) \; dZ_X (\lambda)
 \end{align}
-\tag{15}\]</span></span></p>
+\tag{22}\]</span></span></p>
 <p>where <span class="math inline">\(A(\lambda)\)</span> is the Fourier transform of <span class="math inline">\(a(\nu)\)</span>.</p>
 <p><span id="eq-transf-fn"><span class="math display">\[
 \begin{align}
   A(\lambda) &amp;= \sum_{\nu = - \infty}^\infty a (\nu) \times e^{- i \lambda \nu}
 \end{align}
-\tag{16}\]</span></span></p>
+\tag{23}\]</span></span></p>
 <p>The Fourier transform <span class="math inline">\(A (\lambda)\)</span> is called the <em>transfer function</em> of the filter, and the function <span class="math inline">\(a(\nu)\)</span> is called the <em>impulse response</em> function of the filter. (If one replaces <span class="math inline">\(X (\cdot)\)</span> with an “impulse” equal to unity at zero and equal to zero elsewhere one obtains <span class="math inline">\(Y(t) = a(t)\)</span>.)</p>
-<p>From <a href="#eq-var-Z" class="quarto-xref">Equation&nbsp;13</a> we see that</p>
+<p>From <a href="#eq-var-Z" class="quarto-xref">Equation&nbsp;20</a> we see that</p>
 <p><span id="eq-var-Z-Y"><span class="math display">\[
 \begin{align}
   f_{Y, Y} (\lambda) \; d \lambda &amp;= E \left \{ dZ_Y ( \lambda ) \; dZ_Y ( \lambda )^* \right \}  \\
@@ -374,7 +421,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{so that } \\ \\
   f_{Y, Y} (\lambda) &amp;= \left | A(\lambda) \right |^2 \; f_{X, X} (\lambda)
 \end{align}
-\tag{17}\]</span></span></p>
+\tag{24}\]</span></span></p>
 </section>
 <section id="white-noise" class="level3">
 <h3 class="anchored" data-anchor-id="white-noise">White noise</h3>
@@ -387,13 +434,13 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
     0 &amp; \text{for } u \ne 0
   \end{cases}
 \end{align}
-\tag{18}\]</span></span></p>
+\tag{25}\]</span></span></p>
 <p>We use the following notation to specify a white noise process.</p>
 <p><span id="eq-wn-notation"><span class="math display">\[
 \begin{align}
   W &amp;\sim wn(0, \sigma_W^2)
 \end{align}
-\tag{19}\]</span></span></p>
+\tag{26}\]</span></span></p>
 <p>The power spectrum density function, <span class="math inline">\(f_{W, W} (\lambda)\)</span> is readily seen to evaluate to the constant <span class="math inline">\(\sigma_W^2\)</span>.</p>
 <p><span id="eq-wn-spec-dens"><span class="math display">\[
 \begin{align}
@@ -401,7 +448,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \gamma_W (0) \\
   &amp;= \sigma_W^2
 \end{align}
-\tag{20}\]</span></span></p>
+\tag{27}\]</span></span></p>
 </section>
 <section id="white-noise-filtered" class="level3">
 <h3 class="anchored" data-anchor-id="white-noise-filtered">White noise filtered</h3>
@@ -412,23 +459,23 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{where } \\ \\
   \sum_{\nu = 0}^\infty | \; \psi_\nu \; | &amp;&lt; \infty
 \end{align}
-\tag{21}\]</span></span></p>
-<p>From <a href="#eq-var-Z-Y" class="quarto-xref">Equation&nbsp;17</a> we see that</p>
+\tag{28}\]</span></span></p>
+<p>From <a href="#eq-var-Z-Y" class="quarto-xref">Equation&nbsp;24</a> we see that</p>
 <p><span id="eq-spec-dens-causal"><span class="math display">\[
 \begin{align}
-  f_{X, X} (\lambda) &amp;= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2 (\lambda)
+  f_{X, X} (\lambda) &amp;= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2
 \end{align}
-\tag{22}\]</span></span></p>
+\tag{29}\]</span></span></p>
 <p>where <span class="math inline">\(\psi(\cdot)\)</span> denotes the power series having coefficients <span class="math inline">\(\psi (\nu)\)</span>.</p>
 <p><span id="eq-psi-power-series"><span class="math display">\[
 \begin{align}
   \psi (z) &amp;= \sum_{\nu = 0}^\infty \psi_\nu \times z^\nu \quad \text{for } |z| \le 1
 \end{align}
-\tag{23}\]</span></span></p>
+\tag{30}\]</span></span></p>
 </section>
 <section id="arma-models" class="level3">
 <h3 class="anchored" data-anchor-id="arma-models">ARMA models</h3>
-<p>To elaborate, let’s define auto-regressive moving average (ARMA) models to develop such filtered versions of the white noise process <span class="math inline">\(W(\cdot)\)</span>. These models are define by polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> as follows. (We set the mean of each process to zero in order to simplify the notation.)</p>
+<p>To elaborate, let’s define auto-regressive moving average (ARMA) models to develop such filtered versions of the white noise process <span class="math inline">\(W(\cdot)\)</span>. These models are defined by polynomials <span class="math inline">\(\phi(\cdot)\)</span> and <span class="math inline">\(\theta(\cdot)\)</span> applied to the back-shift operator <span class="math inline">\(\mathcal{B}\)</span> as follows. (We set the mean of each process to zero in order to simplify the notation.)</p>
 <p><span id="eq-ARMA-p-q"><span class="math display">\[
 \begin{align}
   \phi(\mathcal{B}) \; X(\cdot) &amp;= \theta(\mathcal{B}) \; W(\cdot) \\ \\
@@ -438,7 +485,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{so that } \\ \\
   X(t) &amp;= \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
 \end{align}
-\tag{24}\]</span></span></p>
+\tag{31}\]</span></span></p>
 <p>Taking the multiplicative inverse of <span class="math inline">\(\phi(\cdot)\)</span> we can re-express this model as the following filtering of the white noise process <span class="math inline">\(W(\cdot)\)</span>.</p>
 <p><span id="eq-ARMA-p-q-causal"><span class="math display">\[
 \begin{align}
@@ -447,47 +494,83 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{where } \\ \\
   \psi (z) &amp;= \frac{\theta(z)}{\phi(z)} = \sum_{\nu = 0}^\infty \psi_\nu \times z^\nu
 \end{align}
-\tag{25}\]</span></span></p>
-<p>The power-series expansion of the rational function <span class="math inline">\(\psi(\cdot)\)</span> requires the roots of polynomial <span class="math inline">\(\phi(\cdot)\)</span> to all have magnitude greater than unity, which we assume to be the case.</p>
+\tag{32}\]</span></span></p>
+<p>The power-series expansion of the rational function <span class="math inline">\(\psi(\cdot)\)</span> requires the roots of polynomial <span class="math inline">\(\phi(\cdot)\)</span> to all have magnitude greater than unity, which we assume to be the case. Now let us specify some simple examples.</p>
 </section>
 <section id="ar1" class="level3">
 <h3 class="anchored" data-anchor-id="ar1">AR(1)</h3>
-<p>Now let us specify some simple examples. First we define <span class="math inline">\(X(\cdot)\)</span> to be the following simple auto-regressive model, abbreviated <span class="math inline">\(AR(1)\)</span>.</p>
-<p><span id="eq-AR-1-causal"><span class="math display">\[
+<p>First we define <span class="math inline">\(X(\cdot)\)</span> to be the following simple auto-regressive model, abbreviated <span class="math inline">\(AR(1)\)</span>.</p>
+<p><span id="eq-AR-1"><span class="math display">\[
 \begin{align}
-  X(t) &amp;= \phi_1 \; X(t - 1) \; + \; W(t) \quad \text{with } | \phi_1 | &lt; 1  \\ \\
-  \text{ so that } \\ \\
+  X(t) &amp;= \phi_1 \; X(t - 1) \; + \; W(t) \quad \text{with } | \phi_1 | &lt; 1
+\end{align}
+\tag{33}\]</span></span></p>
+<p>so that</p>
+<p><span id="eq-AR-1-psi"><span class="math display">\[
+\begin{align}
   \psi (z) &amp;= \frac{1}{1 - \phi_1 z} \\
   &amp;= \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu
 \end{align}
-\tag{26}\]</span></span></p>
+\tag{34}\]</span></span></p>
+<p>and</p>
+<p><span id="eq-AR-1-spec"><span class="math display">\[
+\begin{align}
+  f_{X, X} (\lambda) &amp;= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2 \\
+  &amp;= \left | \frac{1}{1 - \phi_1 e^{-i \lambda}} \right |^2 \; \sigma_W^2 \\
+  &amp;= \frac{\sigma_W^2}{1 - 2 \phi_1 \cos(\lambda) + \phi_1^2}
+\end{align}
+\tag{35}\]</span></span></p>
 </section>
 <section id="ma1" class="level3">
 <h3 class="anchored" data-anchor-id="ma1">MA(1)</h3>
 <p>Next, let <span class="math inline">\(Y(\cdot)\)</span> denote the following simple moving average model <span class="math inline">\((MA(1))\)</span>.</p>
 <p><span id="eq-MA-1"><span class="math display">\[
 \begin{align}
-  Y(t) &amp;= W(t) \; + \; \theta_1 W(t - 1) \quad \text{with } | \theta_1 | &lt; 1  \\ \\
-  \text{ so that } \\ \\
+  Y(t) &amp;= W(t) \; + \; \theta_1 W(t - 1) \quad \text{with } | \theta_1 | &lt; 1
+\end{align}
+\tag{36}\]</span></span></p>
+<p>so that</p>
+<p><span id="eq-MA-1-psi"><span class="math display">\[
+\begin{align}
   \psi (z) &amp;= 1 + \theta_1 z
 \end{align}
-\tag{27}\]</span></span></p>
+\tag{37}\]</span></span></p>
+<p>and</p>
+<p><span id="eq-MA-1-spec"><span class="math display">\[
+\begin{align}
+  f_{Y, Y} (\lambda) &amp;= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2 \\
+  &amp;= \left | 1 + \theta_1 e^{-i \lambda} \right |^2 \; \sigma_W^2 \\
+  &amp;= \left ( 1 + 2 \theta_1 \cos(\lambda) + \theta_1^2 \right ) \; \sigma_W^2 \\
+\end{align}
+\tag{38}\]</span></span></p>
 </section>
 <section id="arma1-1" class="level3">
 <h3 class="anchored" data-anchor-id="arma1-1">ARMA(1, 1)</h3>
 <p>Finally we let <span class="math inline">\(Z(\cdot)\)</span> denote the following <span class="math inline">\((ARMA(1, 1))\)</span> model.</p>
-<p><span id="eq-ARMA-1-1-causal"><span class="math display">\[
+<p><span id="eq-ARMA-1-1"><span class="math display">\[
 \begin{align}
-  Z(t) &amp;= \phi_1 Z(t - 1) \; + \; W(t) \; + \; \theta_1 W(t - 1)  \\ \\
-  \text{ so that } \\ \\
-  \psi (z) &amp;= \frac{1 + \theta_1 z}{1 - \theta_1 z} \\
+  Z(t) &amp;= \phi_1 Z(t - 1) \; + \; W(t) \; + \; \theta_1 W(t - 1)
+\end{align}
+\tag{39}\]</span></span></p>
+<p>so that</p>
+<p><span id="eq-ARMA-1-1-psi"><span class="math display">\[
+\begin{align}
+  \psi (z) &amp;= \frac{1 + \theta_1 z}{1 - \phi_1 z} \\
   &amp;= (1 + \theta_1 z) \; \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu \\
   &amp;= 1 \; + \; \sum_{k = 1}^\infty (\phi_1^k + \theta_1 \; \phi_1^{k - 1}) \times z^k
 \end{align}
-\tag{28}\]</span></span></p>
+\tag{40}\]</span></span></p>
+<p>and</p>
+<p><span id="eq-ARMA-1-1-spec"><span class="math display">\[
+\begin{align}
+  f_{Z, Z} (\lambda) &amp;= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2 \\
+  &amp;= \left | \frac{1 + \theta_1 e^{-i \lambda}}{1 - \phi_1 e^{-i \lambda}} \right |^2 \; \sigma_W^2 \\
+  &amp;= \frac{1 + 2 \theta_1 \cos(\lambda) + \theta_1^2}{1 - 2 \phi_1 \cos(\lambda) + \phi_1^2} \; \sigma_W^2
+\end{align}
+\tag{41}\]</span></span></p>
 </section>
-<section id="simulations-from-arma-models" class="level3">
-<h3 class="anchored" data-anchor-id="simulations-from-arma-models">Simulations from ARMA models</h3>
+<section id="comparison-of-arma-models" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-of-arma-models">Comparison of ARMA models</h3>
 <p><a href="#fig-ARMA-sim-ts" class="quarto-xref">Figure&nbsp;1</a> shows the respective time series simulated from these simple ARMA models.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -503,19 +586,17 @@ Figure&nbsp;1: Simulation from simple ARMA models
 </div>
 </div>
 </div>
-</section>
-<section id="spectral-densities-of-arma-models" class="level3">
-<h3 class="anchored" data-anchor-id="spectral-densities-of-arma-models">Spectral densities of ARMA models</h3>
-<p><a href="#fig-ARMA-sim-spec-dens" class="quarto-xref">Figure&nbsp;2</a> shows the estimated density function of each simulated ARMA process.</p>
+<p>The trajectory of the white noise process <span class="math inline">\(W(\cdot)\)</span> is indeed noisy; it would remain qualitatively unchanged by any permutation of its values. The MA(1) model generating <span class="math inline">\(Y(\cdot)\)</span> also displays a rather noisy trajectory. The remaining models, the AR(1) model generating <span class="math inline">\(X(\cdot)\)</span> and the ARMA(1, 1) model generating <span class="math inline">\(Z(\cdot)\)</span> show greater continuity.</p>
+<p><a href="#fig-ARMA-spec" class="quarto-xref">Figure&nbsp;2</a> shows the respective spectral density functions of these ARMA models. The spectral densities of the AR(1) model and the ARMA(1, 1) model are concentrated at lower frequencies, correponding to greater wavelengths. Note that the horizontal axis labeled “freq” is a scaled version of <span class="math inline">\(\lambda\)</span>, namely <span class="math inline">\(\mathcal{f} = \frac{\lambda}{2 \pi}\)</span>, which is the inverse of wavelength.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-ARMA-sim-spec-dens" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-ARMA-spec" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-ARMA-sim-spec-dens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="s5c_ts_fourier_files/figure-html/fig-ARMA-sim-spec-dens-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-ARMA-spec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5c_ts_fourier_files/figure-html/fig-ARMA-spec-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ARMA-sim-spec-dens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Estimated spectral density function of each ARMA simulation
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ARMA-spec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Spectral density function of each ARMA model
 </figcaption>
 </figure>
 </div>
