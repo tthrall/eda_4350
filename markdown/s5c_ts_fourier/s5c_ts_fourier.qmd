@@ -65,6 +65,7 @@ library(zip)
 
 ```{r}
 #| label: HNL_NYC_t_imp
+
 # daily temperatures at Honolulu and NYC, 1995 - 2020
 
 # missing temperatures previously imputed as 
@@ -80,7 +81,26 @@ HNL_NYC_t_imp <- readr::read_tsv(here::here(
 ```
 
 ```{r}
+#| label: HNL_NYC_wide
+
+# pivot wider for display
+HNL_NYC_wide <- HNL_NYC_t_imp |> 
+  dplyr::select(City, dt, temp) |> 
+  tidyr::pivot_wider(
+    id_cols = dt,
+    names_from  = City, 
+    values_from = temp
+  ) |> 
+  dplyr::rename(
+    date = dt, 
+    HNL  = Honolulu, 
+    NYC  = `New York City`
+  )
+```
+
+```{r}
 #| label: HNL_NYC_smy
+
 # stats for temps at Honolulu and NYC, 1995 - 2020
 
 HNL_NYC_smy <- HNL_NYC_t_imp |>
@@ -116,6 +136,8 @@ avg_NYC <- (HNL_NYC_smy$ t_avg) [[2]] |> round()
 sd_HNL <- (HNL_NYC_smy$ t_sd) [[1]] |> round(digits = 1)
 sd_NYC <- (HNL_NYC_smy$ t_sd) [[2]] |> round(digits = 1)
 
+HNL_NYC_title <- "HNL-NYC temperatures $(^{\\circ} F)$"
+
 ```
 
 ## Introduction
@@ -140,6 +162,503 @@ Gaps between peak sunspot numbers vary, so a simple sinusoidal wave (or other fu
 
 ## Mathematical Framework {#sec-math-fmwk}
 
+### Data derived from a random process
+
+Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest.  For example, here are the first few values of the temperature data shown in @fig-hnl-nyc-temps.
+
+```{r}
+#| label: tbl-HNL-NYC-wide
+#| tbl-cap: "Temperatures (F) from Honolulu and New York City, 1995-2020"
+
+HNL_NYC_wide |> print(n = 3)
+```
+
+The distinction of time series analysis is that observations are indexed by time[^1001], and are not assumed to be statistically independent. Instead, time series data are typically modeled as a realization of a random process of the following form.[^real-valued]
+
+[^1001]: Occasionally "time series" methods are applied to data indexed not by time but rather by length, or some other linear dimension.  For example see @thomson1977.
+
+[^real-valued]: We assume the components of $X_\bullet(t)$ to be real-valued, unless stated otherwise.
+
+$$
+\begin{align}
+  X_\bullet (t) = (X_1 (t), \ldots, X_d (t)) \in \mathbb{R}^d
+\end{align}
+$$ {#eq-X-bullet}
+
+If the number of data columns is two or greater $(d \ge 2)$, the process is said to be multivariate. Otherwise, if $d = 1$ the process is said to be univariate, and the notation is simplified to $X (t)$.[^uni-subscripts]
+
+[^uni-subscripts]: For a univariate time series $X(t)$ we denote distributional parameters either omitting a subscript or else using the subscript $X$.
+
+In our example there are two data columns (`HNL`, `NYC`), so that $d = 2$, the unit of time is one day, and the sampling frequency is once per day.
+
+The random process is idealized to span all time $(t \in \mathbb{Z})$, but the data of course span some finite period, $\tau_T$, of length $T$.
+
+$$
+\begin{align}
+  \tau_T &=  \{ t_0, \; t_0 + 1, \ldots, t_f \} \\
+  t_0 &=  \text{ initial data index} = \min \tau_T \\ 
+  t_f &=  \text{ final data index} = \max \tau_T \\ 
+  T &=  \text{ number of observatons } = t_f - t_0 + 1 \\ 
+  \nu_T &= \tau_T - t_0 =  \{ 0, 1, \ldots, T-1 \}
+\end{align}
+$$ {#eq-tau-T}
+
+The expected value of the random process may be modeled by various functions of time: a constant, a linear trend, a seasonal component (periodic function), etc.
+
+$$
+\begin{align}
+  m_\bullet (t) &= E \{ X_\bullet (t) \}
+\end{align}
+$$ {#eq-m-bullet}
+
+### Stationarity
+
+In an additive model (which is most common), the residual random process, $X_\bullet (t) - m_\bullet (t)$ , is assumed to be **second-order stationary**.[^stationary] That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new process $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
+
+[^stationary]: The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of *strict stationarity*. This means that for any finite set of times $(t_1, \ldots, t_K)$ and any time-shift $s$, the joint probability distribution of $(X_\bullet (t_1), \ldots, X_\bullet (t_K))$ is identical to that of $(X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))$.
+
+$$
+\begin{align}
+  Y_\bullet (t) &= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\ 
+  &= X_\bullet (t - s)
+\end{align}
+$$ {#eq-back-shift-s}
+
+Here $\mathcal{B}$ denotes the *back-shift* operator that shifts time by one unit, so that $\mathcal{B}^s$ (that is, $s$ repeated applications of $\mathcal{B}$) shifts time by $s$ units. Then second-order stationarity can be expressed as follows.
+
+$$
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \} 
+  &= Cov \{ Y_a (t + u), Y_b (t) \} \\ 
+  &= Cov \{ X_a (t + u - s), X_b (t - s) \} \\ 
+  \\ 
+  & \text{for all } s \in \mathbb{Z} \text{ and } a, b \in \{ 1, \ldots, d \}
+\end{align}
+$$
+
+### ACF: autocorrelation function
+
+Setting $s = t$ in the last expression we have
+
+$$
+\begin{align}
+  Cov \{ X_a (t + u), X_b (t) \} 
+  &= Cov \{ X_a (u), X_b (0) \} 
+\end{align}
+$$ {#eq-stationarity-2}
+
+Consequently, second-order stationarity enables one to define and estimate the following *auto-covariance* function.
+
+$$
+\begin{align}
+  \gamma_{\bullet, \bullet} (u) &= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\ 
+  \\ 
+  \text{where} \\
+  \gamma_{a, b} (u) &= Cov \{ X_a (t + u), X_b (t) \} \\
+  &= Cov \{ X_a (u), X_b (0) \} 
+\end{align}
+$$ {#eq-ACovF}
+
+Although $\gamma_{\bullet, \bullet} (u)$ is a symmetric matrix at $u = 0$, it is not generally symmetric at $u \ne 0$. The symmetry relation we do have is that matrix $\gamma_{\bullet, \bullet} (-u)$ is the transpose of matrix $\gamma_{\bullet, \bullet} (u)$.
+
+$$
+\begin{align}
+  \gamma_{a, b} (-u) &= Cov \{ X_a (t - u), X_b (t) \} \\
+  &= Cov \{ X_a (t), X_b (t + u) \}  \\
+  &= Cov \{ X_b (t + u), X_a (t) \}   \\
+  &= \gamma_{b, a} (u)
+\end{align}
+$$ {#eq-ACovF-symm}
+
+In particular, $\gamma_{a, a} (\cdot)$ is an even function: $\gamma_{a, a} (-u) = \gamma_{a, a} (u)$.
+
+Consequently, the time-reversed process $Y_\bullet (t) = X_\bullet (-t)$ has the same auto-covariance structure as the original process, allowing for this matrix transposition.
+
+The *autocorrelation (ACF)* function $\rho_{\bullet, \bullet}(\cdot)$ is the following scaled version of the auto-covariance function.
+
+$$
+\begin{align}
+\rho_{\bullet, \bullet} (u) &= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\ 
+  \\ 
+  \text{where} \\
+  \rho_{a, b} (u) &= corr \{ X_a (u), X_b (0) \} \\ 
+  &= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
+\end{align}
+$$ {#eq-ACF}
+
+### Spectrum
+
+The term "spectrum" in its modern sense was introduced by Sir Isaac Newton[^art-Newton-spectrum], who used a prism to decompose sunlight into a rainbow of colors (light of different wavelengths or frequencies).  The term came to mean the intensity[^intensity-power] (denoted "I") of light (or other wave phenomena) as a function of wavelength or frequency.  This note uses "spectrum" in this sense (although the term has been further generalized).
+
+[^art-Newton-spectrum]: See @Newton1672spectrum.
+
+[^intensity-power]: In other contexts the term "intensity" is replaced by "power".  @wiener1930GHA introduced the term "power spectrum" of a signal.
+
+#### Definition
+
+The _spectral density function_, $f_{\bullet, \bullet} (\lambda)$, of the random process $X_\bullet(\cdot)$ is defined as the Fourier transform of the auto-covariance function $\gamma_{\bullet, \bullet} (u)$.
+
+$$
+\begin{align}
+  f_{\bullet, \bullet} (\lambda) &= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (u) \times e^{- i \lambda u}
+\end{align}
+$$ {#eq-spec-dens}
+
+where we assume that the elements of $\gamma_{\bullet, \bullet} (\cdot)$ are absolutely summable.
+
+$$
+\begin{align}
+  \sum_{u = -\infty}^\infty \left | \; \gamma_{a, b} (u) \; \right | &< \infty \\ 
+  &\text{for } a, b \in \{1, \ldots, d \}
+\end{align}
+$$ {#eq-ACF-sum}
+
+@eq-ACF-sum is an example of a "mixing" condition.  It implies that $X_\bullet(t)$ and $X_\bullet(t + u)$ have vanishingly small correlation as $|u| \rightarrow \infty$.
+
+Setting $b = a$, we obtain $f_{a, a} (\lambda)$, called the _power spectrum_ of $X_a (\cdot)$.  If $b \ne a$ then $f_{a, b} (\lambda)$ is called the _cross-spectrum_ of $\{ X_a (\cdot), X_b (\cdot) \}$.
+
+#### Cramér representation
+
+It turns out[^Cramér-rep] that @eq-ACF-sum implies the following Cramér representation of a centered version of $X_\bullet (\cdot)$.
+
+[^Cramér-rep]: See @brillinger2001 [sec. 4.6].
+
+$$
+\begin{align}
+  X_\bullet (t) - m_\bullet (t) &= \int_{0}^{2 \pi} e^{i \lambda t} \; dZ_\bullet (\lambda)
+\end{align}
+$$ {#eq-Cramér-rep}
+
+where $Z_\bullet (\cdot)$ is a random complex-valued measure having mean value zero and having orthogonal increments[^conj-transp]:
+
+[^conj-transp]: Given a complex-valued matrix or vector $\zeta$ we denote by $\zeta^*$ its conjugate transpose.
+
+$$
+\begin{align}
+  E \left \{ Z_\bullet ( \Delta_1 ) \; Z_\bullet ( \Delta_2 )^* \right \} &= 0 \\ \\ 
+  \text{whenever } \\ \\ 
+  \Delta_1 \; \cap \; \Delta_2 &= \emptyset
+\end{align}
+$$ {#eq-ortho-incr}
+
+The magnitude of $dZ_\bullet (\lambda)$ (which has mean zero) can be measured by the following complex-valued version of variance.
+
+$$
+\begin{align}
+  E \left \{ dZ_\bullet ( \lambda ) \; dZ_\bullet ( \lambda )^* \right \} &= f_{\bullet, \bullet} (\lambda) \; d \lambda 
+\end{align}
+$$ {#eq-var-Z}
+
+#### Filtering
+
+Suppose that $X(t)$ is a univariate random process satisfying @eq-ACF-sum and having mean zero.  Let $a(\nu)$ be a non-random summable sequence, and let $Y(\cdot)$ denote the convolution of $a(\cdot)$ with $X(\cdot)$.
+
+$$
+\begin{align}
+  Y(\cdot) &= a(\cdot) * X(\cdot) \\ 
+  \\ 
+  &\text{so that } \\ 
+  \\ 
+  Y(t) &= \sum_{\nu = - \infty}^\infty a(\nu) \times X(t - \nu)
+\end{align}
+$$ {#eq-filter-demo}
+
+Then $Y(\cdot)$ is said to be a _filtered_ version of $X(\cdot)$.  One can show[^filtered-Cramér] that $Y(\cdot)$ has the following Cramér representation.
+
+[^filtered-Cramér]: See @brillinger2001 [sec. 4.6]
+
+$$
+\begin{align}
+  Y (t) &= \int_{0}^{2 \pi} e^{i \lambda t} \; dZ_Y (\lambda) \\ 
+  &= \int_{0}^{2 \pi} e^{i \lambda t} \; A(\lambda) \; dZ_X (\lambda)
+\end{align}
+$$ {#eq-filtered-Cramér}
+
+where $A(\lambda)$ is the Fourier transform of $a(\nu)$.
+
+$$
+\begin{align}
+  A(\lambda) &= \sum_{\nu = - \infty}^\infty a (\nu) \times e^{- i \lambda \nu}
+\end{align}
+$$ {#eq-transf-fn}
+
+The Fourier transform $A (\lambda)$ is called the _transfer function_ of the filter, and the function $a(\nu)$ is called the _impulse response_ function of the filter.  (If one replaces $X (\cdot)$ with an "impulse" equal to unity at zero and equal to zero elsewhere one obtains $Y(t) = a(t)$.)
+
+From @eq-var-Z we see that 
+
+$$
+\begin{align}
+  f_{Y, Y} (\lambda) \; d \lambda &= E \left \{ dZ_Y ( \lambda ) \; dZ_Y ( \lambda )^* \right \}  \\ 
+  &= E \left \{ A(\lambda) \; dZ_X ( \lambda ) \; dZ_X ( \lambda )^* \; A(\lambda)^* \right \}  \\ 
+  &= \left | A(\lambda) \right |^2 \; E \left \{ dZ_X ( \lambda ) \; dZ_X ( \lambda )^* \right \}  \\ 
+  &= \left | A(\lambda) \right |^2 \; f_{X, X} (\lambda) \; d \lambda \\ \\ 
+  \text{so that } \\ \\ 
+  f_{Y, Y} (\lambda) &= \left | A(\lambda) \right |^2 \; f_{X, X} (\lambda)
+\end{align}
+$$ {#eq-var-Z-Y}
+
+#### Mathematical Examples
+
+Let $W(\cdot)$ denote a univariate "white noise" process, that is, a process having zero mean and having the following auto-covariance function.
+
+$$
+\begin{align}
+  \gamma_W (u) &= 
+  \begin{cases}
+    \sigma_W^2 & \text{for } u = 0 \\ 
+    0 & \text{for } u \ne 0
+  \end{cases}
+\end{align}
+$$ {#eq-ACF-wn}
+
+We use the following notation to specify a white noise process.
+
+$$
+\begin{align}
+  W &\sim wn(0, \sigma_W^2)
+\end{align}
+$$ {#eq-wn-notation}
+
+The power spectrum density function, $f_{W, W} (\lambda)$ is readily seen to evaluate to the constant $\sigma_W^2$.
+
+$$
+\begin{align}
+  f_{W, W} (\lambda) &= \sum_{u = -\infty}^\infty \gamma_W (u) \times e^{- i \lambda u} \\ 
+  &= \gamma_W (0) \\ 
+  &= \sigma_W^2
+\end{align}
+$$ {#eq-wn-spec-dens}
+
+Now suppose that $X(\cdot)$ can be represented as the following filtered version of $W(\cdot)$.
+
+$$
+\begin{align}
+  X(t) &= \sum_{\nu = 0}^\infty \psi_\nu \times W(t - \nu) \\ \\ 
+  \text{where } \\ \\ 
+  \sum_{\nu = 0}^\infty | \; \psi_\nu \; | &< \infty
+\end{align}
+$$ {#eq-causal-form}
+
+From @eq-var-Z-Y we see that 
+
+$$
+\begin{align}
+  f_{X, X} (\lambda) &= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2 (\lambda)
+\end{align}
+$$ {#eq-spec-dens-causal}
+
+where $\psi(\cdot)$ denotes the power series having coefficients $\psi (\nu)$.
+
+$$
+\begin{align}
+  \psi (z) &= \sum_{\nu = 0}^\infty \psi_\nu \times z^\nu \quad \text{for } |z| \le 1
+\end{align}
+$$ {#eq-psi-power-series}
+
+To elaborate, let's define auto-regressive moving average (ARMA) models to develop such filtered versions of the white noise process $W(\cdot)$.  These models are define by polynomials $\phi(\cdot)$ and $\theta(\cdot)$ applied to the back-shift operator $\mathcal{B}$ as follows.  (We set the mean of each process to zero in order to simplify the notation.)
+
+$$
+\begin{align}
+  \phi(\mathcal{B}) \; X(\cdot) &= \theta(\mathcal{B}) \; W(\cdot) \\ \\
+  \text{with } \\ \\ 
+  \phi(z) &= 1 - \sum_{j = 1}^p \phi_j \; z^j \\ 
+  \theta(z) &= 1 + \sum_{k = 1}^q \theta_k \; z^k \\ \\
+  \text{so that } \\ \\ 
+  X(t) &= \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
+\end{align}
+$$ {#eq-ARMA-p-q}
+
+Taking the multiplicative inverse of $\phi(\cdot)$ we can re-express this model as the following filtering of the white noise process $W(\cdot)$.
+
+$$
+\begin{align}
+  X(\cdot) &= \phi(\mathcal{B})^{-1} \;  \theta(\mathcal{B}) \; W(\cdot) \\ \\
+  &= \psi(\mathcal{B}) \; W(\cdot) \\ \\ 
+  \text{where } \\ \\ 
+  \psi (z) &= \frac{\theta(z)}{\phi(z)} = \sum_{\nu = 0}^\infty \psi_\nu \times z^\nu 
+\end{align}
+$$ {#eq-ARMA-p-q-causal}
+
+The power-series expansion of the rational function $\psi(\cdot)$ requires the roots of polynomial $\phi(\cdot)$ to all have magnitude greater than unity, which we assume to be the case.
+
+Now let us specify some simple examples.  First we define $X(\cdot)$ to be the following simple auto-regressive model, abbreviated $AR(1)$.
+
+$$
+\begin{align}
+  X(t) &= \phi_1 \; X(t - 1) \; + \; W(t) \quad \text{with } | \phi_1 | < 1  \\ \\ 
+  \text{ so that } \\ \\ 
+  \psi (z) &= \frac{1}{1 - \phi_1 z} \\ 
+  &= \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu
+\end{align}
+$$ {#eq-AR-1-causal}
+
+Next, let $Y(\cdot)$ denote the following simple moving average model $(MA(1))$.
+
+$$
+\begin{align}
+  Y(t) &= W(t) \; + \; \theta_1 W(t - 1) \quad \text{with } | \theta_1 | < 1  \\ \\ 
+  \text{ so that } \\ \\ 
+  \psi (z) &= 1 + \theta_1 z
+\end{align}
+$$ {#eq-MA-1}
+
+Finally we let $Z(\cdot)$ denote the following $(ARMA(1, 1))$ model.
+
+$$
+\begin{align}
+  Z(t) &= \phi_1 Z(t - 1) \; + \; W(t) \; + \; \theta_1 W(t - 1)  \\ \\ 
+  \text{ so that } \\ \\ 
+  \psi (z) &= \frac{1 + \theta_1 z}{1 - \theta_1 z} \\ 
+  &= (1 + \theta_1 z) \; \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu \\ 
+  &= 1 \; + \; \sum_{k = 1}^\infty (\phi_1^k + \theta_1 \; \phi_1^{k - 1}) \times z^k
+\end{align}
+$$ {#eq-ARMA-1-1-causal}
+
+```{r}
+#| label: ARMA-sim-params
+
+seed_sim <- (2L)^(7L) - 1L # 127, a Mersenne prime
+
+phi_sim   <- 0.9
+theta_sim <- 0.9
+
+wn_sd <- 1
+
+n_sim <- (2L)^(10L)
+```
+
+```{r}
+#| label: ARMA-sim
+
+set.seed(seed_sim)
+
+sim_tbl <- tibble::tibble(
+  idx = 1:n_sim, 
+  W   = astsa::sarima.sim(n = n_sim, burnin = 0L), 
+  X   = astsa::sarima.sim(n = n_sim, burnin = 0L, 
+                          ar = phi_sim, innov = W), 
+  Y   = astsa::sarima.sim(n = n_sim, burnin = 0L, 
+                          ma = theta_sim, innov = W), 
+  Z   = astsa::sarima.sim(n = n_sim, burnin = 0L, 
+                          ar = phi_sim, ma = theta_sim, innov = W)
+)
+```
+
+```{r}
+#| label: ARMA-sim-long
+
+sim_long <- sim_tbl |> 
+  tidyr::pivot_longer(
+    cols = W:Z, 
+    names_to = "var"
+  ) |> 
+  dplyr::mutate(
+    tag = case_when(
+      var == "W" ~ "wn", 
+      var == "X" ~ "AR_1", 
+      var == "Y" ~ "MA_1", 
+      var == "Z" ~ "ARMA_1_1")
+  ) |> 
+  dplyr::select(idx, var, tag, value)
+```
+
+@fig-ARMA-sim-ts shows the respective time series simulated from these simple ARMA models.
+
+```{r}
+#| label: fig-ARMA-sim-ts
+#| fig-cap: "Simulation from simple ARMA models"
+
+g_sim_long <- sim_long |> 
+  dplyr::group_by(var) |> 
+  ggplot2::ggplot(mapping = aes(
+    x = idx, y = value, color = var, fill = var
+  )) + 
+  ggplot2::geom_line(show.legend = FALSE) + 
+  ggplot2::facet_grid(
+    rows   = vars(var), 
+    scales = "free_y"
+  ) + 
+  ggplot2::labs(
+    title = "Simulated ARMA models", 
+    subtitle = "W = White Noise, X = AR(1), Y = MA(1), Z = ARMA(1, 1)"
+  )
+g_sim_long
+```
+
+```{r}
+#| label: ARMA-sim-spec-dens
+
+spec_W_lst <- sim_tbl$ W |> 
+  spec.pgram(detrend = FALSE, plot = FALSE, taper = 1/4)
+freq_sim   <- spec_W_lst$ freq
+spec_W     <- spec_W_lst$ spec
+
+# extract estimated spectral density from listed results
+spec_strip <- function(
+  x # univariate time series  
+  ) {
+  spec_lst <- x |> 
+    spec.pgram(
+      detrend = FALSE, 
+      plot    = FALSE, 
+      taper   = 1/4, 
+      spans   = c(31, 31))
+  return(spec_lst$ spec)
+}
+
+spec_sim <- tibble::tibble(
+  freq = freq_sim, 
+  
+  W = sim_tbl$ W |> spec_strip(), 
+  X = sim_tbl$ X |> spec_strip(), 
+  Y = sim_tbl$ Y |> spec_strip(), 
+  Z = sim_tbl$ Z |> spec_strip()
+)
+
+```
+
+```{r}
+#| label: spec-sim-long
+
+spec_long <- spec_sim |> 
+  tidyr::pivot_longer(
+    cols = W:Z, 
+    names_to = "var", 
+    values_to = "spec"
+  ) |> 
+  dplyr::mutate(
+    tag = case_when(
+      var == "W" ~ "wn", 
+      var == "X" ~ "AR_1", 
+      var == "Y" ~ "MA_1", 
+      var == "Z" ~ "ARMA_1_1")
+  ) |> 
+  dplyr::select(freq, var, tag, spec)
+  
+```
+
+@fig-ARMA-sim-spec-dens shows the estimated density function of each simulated ARMA process.
+
+```{r}
+#| label: fig-ARMA-sim-spec-dens
+#| fig-cap: "Estimated spectral density function of each ARMA simulation"
+
+g_spec_sim <- spec_long |> 
+  dplyr::group_by(var) |> 
+  ggplot2::ggplot(mapping = aes(
+    x = freq, y = spec, color = var, fill = var
+  )) + 
+  ggplot2::geom_line(show.legend = FALSE) + 
+  ggplot2::facet_grid(
+    rows   = vars(var), 
+    scales = "free_y"
+  ) + 
+  ggplot2::labs(
+    title = "Spectral density estimates of simulated ARMA models", 
+    subtitle = "W = White Noise, X = AR(1), Y = MA(1), Z = ARMA(1, 1)"
+  )
+g_spec_sim
+```
 
 ## Closing Remarks
 
