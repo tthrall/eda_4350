@@ -98,7 +98,7 @@ window.Quarto = {
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
   <li><a href="#sunspots" id="toc-sunspots" class="nav-link" data-scroll-target="#sunspots">Sunspots</a></li>
-  <li><a href="#average-daily-temperatures" id="toc-average-daily-temperatures" class="nav-link" data-scroll-target="#average-daily-temperatures">Average Daily Temperatures</a></li>
+  <li><a href="#average-daily-temperatures" id="toc-average-daily-temperatures" class="nav-link" data-scroll-target="#average-daily-temperatures">Average daily temperatures</a></li>
   </ul></li>
   <li><a href="#sec-math-fmwk" id="toc-sec-math-fmwk" class="nav-link" data-scroll-target="#sec-math-fmwk">Mathematical Framework</a>
   <ul class="collapse">
@@ -117,6 +117,19 @@ window.Quarto = {
   <li><a href="#arma1-1" id="toc-arma1-1" class="nav-link" data-scroll-target="#arma1-1">ARMA(1, 1)</a></li>
   <li><a href="#comparison-of-arma-models" id="toc-comparison-of-arma-models" class="nav-link" data-scroll-target="#comparison-of-arma-models">Comparison of ARMA models</a></li>
   </ul></li>
+  <li><a href="#finite-fourier-transform" id="toc-finite-fourier-transform" class="nav-link" data-scroll-target="#finite-fourier-transform">Finite Fourier transform</a>
+  <ul class="collapse">
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#cramér-representation-1" id="toc-cramér-representation-1" class="nav-link" data-scroll-target="#cramér-representation-1">Cramér representation</a></li>
+  <li><a href="#data-windows-and-their-frequency-kernels" id="toc-data-windows-and-their-frequency-kernels" class="nav-link" data-scroll-target="#data-windows-and-their-frequency-kernels">Data windows and their frequency kernels</a></li>
+  <li><a href="#asymptotic-normality" id="toc-asymptotic-normality" class="nav-link" data-scroll-target="#asymptotic-normality">Asymptotic normality</a></li>
+  </ul></li>
+  <li><a href="#spectrum-estimation" id="toc-spectrum-estimation" class="nav-link" data-scroll-target="#spectrum-estimation">Spectrum Estimation</a>
+  <ul class="collapse">
+  <li><a href="#periodogram" id="toc-periodogram" class="nav-link" data-scroll-target="#periodogram">Periodogram</a></li>
+  <li><a href="#smoothed-periodogram" id="toc-smoothed-periodogram" class="nav-link" data-scroll-target="#smoothed-periodogram">Smoothed periodogram</a></li>
+  </ul></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#a-glossary-of-math-symbols" id="toc-a-glossary-of-math-symbols" class="nav-link" data-scroll-target="#a-glossary-of-math-symbols">A: Glossary of Math Symbols</a></li>
   <li><a href="#b-data-examples" id="toc-b-data-examples" class="nav-link" data-scroll-target="#b-data-examples">B: Data Examples</a>
@@ -150,7 +163,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15:33 Sat 12-Jul-2025</p>
+      <p class="date">18:11 Sun 13-Jul-2025</p>
     </div>
   </div>
   
@@ -179,15 +192,15 @@ window.Quarto = {
 <p>Gaps between peak sunspot numbers vary, so a simple sinusoidal wave (or other function) having a fixed period does not fit the data well. On the other hand, the variability of the data is clarified by Fourier decomposition and subsequent grouping of fitted sine waves within successive bands of frequencies. This approach is discussed in <a href="#sec-math-fmwk" class="quarto-xref">Section&nbsp;2</a>.</p>
 </section>
 <section id="average-daily-temperatures" class="level3">
-<h3 class="anchored" data-anchor-id="average-daily-temperatures">Average Daily Temperatures</h3>
-<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a> shows average daily temperatures for Honolulu and New York City over a 25-year period (1995-2020). The overall average temperature in NYC is about 56 (F), well below that of Honolulu (77). Also note that the standard deviation of NYC temperatures, roughly 17.1 (F), is well above that of Honolulu (3.4). So Honolulu temperatures are higher than those of NYC and fluctuate less (as visitors to those two cities may testify). Less clear, however, is the degree to which seasonal variation accounts for the overall variation in each city. This is a question that can be addressed by Fourier decomposition.</p>
+<h3 class="anchored" data-anchor-id="average-daily-temperatures">Average daily temperatures</h3>
+<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a> shows average daily temperatures for Honolulu and New York City over a 25-year period (1995-2020). The overall average temperature in NYC is about 56 (F), well below that of Honolulu (77). Also note that the standard deviation of NYC temperatures,17.1 (F), is well above that of Honolulu (3.4). So Honolulu temperatures are higher than those of NYC and fluctuate less (as visitors to those two cities may testify). Less clear, however, is the degree to which seasonal variation accounts for the overall variation in each city. This is a question that can be addressed by Fourier decomposition.</p>
 </section>
 </section>
 <section id="sec-math-fmwk" class="level2">
 <h2 class="anchored" data-anchor-id="sec-math-fmwk">Mathematical Framework</h2>
 <section id="data-derived-from-a-random-process" class="level3">
 <h3 class="anchored" data-anchor-id="data-derived-from-a-random-process">Data derived from a random process</h3>
-<p>Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest. For example, here are the first few values of the temperature data shown in <a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a>.</p>
+<p>Statistical data usually take the form of one or more data frames in which each row represents an observation and each column represents a variable of interest. For example, here are the first few values of the temperature data shown in <a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a>.</p>
 <div id="tbl-HNL-NYC-wide" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-HNL-NYC-wide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -233,7 +246,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 </section>
 <section id="stationarity" class="level3">
 <h3 class="anchored" data-anchor-id="stationarity">Stationarity</h3>
-<p>In an additive model (which is most common), the residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is assumed to be <strong>second-order stationary</strong>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new process <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
+<p>In an additive model (which is most common), the centered random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is assumed to be <strong>second-order stationary</strong>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new process <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
 <p><span id="eq-back-shift-s"><span class="math display">\[
 \begin{align}
   Y_\bullet (t) &amp;= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
@@ -263,9 +276,8 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 <p>Consequently, second-order stationarity enables one to define and estimate the following <em>auto-covariance</em> function.</p>
 <p><span id="eq-ACovF"><span class="math display">\[
 \begin{align}
-  \gamma_{\bullet, \bullet} (u) &amp;= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\
-  \\
-  \text{where} \\
+  \gamma_{\bullet, \bullet} (u) &amp;= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\ \\
+  \text{where} \\ \\
   \gamma_{a, b} (u) &amp;= Cov \{ X_a (t + u), X_b (t) \} \\
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
@@ -284,9 +296,8 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 <p>The <em>autocorrelation (ACF)</em> function <span class="math inline">\(\rho_{\bullet, \bullet}(\cdot)\)</span> is the following scaled version of the auto-covariance function.</p>
 <p><span id="eq-ACF"><span class="math display">\[
 \begin{align}
-\rho_{\bullet, \bullet} (u) &amp;= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\
-  \\
-  \text{where} \\
+\rho_{\bullet, \bullet} (u) &amp;= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\ \\
+  \text{where} \\ \\
   \rho_{a, b} (u) &amp;= corr \{ X_a (u), X_b (0) \} \\
   &amp;= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
@@ -294,7 +305,22 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 </section>
 <section id="spectrum" class="level3">
 <h3 class="anchored" data-anchor-id="spectrum">Spectrum</h3>
-<p>The term “spectrum” in its modern sense was introduced by Sir Isaac Newton<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>, who used a prism to decompose sunlight into a rainbow of colors (light of different wavelengths or frequencies). The term came to mean the intensity<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> (denoted “I”) of light (or other wave phenomena) as a function of wavelength or frequency. This note uses “spectrum” in this sense (although the term has been further generalized).</p>
+<p>The term “spectrum” in its modern sense was introduced by Sir Isaac Newton<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>, who used a prism to decompose sunlight into a rainbow of colors (light of different wavelengths or frequencies). The term came to mean the intensity<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> (denoted “I”) of light (or other wave phenomena) as a function of wavelength or frequency.</p>
+<p>Sine waves, more precisely complex-valued functions of the form</p>
+<p><span id="eq-complex-sine-wave"><span class="math display">\[
+\begin{align}
+  f(t) = \rho e^{i \lambda t + \phi}
+\end{align}
+\tag{9}\]</span></span></p>
+<p>are widely used as the basis of this frequency decomposition, for a function of this form is an eigen-function of the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>.</p>
+<p><span id="eq-bs-eigen"><span class="math display">\[
+\begin{align}
+  \{ \; \mathcal{B}^s f(\cdot) \; \} \; (t) &amp;= f(t-s) \\
+  &amp;= \rho e^{i \lambda (t - s) + \phi} \\
+  &amp;= e^{- i \lambda s} \; \rho e^{i \lambda t + \phi} \\
+  &amp;= e^{- i \lambda s} \; f (t)
+\end{align}
+\tag{10}\]</span></span></p>
 </section>
 <section id="spectral-density-functions" class="level3">
 <h3 class="anchored" data-anchor-id="spectral-density-functions">Spectral density functions</h3>
@@ -303,22 +329,22 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   f_{\bullet, \bullet} (\lambda) &amp;= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (u) \times e^{- i \lambda u}
 \end{align}
-\tag{9}\]</span></span></p>
+\tag{11}\]</span></span></p>
 <p>where we assume that the elements of <span class="math inline">\(\gamma_{\bullet, \bullet} (\cdot)\)</span> are absolutely summable.</p>
-<p><span id="eq-ACF-sum"><span class="math display">\[
+<p><span id="eq-ACovF-sum"><span class="math display">\[
 \begin{align}
   \sum_{u = -\infty}^\infty \left | \; \gamma_{a, b} (u) \; \right | &amp;&lt; \infty \\
   &amp;\text{for } a, b \in \{1, \ldots, d \}
 \end{align}
-\tag{10}\]</span></span></p>
-<p><a href="#eq-ACF-sum" class="quarto-xref">Equation&nbsp;10</a> is an example of a “mixing” condition. It implies that <span class="math inline">\(X_\bullet(t)\)</span> and <span class="math inline">\(X_\bullet(t + u)\)</span> have vanishingly small correlation as <span class="math inline">\(|u| \rightarrow \infty\)</span>.</p>
+\tag{12}\]</span></span></p>
+<p><a href="#eq-ACovF-sum" class="quarto-xref">Equation&nbsp;12</a> is an example of a “mixing” condition. It implies that <span class="math inline">\(X_\bullet(t)\)</span> and <span class="math inline">\(X_\bullet(t + u)\)</span> have vanishingly small correlation as <span class="math inline">\(|u| \rightarrow \infty\)</span>.</p>
 <p>Setting <span class="math inline">\(b = a\)</span>, we obtain <span class="math inline">\(f_{a, a} (\lambda)\)</span>, called the <em>power spectrum</em> of <span class="math inline">\(X_a (\cdot)\)</span>. If <span class="math inline">\(b \ne a\)</span> then <span class="math inline">\(f_{a, b} (\lambda)\)</span> is called the <em>cross-spectrum</em> of <span class="math inline">\(\{ X_a (\cdot), X_b (\cdot) \}\)</span>.</p>
-<p>From <a href="#eq-spec-dens" class="quarto-xref">Equation&nbsp;9</a> we see that <span class="math inline">\(f\)</span> is periodic with period <span class="math inline">\(2 \pi\)</span>.</p>
+<p>From <a href="#eq-spec-dens" class="quarto-xref">Equation&nbsp;11</a> we see that <span class="math inline">\(f\)</span> is periodic with period <span class="math inline">\(2 \pi\)</span>.</p>
 <p><span id="eq-spec-periodic"><span class="math display">\[
 \begin{align}
   f_{\bullet, \bullet} (\lambda + 2 \pi) &amp;= f_{\bullet, \bullet} (\lambda)
 \end{align}
-\tag{11}\]</span></span></p>
+\tag{13}\]</span></span></p>
 <p>Due to the symmetries of the auto-covariance function (<a href="#eq-ACovF-symm" class="quarto-xref">Equation&nbsp;7</a>), the spectral density matrix is Hermitian, that is, equal to its own conjugate transpose.</p>
 <p><span id="eq-spec-hermitian"><span class="math display">\[
 \begin{align}
@@ -327,7 +353,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \sum_{\nu = -\infty}^\infty \gamma_{\bullet, \bullet} (\nu) \times e^{- i \lambda \nu} \\
   &amp;= f_{\bullet, \bullet} (\lambda)
 \end{align}
-\tag{12}\]</span></span></p>
+\tag{14}\]</span></span></p>
 <p>We also have that matrix <span class="math inline">\(f_{\bullet, \bullet} (- \lambda)\)</span> is the transpose of <span class="math inline">\(f_{\bullet, \bullet} (\lambda)\)</span>.</p>
 <p><span id="eq-spec-transpose"><span class="math display">\[
 \begin{align}
@@ -336,40 +362,40 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \sum_{\nu = -\infty}^\infty \gamma_{\bullet, \bullet} (\nu)^\prime \times e^{- i \lambda \nu} \\
   &amp;= f_{\bullet, \bullet} (\lambda)^\prime
 \end{align}
-\tag{13}\]</span></span></p>
+\tag{15}\]</span></span></p>
 <p>That is</p>
 <p><span id="eq-spec-elt-transpose"><span class="math display">\[
 \begin{align}
   f_{a, b} (- \lambda) &amp;= f_{b, a} (\lambda)
 \end{align}
-\tag{14}\]</span></span></p>
+\tag{16}\]</span></span></p>
 <p>Setting <span class="math inline">\(b = a\)</span> we see that the power spectrum is an even function.</p>
 <p><span id="eq-poweer-spec-even"><span class="math display">\[
 \begin{align}
   f_{a, a} (- \lambda) &amp;= f_{a, a} (\lambda)
 \end{align}
-\tag{15}\]</span></span></p>
-<p>Lastly, <a href="#eq-spec-dens" class="quarto-xref">Equation&nbsp;9</a> has the following inverse.</p>
+\tag{17}\]</span></span></p>
+<p>Lastly, <a href="#eq-spec-dens" class="quarto-xref">Equation&nbsp;11</a> has the following inverse.</p>
 <p><span id="eq-ACovF-from-spec-dens"><span class="math display">\[
 \begin{align}
   \gamma_{\bullet, \bullet} (u) &amp;= \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \times e^{i \lambda u} \; d\lambda
 \end{align}
-\tag{16}\]</span></span></p>
-<p>Setting <span class="math inline">\(u = 0\)</span> we see that the variance-covariance matrix <span class="math inline">\(\gamma_{\bullet, \bullet} (0)\)</span> of <span class="math inline">\(X_\bullet (t)\)</span> is the integral of <span class="math inline">\(f_{\bullet, \bullet} (\cdot)\)</span>.</p>
+\tag{18}\]</span></span></p>
+<p>Setting <span class="math inline">\(u = 0\)</span> we see that <span class="math inline">\(\gamma_{\bullet, \bullet} (0)\)</span>, the variance-covariance matrix of <span class="math inline">\(X_\bullet (t)\)</span>, is the integral of <span class="math inline">\(f_{\bullet, \bullet} (\cdot)\)</span>.</p>
 <p><span id="eq-cov-from-spec-dens"><span class="math display">\[
 \begin{align}
   \gamma_{\bullet, \bullet} (0) &amp;= \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \; d\lambda
 \end{align}
-\tag{17}\]</span></span></p>
+\tag{19}\]</span></span></p>
 </section>
 <section id="cramér-representation" class="level3">
 <h3 class="anchored" data-anchor-id="cramér-representation">Cramér representation</h3>
-<p>It turns out<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> that <a href="#eq-ACF-sum" class="quarto-xref">Equation&nbsp;10</a> implies the following Cramér representation of a centered version of <span class="math inline">\(X_\bullet (\cdot)\)</span>.</p>
+<p>It turns out<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> that <a href="#eq-ACovF-sum" class="quarto-xref">Equation&nbsp;12</a> implies the following Cramér representation of a centered version of <span class="math inline">\(X_\bullet (\cdot)\)</span>.</p>
 <p><span id="eq-Cramér-rep"><span class="math display">\[
 \begin{align}
   X_\bullet (t) - m_\bullet (t) &amp;= \int_{0}^{2 \pi} e^{i \lambda t} \; dZ_\bullet (\lambda)
 \end{align}
-\tag{18}\]</span></span></p>
+\tag{20}\]</span></span></p>
 <p>where <span class="math inline">\(Z_\bullet (\cdot)\)</span> is a random complex-valued measure having mean value zero and having orthogonal increments<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>:</p>
 <p><span id="eq-ortho-incr"><span class="math display">\[
 \begin{align}
@@ -377,17 +403,17 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{whenever } \\ \\
   \Delta_1 \; \cap \; \Delta_2 &amp;= \emptyset
 \end{align}
-\tag{19}\]</span></span></p>
-<p>The magnitude of <span class="math inline">\(dZ_\bullet (\lambda)\)</span> (which has mean zero) can be measured by the following complex-valued version of variance.</p>
+\tag{21}\]</span></span></p>
+<p>The magnitude of <span class="math inline">\(dZ_\bullet (\lambda)\)</span> (which has mean zero) can be measured by the following complex-valued version of the variance-covariance matrix.</p>
 <p><span id="eq-var-Z"><span class="math display">\[
 \begin{align}
   E \left \{ dZ_\bullet ( \lambda ) \; dZ_\bullet ( \lambda )^* \right \} &amp;= f_{\bullet, \bullet} (\lambda) \; d \lambda
 \end{align}
-\tag{20}\]</span></span></p>
+\tag{22}\]</span></span></p>
 </section>
 <section id="filtering" class="level3">
 <h3 class="anchored" data-anchor-id="filtering">Filtering</h3>
-<p>Suppose that <span class="math inline">\(X(t)\)</span> is a univariate random process satisfying <a href="#eq-ACF-sum" class="quarto-xref">Equation&nbsp;10</a> and having mean zero. Let <span class="math inline">\(a(\nu)\)</span> be a non-random summable sequence, and let <span class="math inline">\(Y(\cdot)\)</span> denote the convolution of <span class="math inline">\(a(\cdot)\)</span> with <span class="math inline">\(X(\cdot)\)</span>.</p>
+<p>Suppose that <span class="math inline">\(X(t)\)</span> is a univariate random process satisfying <a href="#eq-ACovF-sum" class="quarto-xref">Equation&nbsp;12</a> and having mean zero. Let <span class="math inline">\(a(\nu)\)</span> be a non-random summable sequence, and let <span class="math inline">\(Y(\cdot)\)</span> denote the convolution of <span class="math inline">\(a(\cdot)\)</span> with <span class="math inline">\(X(\cdot)\)</span>.</p>
 <p><span id="eq-filter-demo"><span class="math display">\[
 \begin{align}
   Y(\cdot) &amp;= a(\cdot) * X(\cdot) \\
@@ -396,22 +422,22 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \\
   Y(t) &amp;= \sum_{\nu = - \infty}^\infty a(\nu) \times X(t - \nu)
 \end{align}
-\tag{21}\]</span></span></p>
+\tag{23}\]</span></span></p>
 <p>Then <span class="math inline">\(Y(\cdot)\)</span> is said to be a <em>filtered</em> version of <span class="math inline">\(X(\cdot)\)</span>. One can show<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> that <span class="math inline">\(Y(\cdot)\)</span> has the following Cramér representation.</p>
 <p><span id="eq-filtered-Cramér"><span class="math display">\[
 \begin{align}
   Y (t) &amp;= \int_{0}^{2 \pi} e^{i \lambda t} \; dZ_Y (\lambda) \\
   &amp;= \int_{0}^{2 \pi} e^{i \lambda t} \; A(\lambda) \; dZ_X (\lambda)
 \end{align}
-\tag{22}\]</span></span></p>
+\tag{24}\]</span></span></p>
 <p>where <span class="math inline">\(A(\lambda)\)</span> is the Fourier transform of <span class="math inline">\(a(\nu)\)</span>.</p>
 <p><span id="eq-transf-fn"><span class="math display">\[
 \begin{align}
   A(\lambda) &amp;= \sum_{\nu = - \infty}^\infty a (\nu) \times e^{- i \lambda \nu}
 \end{align}
-\tag{23}\]</span></span></p>
+\tag{25}\]</span></span></p>
 <p>The Fourier transform <span class="math inline">\(A (\lambda)\)</span> is called the <em>transfer function</em> of the filter, and the function <span class="math inline">\(a(\nu)\)</span> is called the <em>impulse response</em> function of the filter. (If one replaces <span class="math inline">\(X (\cdot)\)</span> with an “impulse” equal to unity at zero and equal to zero elsewhere one obtains <span class="math inline">\(Y(t) = a(t)\)</span>.)</p>
-<p>From <a href="#eq-var-Z" class="quarto-xref">Equation&nbsp;20</a> we see that</p>
+<p>From <a href="#eq-var-Z" class="quarto-xref">Equation&nbsp;22</a> we see that</p>
 <p><span id="eq-var-Z-Y"><span class="math display">\[
 \begin{align}
   f_{Y, Y} (\lambda) \; d \lambda &amp;= E \left \{ dZ_Y ( \lambda ) \; dZ_Y ( \lambda )^* \right \}  \\
@@ -421,7 +447,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{so that } \\ \\
   f_{Y, Y} (\lambda) &amp;= \left | A(\lambda) \right |^2 \; f_{X, X} (\lambda)
 \end{align}
-\tag{24}\]</span></span></p>
+\tag{26}\]</span></span></p>
 </section>
 <section id="white-noise" class="level3">
 <h3 class="anchored" data-anchor-id="white-noise">White noise</h3>
@@ -434,13 +460,13 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
     0 &amp; \text{for } u \ne 0
   \end{cases}
 \end{align}
-\tag{25}\]</span></span></p>
+\tag{27}\]</span></span></p>
 <p>We use the following notation to specify a white noise process.</p>
 <p><span id="eq-wn-notation"><span class="math display">\[
 \begin{align}
   W &amp;\sim wn(0, \sigma_W^2)
 \end{align}
-\tag{26}\]</span></span></p>
+\tag{28}\]</span></span></p>
 <p>The power spectrum density function, <span class="math inline">\(f_{W, W} (\lambda)\)</span> is readily seen to evaluate to the constant <span class="math inline">\(\sigma_W^2\)</span>.</p>
 <p><span id="eq-wn-spec-dens"><span class="math display">\[
 \begin{align}
@@ -448,7 +474,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \gamma_W (0) \\
   &amp;= \sigma_W^2
 \end{align}
-\tag{27}\]</span></span></p>
+\tag{29}\]</span></span></p>
 </section>
 <section id="white-noise-filtered" class="level3">
 <h3 class="anchored" data-anchor-id="white-noise-filtered">White noise filtered</h3>
@@ -459,19 +485,19 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{where } \\ \\
   \sum_{\nu = 0}^\infty | \; \psi_\nu \; | &amp;&lt; \infty
 \end{align}
-\tag{28}\]</span></span></p>
-<p>From <a href="#eq-var-Z-Y" class="quarto-xref">Equation&nbsp;24</a> we see that</p>
+\tag{30}\]</span></span></p>
+<p>From <a href="#eq-var-Z-Y" class="quarto-xref">Equation&nbsp;26</a> we see that</p>
 <p><span id="eq-spec-dens-causal"><span class="math display">\[
 \begin{align}
   f_{X, X} (\lambda) &amp;= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2
 \end{align}
-\tag{29}\]</span></span></p>
+\tag{31}\]</span></span></p>
 <p>where <span class="math inline">\(\psi(\cdot)\)</span> denotes the power series having coefficients <span class="math inline">\(\psi (\nu)\)</span>.</p>
 <p><span id="eq-psi-power-series"><span class="math display">\[
 \begin{align}
   \psi (z) &amp;= \sum_{\nu = 0}^\infty \psi_\nu \times z^\nu \quad \text{for } |z| \le 1
 \end{align}
-\tag{30}\]</span></span></p>
+\tag{32}\]</span></span></p>
 </section>
 <section id="arma-models" class="level3">
 <h3 class="anchored" data-anchor-id="arma-models">ARMA models</h3>
@@ -485,7 +511,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{so that } \\ \\
   X(t) &amp;= \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
 \end{align}
-\tag{31}\]</span></span></p>
+\tag{33}\]</span></span></p>
 <p>Taking the multiplicative inverse of <span class="math inline">\(\phi(\cdot)\)</span> we can re-express this model as the following filtering of the white noise process <span class="math inline">\(W(\cdot)\)</span>.</p>
 <p><span id="eq-ARMA-p-q-causal"><span class="math display">\[
 \begin{align}
@@ -494,7 +520,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{where } \\ \\
   \psi (z) &amp;= \frac{\theta(z)}{\phi(z)} = \sum_{\nu = 0}^\infty \psi_\nu \times z^\nu
 \end{align}
-\tag{32}\]</span></span></p>
+\tag{34}\]</span></span></p>
 <p>The power-series expansion of the rational function <span class="math inline">\(\psi(\cdot)\)</span> requires the roots of polynomial <span class="math inline">\(\phi(\cdot)\)</span> to all have magnitude greater than unity, which we assume to be the case. Now let us specify some simple examples.</p>
 </section>
 <section id="ar1" class="level3">
@@ -504,14 +530,14 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   X(t) &amp;= \phi_1 \; X(t - 1) \; + \; W(t) \quad \text{with } | \phi_1 | &lt; 1
 \end{align}
-\tag{33}\]</span></span></p>
+\tag{35}\]</span></span></p>
 <p>so that</p>
 <p><span id="eq-AR-1-psi"><span class="math display">\[
 \begin{align}
   \psi (z) &amp;= \frac{1}{1 - \phi_1 z} \\
   &amp;= \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu
 \end{align}
-\tag{34}\]</span></span></p>
+\tag{36}\]</span></span></p>
 <p>and</p>
 <p><span id="eq-AR-1-spec"><span class="math display">\[
 \begin{align}
@@ -519,7 +545,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \left | \frac{1}{1 - \phi_1 e^{-i \lambda}} \right |^2 \; \sigma_W^2 \\
   &amp;= \frac{\sigma_W^2}{1 - 2 \phi_1 \cos(\lambda) + \phi_1^2}
 \end{align}
-\tag{35}\]</span></span></p>
+\tag{37}\]</span></span></p>
 </section>
 <section id="ma1" class="level3">
 <h3 class="anchored" data-anchor-id="ma1">MA(1)</h3>
@@ -528,13 +554,13 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   Y(t) &amp;= W(t) \; + \; \theta_1 W(t - 1) \quad \text{with } | \theta_1 | &lt; 1
 \end{align}
-\tag{36}\]</span></span></p>
+\tag{38}\]</span></span></p>
 <p>so that</p>
 <p><span id="eq-MA-1-psi"><span class="math display">\[
 \begin{align}
   \psi (z) &amp;= 1 + \theta_1 z
 \end{align}
-\tag{37}\]</span></span></p>
+\tag{39}\]</span></span></p>
 <p>and</p>
 <p><span id="eq-MA-1-spec"><span class="math display">\[
 \begin{align}
@@ -542,7 +568,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \left | 1 + \theta_1 e^{-i \lambda} \right |^2 \; \sigma_W^2 \\
   &amp;= \left ( 1 + 2 \theta_1 \cos(\lambda) + \theta_1^2 \right ) \; \sigma_W^2 \\
 \end{align}
-\tag{38}\]</span></span></p>
+\tag{40}\]</span></span></p>
 </section>
 <section id="arma1-1" class="level3">
 <h3 class="anchored" data-anchor-id="arma1-1">ARMA(1, 1)</h3>
@@ -551,7 +577,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   Z(t) &amp;= \phi_1 Z(t - 1) \; + \; W(t) \; + \; \theta_1 W(t - 1)
 \end{align}
-\tag{39}\]</span></span></p>
+\tag{41}\]</span></span></p>
 <p>so that</p>
 <p><span id="eq-ARMA-1-1-psi"><span class="math display">\[
 \begin{align}
@@ -559,7 +585,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= (1 + \theta_1 z) \; \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu \\
   &amp;= 1 \; + \; \sum_{k = 1}^\infty (\phi_1^k + \theta_1 \; \phi_1^{k - 1}) \times z^k
 \end{align}
-\tag{40}\]</span></span></p>
+\tag{42}\]</span></span></p>
 <p>and</p>
 <p><span id="eq-ARMA-1-1-spec"><span class="math display">\[
 \begin{align}
@@ -567,7 +593,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \left | \frac{1 + \theta_1 e^{-i \lambda}}{1 - \phi_1 e^{-i \lambda}} \right |^2 \; \sigma_W^2 \\
   &amp;= \frac{1 + 2 \theta_1 \cos(\lambda) + \theta_1^2}{1 - 2 \phi_1 \cos(\lambda) + \phi_1^2} \; \sigma_W^2
 \end{align}
-\tag{41}\]</span></span></p>
+\tag{43}\]</span></span></p>
 </section>
 <section id="comparison-of-arma-models" class="level3">
 <h3 class="anchored" data-anchor-id="comparison-of-arma-models">Comparison of ARMA models</h3>
@@ -603,6 +629,109 @@ Figure&nbsp;2: Spectral density function of each ARMA model
 </div>
 </div>
 </section>
+</section>
+<section id="finite-fourier-transform" class="level2">
+<h2 class="anchored" data-anchor-id="finite-fourier-transform">Finite Fourier transform</h2>
+<section id="definition" class="level3">
+<h3 class="anchored" data-anchor-id="definition">Definition</h3>
+<p>Let <span class="math inline">\(X_\bullet (\cdot)\)</span> be a random process satisfying <a href="#eq-ACovF-sum" class="quarto-xref">Equation&nbsp;12</a>. Assume for the moment that <span class="math inline">\(X_\bullet (\cdot)\)</span> has mean zero. Suppose that we have data generated by this process for <span class="math inline">\(|t| \le n\)</span>.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> Then we define <span class="math inline">\(d_\bullet (\lambda)\)</span>, the finite Fourier transform of time series <span class="math inline">\(\{ X(t) \}_{|t| \le n}\)</span>, as follows.</p>
+<p><span id="eq-finite-FT"><span class="math display">\[
+\begin{align}
+  d_\bullet (\lambda) &amp;= \sum_{t = -n}^n X_\bullet (t) \times e^{- i \lambda t}
+\end{align}
+\tag{44}\]</span></span></p>
+</section>
+<section id="cramér-representation-1" class="level3">
+<h3 class="anchored" data-anchor-id="cramér-representation-1">Cramér representation</h3>
+<p>From the Cramér representation (<a href="#eq-Cramér-rep" class="quarto-xref">Equation&nbsp;20</a>) we have</p>
+<p><span id="eq-DFT-Cramér-rep"><span class="math display">\[
+\begin{align}
+  d_\bullet (\lambda) &amp;= \sum_{t = -n}^n X_\bullet (t) \times e^{- i \lambda t} \\
+  &amp;= \sum_{t = -n}^n \left \{ \int_{0}^{2 \pi} e^{i \alpha t} \; dZ_\bullet (\alpha) \right \} \times e^{- i \lambda t} \\
+  &amp;= \sum_{t = -n}^n \left \{ \int_{0}^{2 \pi} e^{i (\alpha - \lambda) t} \; dZ_\bullet (\alpha) \right \} \\
+  &amp;= \int_{0}^{2 \pi} \left \{ \sum_{t = -n}^n e^{i (\alpha - \lambda) t}  \right \} \; dZ_\bullet (\alpha) \\
+  &amp;= \int_{0}^{2 \pi} \mathcal{D}_n (\alpha - \lambda) \; dZ_\bullet (\alpha)
+\end{align}
+\tag{45}\]</span></span></p>
+<p>Here <span class="math inline">\(\mathcal{D}_n (\cdot)\)</span> denotes the Dirichlet kernel function of order <span class="math inline">\(n\)</span>.</p>
+<p><span id="eq-Dirichlet-kernel-fn"><span class="math display">\[
+\begin{align}
+   \mathcal{D}_n (\theta) &amp;= \sum_{\nu = -n}^n e^{i \theta \nu} \\
+   &amp;=
+   \begin{cases}
+     2 n + 1 &amp; \text{for } \theta \equiv 0 \bmod (2 \pi) \\
+     \frac{\sin ((2n + 1) \theta / 2)}{\sin(\theta / 2)} &amp; \text{for } \theta \not \equiv 0 \bmod (2 \pi)
+   \end{cases}
+\end{align}
+\tag{46}\]</span></span></p>
+</section>
+<section id="data-windows-and-their-frequency-kernels" class="level3">
+<h3 class="anchored" data-anchor-id="data-windows-and-their-frequency-kernels">Data windows and their frequency kernels</h3>
+<p><span class="math inline">\(\mathcal{D}_n (\cdot)\)</span> is thus the Fourier transform of the indicator function <span class="math inline">\(1_{|t| \le n} (\cdot)\)</span>. In the early 1900’s Fejér noted that the approximation of a function by a finite Fourier series could be improved by replacing this indicator function by its Cesàro average (the average of partial sums). This has led to the applicaton of <em>data windows</em> of the form <span class="math inline">\(h(t/n)\)</span> and their Fourier transforms <span class="math inline">\(\mathcal{H}_n(\theta)\)</span> as follows.</p>
+<p><span id="eq-tapered-FT-Cramér-rep"><span class="math display">\[
+\begin{align}
+  d_\bullet (\lambda) &amp;= \sum_{t = -n}^n h(\frac{t}{n}) \times X_\bullet (t) \times e^{- i \lambda t} \\
+  &amp;= \int_{0}^{2 \pi} \mathcal{H}_n (\alpha - \lambda) \; dZ_\bullet (\alpha) \\ \\
+  &amp;\text{where } \\ \\
+  \mathcal{H}_n (\theta) &amp;= \sum_{\nu = -n}^n h(\frac{\nu}{n}) \times e^{i \theta \nu}
+\end{align}
+\tag{47}\]</span></span></p>
+<p>Function <span class="math inline">\(h(x)\)</span> (called a <em>convergence factor</em> or <em>data taper</em>) is typically chosen to be positive, even, and piecewise continuous, having a maximum of unity at <span class="math inline">\(x = 0\)</span>, and vanishing for <span class="math inline">\(|x| &gt; 1\)</span>. This ensures that the <span class="math inline">\(2 \pi\)</span>-periodic function <span class="math inline">\(\mathcal{H}_n (\theta)\)</span> (called a <em>frequency kernel</em>) integrates to unity over any interval of length <span class="math inline">\(2 \pi\)</span> and is increasingly concentrated near <span class="math inline">\(\theta \equiv 0 \bmod (2 \pi)\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<p>In time series applications, the data taper <span class="math inline">\(h(x)\)</span> is designed to produce a corresponding frequency kernel <span class="math inline">\(\mathcal{H}_n (\theta)\)</span> highly concentrated at frequency zero, to the degree allowed by other considerations, such as computational complexity.</p>
+</section>
+<section id="asymptotic-normality" class="level3">
+<h3 class="anchored" data-anchor-id="asymptotic-normality">Asymptotic normality</h3>
+<p>If <span class="math inline">\(X_\bullet\)</span> satisfies further regularity conditions<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> then <span class="math inline">\(d_\bullet (\lambda)\)</span> defined in <a href="#eq-tapered-FT-Cramér-rep" class="quarto-xref">Equation&nbsp;47</a> has an asymptotic multivariate normal distribution. This asymptotic distribution is a standard (real-valued) multivariate normal distribution if <span class="math inline">\(\lambda \equiv 0 \bmod \pi\)</span>. Otherwise, it is a complex multivariate normal distribution (which doubles the degrees of freedom).</p>
+<p>For <span class="math inline">\(\lambda \not \equiv 0 \bmod (2 \pi)\)</span>, the expected value of <span class="math inline">\(d_\bullet (\lambda)\)</span> is zero. At <span class="math inline">\(\lambda \equiv 0 \bmod (2 \pi)\)</span>, the expected value of <span class="math inline">\(d_\bullet (\lambda)\)</span> is proportionate to the mean of <span class="math inline">\(X_\bullet (\cdot)\)</span> (assumed in this section to be zero to simplify notation). The asymptotic variance of <span class="math inline">\(d_\bullet (\lambda)\)</span> is as follows.</p>
+<p><span id="eq-var-tapered-FT"><span class="math display">\[
+\begin{align}
+  Var \{ d_\bullet (\lambda) \} &amp;\sim (2n + 1) \; \pi \; \eta^2 f_{\bullet, \bullet} (\lambda) \\ \\
+  &amp; \text{where } \\ \\
+  \eta^2 &amp;= \int_{-1}^1 h(x)^2 \; dx
+\end{align}
+\tag{48}\]</span></span></p>
+<p>Moreover if <span class="math inline">\(0 \le \lambda_0 &lt; \lambda_1 &lt; \ldots &lt; \lambda_K \le \pi\)</span>, then <span class="math inline">\(\{ d_\bullet (\lambda_k) \}_k\)</span> are asymptotically independent.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
+</section>
+</section>
+<section id="spectrum-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="spectrum-estimation">Spectrum Estimation</h2>
+<p>In this section we continue to assume that <span class="math inline">\(X_\bullet (\cdot)\)</span> has mean zero in order to simplify notation and focus on key ideas.</p>
+<section id="periodogram" class="level3">
+<h3 class="anchored" data-anchor-id="periodogram">Periodogram</h3>
+<p>The term “periodogram” was introduced by Schuster<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> in 1898, who sought to detect hidden periodicities in natural phenomena. It is defined as a scaled version of <span class="math inline">\(d_\bullet (\lambda) \times d_\bullet (\lambda)^*\)</span>.</p>
+<p>Recall that for <span class="math inline">\(\lambda \not \equiv 0 \bmod (2 \pi)\)</span>, the expected value of <span class="math inline">\(d_\bullet (\lambda)\)</span> is zero. Moreover, we assume that <span class="math inline">\(X_\bullet (\cdot)\)</span>, and thus <span class="math inline">\(d_\bullet (0)\)</span>, has mean zero in order to simplify notation. Consequently, the asymptotic expected value of <span class="math inline">\(d_\bullet (\lambda) \times d_\bullet (\lambda)^*\)</span> is the asymptotic variance-covariance matrix given by <a href="#eq-var-tapered-FT" class="quarto-xref">Equation&nbsp;48</a>.</p>
+<p><span id="eq-e-d-d"><span class="math display">\[
+\begin{align}
+  E \{ d_\bullet (\lambda) \times d_\bullet (\lambda)^* \} &amp;\sim (2n + 1) \; \pi \; \eta^2 f_{\bullet, \bullet} (\lambda) \\ \\
+  &amp; \text{where } \\ \\
+  \eta^2 &amp;= \int_{-1}^1 h(x)^2 \; dx
+\end{align}
+\tag{49}\]</span></span></p>
+<p>Following conventional use of the symbol <span class="math inline">\(I\)</span> to denote “intensity”, we define the periodogram as the following complex-valued, non-negative definite matrix</p>
+<p><span id="eq-pgram"><span class="math display">\[
+\begin{align}
+  I_{\bullet, \bullet} (\lambda) &amp;= c_n \; d_\bullet (\lambda) \times d_\bullet (\lambda)^* \\ \\
+  &amp; \text{where } \\ \\
+  c_n &amp;= \left \{ (2n + 1) \; \pi \; \eta^2 \right \}^{-1}
+\end{align}
+\tag{50}\]</span></span></p>
+<p>so that</p>
+<p><span id="eq-e-pgram"><span class="math display">\[
+\begin{align}
+  E \{ I_{\bullet, \bullet} (\lambda) \} &amp;\sim f_{\bullet, \bullet} (\lambda)
+\end{align}
+\tag{51}\]</span></span></p>
+<p>Thus the periodogram <span class="math inline">\(I_{\bullet, \bullet} (\lambda)\)</span> is an asymptotically unbiased estimate of the spectral density <span class="math inline">\(f_{\bullet, \bullet} (\lambda)\)</span>. The problem is that the variance of <span class="math inline">\(I_{\bullet, \bullet} (\lambda)\)</span> remains large as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p>Recall that under regularity conditions on <span class="math inline">\(X(\cdot)\)</span>, <span class="math inline">\(d_\bullet(\lambda)\)</span> follows an asymptotically normal distribution. Under those same conditions the asymptotic distribution of <span class="math inline">\(I_{\bullet, \bullet} (\lambda)\)</span> is a Wishart distribution, real if <span class="math inline">\(\lambda \equiv 0 \bmod \pi\)</span> and complex otherwise.</p>
+<p>A diagonal element of <span class="math inline">\(I_{\bullet, \bullet} (\lambda)\)</span>, say <span class="math inline">\(I_{a, a} (\lambda)\)</span>, is an estimate of <span class="math inline">\(f_{a, a} (\lambda)\)</span>, the power spectrum of <span class="math inline">\(X_a (\cdot)\)</span>. For <span class="math inline">\(\lambda \equiv 0 \bmod \pi\)</span>, the estimate is asymptotically distributed as <span class="math inline">\(f_{a, a} (\lambda) \times \chi_1^2\)</span>, where <span class="math inline">\(\chi_\nu^2\)</span> denotes a random variable having a chi-squared distribution with <span class="math inline">\(\nu\)</span> degrees of freedom. For <span class="math inline">\(\lambda \not \equiv 0 \bmod \pi\)</span>, the estimate is asymptotically distributed as <span class="math inline">\(f_{a, a} (\lambda) \times \chi_2^2 / 2\)</span>.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a></p>
+<p>Thus <span class="math inline">\(I_{\bullet, \bullet} (\lambda)\)</span>, although asymptotically unbiased, is not a consistent estimate of <span class="math inline">\(f_{a, a} (\lambda)\)</span> since its variance remains large as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+</section>
+<section id="smoothed-periodogram" class="level3">
+<h3 class="anchored" data-anchor-id="smoothed-periodogram">Smoothed periodogram</h3>
+</section>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
@@ -737,7 +866,7 @@ Figure&nbsp;3: Sunspot numbers: monthly average
 <h3 class="anchored" data-anchor-id="daily-city-temperatures-1995-2020">Daily City Temperatures: 1995-2020</h3>
 <section id="description-1" class="level4">
 <h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a> below shows the daily average temperature in Honolulu and New York City from 1995-01-01 to 2020-05-13.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a> below shows the daily average temperature in Honolulu and New York City from 1995-01-01 to 2020-05-13.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-hnl-nyc-temps" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -777,6 +906,9 @@ Brillinger, David R. 2001. <em>Time Series: Data Analysis and Theory</em>. USA: 
 <div id="ref-Newton1672spectrum" class="csl-entry" role="listitem">
 Newton, Isaac. 1672. <span>“A Letter of Mr. Isaac Newton, Professor of the Mathematicks in the University of Cambridge; Containing His New Theory about Light and Colors: Sent by the Author to the Publisher from Cambridge, Febr. 6. 1671/72; in Order to Be Communicated to the r. Society.”</span> <em>Philosophical Transactions of the Royal Society of London</em> 6 (80): 3075–87. <a href="https://doi.org/10.1098/rstl.1671.0072">https://doi.org/10.1098/rstl.1671.0072</a>.
 </div>
+<div id="ref-schuster1898" class="csl-entry" role="listitem">
+Schuster, Arthur. 1898. <span>“On the Investigation of Hidden Periodicities with Application to a Supposed 26 Day Period of Meteorological Phenomena.”</span> <em>Terr. Magn.</em> 3 (1): 13–41.
+</div>
 <div id="ref-thomson1977" class="csl-entry" role="listitem">
 Thomson, David J. 1977. <span>“Spectrum Estimation Techniques for Characterization and Development of WT4 Waveguide-I.”</span> <em>Bell System Technical Journal</em> 56 (9): 1769–1815. <a href="https://doi.org/10.1002/j.1538-7305.1977.tb00591.x">https://doi.org/10.1002/j.1538-7305.1977.tb00591.x</a>.
 </div>
@@ -796,7 +928,13 @@ Wiener, Norbert. 1930. <span>“Generalized Harmonic Analysis.”</span> <em>Act
 <li id="fn8"><p>See <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001, sec. 4.6</a>)</span>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p>Given a complex-valued matrix or vector <span class="math inline">\(\zeta\)</span> we denote by <span class="math inline">\(\zeta^*\)</span> its conjugate transpose.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn10"><p>See <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001, sec. 4.6</a>)</span><a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn11"><p>For convenience missing values have been imputed (estimated) with a weighted running average spanning 7 days. This was done with <code>R</code> function <code>imputeTS::na.ma()</code>. Of the 9265 days shown, there were 18 missing values for Honolulu and 20 missing values for NYC.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>To simplify notation in this section we index the observations with <span class="math inline">\(|t| \le n\)</span> rather than <span class="math inline">\(0 \le t &lt; T\)</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>See <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001, sec. 3.3</a>)</span>.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>See <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001, sec. 4.4</a>)</span>. Asymptotic normality of the discrete Fourier transform is ensured if <span class="math inline">\(X_\bullet (\cdot)\)</span> is strictly stationary and has summable cumulants of all orders.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>See <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>, Theorem 4.4.2)</span>.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>See <span class="citation" data-cites="schuster1898">Schuster (<a href="#ref-schuster1898" role="doc-biblioref">1898</a>)</span>.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>See <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>, Theorem 5.2.7)</span>.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>For convenience missing values have been imputed (estimated) with a weighted running average spanning 7 days. This was done with <code>R</code> function <code>imputeTS::na.ma()</code>. Of the 9265 days shown, there were 18 missing values for Honolulu and 20 missing values for NYC.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

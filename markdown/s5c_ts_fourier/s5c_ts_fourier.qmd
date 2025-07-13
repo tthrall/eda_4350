@@ -156,15 +156,15 @@ Sunspots are a key indicator of the solar magnetic activity cycle in which the s
 
 Gaps between peak sunspot numbers vary, so a simple sinusoidal wave (or other function) having a fixed period does not fit the data well.  On the other hand, the variability of the data is clarified by Fourier decomposition and subsequent grouping of fitted sine waves within successive bands of frequencies. This approach is discussed in @sec-math-fmwk.
 
-### Average Daily Temperatures
+### Average daily temperatures
 
-@fig-hnl-nyc-temps shows average daily temperatures for Honolulu and New York City over a 25-year period (1995-2020).  The overall average temperature in NYC is about `r avg_NYC` (F), well below that of Honolulu (`r avg_HNL`).  Also note that the standard deviation of NYC temperatures, roughly `r sd_NYC` (F), is well above that of Honolulu (`r sd_HNL`).  So Honolulu temperatures are higher than those of NYC and fluctuate less (as visitors to those two cities may testify).  Less clear, however, is the degree to which seasonal variation accounts for the overall variation in each city.  This is a question that can be addressed by Fourier decomposition.
+@fig-hnl-nyc-temps shows average daily temperatures for Honolulu and New York City over a 25-year period (1995-2020).  The overall average temperature in NYC is about `r avg_NYC` (F), well below that of Honolulu (`r avg_HNL`).  Also note that the standard deviation of NYC temperatures,`r sd_NYC` (F), is well above that of Honolulu (`r sd_HNL`).  So Honolulu temperatures are higher than those of NYC and fluctuate less (as visitors to those two cities may testify).  Less clear, however, is the degree to which seasonal variation accounts for the overall variation in each city.  This is a question that can be addressed by Fourier decomposition.
 
 ## Mathematical Framework {#sec-math-fmwk}
 
 ### Data derived from a random process
 
-Statistical applications are often based on one or more data frames in which each row represents an observation and each column represents a variable of interest.  For example, here are the first few values of the temperature data shown in @fig-hnl-nyc-temps.
+Statistical data usually take the form of one or more data frames in which each row represents an observation and each column represents a variable of interest.  For example, here are the first few values of the temperature data shown in @fig-hnl-nyc-temps.
 
 ```{r}
 #| label: tbl-HNL-NYC-wide
@@ -213,7 +213,7 @@ $$ {#eq-m-bullet}
 
 ### Stationarity
 
-In an additive model (which is most common), the residual random process, $X_\bullet (t) - m_\bullet (t)$ , is assumed to be **second-order stationary**.[^stationary] That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new process $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
+In an additive model (which is most common), the centered random process, $X_\bullet (t) - m_\bullet (t)$ , is assumed to be **second-order stationary**.[^stationary] That is, if we shift $X_\bullet (\cdot)$ by any number of time units $s$ to obtain a new process $Y_\bullet (\cdot)$, we assume that the respective covariance structures of $X_\bullet (\cdot)$ and $Y_\bullet (\cdot)$ are the same.
 
 [^stationary]: The assumption of second-order (or wide-sense) stationarity suffices for most time series models used in practice, but some cases may call for the assumption of *strict stationarity*. This means that for any finite set of times $(t_1, \ldots, t_K)$ and any time-shift $s$, the joint probability distribution of $(X_\bullet (t_1), \ldots, X_\bullet (t_K))$ is identical to that of $(X_\bullet (t_1 - s), \ldots, X_\bullet (t_K - s))$.
 
@@ -251,9 +251,8 @@ Consequently, second-order stationarity enables one to define and estimate the f
 
 $$
 \begin{align}
-  \gamma_{\bullet, \bullet} (u) &= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\ 
-  \\ 
-  \text{where} \\
+  \gamma_{\bullet, \bullet} (u) &= \left \{ \gamma_{a, b} (u) \right \}_{a, b = 1}^d \\ \\ 
+  \text{where} \\ \\ 
   \gamma_{a, b} (u) &= Cov \{ X_a (t + u), X_b (t) \} \\
   &= Cov \{ X_a (u), X_b (0) \} 
 \end{align}
@@ -278,9 +277,8 @@ The *autocorrelation (ACF)* function $\rho_{\bullet, \bullet}(\cdot)$ is the fol
 
 $$
 \begin{align}
-\rho_{\bullet, \bullet} (u) &= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\ 
-  \\ 
-  \text{where} \\
+\rho_{\bullet, \bullet} (u) &= \left \{ \rho_{a, b} (u) \right \}_{a, b = 1}^d \\ \\ 
+  \text{where} \\ \\ 
   \rho_{a, b} (u) &= corr \{ X_a (u), X_b (0) \} \\ 
   &= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
@@ -288,11 +286,31 @@ $$ {#eq-ACF}
 
 ### Spectrum
 
-The term "spectrum" in its modern sense was introduced by Sir Isaac Newton[^art-Newton-spectrum], who used a prism to decompose sunlight into a rainbow of colors (light of different wavelengths or frequencies).  The term came to mean the intensity[^intensity-power] (denoted "I") of light (or other wave phenomena) as a function of wavelength or frequency.  This note uses "spectrum" in this sense (although the term has been further generalized).
+The term "spectrum" in its modern sense was introduced by Sir Isaac Newton[^art-Newton-spectrum], who used a prism to decompose sunlight into a rainbow of colors (light of different wavelengths or frequencies).  The term came to mean the intensity[^intensity-power] (denoted "I") of light (or other wave phenomena) as a function of wavelength or frequency.
 
 [^art-Newton-spectrum]: See @Newton1672spectrum.
 
 [^intensity-power]: In other contexts the term "intensity" is replaced by "power".  @wiener1930GHA introduced the term "power spectrum" of a signal.
+
+Sine waves, more precisely complex-valued functions of the form 
+
+$$
+\begin{align}
+  f(t) = \rho e^{i \lambda t + \phi}
+\end{align}
+$$ {#eq-complex-sine-wave}
+
+are widely used as the basis of this frequency decomposition, for a function of this form is an eigen-function of the back-shift operator $\mathcal{B}$.
+
+
+$$
+\begin{align}
+  \{ \; \mathcal{B}^s f(\cdot) \; \} \; (t) &= f(t-s) \\ 
+  &= \rho e^{i \lambda (t - s) + \phi} \\ 
+  &= e^{- i \lambda s} \; \rho e^{i \lambda t + \phi} \\ 
+  &= e^{- i \lambda s} \; f (t)
+\end{align}
+$$ {#eq-bs-eigen}
 
 ### Spectral density functions
 
@@ -311,9 +329,9 @@ $$
   \sum_{u = -\infty}^\infty \left | \; \gamma_{a, b} (u) \; \right | &< \infty \\ 
   &\text{for } a, b \in \{1, \ldots, d \}
 \end{align}
-$$ {#eq-ACF-sum}
+$$ {#eq-ACovF-sum}
 
-@eq-ACF-sum is an example of a "mixing" condition.  It implies that $X_\bullet(t)$ and $X_\bullet(t + u)$ have vanishingly small correlation as $|u| \rightarrow \infty$.
+@eq-ACovF-sum is an example of a "mixing" condition.  It implies that $X_\bullet(t)$ and $X_\bullet(t + u)$ have vanishingly small correlation as $|u| \rightarrow \infty$.
 
 Setting $b = a$, we obtain $f_{a, a} (\lambda)$, called the _power spectrum_ of $X_a (\cdot)$.  If $b \ne a$ then $f_{a, b} (\lambda)$ is called the _cross-spectrum_ of $\{ X_a (\cdot), X_b (\cdot) \}$.
 
@@ -371,7 +389,7 @@ $$
 \end{align}
 $$ {#eq-ACovF-from-spec-dens}
 
-Setting $u = 0$ we see that the variance-covariance matrix $\gamma_{\bullet, \bullet} (0)$ of $X_\bullet (t)$ is the integral of $f_{\bullet, \bullet} (\cdot)$.
+Setting $u = 0$ we see that $\gamma_{\bullet, \bullet} (0)$, the variance-covariance matrix of $X_\bullet (t)$, is the integral of $f_{\bullet, \bullet} (\cdot)$.
 
 $$
 \begin{align}
@@ -381,7 +399,7 @@ $$ {#eq-cov-from-spec-dens}
 
 ### Cramér representation
 
-It turns out[^Cramér-rep] that @eq-ACF-sum implies the following Cramér representation of a centered version of $X_\bullet (\cdot)$.
+It turns out[^Cramér-rep] that @eq-ACovF-sum implies the following Cramér representation of a centered version of $X_\bullet (\cdot)$.
 
 [^Cramér-rep]: See @brillinger2001 [sec. 4.6].
 
@@ -403,7 +421,7 @@ $$
 \end{align}
 $$ {#eq-ortho-incr}
 
-The magnitude of $dZ_\bullet (\lambda)$ (which has mean zero) can be measured by the following complex-valued version of variance.
+The magnitude of $dZ_\bullet (\lambda)$ (which has mean zero) can be measured by the following complex-valued version of the variance-covariance matrix.
 
 $$
 \begin{align}
@@ -413,7 +431,7 @@ $$ {#eq-var-Z}
 
 ### Filtering
 
-Suppose that $X(t)$ is a univariate random process satisfying @eq-ACF-sum and having mean zero.  Let $a(\nu)$ be a non-random summable sequence, and let $Y(\cdot)$ denote the convolution of $a(\cdot)$ with $X(\cdot)$.
+Suppose that $X(t)$ is a univariate random process satisfying @eq-ACovF-sum and having mean zero.  Let $a(\nu)$ be a non-random summable sequence, and let $Y(\cdot)$ denote the convolution of $a(\cdot)$ with $X(\cdot)$.
 
 $$
 \begin{align}
@@ -703,7 +721,7 @@ g_sim_long <- sim_long |>
   ) + 
   ggplot2::labs(
     title = "Simulated ARMA models", 
-    subtitle = "W = White Noise, X = AR(1), Y = MA(1), Z = ARMA(1, 1)"
+    subtitle = "W ~ White Noise, X ~ AR(1), Y ~ MA(1), Z ~ ARMA(1, 1)"
   ) + 
   ggplot2::xlab("time index")
 g_sim_long
@@ -784,7 +802,7 @@ g_arma_spec <- arma_spec_long |>
   ) + 
   ggplot2::labs(
     title = "Spectral density of simple ARMA models", 
-    subtitle = "W = White Noise, X = AR(1), Y = MA(1), Z = ARMA(1, 1)"
+    subtitle = "W ~ White Noise, X ~ AR(1), Y ~ MA(1), Z ~ ARMA(1, 1)"
   ) + 
   ggplot2::ylab("spectral density")
 g_arma_spec
@@ -861,10 +879,142 @@ g_spec_sim <- spec_long |>
   ) + 
   ggplot2::labs(
     title = "Spectral density estimates of simulated ARMA models", 
-    subtitle = "W = White Noise, X = AR(1), Y = MA(1), Z = ARMA(1, 1)"
+    subtitle = "W ~ White Noise, X ~ AR(1), Y ~ MA(1), Z ~ ARMA(1, 1)"
   )
 g_spec_sim
 ```
+
+## Finite Fourier transform
+
+### Definition
+
+Let $X_\bullet (\cdot)$ be a random process satisfying @eq-ACovF-sum.  Assume for the moment that $X_\bullet (\cdot)$ has mean zero.  Suppose that we have data generated by this process for $|t| \le n$.[^n-vs-T]  Then we define $d_\bullet (\lambda)$, the finite Fourier transform of time series $\{ X(t) \}_{|t| \le n}$, as follows.
+
+[^n-vs-T]: To simplify notation in this section we index the observations with $|t| \le n$ rather than $0 \le t < T$.
+
+$$
+\begin{align}
+  d_\bullet (\lambda) &= \sum_{t = -n}^n X_\bullet (t) \times e^{- i \lambda t}
+\end{align}
+$$ {#eq-finite-FT}
+
+### Cramér representation
+
+From the Cramér representation (@eq-Cramér-rep) we have 
+
+$$
+\begin{align}
+  d_\bullet (\lambda) &= \sum_{t = -n}^n X_\bullet (t) \times e^{- i \lambda t} \\ 
+  &= \sum_{t = -n}^n \left \{ \int_{0}^{2 \pi} e^{i \alpha t} \; dZ_\bullet (\alpha) \right \} \times e^{- i \lambda t} \\ 
+  &= \sum_{t = -n}^n \left \{ \int_{0}^{2 \pi} e^{i (\alpha - \lambda) t} \; dZ_\bullet (\alpha) \right \} \\ 
+  &= \int_{0}^{2 \pi} \left \{ \sum_{t = -n}^n e^{i (\alpha - \lambda) t}  \right \} \; dZ_\bullet (\alpha) \\ 
+  &= \int_{0}^{2 \pi} \mathcal{D}_n (\alpha - \lambda) \; dZ_\bullet (\alpha)
+\end{align}
+$$ {#eq-DFT-Cramér-rep}
+
+Here $\mathcal{D}_n (\cdot)$ denotes the Dirichlet kernel function of order $n$. 
+
+$$
+\begin{align}
+   \mathcal{D}_n (\theta) &= \sum_{\nu = -n}^n e^{i \theta \nu} \\ 
+   &= 
+   \begin{cases}
+     2 n + 1 & \text{for } \theta \equiv 0 \bmod (2 \pi) \\ 
+     \frac{\sin ((2n + 1) \theta / 2)}{\sin(\theta / 2)} & \text{for } \theta \not \equiv 0 \bmod (2 \pi)
+   \end{cases}
+\end{align}
+$$ {#eq-Dirichlet-kernel-fn}
+
+### Data windows and their frequency kernels
+
+$\mathcal{D}_n (\cdot)$ is thus the Fourier transform of the indicator function $1_{|t| \le n} (\cdot)$.  In the early 1900's Fejér noted that the approximation of a function by a finite Fourier series could be improved by replacing this indicator function by its Cesàro average (the average of partial sums).  This has led to the applicaton of _data windows_ of the form $h(t/n)$ and their Fourier transforms $\mathcal{H}_n(\theta)$ as follows.
+
+$$
+\begin{align}
+  d_\bullet (\lambda) &= \sum_{t = -n}^n h(\frac{t}{n}) \times X_\bullet (t) \times e^{- i \lambda t} \\ 
+  &= \int_{0}^{2 \pi} \mathcal{H}_n (\alpha - \lambda) \; dZ_\bullet (\alpha) \\ \\ 
+  &\text{where } \\ \\ 
+  \mathcal{H}_n (\theta) &= \sum_{\nu = -n}^n h(\frac{\nu}{n}) \times e^{i \theta \nu}
+\end{align}
+$$ {#eq-tapered-FT-Cramér-rep}
+
+Function $h(x)$ (called a _convergence factor_ or _data taper_) is typically chosen to be positive, even, and piecewise continuous, having a maximum of unity at $x = 0$, and vanishing for $|x| > 1$.  This ensures that the $2 \pi$-periodic function $\mathcal{H}_n (\theta)$ (called a _frequency kernel_) integrates to unity over any interval of length $2 \pi$ and is increasingly concentrated near $\theta \equiv 0 \bmod (2 \pi)$ as $n \rightarrow \infty$.[^book-tapers]
+
+[^book-tapers]: See @brillinger2001 [sec. 3.3].
+
+In time series applications, the data taper $h(x)$ is designed to produce a corresponding frequency kernel $\mathcal{H}_n (\theta)$ highly concentrated at frequency zero, to the degree allowed by other considerations, such as computational complexity.
+
+### Asymptotic normality
+
+If $X_\bullet$ satisfies further regularity conditions[^book-x-assumptions] then $d_\bullet (\lambda)$ defined in @eq-tapered-FT-Cramér-rep has an asymptotic multivariate normal distribution.  This asymptotic distribution is a standard (real-valued) multivariate normal distribution if $\lambda \equiv 0 \bmod \pi$.  Otherwise, it is a complex multivariate normal distribution (which doubles the degrees of freedom).
+
+[^book-x-assumptions]: See @brillinger2001 [sec. 4.4].  Asymptotic normality of the discrete Fourier transform is ensured if $X_\bullet (\cdot)$ is strictly stationary and has summable cumulants of all orders.
+
+For $\lambda \not \equiv 0 \bmod (2 \pi)$, the expected value of $d_\bullet (\lambda)$ is zero.  At $\lambda \equiv 0 \bmod (2 \pi)$, the expected value of $d_\bullet (\lambda)$ is proportionate to the mean of $X_\bullet (\cdot)$ (assumed in this section to be zero to simplify notation). The asymptotic variance of $d_\bullet (\lambda)$ is as follows.
+
+$$
+\begin{align}
+  Var \{ d_\bullet (\lambda) \} &\sim (2n + 1) \; \pi \; \eta^2 f_{\bullet, \bullet} (\lambda) \\ \\ 
+  & \text{where } \\ \\ 
+  \eta^2 &= \int_{-1}^1 h(x)^2 \; dx
+\end{align}
+$$ {#eq-var-tapered-FT}
+
+Moreover if $0 \le \lambda_0 < \lambda_1 < \ldots < \lambda_K \le \pi$, then $\{ d_\bullet (\lambda_k) \}_k$ are asymptotically independent.[^book-DFT-indep]
+
+[^book-DFT-indep]:  See @brillinger2001 [Theorem 4.4.2].
+
+## Spectrum Estimation
+
+In this section we continue to assume that $X_\bullet (\cdot)$ has mean zero in order to simplify notation and focus on key ideas.
+
+### Periodogram
+
+The term "periodogram" was introduced by Schuster[^art-schuster1898] in 1898, who sought to detect hidden periodicities in natural phenomena.  It is defined as a scaled version of $d_\bullet (\lambda) \times d_\bullet (\lambda)^*$.
+
+[^art-schuster1898]: See @schuster1898.
+
+Recall that for $\lambda \not \equiv 0 \bmod (2 \pi)$, the expected value of $d_\bullet (\lambda)$ is zero.  Moreover, we assume that $X_\bullet (\cdot)$, and thus $d_\bullet (0)$, has mean zero in order to simplify notation.  Consequently, the asymptotic expected value of $d_\bullet (\lambda) \times d_\bullet (\lambda)^*$ is the asymptotic variance-covariance matrix given by @eq-var-tapered-FT.
+
+$$
+\begin{align}
+  E \{ d_\bullet (\lambda) \times d_\bullet (\lambda)^* \} &\sim (2n + 1) \; \pi \; \eta^2 f_{\bullet, \bullet} (\lambda) \\ \\ 
+  & \text{where } \\ \\ 
+  \eta^2 &= \int_{-1}^1 h(x)^2 \; dx
+\end{align}
+$$ {#eq-e-d-d}
+
+Following conventional use of the symbol $I$ to denote "intensity", we define the periodogram as the following complex-valued, non-negative definite matrix 
+
+$$
+\begin{align}
+  I_{\bullet, \bullet} (\lambda) &= c_n \; d_\bullet (\lambda) \times d_\bullet (\lambda)^* \\ \\ 
+  & \text{where } \\ \\ 
+  c_n &= \left \{ (2n + 1) \; \pi \; \eta^2 \right \}^{-1}
+\end{align}
+$$ {#eq-pgram}
+
+so that 
+
+$$
+\begin{align}
+  E \{ I_{\bullet, \bullet} (\lambda) \} &\sim f_{\bullet, \bullet} (\lambda)
+\end{align}
+$$ {#eq-e-pgram}
+
+Thus the periodogram $I_{\bullet, \bullet} (\lambda)$ is an asymptotically unbiased estimate of the spectral density $f_{\bullet, \bullet} (\lambda)$.  The problem is that the variance of $I_{\bullet, \bullet} (\lambda)$ remains large as $n \rightarrow \infty$.
+
+Recall that under regularity conditions on $X(\cdot)$, $d_\bullet(\lambda)$  follows an asymptotically normal distribution.  Under those same conditions the asymptotic distribution of $I_{\bullet, \bullet} (\lambda)$ is a Wishart distribution, real if $\lambda \equiv 0 \bmod \pi$ and complex otherwise.
+
+A diagonal element of $I_{\bullet, \bullet} (\lambda)$, say $I_{a, a} (\lambda)$, is an estimate of $f_{a, a} (\lambda)$, the power spectrum of $X_a (\cdot)$.  For $\lambda \equiv 0 \bmod \pi$, the estimate is asymptotically distributed as $f_{a, a} (\lambda) \times \chi_1^2$, where $\chi_\nu^2$ denotes a random variable having a chi-squared distribution with $\nu$ degrees of freedom.  For $\lambda \not \equiv 0 \bmod \pi$, the estimate is asymptotically distributed as $f_{a, a} (\lambda) \times \chi_2^2 / 2$.[^book-asymp-chi-sq]
+
+[^book-asymp-chi-sq]: See @brillinger2001 [Theorem 5.2.7].
+
+Thus $I_{\bullet, \bullet} (\lambda)$, although asymptotically unbiased, is not a consistent estimate of $f_{a, a} (\lambda)$ since its variance remains large as $n \rightarrow \infty$.
+
+### Smoothed periodogram
+
+## Examples
 
 ## Closing Remarks
 
