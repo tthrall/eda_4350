@@ -1036,9 +1036,7 @@ Thus $I_{\bullet, \bullet} (\lambda)$, although asymptotically unbiased, is not 
 
 ### DFT: Discrete Fourier transform
 
-The discrete Fourier transform (DFT) is the restriction of the finite Fourier transform to a grid of frequencies spanning the interval $[0, 2 \pi)$, or some other half-open interval of length $2 \pi$.
-
-To simplify notation we consider a univariate process $X(\cdot)$.  We also index observed values as $\{ X(0), X(1), \ldots, X(T-1) \}$.  Now we define the DFT of this time series as follows.
+The discrete Fourier transform (DFT) is the restriction of the finite Fourier transform to a discrete set of equi-spaced frequencies.  To simplify notation we consider a univariate process $X(\cdot)$.  We also index observed values as $\{ X(0), X(1), \ldots, X(T-1) \}$.  Now we define the DFT of this time series as follows.
 
 $$
 \begin{align}
@@ -1084,7 +1082,9 @@ $$
 \end{align}
 $$ {#eq-freq-window}
 
-Now we define $\hat{f}_{\bullet, \bullet} (\lambda)$ as follows.
+Now we define $\hat{f}_{\bullet, \bullet} (\lambda)$ as follows.[^infinite-sum]
+
+[^infinite-sum]: Although this summation extends over an infinite number of discrete frequencies $\lambda_j$, there are just $S$ frequencies modulo $2 \pi$.  Recall that the periodogram is $2 \pi$-periodic.  In addition, we may define the frequency window $W(\cdot)$ equal to zero outside some finite interval.
 
 $$
 \begin{align}
@@ -1094,9 +1094,35 @@ $$
 \end{align}
 $$ {#eq-consistent-spec-dens-est}
 
-Under the previously mentioned regularity conditions for $X_{\bullet, \bullet} (\cdot)$, $\hat{f}_{\bullet, \bullet} (\lambda)$ is a consistent estimator and is asymptotically normal.[^book-consistent-spec-dens-est]
+Under the previously mentioned regularity conditions for $X_{\bullet, \bullet} (\cdot)$, $\hat{f}_{\bullet, \bullet} (\lambda)$ is a consistent estimator and is asymptotically normal.
+
+The asymptotic variance of $\hat{f}_{a, a} (\lambda)$, the estimated power spectrum of $X_a (\cdot)$, is as follows.
+
+$$
+\begin{align}
+  Var\{ \hat{f}_{a, a} (\lambda) \} &\sim 
+  \begin{cases}
+    4 \pi \omega^2 \; \frac{f_{a, a} (\lambda)^2}{\beta_T \; T} & \text{for } \lambda \equiv 0 \bmod \pi \\ 
+    2 \pi \omega^2 \; \frac{f_{a, a} (\lambda)^2}{\beta_T \; T} & \text{for } \lambda \not \equiv 0 \bmod \pi 
+  \end{cases} \\ \\ 
+  & \text{where } \\ \\ 
+  \omega^2 &= \int_{- \infty}^\infty W(\alpha)^2 d \alpha
+\end{align}
+$$ {#eq-consistent-pwr-spec-est}
+
+Taking the natural logarithm, and assuming $f_{a, a} (\lambda) > 0$, we have that $\ln \hat{f}_{a, a} (\lambda)$ is a consistent and asymptotically normal estimate of $\ln f_{a, a} (\lambda)$ with the following asymptotic variance.[^book-consistent-spec-dens-est]
 
 [^book-consistent-spec-dens-est]:  See @brillinger2001 [sec. 5.6] for further details.
+
+$$
+\begin{align}
+  Var\{ \ln \hat{f}_{a, a} (\lambda) \} &\sim 
+  \begin{cases}
+    \frac{4 \pi \omega^2}{\beta_T \; T} & \text{for } \lambda \equiv 0 \bmod \pi \\ 
+    \frac{2 \pi \omega^2}{\beta_T \; T} & \text{for } \lambda \not \equiv 0 \bmod \pi 
+  \end{cases}
+\end{align}
+$$ {#eq-consistent-pwr-spec-est}
 
 ## Examples {#sec-spec-examples}
 

@@ -164,7 +164,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">16:58 Mon 14-Jul-2025</p>
+      <p class="date">19:19 Mon 14-Jul-2025</p>
     </div>
   </div>
   
@@ -747,8 +747,7 @@ Figure&nbsp;2: Spectral density function of each ARMA model
 </section>
 <section id="dft-discrete-fourier-transform" class="level3">
 <h3 class="anchored" data-anchor-id="dft-discrete-fourier-transform">DFT: Discrete Fourier transform</h3>
-<p>The discrete Fourier transform (DFT) is the restriction of the finite Fourier transform to a grid of frequencies spanning the interval <span class="math inline">\([0, 2 \pi)\)</span>, or some other half-open interval of length <span class="math inline">\(2 \pi\)</span>.</p>
-<p>To simplify notation we consider a univariate process <span class="math inline">\(X(\cdot)\)</span>. We also index observed values as <span class="math inline">\(\{ X(0), X(1), \ldots, X(T-1) \}\)</span>. Now we define the DFT of this time series as follows.</p>
+<p>The discrete Fourier transform (DFT) is the restriction of the finite Fourier transform to a discrete set of equi-spaced frequencies. To simplify notation we consider a univariate process <span class="math inline">\(X(\cdot)\)</span>. We also index observed values as <span class="math inline">\(\{ X(0), X(1), \ldots, X(T-1) \}\)</span>. Now we define the DFT of this time series as follows.</p>
 <p><span id="eq-DFT-T"><span class="math display">\[
 \begin{align}
   d_X (\lambda_j) &amp;= \sum_{t = 0}^{T - 1} h \left (\frac{2(t - t_m)}{T} \right ) \times X(t) \times e^{- i \lambda_j t} \\ \\
@@ -782,7 +781,7 @@ Figure&nbsp;2: Spectral density function of each ARMA model
   &amp; \int_{-\infty}^\infty W(\alpha) \; d \alpha = 1
 \end{align}
 \tag{56}\]</span></span></p>
-<p>Now we define <span class="math inline">\(\hat{f}_{\bullet, \bullet} (\lambda)\)</span> as follows.</p>
+<p>Now we define <span class="math inline">\(\hat{f}_{\bullet, \bullet} (\lambda)\)</span> as follows.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a></p>
 <p><span id="eq-consistent-spec-dens-est"><span class="math display">\[
 \begin{align}
   \hat{f}_{\bullet, \bullet} (\lambda) &amp;= \sum_{\lambda_j \not \equiv 0 \bmod (2 \pi)} \frac{1}{\beta_T} \; W \left ( \frac{\lambda - \lambda_j}{\beta_T} \right ) \times I_{\bullet, \bullet} ( \lambda_j ) \\ \\
@@ -790,7 +789,29 @@ Figure&nbsp;2: Spectral density function of each ARMA model
   \lambda_j &amp;= \frac{2 \pi j}{S} \quad \forall j \in \mathbb{Z}
 \end{align}
 \tag{57}\]</span></span></p>
-<p>Under the previously mentioned regularity conditions for <span class="math inline">\(X_{\bullet, \bullet} (\cdot)\)</span>, <span class="math inline">\(\hat{f}_{\bullet, \bullet} (\lambda)\)</span> is a consistent estimator and is asymptotically normal.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a></p>
+<p>Under the previously mentioned regularity conditions for <span class="math inline">\(X_{\bullet, \bullet} (\cdot)\)</span>, <span class="math inline">\(\hat{f}_{\bullet, \bullet} (\lambda)\)</span> is a consistent estimator and is asymptotically normal.</p>
+<p>The asymptotic variance of <span class="math inline">\(\hat{f}_{a, a} (\lambda)\)</span>, the estimated power spectrum of <span class="math inline">\(X_a (\cdot)\)</span>, is as follows.</p>
+<p><span id="eq-consistent-pwr-spec-est"><span class="math display">\[
+\begin{align}
+  Var\{ \hat{f}_{a, a} (\lambda) \} &amp;\sim
+  \begin{cases}
+    4 \pi \omega^2 \; \frac{f_{a, a} (\lambda)^2}{\beta_T \; T} &amp; \text{for } \lambda \equiv 0 \bmod \pi \\
+    2 \pi \omega^2 \; \frac{f_{a, a} (\lambda)^2}{\beta_T \; T} &amp; \text{for } \lambda \not \equiv 0 \bmod \pi
+  \end{cases} \\ \\
+  &amp; \text{where } \\ \\
+  \omega^2 &amp;= \int_{- \infty}^\infty W(\alpha)^2 d \alpha
+\end{align}
+\tag{58}\]</span></span></p>
+<p>Taking the natural logarithm, and assuming <span class="math inline">\(f_{a, a} (\lambda) &gt; 0\)</span>, we have that <span class="math inline">\(\ln \hat{f}_{a, a} (\lambda)\)</span> is a consistent and asymptotically normal estimate of <span class="math inline">\(\ln f_{a, a} (\lambda)\)</span> with the following asymptotic variance.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a></p>
+<p><span id="eq-consistent-pwr-spec-est"><span class="math display">\[
+\begin{align}
+  Var\{ \ln \hat{f}_{a, a} (\lambda) \} &amp;\sim
+  \begin{cases}
+    \frac{4 \pi \omega^2}{\beta_T \; T} &amp; \text{for } \lambda \equiv 0 \bmod \pi \\
+    \frac{2 \pi \omega^2}{\beta_T \; T} &amp; \text{for } \lambda \not \equiv 0 \bmod \pi
+  \end{cases}
+\end{align}
+\tag{59}\]</span></span></p>
 </section>
 </section>
 <section id="sec-spec-examples" class="level2">
@@ -929,7 +950,7 @@ Figure&nbsp;3: Sunspot numbers: monthly average
 <h3 class="anchored" data-anchor-id="daily-city-temperatures-1995-2020">Daily City Temperatures: 1995-2020</h3>
 <section id="description-1" class="level4">
 <h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a> below shows the daily average temperature in Honolulu and New York City from 1995-01-01 to 2020-05-13.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a></p>
+<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a> below shows the daily average temperature in Honolulu and New York City from 1995-01-01 to 2020-05-13.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-hnl-nyc-temps" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1003,8 +1024,9 @@ Wiener, Norbert. 1930. <span>“Generalized Harmonic Analysis.”</span> <em>Act
 <li id="fn17"><p>See <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001</a>, Theorem 5.2.7)</span>.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn18"><p>See <span class="citation" data-cites="FFT_Wikipedia_2025"><span>“Fast Fourier Transform | Wikipedia”</span> (<a href="#ref-FFT_Wikipedia_2025" role="doc-biblioref">2025</a>)</span>.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn19"><p>That is, mean-square consistent: the expected squared estimation error tends to zero as <span class="math inline">\(T \rightarrow \infty\)</span>.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn20"><p>See <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001, sec. 5.6</a>)</span> for further details.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn21"><p>For convenience missing values have been imputed (estimated) with a weighted running average spanning 7 days. This was done with <code>R</code> function <code>imputeTS::na.ma()</code>. Of the 9265 days shown, there were 18 missing values for Honolulu and 20 missing values for NYC.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>Although this summation extends over an infinite number of discrete frequencies <span class="math inline">\(\lambda_j\)</span>, there are just <span class="math inline">\(S\)</span> frequencies modulo <span class="math inline">\(2 \pi\)</span>. Recall that the periodogram is <span class="math inline">\(2 \pi\)</span>-periodic. In addition, we may define the frequency window <span class="math inline">\(W(\cdot)\)</span> equal to zero outside some finite interval.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>See <span class="citation" data-cites="brillinger2001">Brillinger (<a href="#ref-brillinger2001" role="doc-biblioref">2001, sec. 5.6</a>)</span> for further details.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>For convenience missing values have been imputed (estimated) with a weighted running average spanning 7 days. This was done with <code>R</code> function <code>imputeTS::na.ma()</code>. Of the 9265 days shown, there were 18 missing values for Honolulu and 20 missing values for NYC.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
