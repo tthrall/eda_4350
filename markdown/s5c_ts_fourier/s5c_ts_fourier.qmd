@@ -884,7 +884,7 @@ g_spec_sim <- spec_long |>
 g_spec_sim
 ```
 
-## Finite Fourier transform
+## Finite Fourier transform {#sec-finite-FT}
 
 ### Definition
 
@@ -946,9 +946,11 @@ In time series applications, the data taper $h(x)$ is designed to produce a corr
 
 ### Asymptotic normality
 
-If $X_\bullet$ satisfies further regularity conditions[^book-x-assumptions] then $d_\bullet (\lambda)$ defined in @eq-tapered-FT-Cramér-rep has an asymptotic multivariate normal distribution.  This asymptotic distribution is a standard (real-valued) multivariate normal distribution if $\lambda \equiv 0 \bmod \pi$.  Otherwise, it is a complex multivariate normal distribution (which doubles the degrees of freedom).
+If $X_\bullet$ satisfies further regularity conditions[^book-x-assumptions] then $d_\bullet (\lambda)$ defined in @eq-tapered-FT-Cramér-rep has an asymptotic multivariate normal distribution.  This asymptotic distribution is a standard (real-valued) multivariate normal distribution if $\lambda \equiv 0 \bmod \pi$.  Otherwise, it is a complex multivariate normal distribution (which doubles the degrees of freedom).[^book-complex-normal]
 
 [^book-x-assumptions]: See @brillinger2001 [sec. 4.4].  Asymptotic normality of the discrete Fourier transform is ensured if $X_\bullet (\cdot)$ is strictly stationary and has summable cumulants of all orders.
+
+[^book-complex-normal]: See @brillinger2001 [sec. 4.2].  If $U_\bullet$ and $V_\bullet$ are random, real-valued vectors, each having $d$ elements, then $W = U + i V$ is said to have a complex normal distribution provided that the $2d$-vector $(U, V)$ has a multivariate normal distribution whose variance-covariance matrix is such that $\Sigma_{V, V} = \Sigma_{U, U}$ and $\Sigma_{V, U}$ is skew-symmetric, so that $\Sigma_{V, U} = -\Sigma_{U, V}$.
 
 For $\lambda \not \equiv 0 \bmod (2 \pi)$, the expected value of $d_\bullet (\lambda)$ is zero.  At $\lambda \equiv 0 \bmod (2 \pi)$, the expected value of $d_\bullet (\lambda)$ is proportionate to the mean of $X_\bullet (\cdot)$ (assumed in this section to be zero to simplify notation). The asymptotic variance of $d_\bullet (\lambda)$ is as follows.
 
@@ -964,7 +966,7 @@ Moreover if $0 \le \lambda_0 < \lambda_1 < \ldots < \lambda_K \le \pi$, then $\{
 
 [^book-DFT-indep]:  See @brillinger2001 [Theorem 4.4.2].
 
-## Spectrum Estimation
+## Spectrum Estimation {#sec-spec-est}
 
 In this section we continue to assume that $X_\bullet (\cdot)$ has mean zero in order to simplify notation and focus on key ideas.
 
@@ -1010,15 +1012,97 @@ A diagonal element of $I_{\bullet, \bullet} (\lambda)$, say $I_{a, a} (\lambda)$
 
 [^book-asymp-chi-sq]: See @brillinger2001 [Theorem 5.2.7].
 
-Thus $I_{\bullet, \bullet} (\lambda)$, although asymptotically unbiased, is not a consistent estimate of $f_{a, a} (\lambda)$ since its variance remains large as $n \rightarrow \infty$.
+$$
+\begin{align}
+  I_{a, a} (\lambda) &\sim 
+  \begin{cases}
+    f_{a, a} (\lambda) \times \chi_1^2 & \text{if } \lambda \equiv 0 \bmod \pi \\ 
+    f_{a, a} (\lambda) \times \chi_2^2 / 2 & \text{if } \lambda \not \equiv 0 \bmod \pi
+  \end{cases}
+\end{align}
+$$ {#eq-distn-pgram}
+
+$$
+\begin{align}
+  Var \{ I_{a, a} (\lambda) \} &\sim 
+  \begin{cases}
+    2 f_{a, a} (\lambda)^2 & \text{if } \lambda \equiv 0 \bmod \pi \\ 
+    f_{a, a} (\lambda)^2 & \text{if } \lambda \not \equiv 0 \bmod \pi
+  \end{cases}
+\end{align}
+$$ {#eq-var-pgram}
+
+Thus $I_{\bullet, \bullet} (\lambda)$, although asymptotically unbiased, is not a consistent estimate of $f_{\bullet, \bullet} (\lambda)$ since the variance of its diagonal elements remains bounded above zero as $n \rightarrow \infty$.
+
+### DFT: Discrete Fourier transform
+
+The discrete Fourier transform (DFT) is the restriction of the finite Fourier transform to a grid of frequencies spanning the interval $[0, 2 \pi)$, or some other half-open interval of length $2 \pi$.
+
+To simplify notation we consider a univariate process $X(\cdot)$.  We also index observed values as $\{ X(0), X(1), \ldots, X(T-1) \}$.  Now we define the DFT of this time series as follows.
+
+$$
+\begin{align}
+  d_X (\lambda_j) &= \sum_{t = 0}^{T - 1} h \left (\frac{2(t - t_m)}{T} \right ) \times X(t) \times e^{- i \lambda_j t} \\ \\ 
+  & \text{where } \\ \\ 
+  t_m &= \frac{T - 1}{2}
+\end{align}
+$$ {#eq-DFT-T}
+
+The fast Fourier transform (FFT[^art-FFT]) enables efficient computation of the DFT at a set of $S$ frequencies, where $S \ge T$ is chosen to be a highly composite number.
+
+[^art-FFT]: See @FFT_Wikipedia_2025.
+
+$$
+\begin{align}
+  \lambda_j &= \frac{2 \pi j}{S} \quad \text{for } j \in \{0, \ldots, S - 1 \}
+\end{align}
+$$ {#eq-FFT-freqs}
+
+The computational steps are: 
+
+  - apply taper $h(\cdot)$ to $\{ X(t) \}_{t = 0}^{T-1}$
+  - "pad" the tapered data by appending $S - T$ zeros
+  - submit the padded, tapered data to the FFT algorithm
+
+In `R` the DFT can be computed with the function `stats:fft()`.
 
 ### Smoothed periodogram
 
-## Examples
+We noted above that the periodogram $I_{\bullet, \bullet} (\lambda)$, although an asymptotically unbiased estimate of $f_{\bullet, \bullet} (\lambda)$, suffers from high variance (which is evident from plots of the periodogram).  Averaging periodogram values at adjacent frequencies yields a revised estimate, say $\hat{f}_{\bullet, \bullet} (\lambda)$, having lower variance, but if too many periodogram values are averaged $\hat{f}_{\bullet, \bullet} (\lambda)$ may be a biased estimate that blurs features of interest.
+
+Here is a framework for constructing a consistent[^consistent] sequence of estimates that converge to $f_{\bullet, \bullet} (\lambda)$ as $T \rightarrow \infty$.  Let $\beta_T > 0$ denote the bandwidth of adjacent frequencies to be averaged.  To drive the variance of successive estimates to zero as $T \rightarrow \infty$ we want the number of adjacent frequencies, proportionate to $\beta_T \; T$, to increase without bound.  To drive the bias to zero we want the neighborhood of averaged frequencies to shrink to $\lambda$, thus requiring $\beta_T \rightarrow 0$.  For example we might set $\beta_T = 1/\sqrt{T}$, or more generally $\beta_T = c \; T^{- \alpha}$ for some choice of $c > 0$ and $\alpha \in (0, 1)$.
+
+[^consistent]: That is, mean-square consistent: the expected squared estimation error tends to zero as $T \rightarrow \infty$.
+
+This framework also requires a frequency window function $W(\cdot)$ that integrates to unity and is even, absolutely integrable, and of bounded variation.
+
+$$
+\begin{align}
+  & W(-\alpha) = W(\alpha) \\ 
+  & \int_{-\infty}^\infty | W(\alpha) | \; d \alpha < \infty \\ 
+  & \int_{-\infty}^\infty W(\alpha) \; d \alpha = 1
+\end{align}
+$$ {#eq-freq-window}
+
+Now we define $\hat{f}_{\bullet, \bullet} (\lambda)$ as follows.
+
+$$
+\begin{align}
+  \hat{f}_{\bullet, \bullet} (\lambda) &= \sum_{\lambda_j \not \equiv 0 \bmod (2 \pi)} \frac{1}{\beta_T} \; W \left ( \frac{\lambda - \lambda_j}{\beta_T} \right ) \times I_{\bullet, \bullet} ( \lambda_j ) \\ \\ 
+  & \text{where } \\ \\ 
+  \lambda_j &= \frac{2 \pi j}{S} \quad \forall j \in \mathbb{Z}
+\end{align}
+$$ {#eq-consistent-spec-dens-est}
+
+Under the previously mentioned regularity conditions for $X_{\bullet, \bullet} (\cdot)$, $\hat{f}_{\bullet, \bullet} (\lambda)$ is a consistent estimator and is asymptotically normal.[^book-consistent-spec-dens-est]
+
+[^book-consistent-spec-dens-est]:  See @brillinger2001 [sec. 5.6] for further details.
+
+## Examples {#sec-spec-examples}
 
 ## Closing Remarks
 
-## A: Glossary of Math Symbols
+## A: Glossary of Notation {#sec-glossary}
 
 $$
 \begin{align}
@@ -1117,7 +1201,7 @@ $$
 \end{align}
 $$
 
-## B: Data Examples
+## B: Data Examples {#sec-data-examples}
 
 ### Sunspot Numbers: Monthly Averages, 1749 - Present
 
