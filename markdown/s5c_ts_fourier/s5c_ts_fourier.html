@@ -168,7 +168,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">14:04 Tue 15-Jul-2025</p>
+      <p class="date">18:20 Tue 15-Jul-2025</p>
     </div>
   </div>
   
@@ -192,20 +192,20 @@ window.Quarto = {
 <p>On the other hand, natural processes often exhibit periodic behavior, and have given rise to the Fourier decomposition of such time series, that is, the representation of the process as a sum of sine waves over a range of frequencies.</p>
 <section id="sunspots" class="level3">
 <h3 class="anchored" data-anchor-id="sunspots">Sunspots</h3>
-<p>An early example of such periodic behavior is shown in <a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;5</a>, the time series of monthly sunspot numbers. Sunspots have been observed for millennia, but systematic scientific observations began in the 1600’s.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>An early example of such periodic behavior is shown in <a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;7</a>, the time series of monthly sunspot numbers. Sunspots have been observed for millennia, but systematic scientific observations began in the 1600’s.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>Sunspots are a key indicator of the solar magnetic activity cycle in which the sun’s magnetic polarity reverses every 11 years or so. At the peak of a cycle the sun emits bursts of charged particles (solar flares) across the solar system that affect the Earth. Consequently, understanding the solar cycle has both scientific and practical value.</p>
 <p>Gaps between peak sunspot numbers vary, so a simple sinusoidal wave (or other function) having a fixed period does not fit the data well. On the other hand, the variability of the data is clarified by Fourier decomposition and subsequent grouping of fitted sine waves within successive bands of frequencies. This approach is discussed in <a href="#sec-math-fmwk" class="quarto-xref">Section&nbsp;2</a>.</p>
 </section>
 <section id="average-daily-temperatures" class="level3">
 <h3 class="anchored" data-anchor-id="average-daily-temperatures">Average daily temperatures</h3>
-<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;6</a> shows average daily temperatures for Honolulu and New York City over a 25-year period (1995-2020). The overall average temperature in NYC is about 56 (F), well below that of Honolulu (77). Also note that the standard deviation of NYC temperatures,17.1 (F), is well above that of Honolulu (3.4). So Honolulu temperatures are higher than those of NYC and fluctuate less (as visitors to those two cities may testify). Less clear, however, is the degree to which seasonal variation accounts for the overall variation in each city. This is a question that can be addressed by Fourier decomposition.</p>
+<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;8</a> shows average daily temperatures for Honolulu and New York City over a 25-year period (1995-2020). The overall average temperature in NYC is about 56 (F), well below that of Honolulu (77). Also note that the standard deviation of NYC temperatures,17.1 (F), is well above that of Honolulu (3.4). So Honolulu temperatures are higher than those of NYC and fluctuate less (as visitors to those two cities may testify). Less clear, however, is the degree to which seasonal variation accounts for the overall variation in each city. This is a question that can be addressed by Fourier decomposition.</p>
 </section>
 </section>
 <section id="sec-math-fmwk" class="level2">
 <h2 class="anchored" data-anchor-id="sec-math-fmwk">Mathematical Framework</h2>
 <section id="data-derived-from-a-random-process" class="level3">
 <h3 class="anchored" data-anchor-id="data-derived-from-a-random-process">Data derived from a random process</h3>
-<p>Statistical data usually take the form of one or more data frames in which each row represents an observation and each column represents a variable of interest. For example, here are the first few values of the temperature data shown in <a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;6</a>.</p>
+<p>Statistical data usually take the form of one or more data frames in which each row represents an observation and each column represents a variable of interest. For example, here are the first few values of the temperature data shown in <a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;8</a>.</p>
 <div id="tbl-HNL-NYC-wide" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-HNL-NYC-wide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -839,7 +839,7 @@ Figure&nbsp;3: Monthly sunspot numbers: estimated spectral density
 </div>
 </div>
 </div>
-<p><a href="#fig-sunspot-spec_log10" class="quarto-xref">Figure&nbsp;4</a> gives a closer view of the spectral density function at the lowest observable frequencies. The peak in the spectrum occurs at frequency 0.008 cycles per month corresponding to a wavelength of 10.8 years. As previously mentioned, the gaps between peak values of sunspot numbers varies somewhat, which is part of the reason for the breadth of this peak in the spectral density (the other part being the unavoidable periodogram-averaging required to lower the variance of the estimated spectral density function.)</p>
+<p><a href="#fig-sunspot-spec_log10" class="quarto-xref">Figure&nbsp;4</a> gives a closer view of the spectral density function at the lowest observable frequencies. The peak in the spectrum occurs at frequency 0.008 cycles per month corresponding to a wavelength of 10.8 years. As previously mentioned, the gaps between peak values of sunspot numbers vary somewhat, which is part of the reason for the breadth of this peak in the spectral density (the other part being the unavoidable periodogram-averaging required to lower the variance of the estimated spectral density function.)</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-sunspot-spec_log10" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -857,6 +857,37 @@ Figure&nbsp;4: Sunspot spectral density: zoom-in view
 </section>
 <section id="city-temperatures" class="level3">
 <h3 class="anchored" data-anchor-id="city-temperatures">City Temperatures</h3>
+<p><a href="#fig-hnl-nyc-spec" class="quarto-xref">Figure&nbsp;5</a> below shows (on a log-10 scale) estimated spectral densities of daily temperatures in Honolulu and New York City.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-hnl-nyc-spec" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-hnl-nyc-spec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5c_ts_fourier_files/figure-html/fig-hnl-nyc-spec-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hnl-nyc-spec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: City temperatures: estimated spectral densities
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-hnl-nyc-spec-zoom" class="quarto-xref">Figure&nbsp;6</a> gives a zoomed-in view of the lowest observable frequencies. For both cities the peak in the spectrum occurs at frequency 0.003 cycles per day corresponding to a wavelength of 360.6 days, a bit below the expected 365.25 days due to imperfect frequency resolution.</p>
+<p>Previously we noted that Honolulu temperatures fluctuate much less than New York City temperatures, and we raised the question of the degree to which the annual cycle contributes to overall variability in each city. The respective ratios of max-divided-by-min (or log-max minus log-min) of the spectral density estimates appear similar in the two cities, with New York exhibiting a somewhat greater range. This suggests that annual variability in Honolulu contributes nearly as much to the overall variance of temperatures as it does in New York City.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-hnl-nyc-spec-zoom" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-hnl-nyc-spec-zoom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5c_ts_fourier_files/figure-html/fig-hnl-nyc-spec-zoom-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hnl-nyc-spec-zoom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: City temperature spectra: zoom-in view
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="closing-remarks" class="level2">
@@ -967,7 +998,7 @@ Figure&nbsp;4: Sunspot spectral density: zoom-in view
 <h3 class="anchored" data-anchor-id="sunspot-numbers-monthly-averages-1749---present">Sunspot Numbers: Monthly Averages, 1749 - Present</h3>
 <section id="description" class="level4">
 <h4 class="anchored" data-anchor-id="description">Description</h4>
-<p><a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;5</a> below shows <code>sunspot.month</code>, monthly average sunspot numbers, in <code>R</code> package <code>datasets</code>. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium. The data shown here span the years 1749-2025, for a total of 3310 months (275 years and 10 months).</p>
+<p><a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;7</a> below shows <code>sunspot.month</code>, monthly average sunspot numbers, in <code>R</code> package <code>datasets</code>. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium. The data shown here span the years 1749-2025, for a total of 3310 months (275 years and 10 months).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-sunspots" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -976,7 +1007,7 @@ Figure&nbsp;4: Sunspot spectral density: zoom-in view
 <img src="s5c_ts_fourier_files/figure-html/fig-sunspots-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sunspots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Sunspot numbers: monthly average
+Figure&nbsp;7: Sunspot numbers: monthly average
 </figcaption>
 </figure>
 </div>
@@ -992,7 +1023,7 @@ Figure&nbsp;5: Sunspot numbers: monthly average
 <h3 class="anchored" data-anchor-id="daily-city-temperatures-1995-2020">Daily City Temperatures: 1995-2020</h3>
 <section id="description-1" class="level4">
 <h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;6</a> below shows the daily average temperature in Honolulu and New York City from 1995-01-01 to 2020-05-13.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
+<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;8</a> below shows the daily average temperature in Honolulu and New York City from 1995-01-01 to 2020-05-13.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-hnl-nyc-temps" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1001,7 +1032,7 @@ Figure&nbsp;5: Sunspot numbers: monthly average
 <img src="s5c_ts_fourier_files/figure-html/fig-hnl-nyc-temps-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hnl-nyc-temps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Daily Average Temperature (F), HNL and NYC, 1995-2020
+Figure&nbsp;8: Daily Average Temperature (F), HNL and NYC, 1995-2020
 </figcaption>
 </figure>
 </div>

@@ -89,6 +89,7 @@ HNL_NYC_t_imp <- readr::read_tsv(here::here(
 
 # pivot wider for display
 HNL_NYC_wide <- HNL_NYC_t_imp |> 
+  # temp: retain missing values
   dplyr::select(City, dt, temp) |> 
   tidyr::pivot_wider(
     id_cols = dt,
@@ -142,6 +143,31 @@ sd_NYC <- (HNL_NYC_smy$ t_sd) [[2]] |> round(digits = 1)
 
 HNL_NYC_title <- "HNL-NYC temperatures $(^{\\circ} F)$"
 
+```
+
+```{r}
+#| label: hnl-nyc-ts
+
+# prepare multivariate time series for spec.pgram()
+
+# pivot wider
+hnl_nyc_wide <- HNL_NYC_t_imp |> 
+  # t_imp: imputed missing values
+  dplyr::select(City, dt, t_imp) |> 
+  tidyr::pivot_wider(
+    id_cols = dt,
+    names_from  = City, 
+    values_from = t_imp
+  ) |> 
+  dplyr::rename(
+    date = dt, 
+    HNL  = Honolulu, 
+    NYC  = `New York City`
+  )
+
+hnl_nyc_ts <- hnl_nyc_wide |> 
+  tsibble::as_tsibble(
+    index = date)
 ```
 
 ## Introduction {#sec-intro}
@@ -1146,7 +1172,7 @@ g_sunspot_spec <- sunspot_spec_tbl |>
 g_sunspot_spec
 ```
 
-@fig-sunspot-spec_log10 gives a closer view of the spectral density function at the lowest observable frequencies.  The peak in the spectrum occurs at frequency `r round(peak_freq, 3)` cycles per month corresponding to a wavelength of `r round(peak_wave_yr, 1)` years.  As previously mentioned, the gaps between peak values of sunspot numbers varies somewhat, which is part of the reason for the breadth of this peak in the spectral density (the other part being the unavoidable periodogram-averaging required to lower the variance of the estimated spectral density function.)
+@fig-sunspot-spec_log10 gives a closer view of the spectral density function at the lowest observable frequencies.  The peak in the spectrum occurs at frequency `r round(peak_freq, 3)` cycles per month corresponding to a wavelength of `r round(peak_wave_yr, 1)` years.  As previously mentioned, the gaps between peak values of sunspot numbers vary somewhat, which is part of the reason for the breadth of this peak in the spectral density (the other part being the unavoidable periodogram-averaging required to lower the variance of the estimated spectral density function.)
 
 ```{r}
 #| label: fig-sunspot-spec_log10
@@ -1168,7 +1194,124 @@ g_sunspot_spec
 
 ### City Temperatures
 
+```{r}
+#| label: hnl-nyc-spec-params
+
+taper_hnl_nyc <- 1/4
+spans_hnl_nyc <- c(9, 9)
+```
+
+```{r}
+#| label: hnl-nyc-spec-lst
+
+# get spec stats
+h_spec_lst <- hnl_nyc_ts |> 
+  dplyr::select(- NYC) |> 
+  fmt_spec_pgram(
+    taper = taper_hnl_nyc, spans = spans_hnl_nyc)
+h_spec_stats <- h_spec_lst$ spec_scalars
+
+# bivariate analysis using stats::spec.pgram()
+hnl_nyc_spec_lst <- hnl_nyc_ts |> 
+  stats::spec.pgram(
+    taper   = taper_hnl_nyc,
+    spans   = spans_hnl_nyc,
+    demean  = TRUE,
+    detrend = FALSE,
+    plot    = FALSE
+  )
+
+# frequency domain tibble
+hnl_nyc_freq_tbl <- tibble::tibble(
+  # change cycles per week to cycles per day
+  freq  = hnl_nyc_spec_lst$ freq / 7, 
+  HNL   = (hnl_nyc_spec_lst$ spec)  [, 1], 
+  NYC   = (hnl_nyc_spec_lst$ spec)  [, 2], 
+  coh   = (hnl_nyc_spec_lst$ coh)   [, 1], 
+  phase = (hnl_nyc_spec_lst$ phase) [, 1]
+)
+```
+
+```{r}
+#| label: hnl-nyc-peak-freq
+
+# frequency of peak in HNL spectrum
+hnl_peak_slice <- 
+  hnl_nyc_freq_tbl |> 
+  dplyr::slice_max(HNL, n = 1)
+h_peak_freq      <- hnl_peak_slice$ freq
+h_peak_wave_days <- 1 / h_peak_freq
+
+# frequency of peak in NYC spectrum
+nyc_peak_slice <- 
+  hnl_nyc_freq_tbl |> 
+  dplyr::slice_max(NYC, n = 1)
+n_peak_freq      <- nyc_peak_slice$ freq
+n_peak_wave_days <- 1 / n_peak_freq
+```
+
+```{r}
+#| label: hnl-nyc-spec-long
+
+# pivot longer for plotting
+hnl_nyc_spec_long <- hnl_nyc_freq_tbl |> 
+  dplyr::select(freq, HNL, NYC) |> 
+  tidyr::pivot_longer(
+    cols = HNL:NYC, 
+    names_to = "city", 
+    values_to = "spec")
+```
+
+@fig-hnl-nyc-spec below shows (on a log-10 scale) estimated spectral densities of daily temperatures in Honolulu and New York City.
+
+```{r}
+#| label: fig-hnl-nyc-spec
+#| fig-cap: "City temperatures: estimated spectral densities"
+
+g_hnl_nyc_spec <- hnl_nyc_spec_long |> 
+  ggplot2::ggplot(mapping = aes(
+    x = freq, y = log10(spec), color = city, fill = city
+  )) + 
+  ggplot2::geom_line(show.legend = FALSE) + 
+  ggplot2::facet_grid(
+    rows = vars(city), 
+    scales = "free_y") + 
+  ggplot2::labs(
+    title = "HNL, NYC spectral densities", 
+    subtitle = "log_10 scale") + 
+  ggplot2::xlab("freq = cycles per day") + 
+  ggplot2::ylab("log_10( spectral density )")
+g_hnl_nyc_spec
+```
+
+@fig-hnl-nyc-spec-zoom gives a zoomed-in view of the lowest observable frequencies.  For both cities the peak in the spectrum occurs at frequency `r round(h_peak_freq, 3)` cycles per day corresponding to a wavelength of `r round(h_peak_wave_days, 1)` days, a bit below the expected 365.25 days due to imperfect frequency resolution.
+
+Previously we noted that Honolulu temperatures fluctuate much less than New York City temperatures, and we raised the question of the degree to which the annual cycle contributes to overall variability in each city.  The respective ratios of max-divided-by-min (or log-max minus log-min) of the spectral density estimates appear similar in the two cities, with New York exhibiting a somewhat greater range.  This suggests that annual variability in Honolulu contributes nearly as much to the overall variance of temperatures as it does in New York City.
+
+```{r}
+#| label: fig-hnl-nyc-spec-zoom
+#| fig-cap: "City temperature spectra: zoom-in view"
+
+g_hnl_nyc_spec_zoom <- hnl_nyc_spec_long |> 
+  dplyr::filter(freq < 0.05) |> 
+  ggplot2::ggplot(mapping = aes(
+    x = freq, y = log10(spec), color = city, fill = city
+  )) + 
+  ggplot2::geom_line(show.legend = FALSE) + 
+  ggplot2::facet_grid(
+    rows = vars(city), 
+    scales = "free_y") + 
+  ggplot2::labs(
+    title = "HNL, NYC spectral densities", 
+    subtitle = "zoom-in view") + 
+  ggplot2::xlab("freq = cycles per day") + 
+  ggplot2::ylab("log_10( spectral density )")
+g_hnl_nyc_spec_zoom
+```
+
 ## Closing Remarks
+
+This note is intended to illustrate some uses of spectrum analysis, and to introduce the corresponding mathematical framework and methods of estimation.
 
 ## A: Glossary of Notation {#sec-glossary}
 

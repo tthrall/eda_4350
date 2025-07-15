@@ -31,6 +31,8 @@ spec_arma_spec <- function(
 #
 #    1.  (freq, spec)
 #    2.  stats arranged in a single row
+#
+#    TODO: treat multivariate time series
 ##
 fmt_spec_pgram <- function(
     x,     # <ts> univariate or multivariate time series
