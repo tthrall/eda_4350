@@ -144,7 +144,7 @@ HNL_NYC_title <- "HNL-NYC temperatures $(^{\\circ} F)$"
 
 ```
 
-## Introduction
+## Introduction {#sec-intro}
 
 The analysis of time series has proved to have both pragmatic and scientific value.  For time series that track business activity or broader economic activity, the ability to forecast future values with some degree of reliability has evident practical value.  The potential of such forecasting has influenced the development of time domain models, notably auto-regressive moving average (ARMA) models.
 
@@ -1039,45 +1039,134 @@ $$ {#eq-v-ln-pwr-spec-est}
 
 ## Examples of Spectrum Analysis {#sec-spec-examples}
 
+In @sec-intro we introduced a few sets of time series data and considered questions that we now attempt to address.
+
+The `R` function `stats::spec.pgram()` is used to estimate spectra in this section.  A raised cosine bell-shaped function is used to taper a user-specified portion of the head and tail of data.  The tapered data are padded with zeros for efficient use of the FFT algorithm.  The periodogram is calculated and then a modified Daniell frequency kernel averages across adjacent frequencies within a user-specified bandwidth.  The function documentation gives further details.
+
+### Sunspots
+
+```{r}
+#| label: sunspot-bw-probe
+#| eval: false
+
+# try different bandwidths via spans argument
+
+# lubridate::now()
+# [1] "2025-07-15 12:09:50 BST"
+
+# s_15_lst <- datasets::sunspot.month |> 
+#   fmt_spec_pgram(
+#     taper = 1/4, spans = c(15, 15))
+
+# s_31_lst <- datasets::sunspot.month |> 
+#   fmt_spec_pgram(
+#     taper = 1/4, spans = c(31, 31))
+
+# spans_stats <- dplyr::bind_rows(
+#   s_15_lst$ spec_scalars,
+#   s_31_lst$ spec_scalars) |>
+#   dplyr::mutate(tag = c("s_15", "s_31")) |>
+#   dplyr::select(tag, everything())
+
+# freq in cycles per year
+# spans_stats |> dplyr::select(tag, f_len:f_max)
+# # A tibble: 2 × 4
+#   tag   f_len   f_min f_max
+#   <chr> <int>   <dbl> <dbl>
+# 1 s_15   1687 0.00356  6.00
+# 2 s_31   1687 0.00356  6.00
+
+# kernel (freq window): see stats::kernel
+# spans_stats |> dplyr::select(tag, k_m:k_max)
+# # A tibble: 2 × 5
+#   tag     k_m k_len    k_min  k_max
+#   <chr> <int> <int>    <dbl>  <dbl>
+# 1 s_15     14    15 0.00128  0.0689
+# 2 s_31     30    31 0.000278 0.0328
+
+# bandwidth in cycles per month (max freq = 0.5)
+# spans_stats |> dplyr::select(tag, df, bw)
+# # A tibble: 2 × 3
+#   tag      df     bw
+#   <chr> <dbl>  <dbl>
+# 1 s_15   30.7 0.0205
+# 2 s_31   65.6 0.0436
+
+# padding (via fast = TRUE)
+# spans_stats |> dplyr::select(tag, n_in:n_pad)
+# # A tibble: 2 × 4
+#   tag    n_in n_out n_pad
+#   <chr> <int> <int> <int>
+# 1 s_15   3310  3375    65
+# 2 s_31   3310  3375    65
+
+```
+
 ```{r}
 #| label: sunspot-spec-list
 
-sunspot_spec_lst <- datasets::sunspot.month |> 
-  stats::spec.pgram(
-      detrend = FALSE,
-      plot    = FALSE,
-      taper   = 1/4,
-      spans   = c(31, 31))
+sunspot_spec_lst <- 
+  datasets::sunspot.month |> 
+  fmt_spec_pgram(
+    taper = 1/4, spans = c(9, 9))
 
-# lubridate::now()
-# [1] "2025-07-15 07:03:54 BST"
+sunspot_spec_tbl <- 
+  sunspot_spec_lst$ freq_spec_tbl |> 
+  # change cycles per year to cycles per month
+  dplyr::mutate(freq = freq/12)
 
-# record list elements
+sunspot_spec_stats <- 
+  sunspot_spec_lst$ spec_scalars
 
-# freq in cycles per year
-# sunspot_spec_lst$ freq |> summary()
-#     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-# 0.003556 1.502222 3.000889 3.000889 4.499556 5.998222
-
-# kernel (freq window): see stats::kernel
-# sunspot_spec_lst$ kernel$ coef |> summary()
-#      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-# 0.0002778 0.0083333 0.0166667 0.0166577 0.0250000 0.0327778
-
-# degrees of freedom (at each freq)
-# sunspot_spec_lst$ df
-# [1] 65.59462
-
-# bandwidth in cycles per month (max freq = 0.5)
-# sunspot_spec_lst$ bandwidth
-# [1] 0.04360692
-
-# padding (via fast = TRUE)
-# sunspot_spec_lst$ n.used
-# [1] 3375 # 15^3
-# > sunspot_spec_lst$ orig.n
-# [1] 3310
+# frequency of peak in spectrum
+sun_spec_peak_slice <- 
+  sunspot_spec_tbl |> 
+  dplyr::slice_max(spec, n = 1)
+peak_freq    <- sun_spec_peak_slice$ freq
+peak_wave_mo <- 1 / peak_freq
+peak_wave_yr <- peak_wave_mo / 12
 ```
+
+@fig-sunspot-spec below shows the estimated spectral density function of monthly sunspot numbers.  The first and final quarter of the data were tapered to better resolve the spectrum at adjacent frequencies.  For the same reason the density estimate is a running weighed average of only `r 1 + 2*sunspot_spec_stats$k_m` adjacent periodogram values, amounting to a fairly narrow bandwidth (`r round(sunspot_spec_stats$bw, 2)`).
+
+```{r}
+#| label: fig-sunspot-spec
+#| fig-cap: "Monthly sunspot numbers: estimated spectral density"
+
+g_sunspot_spec <- sunspot_spec_tbl |> 
+  ggplot2::ggplot(mapping = aes(
+    x = freq, y = spec
+  )) + 
+  ggplot2::geom_line() + 
+  ggplot2::labs(
+    title = "Monthly sunspot numbers", 
+    subtitle = "Estimated spectral density function") + 
+  ggplot2::xlab("freq = cycles per month") + 
+  ggplot2::ylab("spectral density")
+g_sunspot_spec
+```
+
+@fig-sunspot-spec_log10 gives a closer view of the spectral density function at the lowest observable frequencies.  The peak in the spectrum occurs at frequency `r round(peak_freq, 3)` cycles per month corresponding to a wavelength of `r round(peak_wave_yr, 1)` years.  As previously mentioned, the gaps between peak values of sunspot numbers varies somewhat, which is part of the reason for the breadth of this peak in the spectral density (the other part being the unavoidable periodogram-averaging required to lower the variance of the estimated spectral density function.)
+
+```{r}
+#| label: fig-sunspot-spec_log10
+#| fig-cap: "Sunspot spectral density: zoom-in view"
+
+g_sunspot_spec <- sunspot_spec_tbl |> 
+  dplyr::filter(freq < 0.05) |> 
+  ggplot2::ggplot(mapping = aes(
+    x = freq, y = log10(spec)
+  )) + 
+  ggplot2::geom_line() + 
+  ggplot2::labs(
+    title = "Sunspot spectral density function", 
+    subtitle = "zoom-in view") + 
+  ggplot2::xlab("freq = cycles per month") + 
+  ggplot2::ylab("log_10( spectral density )")
+g_sunspot_spec
+```
+
+### City Temperatures
 
 ## Closing Remarks
 
@@ -1186,7 +1275,7 @@ $$
 
 #### Description
 
-@fig-sunspots below shows `sunspot.month`, monthly average sunspot numbers, in `R` package `datasets`. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.
+@fig-sunspots below shows `sunspot.month`, monthly average sunspot numbers, in `R` package `datasets`. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.  The data shown here span the years 1749-2025, for a total of 3310 months (275 years and 10 months).
 
 ```{r}
 #| label: fig-sunspots

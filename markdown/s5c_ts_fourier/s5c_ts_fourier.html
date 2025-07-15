@@ -95,7 +95,7 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <li><a href="#sec-intro" id="toc-sec-intro" class="nav-link active" data-scroll-target="#sec-intro">Introduction</a>
   <ul class="collapse">
   <li><a href="#sunspots" id="toc-sunspots" class="nav-link" data-scroll-target="#sunspots">Sunspots</a></li>
   <li><a href="#average-daily-temperatures" id="toc-average-daily-temperatures" class="nav-link" data-scroll-target="#average-daily-temperatures">Average daily temperatures</a></li>
@@ -130,7 +130,11 @@ window.Quarto = {
   <li><a href="#dft-discrete-fourier-transform" id="toc-dft-discrete-fourier-transform" class="nav-link" data-scroll-target="#dft-discrete-fourier-transform">DFT: Discrete Fourier transform</a></li>
   <li><a href="#smoothed-periodogram" id="toc-smoothed-periodogram" class="nav-link" data-scroll-target="#smoothed-periodogram">Smoothed periodogram</a></li>
   </ul></li>
-  <li><a href="#sec-spec-examples" id="toc-sec-spec-examples" class="nav-link" data-scroll-target="#sec-spec-examples">Examples of Spectrum Analysis</a></li>
+  <li><a href="#sec-spec-examples" id="toc-sec-spec-examples" class="nav-link" data-scroll-target="#sec-spec-examples">Examples of Spectrum Analysis</a>
+  <ul class="collapse">
+  <li><a href="#sunspots-1" id="toc-sunspots-1" class="nav-link" data-scroll-target="#sunspots-1">Sunspots</a></li>
+  <li><a href="#city-temperatures" id="toc-city-temperatures" class="nav-link" data-scroll-target="#city-temperatures">City Temperatures</a></li>
+  </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#sec-glossary" id="toc-sec-glossary" class="nav-link" data-scroll-target="#sec-glossary">A: Glossary of Notation</a></li>
   <li><a href="#sec-data-examples" id="toc-sec-data-examples" class="nav-link" data-scroll-target="#sec-data-examples">B: Data Examples</a>
@@ -164,7 +168,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">10:06 Tue 15-Jul-2025</p>
+      <p class="date">14:04 Tue 15-Jul-2025</p>
     </div>
   </div>
   
@@ -182,26 +186,26 @@ window.Quarto = {
 </header>
 
 
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="sec-intro" class="level2">
+<h2 class="anchored" data-anchor-id="sec-intro">Introduction</h2>
 <p>The analysis of time series has proved to have both pragmatic and scientific value. For time series that track business activity or broader economic activity, the ability to forecast future values with some degree of reliability has evident practical value. The potential of such forecasting has influenced the development of time domain models, notably auto-regressive moving average (ARMA) models.</p>
 <p>On the other hand, natural processes often exhibit periodic behavior, and have given rise to the Fourier decomposition of such time series, that is, the representation of the process as a sum of sine waves over a range of frequencies.</p>
 <section id="sunspots" class="level3">
 <h3 class="anchored" data-anchor-id="sunspots">Sunspots</h3>
-<p>An early example of such periodic behavior is shown in <a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;3</a>, the time series of monthly sunspot numbers. Sunspots have been observed for millennia, but systematic scientific observations began in the 1600’s.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>An early example of such periodic behavior is shown in <a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;5</a>, the time series of monthly sunspot numbers. Sunspots have been observed for millennia, but systematic scientific observations began in the 1600’s.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>Sunspots are a key indicator of the solar magnetic activity cycle in which the sun’s magnetic polarity reverses every 11 years or so. At the peak of a cycle the sun emits bursts of charged particles (solar flares) across the solar system that affect the Earth. Consequently, understanding the solar cycle has both scientific and practical value.</p>
 <p>Gaps between peak sunspot numbers vary, so a simple sinusoidal wave (or other function) having a fixed period does not fit the data well. On the other hand, the variability of the data is clarified by Fourier decomposition and subsequent grouping of fitted sine waves within successive bands of frequencies. This approach is discussed in <a href="#sec-math-fmwk" class="quarto-xref">Section&nbsp;2</a>.</p>
 </section>
 <section id="average-daily-temperatures" class="level3">
 <h3 class="anchored" data-anchor-id="average-daily-temperatures">Average daily temperatures</h3>
-<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a> shows average daily temperatures for Honolulu and New York City over a 25-year period (1995-2020). The overall average temperature in NYC is about 56 (F), well below that of Honolulu (77). Also note that the standard deviation of NYC temperatures,17.1 (F), is well above that of Honolulu (3.4). So Honolulu temperatures are higher than those of NYC and fluctuate less (as visitors to those two cities may testify). Less clear, however, is the degree to which seasonal variation accounts for the overall variation in each city. This is a question that can be addressed by Fourier decomposition.</p>
+<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;6</a> shows average daily temperatures for Honolulu and New York City over a 25-year period (1995-2020). The overall average temperature in NYC is about 56 (F), well below that of Honolulu (77). Also note that the standard deviation of NYC temperatures,17.1 (F), is well above that of Honolulu (3.4). So Honolulu temperatures are higher than those of NYC and fluctuate less (as visitors to those two cities may testify). Less clear, however, is the degree to which seasonal variation accounts for the overall variation in each city. This is a question that can be addressed by Fourier decomposition.</p>
 </section>
 </section>
 <section id="sec-math-fmwk" class="level2">
 <h2 class="anchored" data-anchor-id="sec-math-fmwk">Mathematical Framework</h2>
 <section id="data-derived-from-a-random-process" class="level3">
 <h3 class="anchored" data-anchor-id="data-derived-from-a-random-process">Data derived from a random process</h3>
-<p>Statistical data usually take the form of one or more data frames in which each row represents an observation and each column represents a variable of interest. For example, here are the first few values of the temperature data shown in <a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a>.</p>
+<p>Statistical data usually take the form of one or more data frames in which each row represents an observation and each column represents a variable of interest. For example, here are the first few values of the temperature data shown in <a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;6</a>.</p>
 <div id="tbl-HNL-NYC-wide" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-HNL-NYC-wide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -816,6 +820,44 @@ Figure&nbsp;2: Spectral density function of each ARMA model
 </section>
 <section id="sec-spec-examples" class="level2">
 <h2 class="anchored" data-anchor-id="sec-spec-examples">Examples of Spectrum Analysis</h2>
+<p>In <a href="#sec-intro" class="quarto-xref">Section&nbsp;1</a> we introduced a few sets of time series data and considered questions that we now attempt to address.</p>
+<p>The <code>R</code> function <code>stats::spec.pgram()</code> is used to estimate spectra in this section. A raised cosine bell-shaped function is used to taper a user-specified portion of the head and tail of data. The tapered data are padded with zeros for efficient use of the FFT algorithm. The periodogram is calculated and then a modified Daniell frequency kernel averages across adjacent frequencies within a user-specified bandwidth. The function documentation gives further details.</p>
+<section id="sunspots-1" class="level3">
+<h3 class="anchored" data-anchor-id="sunspots-1">Sunspots</h3>
+<p><a href="#fig-sunspot-spec" class="quarto-xref">Figure&nbsp;3</a> below shows the estimated spectral density function of monthly sunspot numbers. The first and final quarter of the data were tapered to better resolve the spectrum at adjacent frequencies. For the same reason the density estimate is a running weighed average of only 17 adjacent periodogram values, amounting to a fairly narrow bandwidth (0.01).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-sunspot-spec" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sunspot-spec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5c_ts_fourier_files/figure-html/fig-sunspot-spec-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sunspot-spec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Monthly sunspot numbers: estimated spectral density
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-sunspot-spec_log10" class="quarto-xref">Figure&nbsp;4</a> gives a closer view of the spectral density function at the lowest observable frequencies. The peak in the spectrum occurs at frequency 0.008 cycles per month corresponding to a wavelength of 10.8 years. As previously mentioned, the gaps between peak values of sunspot numbers varies somewhat, which is part of the reason for the breadth of this peak in the spectral density (the other part being the unavoidable periodogram-averaging required to lower the variance of the estimated spectral density function.)</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-sunspot-spec_log10" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sunspot-spec_log10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="s5c_ts_fourier_files/figure-html/fig-sunspot-spec_log10-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sunspot-spec_log10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Sunspot spectral density: zoom-in view
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="city-temperatures" class="level3">
+<h3 class="anchored" data-anchor-id="city-temperatures">City Temperatures</h3>
+</section>
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
@@ -925,7 +967,7 @@ Figure&nbsp;2: Spectral density function of each ARMA model
 <h3 class="anchored" data-anchor-id="sunspot-numbers-monthly-averages-1749---present">Sunspot Numbers: Monthly Averages, 1749 - Present</h3>
 <section id="description" class="level4">
 <h4 class="anchored" data-anchor-id="description">Description</h4>
-<p><a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;3</a> below shows <code>sunspot.month</code>, monthly average sunspot numbers, in <code>R</code> package <code>datasets</code>. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium.</p>
+<p><a href="#fig-sunspots" class="quarto-xref">Figure&nbsp;5</a> below shows <code>sunspot.month</code>, monthly average sunspot numbers, in <code>R</code> package <code>datasets</code>. Source: Solar Influences Data Analysis Center (SIDC), Royal Observatory of Belgium. The data shown here span the years 1749-2025, for a total of 3310 months (275 years and 10 months).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-sunspots" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -934,7 +976,7 @@ Figure&nbsp;2: Spectral density function of each ARMA model
 <img src="s5c_ts_fourier_files/figure-html/fig-sunspots-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sunspots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Sunspot numbers: monthly average
+Figure&nbsp;5: Sunspot numbers: monthly average
 </figcaption>
 </figure>
 </div>
@@ -950,7 +992,7 @@ Figure&nbsp;3: Sunspot numbers: monthly average
 <h3 class="anchored" data-anchor-id="daily-city-temperatures-1995-2020">Daily City Temperatures: 1995-2020</h3>
 <section id="description-1" class="level4">
 <h4 class="anchored" data-anchor-id="description-1">Description</h4>
-<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;4</a> below shows the daily average temperature in Honolulu and New York City from 1995-01-01 to 2020-05-13.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
+<p><a href="#fig-hnl-nyc-temps" class="quarto-xref">Figure&nbsp;6</a> below shows the daily average temperature in Honolulu and New York City from 1995-01-01 to 2020-05-13.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-hnl-nyc-temps" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -959,7 +1001,7 @@ Figure&nbsp;3: Sunspot numbers: monthly average
 <img src="s5c_ts_fourier_files/figure-html/fig-hnl-nyc-temps-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hnl-nyc-temps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Daily Average Temperature (F), HNL and NYC, 1995-2020
+Figure&nbsp;6: Daily Average Temperature (F), HNL and NYC, 1995-2020
 </figcaption>
 </figure>
 </div>
