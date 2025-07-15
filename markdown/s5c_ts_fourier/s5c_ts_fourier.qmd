@@ -61,6 +61,10 @@ library(zip)
 # city_temperatures (now moved to separate project)
 # summaries and examples of daily temps from 300+ cities
 # source(here("code", "city_temperatures.R"))
+
+# spectrum_helpers
+# explore and streamline use of spectrum estimation functions
+source(here("code", "spectrum_helpers.R"))
 ```
 
 ```{r}
@@ -704,7 +708,6 @@ sim_long <- sim_tbl |>
 
 @fig-ARMA-sim-ts shows the respective time series simulated from these simple ARMA models, with the following parameter settings: $\phi_1 =$ `r phi_sim`; $\theta_1 =$ `r theta_sim`; $\sigma_W =$ `r wn_sd`.
 
-
 ```{r}
 #| label: fig-ARMA-sim-ts
 #| fig-cap: "Simulation from simple ARMA models"
@@ -739,20 +742,6 @@ wn_spec_lst <- astsa::arma.spec(
     n.freq    = n_sim/2L, 
     plot      = FALSE)
 freq_model <- wn_spec_lst$ freq
-
-# extract spectral density from listed results
-spec_arma_spec <- function(
-    ar = 0, # AR coefficients of z^j, j > 0  
-    ma = 0  # MA coefficients of z^k, k > 0  
-) {
-  spec_lst <- astsa::arma.spec(
-    ar        = ar, 
-    ma        = ma, 
-    var.noise = wn_sd^2, 
-    n.freq    = n_sim/2L, 
-    plot      = FALSE)
-  return(spec_lst$ spec)
-}
 
 arma_spec_tbl <- tibble::tibble(
   freq = freq_model, 
@@ -1032,7 +1021,7 @@ $$
   & \text{where } \\ \\ 
   \omega^2 &= \int_{- \infty}^\infty W(\alpha)^2 d \alpha
 \end{align}
-$$ {#eq-consistent-pwr-spec-est}
+$$ {#eq-v-consistent-pwr-spec-est}
 
 Taking the natural logarithm, and assuming $f_{a, a} (\lambda) > 0$, we have that $\ln \hat{f}_{a, a} (\lambda)$ is a consistent and asymptotically normal estimate of $\ln f_{a, a} (\lambda)$ with the following asymptotic variance.[^book-consistent-spec-dens-est]
 
@@ -1046,9 +1035,49 @@ $$
     \frac{2 \pi \omega^2}{\beta_T \; T} & \text{for } \lambda \not \equiv 0 \bmod \pi 
   \end{cases}
 \end{align}
-$$ {#eq-consistent-pwr-spec-est}
+$$ {#eq-v-ln-pwr-spec-est}
 
-## Examples {#sec-spec-examples}
+## Examples of Spectrum Analysis {#sec-spec-examples}
+
+```{r}
+#| label: sunspot-spec-list
+
+sunspot_spec_lst <- datasets::sunspot.month |> 
+  stats::spec.pgram(
+      detrend = FALSE,
+      plot    = FALSE,
+      taper   = 1/4,
+      spans   = c(31, 31))
+
+# lubridate::now()
+# [1] "2025-07-15 07:03:54 BST"
+
+# record list elements
+
+# freq in cycles per year
+# sunspot_spec_lst$ freq |> summary()
+#     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+# 0.003556 1.502222 3.000889 3.000889 4.499556 5.998222
+
+# kernel (freq window): see stats::kernel
+# sunspot_spec_lst$ kernel$ coef |> summary()
+#      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+# 0.0002778 0.0083333 0.0166667 0.0166577 0.0250000 0.0327778
+
+# degrees of freedom (at each freq)
+# sunspot_spec_lst$ df
+# [1] 65.59462
+
+# bandwidth in cycles per month (max freq = 0.5)
+# sunspot_spec_lst$ bandwidth
+# [1] 0.04360692
+
+# padding (via fast = TRUE)
+# sunspot_spec_lst$ n.used
+# [1] 3375 # 15^3
+# > sunspot_spec_lst$ orig.n
+# [1] 3310
+```
 
 ## Closing Remarks
 
