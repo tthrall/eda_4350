@@ -25,22 +25,31 @@ spec_arma_spec <- function(
 }
 
 ##
-#  get_spec_pgram_scalars()
+#  fmt_spec_pgram()
 #
-#    return tibble of scalars from stats::spec.pgram
+#    construct two tibbles from stats::spec.pgram() output
+#
+#    1.  (freq, spec)
+#    2.  stats arranged in a single row
 ##
-get_spec_pgram_scalars <- function(
+fmt_spec_pgram <- function(
     x,     # <ts> univariate or multivariate time series
     taper, # <dbl> proportion of data to taper
     spans  # <dbl> widths of modified Daniell kernel
 ) {
   spec_lst <- stats::spec.pgram(
-    x      = x,
-    taper = taper,
-    spans = spans,
+    x       = x,
+    taper   = taper,
+    spans   = spans,
+    demean  = TRUE,
     detrend = FALSE,
     plot    = FALSE
   )
+
+  freq_spec_tbl <- tibble::tibble(
+    freq = spec_lst$ freq,
+    spec = spec_lst$ spec)
+
   spec_scalars <- tibble::tibble(
     f_len = spec_lst$ freq |> length(),
     f_min = spec_lst$ freq |> min(),
@@ -59,9 +68,11 @@ get_spec_pgram_scalars <- function(
     n_out = spec_lst$ n.used,
     n_pad = n_out - n_in,
 
-    taper = spec_lst$ taper
-  )
-  return(spec_scalars)
+    taper = spec_lst$ taper)
+
+  return(list(
+    freq_spec_tbl = freq_spec_tbl,
+    spec_scalars  = spec_scalars))
 }
 
 
