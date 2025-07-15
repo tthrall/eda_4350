@@ -1,0 +1,75 @@
+
+
+```{r}
+#| label: ARMA-sim-spec-est
+
+spec_W_lst <- sim_tbl$ W |>
+  stats::spec.pgram(detrend = FALSE, plot = FALSE, taper = 1/4)
+freq_sim   <- spec_W_lst$ freq
+spec_W     <- spec_W_lst$ spec
+
+# extract estimated spectral density from listed results
+spec_pgram_spec <- function(
+  x # univariate time series
+  ) {
+  spec_lst <- x |>
+    stats::spec.pgram(
+      detrend = FALSE,
+      plot    = FALSE,
+      taper   = 1/4,
+      spans   = c(31, 31))
+  return(spec_lst$ spec)
+}
+
+spec_sim <- tibble::tibble(
+  freq = freq_sim,
+
+  W = sim_tbl$ W |> spec_pgram_spec(),
+  X = sim_tbl$ X |> spec_pgram_spec(),
+  Y = sim_tbl$ Y |> spec_pgram_spec(),
+  Z = sim_tbl$ Z |> spec_pgram_spec()
+)
+
+```
+
+```{r}
+#| label: spec-sim-long
+
+spec_long <- spec_sim |>
+  tidyr::pivot_longer(
+    cols = W:Z,
+    names_to = "var",
+    values_to = "spec"
+  ) |>
+  dplyr::mutate(
+    tag = case_when(
+      var == "W" ~ "wn",
+      var == "X" ~ "AR_1",
+      var == "Y" ~ "MA_1",
+      var == "Z" ~ "ARMA_1_1")
+  ) |>
+  dplyr::select(freq, var, tag, spec)
+
+```
+
+```{r}
+#| label: fig-ARMA-sim-spec-est
+#| fig-cap: "Estimated spectral density function of each ARMA simulation"
+#| eval: false
+
+g_spec_sim <- spec_long |>
+  dplyr::group_by(var) |>
+  ggplot2::ggplot(mapping = aes(
+    x = freq, y = spec, color = var, fill = var
+  )) +
+  ggplot2::geom_line(show.legend = FALSE) +
+  ggplot2::facet_grid(
+    rows   = vars(var),
+    scales = "free_y"
+  ) +
+  ggplot2::labs(
+    title = "Spectral density estimates of simulated ARMA models",
+    subtitle = "W ~ White Noise, X ~ AR(1), Y ~ MA(1), Z ~ ARMA(1, 1)"
+  )
+g_spec_sim
+```
