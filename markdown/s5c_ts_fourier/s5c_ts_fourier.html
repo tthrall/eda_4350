@@ -168,7 +168,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">19:21 Tue 15-Jul-2025</p>
+      <p class="date">20:36 Tue 15-Jul-2025</p>
     </div>
   </div>
   
@@ -904,14 +904,35 @@ Figure&nbsp;6: City temperature spectra: zoom-in view
   \mathcal{B}
      \quad &amp; \quad \text{back-shift operator } \\
   \\
+  DFT
+     \quad &amp; \quad \text{discrete Fourier transform } \\
+  \\
+  d_\bullet (\lambda)
+     \quad &amp; \quad \text{finite Fourier transform of } X_\bullet (t) \\
+  \\
+  FFT
+     \quad &amp; \quad \text{fast Fourier transform algorithm } \\
+  \\
   f_{\bullet, \bullet} (\lambda)
      \quad &amp; \quad \text{spectral density matrix at frequency } \lambda \\
+  \\
+  \hat{f}_{\bullet, \bullet} (\lambda)
+     \quad &amp; \quad \text{estimate of } f_{\bullet, \bullet} (\lambda) \\
   \\
   \phi(\cdot)
      \quad &amp; \quad \text{AR polynomial, } 1 - \sum_{\nu = 1}^p \phi_\nu \; z^\nu \\
   \\
   \gamma_{\bullet, \bullet} (u)
      \quad &amp; \quad \text{auto-covariance matrix at time-shift } u \\
+  \\
+  h (x)
+     \quad &amp; \quad \text{data-taper or convergence factor } \\
+  \\
+  \mathcal{H}_n (\lambda)
+     \quad &amp; \quad \text{finite Fourier transform of } h(\frac{t}{n}) \\
+  \\
+  I_{\bullet, \bullet} (\lambda)
+     \quad &amp; \quad \text{periodogram at frequency } \lambda \\
   \\
   \mathcal{I}
      \quad &amp; \quad \text{identity operator } \\
@@ -955,8 +976,14 @@ Figure&nbsp;6: City temperature spectra: zoom-in view
   W(\cdot)
      \quad &amp; \quad \text{white noise process, } W(\cdot) \sim wn(0, \sigma_W^2)  \\
   \\
+  W(\lambda)
+     \quad &amp; \quad \text{frequency window or kernel function}  \\
+  \\
   X_\bullet (t)
-     \quad &amp; \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process }
+     \quad &amp; \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process }  \\
+  \\
+  dZ_\bullet (\lambda)
+     \quad &amp; \quad \text{Cramér representation of } X_\bullet (t)
 \end{align}
 \]</span></p>
 </section>

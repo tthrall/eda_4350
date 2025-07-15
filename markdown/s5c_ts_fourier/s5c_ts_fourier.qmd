@@ -1323,14 +1323,35 @@ $$
   \mathcal{B} 
      \quad & \quad \text{back-shift operator } \\ 
   \\ 
+  DFT 
+     \quad & \quad \text{discrete Fourier transform } \\ 
+  \\ 
+  d_\bullet (\lambda) 
+     \quad & \quad \text{finite Fourier transform of } X_\bullet (t) \\ 
+  \\ 
+  FFT 
+     \quad & \quad \text{fast Fourier transform algorithm } \\ 
+  \\ 
   f_{\bullet, \bullet} (\lambda) 
      \quad & \quad \text{spectral density matrix at frequency } \lambda \\ 
+  \\ 
+  \hat{f}_{\bullet, \bullet} (\lambda) 
+     \quad & \quad \text{estimate of } f_{\bullet, \bullet} (\lambda) \\ 
   \\ 
   \phi(\cdot)
      \quad & \quad \text{AR polynomial, } 1 - \sum_{\nu = 1}^p \phi_\nu \; z^\nu \\ 
   \\ 
   \gamma_{\bullet, \bullet} (u) 
      \quad & \quad \text{auto-covariance matrix at time-shift } u \\ 
+  \\ 
+  h (x) 
+     \quad & \quad \text{data-taper or convergence factor } \\ 
+  \\ 
+  \mathcal{H}_n (\lambda) 
+     \quad & \quad \text{finite Fourier transform of } h(\frac{t}{n}) \\ 
+  \\ 
+  I_{\bullet, \bullet} (\lambda) 
+     \quad & \quad \text{periodogram at frequency } \lambda \\ 
   \\ 
   \mathcal{I} 
      \quad & \quad \text{identity operator } \\ 
@@ -1374,8 +1395,14 @@ $$
   W(\cdot) 
      \quad & \quad \text{white noise process, } W(\cdot) \sim wn(0, \sigma_W^2)  \\ 
   \\ 
+  W(\lambda) 
+     \quad & \quad \text{frequency window or kernel function}  \\ 
+  \\ 
   X_\bullet (t) 
-     \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process }
+     \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process }  \\ 
+  \\ 
+  dZ_\bullet (\lambda) 
+     \quad & \quad \text{Cramér representation of } X_\bullet (t)
 \end{align}
 $$
 
