@@ -104,7 +104,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#data-derived-from-a-random-process" id="toc-data-derived-from-a-random-process" class="nav-link" data-scroll-target="#data-derived-from-a-random-process">Data derived from a random process</a></li>
   <li><a href="#stationarity" id="toc-stationarity" class="nav-link" data-scroll-target="#stationarity">Stationarity</a></li>
-  <li><a href="#acf-autocorrelation-function" id="toc-acf-autocorrelation-function" class="nav-link" data-scroll-target="#acf-autocorrelation-function">ACF: autocorrelation function</a></li>
+  <li><a href="#auto-covariance-function" id="toc-auto-covariance-function" class="nav-link" data-scroll-target="#auto-covariance-function">Auto-covariance function</a></li>
   <li><a href="#spectrum" id="toc-spectrum" class="nav-link" data-scroll-target="#spectrum">Spectrum</a></li>
   <li><a href="#spectral-density-functions" id="toc-spectral-density-functions" class="nav-link" data-scroll-target="#spectral-density-functions">Spectral density functions</a></li>
   <li><a href="#cramér-representation" id="toc-cramér-representation" class="nav-link" data-scroll-target="#cramér-representation">Cramér representation</a></li>
@@ -168,7 +168,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">18:20 Tue 15-Jul-2025</p>
+      <p class="date">19:21 Tue 15-Jul-2025</p>
     </div>
   </div>
   
@@ -269,8 +269,8 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \end{align}
 \]</span></p>
 </section>
-<section id="acf-autocorrelation-function" class="level3">
-<h3 class="anchored" data-anchor-id="acf-autocorrelation-function">ACF: autocorrelation function</h3>
+<section id="auto-covariance-function" class="level3">
+<h3 class="anchored" data-anchor-id="auto-covariance-function">Auto-covariance function</h3>
 <p>Setting <span class="math inline">\(s = t\)</span> in the last expression we have</p>
 <p><span id="eq-stationarity-2"><span class="math display">\[
 \begin{align}
@@ -892,6 +892,7 @@ Figure&nbsp;6: City temperature spectra: zoom-in view
 </section>
 <section id="closing-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h2>
+<p>This note is intended to illustrate some uses of spectrum analysis, and to introduce the corresponding mathematical framework and methods of estimation.</p>
 </section>
 <section id="sec-glossary" class="level2">
 <h2 class="anchored" data-anchor-id="sec-glossary">A: Glossary of Notation</h2>
@@ -903,29 +904,17 @@ Figure&nbsp;6: City temperature spectra: zoom-in view
   \mathcal{B}
      \quad &amp; \quad \text{back-shift operator } \\
   \\
-  \nabla
-     \quad &amp; \quad \text{difference operator } \mathcal{I - B} \\
-  \\
-  \nabla_\sigma
-     \quad &amp; \quad \text{seasonal difference operator } \mathcal{I - B}^\sigma \\
-  \\
-  \Delta_u
-     \quad &amp; \quad \{ 1, 2, \ldots, u-1 \} \text{ for } u \ge 2 \\
+  f_{\bullet, \bullet} (\lambda)
+     \quad &amp; \quad \text{spectral density matrix at frequency } \lambda \\
   \\
   \phi(\cdot)
      \quad &amp; \quad \text{AR polynomial, } 1 - \sum_{\nu = 1}^p \phi_\nu \; z^\nu \\
-  \\
-  \Gamma
-     \quad &amp; \quad \text{auto-covariance matrix, } \Gamma [j, \nu] = \gamma_X (\nu - j) \text{, for } j, \nu \in \nu_T \\
   \\
   \gamma_{\bullet, \bullet} (u)
      \quad &amp; \quad \text{auto-covariance matrix at time-shift } u \\
   \\
   \mathcal{I}
      \quad &amp; \quad \text{identity operator } \\
-  \\
-  MSE
-     \quad &amp; \quad \text{mean squared error } \\
   \\
   m_\bullet (t)
      \quad &amp; \quad E \{ X_\bullet (t) \} \text{, expected value of } X_\bullet (t) \\
@@ -936,23 +925,11 @@ Figure&nbsp;6: City temperature spectra: zoom-in view
   \hat{\mu}_X
      \quad &amp; \quad \text{sample mean, } S_{X, T} / T \\
   \\   
-  \mathcal{N}(\cdot)
-     \quad &amp; \quad \text{a univariate, stationary, Gaussian process having mean 0} \\
-  \\   
-  \tilde{\mathcal{N}} (u + t_f \; | \; \wp (t_f))
-     \quad &amp; \quad E \left \{ \mathcal{N} (u + t_f) \; | \; \mathcal{N} (s), \; s \le t_f \right \} \\
-  \\
   \nu_T
      \quad &amp; \quad \{ 0, 1, \dots, T-1 \} \\
   \\
-  \wp (t_f)
-     \quad &amp; \quad \{ s \in \mathbb{Z} \; | \; s \le t_f \} \\
-  \\
   \rho_{\bullet, \bullet} (u)
      \quad &amp; \quad \text{autocorrelation matrix at time-shift } u \\
-  \\
-  \rho (u | u)
-     \quad &amp; \quad corr(X(t+u) - \hat{X}(t+u \; | \; - \Delta_u), \; X(t) - \hat{X}(t \; | \; \Delta_u)) \\
   \\
   S_{X, T}
      \quad &amp; \quad \text{the sample sum of T observations of } X (\cdot) \\
@@ -979,16 +956,7 @@ Figure&nbsp;6: City temperature spectra: zoom-in view
      \quad &amp; \quad \text{white noise process, } W(\cdot) \sim wn(0, \sigma_W^2)  \\
   \\
   X_\bullet (t)
-     \quad &amp; \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } \\
-  \\
-  \hat{X}(t \; | \; \Delta_u)
-     \quad &amp; \quad \text{approximates } X(t) \text{ as affine function of } \{ X(t + \nu) \}_{\nu \in \Delta_u} \\
-  \\
-  \hat{X} (u + t_f \; | \; \wp (t_f))
-     \quad &amp; \quad \text{predicts } X(u + t_f) \text{ as affine function of } \{ X(t) \}_{t \in \wp (t_f)} \\
-  \\
-  \breve{X} (t \; | \; \tau_T)
-     \quad &amp; \quad \text{trucnated predictor of } X(t) \text{ based on } \{ X(t) \}_{t \in \tau_T}
+     \quad &amp; \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process }
 \end{align}
 \]</span></p>
 </section>
