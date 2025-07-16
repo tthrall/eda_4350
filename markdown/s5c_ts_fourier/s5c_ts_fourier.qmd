@@ -316,9 +316,11 @@ $$ {#eq-ACF}
 
 ### Spectrum
 
-The term "spectrum" in its modern sense was introduced by Sir Isaac Newton[^art-Newton-spectrum], who used a prism to decompose sunlight into a rainbow of colors (light of different wavelengths or frequencies).  The term came to mean the intensity[^intensity-power] (denoted "I") of light (or other wave phenomena) as a function of wavelength or frequency.
+The term "spectrum" in its modern sense was introduced by Sir Isaac Newton[^art-Newton-spectrum] [^art-Brillinger-rainbow], who used a prism to decompose sunlight into a rainbow of colors (light of different wavelengths or frequencies).  The term came to mean the intensity[^intensity-power] (denoted "I") of light (or other wave phenomena) as a function of wavelength or frequency.
 
 [^art-Newton-spectrum]: See @Newton1672spectrum.
+
+[^art-Brillinger-rainbow]: Also see @brillinger1993digitalrainbow.
 
 [^intensity-power]: In other contexts the term "intensity" is replaced by "power".  @wiener1930GHA introduced the term "power spectrum" of a signal.
 
@@ -342,9 +344,9 @@ $$
 \end{align}
 $$ {#eq-bs-eigen}
 
-### Spectral density functions
+### Spectrum density functions
 
-The _spectral density function_, $f_{\bullet, \bullet} (\lambda)$, of the random process $X_\bullet(\cdot)$ is defined as the Fourier transform of the auto-covariance function $\gamma_{\bullet, \bullet} (u)$.
+The _spectrum density function_, $f_{\bullet, \bullet} (\lambda)$, of the random process $X_\bullet(\cdot)$ is defined as the Fourier transform of the auto-covariance function $\gamma_{\bullet, \bullet} (u)$.
 
 $$
 \begin{align}
@@ -373,7 +375,7 @@ $$
 \end{align}
 $$ {#eq-spec-periodic}
 
-Due to the symmetries of the auto-covariance function (@eq-ACovF-symm), the spectral density matrix is Hermitian, that is, equal to its own conjugate transpose.
+Due to the symmetries of the auto-covariance function (@eq-ACovF-symm), the spectrum density matrix is Hermitian, that is, equal to its own conjugate transpose.
 
 $$
 \begin{align}
@@ -415,15 +417,15 @@ Lastly, @eq-spec-dens has the following inverse.
 
 $$
 \begin{align}
-  \gamma_{\bullet, \bullet} (u) &= \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \times e^{i \lambda u} \; d\lambda
+  \gamma_{\bullet, \bullet} (u) &= \frac{1}{2 \pi} \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \times e^{i \lambda u} \; d\lambda
 \end{align}
 $$ {#eq-ACovF-from-spec-dens}
 
-Setting $u = 0$ we see that $\gamma_{\bullet, \bullet} (0)$, the variance-covariance matrix of $X_\bullet (t)$, is the integral of $f_{\bullet, \bullet} (\cdot)$.
+Setting $u = 0$ we see that $\gamma_{\bullet, \bullet} (0)$, the variance-covariance matrix of $X_\bullet (t)$, is the average value of $f_{\bullet, \bullet} (\cdot)$.
 
 $$
 \begin{align}
-  \gamma_{\bullet, \bullet} (0) &= \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \; d\lambda
+  \gamma_{\bullet, \bullet} (0) &= \frac{1}{2 \pi} \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \; d\lambda
 \end{align}
 $$ {#eq-cov-from-spec-dens}
 
@@ -513,7 +515,7 @@ Let $W(\cdot)$ denote a univariate "white noise" process, that is, a process hav
 
 $$
 \begin{align}
-  \gamma_W (u) &= 
+  \gamma_{W, W} (u) &= 
   \begin{cases}
     \sigma_W^2 & \text{for } u = 0 \\ 
     0 & \text{for } u \ne 0
@@ -758,7 +760,7 @@ g_sim_long
 
 The trajectory of the white noise process $W(\cdot)$ is indeed noisy; it would remain qualitatively unchanged by any permutation of its values.  The MA(1) model generating $Y(\cdot)$ also displays a rather noisy trajectory.  The remaining models, the AR(1) model generating $X(\cdot)$ and the ARMA(1, 1) model generating $Z(\cdot)$ show greater continuity.
 
-@fig-ARMA-spec shows the respective spectral density functions of these ARMA models.  The spectral densities of the AR(1) model and the ARMA(1, 1) model are concentrated at lower frequencies, correponding to greater wavelengths.  Note that the horizontal axis labeled "freq" is a scaled version of $\lambda$, namely $\mathcal{f} = \frac{\lambda}{2 \pi}$, which is the inverse of wavelength.
+@fig-ARMA-spec shows the respective spectrum density functions of these ARMA models.  The spectrum densities of the AR(1) model and the ARMA(1, 1) model are concentrated at lower frequencies, correponding to greater wavelengths.  Note that the horizontal axis labeled "freq" is a scaled version of $\lambda$, namely $\mathcal{f} = \frac{\lambda}{2 \pi}$, which is the inverse of wavelength.
 
 ```{r}
 #| label: ARMA-model-spec
@@ -803,7 +805,7 @@ arma_spec_long <- arma_spec_tbl |>
 
 ```{r}
 #| label: fig-ARMA-spec
-#| fig-cap: "Spectral density function of each ARMA model"
+#| fig-cap: "Spectrum density function of each ARMA model"
 
 g_arma_spec <- arma_spec_long |> 
   dplyr::group_by(var) |> 
@@ -816,10 +818,10 @@ g_arma_spec <- arma_spec_long |>
     scales = "free_y"
   ) + 
   ggplot2::labs(
-    title = "Spectral density of simple ARMA models", 
+    title = "Spectrum density of simple ARMA models", 
     subtitle = "W ~ White Noise, X ~ AR(1), Y ~ MA(1), Z ~ ARMA(1, 1)"
   ) + 
-  ggplot2::ylab("spectral density")
+  ggplot2::ylab("spectrum density")
 g_arma_spec
 ```
 
@@ -829,7 +831,7 @@ g_arma_spec
 
 Let $X_\bullet (\cdot)$ be a random process satisfying @eq-ACovF-sum.  Assume for the moment that $X_\bullet (\cdot)$ has mean zero.  Suppose that we have data generated by this process for $|t| \le n$.[^n-vs-T]  Then we define $d_\bullet (\lambda)$, the finite Fourier transform of time series $\{ X(t) \}_{|t| \le n}$, as follows.
 
-[^n-vs-T]: To simplify notation in this section we index the observations with $|t| \le n$ rather than $0 \le t < T$.
+[^n-vs-T]: To simplify notation in this section we change the range of integer index $t$ from $t \in [0, T)$ to $t \in [-n, n]$.
 
 $$
 \begin{align}
@@ -925,7 +927,7 @@ $$
 \end{align}
 $$ {#eq-e-d-d}
 
-Following conventional use of the symbol $I$ to denote "intensity", we define the periodogram as the following complex-valued, non-negative definite matrix 
+Following conventional use of the symbol $I$ to denote "intensity", we define the _periodogram_ as the following complex-valued, non-negative definite matrix 
 
 $$
 \begin{align}
@@ -943,7 +945,7 @@ $$
 \end{align}
 $$ {#eq-e-pgram}
 
-Thus the periodogram $I_{\bullet, \bullet} (\lambda)$ is an asymptotically unbiased estimate of the spectral density $f_{\bullet, \bullet} (\lambda)$.  The problem is that the variance of $I_{\bullet, \bullet} (\lambda)$ remains large as $n \rightarrow \infty$.
+Thus the periodogram $I_{\bullet, \bullet} (\lambda)$ is an asymptotically unbiased estimate of the spectrum density $f_{\bullet, \bullet} (\lambda)$.  The problem is that the variance of $I_{\bullet, \bullet} (\lambda)$ elements remains large as $n \rightarrow \infty$.
 
 Recall that under regularity conditions on $X(\cdot)$, $d_\bullet(\lambda)$  follows an asymptotically normal distribution.  Under those same conditions the asymptotic distribution of $I_{\bullet, \bullet} (\lambda)$ is a Wishart distribution, real if $\lambda \equiv 0 \bmod \pi$ and complex otherwise.
 
@@ -971,7 +973,7 @@ $$
 \end{align}
 $$ {#eq-var-pgram}
 
-Thus $I_{\bullet, \bullet} (\lambda)$, although asymptotically unbiased, is not a consistent estimate of $f_{\bullet, \bullet} (\lambda)$ since the variance of its diagonal elements remains bounded above zero as $n \rightarrow \infty$.
+Thus $I_{\bullet, \bullet} (\lambda)$, although asymptotically unbiased, is not a consistent estimator of $f_{\bullet, \bullet} (\lambda)$ since the variance of its diagonal elements remains bounded above zero as $n \rightarrow \infty$.
 
 ### DFT: Discrete Fourier transform
 
@@ -1007,7 +1009,7 @@ In `R` the DFT can be computed with the function `stats:fft()`.
 
 We noted above that the periodogram $I_{\bullet, \bullet} (\lambda)$, although an asymptotically unbiased estimate of $f_{\bullet, \bullet} (\lambda)$, suffers from high variance (which is evident from plots of the periodogram).  Averaging periodogram values at adjacent frequencies yields a revised estimate, say $\hat{f}_{\bullet, \bullet} (\lambda)$, having lower variance, but if too many periodogram values are averaged $\hat{f}_{\bullet, \bullet} (\lambda)$ may be a biased estimate that blurs features of interest.
 
-Here is a framework for constructing a consistent[^consistent] sequence of estimates that converge to $f_{\bullet, \bullet} (\lambda)$ as $T \rightarrow \infty$.  Let $\beta_T > 0$ denote the bandwidth of adjacent frequencies to be averaged.  To drive the variance of successive estimates to zero as $T \rightarrow \infty$ we want the number of adjacent frequencies, proportionate to $\beta_T \; T$, to increase without bound.  To drive the bias to zero we want the neighborhood of averaged frequencies to shrink to $\lambda$, thus requiring $\beta_T \rightarrow 0$.  For example we might set $\beta_T = 1/\sqrt{T}$, or more generally $\beta_T = c \; T^{- \alpha}$ for some choice of $c > 0$ and $\alpha \in (0, 1)$.
+Here is a framework for constructing a consistent[^consistent] estimator, that is, a sequence of estimates that converge to $f_{\bullet, \bullet} (\lambda)$ as $T \rightarrow \infty$.  Let $\beta_T > 0$ denote the bandwidth of adjacent frequencies to be averaged.  To drive the variance of successive estimates to zero as $T \rightarrow \infty$ we want the number of adjacent frequencies, proportionate to $\beta_T \; T$, to increase without bound.  To drive the bias to zero we want the neighborhood of averaged frequencies to shrink to $\lambda$, thus requiring $\beta_T \rightarrow 0$.  For example we might set $\beta_T = 1/\sqrt{T}$, or more generally $\beta_T = c \; T^{- \alpha}$ for some choice of $c > 0$ and $\alpha \in (0, 1)$.
 
 [^consistent]: That is, mean-square consistent: the expected squared estimation error tends to zero as $T \rightarrow \infty$.
 
@@ -1153,11 +1155,11 @@ peak_wave_mo <- 1 / peak_freq
 peak_wave_yr <- peak_wave_mo / 12
 ```
 
-@fig-sunspot-spec below shows the estimated spectral density function of monthly sunspot numbers.  The first and final quarter of the data were tapered to better resolve the spectrum at adjacent frequencies.  For the same reason the density estimate is a running weighed average of only `r 1 + 2*sunspot_spec_stats$k_m` adjacent periodogram values, amounting to a fairly narrow bandwidth (`r round(sunspot_spec_stats$bw, 2)`).
+@fig-sunspot-spec below shows the estimated spectrum density function of monthly sunspot numbers.  The first and final quarter of the data were tapered to better resolve the spectrum at adjacent frequencies.  For the same reason the density estimate is a running weighed average of only `r 1 + 2*sunspot_spec_stats$k_m` adjacent periodogram values, amounting to a fairly narrow bandwidth (`r round(sunspot_spec_stats$bw, 3)`).
 
 ```{r}
 #| label: fig-sunspot-spec
-#| fig-cap: "Monthly sunspot numbers: estimated spectral density"
+#| fig-cap: "Monthly sunspot numbers: estimated spectrum density"
 
 g_sunspot_spec <- sunspot_spec_tbl |> 
   ggplot2::ggplot(mapping = aes(
@@ -1166,17 +1168,17 @@ g_sunspot_spec <- sunspot_spec_tbl |>
   ggplot2::geom_line() + 
   ggplot2::labs(
     title = "Monthly sunspot numbers", 
-    subtitle = "Estimated spectral density function") + 
+    subtitle = "Estimated spectrum density function") + 
   ggplot2::xlab("freq = cycles per month") + 
-  ggplot2::ylab("spectral density")
+  ggplot2::ylab("spectrum density")
 g_sunspot_spec
 ```
 
-@fig-sunspot-spec_log10 gives a closer view of the spectral density function at the lowest observable frequencies.  The peak in the spectrum occurs at frequency `r round(peak_freq, 3)` cycles per month corresponding to a wavelength of `r round(peak_wave_yr, 1)` years.  As previously mentioned, the gaps between peak values of sunspot numbers vary somewhat, which is part of the reason for the breadth of this peak in the spectral density (the other part being the unavoidable periodogram-averaging required to lower the variance of the estimated spectral density function.)
+@fig-sunspot-spec_log10 gives a closer view of the spectrum density function at the lowest observable frequencies.  The peak in the spectrum occurs at frequency `r round(peak_freq, 3)` cycles per month corresponding to a wavelength of `r round(peak_wave_yr, 1)` years.  As previously mentioned, the gaps between peak values of sunspot numbers vary somewhat, which is part of the reason for the breadth of this peak in the spectrum density (the other part being the unavoidable periodogram-averaging required to lower the variance of the estimated spectrum density function.)
 
 ```{r}
 #| label: fig-sunspot-spec_log10
-#| fig-cap: "Sunspot spectral density: zoom-in view"
+#| fig-cap: "Sunspot spectrum density: zoomed-in view"
 
 g_sunspot_spec <- sunspot_spec_tbl |> 
   dplyr::filter(freq < 0.05) |> 
@@ -1185,10 +1187,10 @@ g_sunspot_spec <- sunspot_spec_tbl |>
   )) + 
   ggplot2::geom_line() + 
   ggplot2::labs(
-    title = "Sunspot spectral density function", 
-    subtitle = "zoom-in view") + 
+    title = "Sunspot spectrum density function", 
+    subtitle = "zoomed-in view") + 
   ggplot2::xlab("freq = cycles per month") + 
-  ggplot2::ylab("log_10( spectral density )")
+  ggplot2::ylab("log_10( spectrum density )")
 g_sunspot_spec
 ```
 
@@ -1262,11 +1264,13 @@ hnl_nyc_spec_long <- hnl_nyc_freq_tbl |>
     values_to = "spec")
 ```
 
-@fig-hnl-nyc-spec below shows (on a log-10 scale) estimated spectral densities of daily temperatures in Honolulu and New York City.
+@fig-hnl-nyc-spec below shows (on a log-10 scale) estimated spectrum densities of daily temperatures in Honolulu and New York City.[^HNL-NYC-spec-params]
+
+[^HNL-NYC-spec-params]:  We have used the same parameter settings for tapering and periodogram-averaging as in the sunspot example.
 
 ```{r}
 #| label: fig-hnl-nyc-spec
-#| fig-cap: "City temperatures: estimated spectral densities"
+#| fig-cap: "City temperatures: estimated spectrum densities"
 
 g_hnl_nyc_spec <- hnl_nyc_spec_long |> 
   ggplot2::ggplot(mapping = aes(
@@ -1277,20 +1281,20 @@ g_hnl_nyc_spec <- hnl_nyc_spec_long |>
     rows = vars(city), 
     scales = "free_y") + 
   ggplot2::labs(
-    title = "HNL, NYC spectral densities", 
+    title = "HNL, NYC spectrum densities", 
     subtitle = "log_10 scale") + 
   ggplot2::xlab("freq = cycles per day") + 
-  ggplot2::ylab("log_10( spectral density )")
+  ggplot2::ylab("log_10( spectrum density )")
 g_hnl_nyc_spec
 ```
 
 @fig-hnl-nyc-spec-zoom gives a zoomed-in view of the lowest observable frequencies.  For both cities the peak in the spectrum occurs at frequency `r round(h_peak_freq, 3)` cycles per day corresponding to a wavelength of `r round(h_peak_wave_days, 1)` days, a bit below the expected 365.25 days due to imperfect frequency resolution.
 
-Previously we noted that Honolulu temperatures fluctuate much less than New York City temperatures, and we raised the question of the degree to which the annual cycle contributes to overall variability in each city.  The respective ratios of max-divided-by-min (or log-max minus log-min) of the spectral density estimates appear similar in the two cities, with New York exhibiting a somewhat greater range.  This suggests that annual variability in Honolulu contributes nearly as much to the overall variance of temperatures as it does in New York City.
+Previously we noted that Honolulu temperatures fluctuate much less than New York City temperatures, and we raised the question of the degree to which the annual cycle contributes to overall variability in each city.  The respective ratios of max-divided-by-min (or log-max minus log-min) of the spectrum density estimates appear similar in the two cities, with New York exhibiting a somewhat greater range.  This suggests that annual variability in Honolulu contributes nearly as much to the overall variance of temperatures as it does in New York City.
 
 ```{r}
 #| label: fig-hnl-nyc-spec-zoom
-#| fig-cap: "City temperature spectra: zoom-in view"
+#| fig-cap: "City temperature spectra: zoomed-in view"
 
 g_hnl_nyc_spec_zoom <- hnl_nyc_spec_long |> 
   dplyr::filter(freq < 0.05) |> 
@@ -1302,10 +1306,10 @@ g_hnl_nyc_spec_zoom <- hnl_nyc_spec_long |>
     rows = vars(city), 
     scales = "free_y") + 
   ggplot2::labs(
-    title = "HNL, NYC spectral densities", 
-    subtitle = "zoom-in view") + 
+    title = "HNL, NYC spectrum densities", 
+    subtitle = "zoomed-in view") + 
   ggplot2::xlab("freq = cycles per day") + 
-  ggplot2::ylab("log_10( spectral density )")
+  ggplot2::ylab("log_10( spectrum density )")
 g_hnl_nyc_spec_zoom
 ```
 
@@ -1323,6 +1327,9 @@ $$
   \mathcal{B} 
      \quad & \quad \text{back-shift operator } \\ 
   \\ 
+  \beta_T 
+     \quad & \quad \text{frequency bandwidth of averaged periodogram values } \\ 
+  \\ 
   DFT 
      \quad & \quad \text{discrete Fourier transform } \\ 
   \\ 
@@ -1333,7 +1340,7 @@ $$
      \quad & \quad \text{fast Fourier transform algorithm } \\ 
   \\ 
   f_{\bullet, \bullet} (\lambda) 
-     \quad & \quad \text{spectral density matrix at frequency } \lambda \\ 
+     \quad & \quad \text{spectrum density matrix at frequency } \lambda \\ 
   \\ 
   \hat{f}_{\bullet, \bullet} (\lambda) 
      \quad & \quad \text{estimate of } f_{\bullet, \bullet} (\lambda) \\ 
