@@ -365,9 +365,19 @@ $$ {#eq-ACovF-sum}
 
 @eq-ACovF-sum is an example of a "mixing" condition.  It implies that $X_\bullet(t)$ and $X_\bullet(t + u)$ have vanishingly small correlation as $|u| \rightarrow \infty$.
 
-Setting $b = a$, we obtain $f_{a, a} (\lambda)$, called the _power spectrum_ of $X_a (\cdot)$.  If $b \ne a$ then $f_{a, b} (\lambda)$ is called the _cross-spectrum_ of $\{ X_a (\cdot), X_b (\cdot) \}$.
+Setting $b = a$, we obtain $f_{a, a} (\lambda)$, called the _power spectrum_ of $X_a (\cdot)$.
 
-From @eq-spec-dens we see that $f$ is periodic with period $2 \pi$.
+If $b \ne a$ then $f_{a, b} (\lambda)$ is called the _cross-spectrum_ of $\{ X_a (\cdot), X_b (\cdot) \}$.  The _coherency_ of $X_a(\cdot), X_b(\cdot)$ at frequency $\lambda$, denoted $R_{a, b} (\lambda)$, is the following normalization of the cross-spectrum.
+
+$$
+\begin{align}
+  R_{a, b} (\lambda) &= \frac{f_{a, b}(\lambda)}{\sqrt{f_{a, a}(\lambda) f_{b, b}(\lambda)}}
+\end{align}
+$$ {#eq-coherency}
+
+The modulus-squared of coherency, $| R_{a, b} (\lambda) |^2$, is called the _coherence_ of $\{ X_a (\cdot), X_b (\cdot) \}$ at frequency $\lambda$.  Similar to a squared correlation coefficient, this is a non-negative value no greater than unity.  And the radian angle, $Arg( R_{a, b} (\lambda) )$, is called the _phase_ of $\{ X_a (\cdot), X_b (\cdot) \}$ at frequency $\lambda$.
+
+From @eq-spec-dens we see that $f_{\bullet, \bullet} (\lambda)$ is periodic with period $2 \pi$.
 
 $$
 \begin{align}
@@ -1313,6 +1323,40 @@ g_hnl_nyc_spec_zoom <- hnl_nyc_spec_long |>
 g_hnl_nyc_spec_zoom
 ```
 
+```{r}
+#| label: hnl-nyc-cp-long
+
+# coherence and phase
+hnl_nyc_cp_long <- hnl_nyc_freq_tbl |> 
+  dplyr::select(freq, coh, phase) |> 
+  tidyr::pivot_longer(
+    cols = coh:phase, 
+    names_to = "part", 
+    values_to = "value")
+```
+
+@fig-hnl-nyc-cp-zoom shows the two cities to be perfectly coherent and in phase at frequenccies near the annual cycle, as expected.
+
+```{r}
+#| label: fig-hnl-nyc-cp-zoom
+#| fig-cap: "HNL-NYC coherence and phase: zoomed-in view"
+
+g_hnl_nyc_cp_zoom <- hnl_nyc_cp_long |> 
+  dplyr::filter(freq < 0.05) |> 
+  ggplot2::ggplot(mapping = aes(
+    x = freq, y = value, color = part, fill = part
+  )) + 
+  ggplot2::geom_line(show.legend = FALSE) + 
+  ggplot2::facet_grid(
+    rows = vars(part), 
+    scales = "free_y") + 
+  ggplot2::labs(
+    title = "HNL-NYC coherence and phase", 
+    subtitle = "zoomed-in view") + 
+  ggplot2::xlab("freq = cycles per day")
+g_hnl_nyc_cp_zoom
+```
+
 ## Closing Remarks
 
 This note is intended to illustrate some uses of spectrum analysis, and to introduce the corresponding mathematical framework and methods of estimation.
@@ -1374,6 +1418,15 @@ $$
   \\   
   \nu_T 
      \quad & \quad \{ 0, 1, \dots, T-1 \} \\ 
+  \\ 
+  R_{a, b} (\lambda) 
+     \quad & \quad \text{coherency: } \frac{f_{a, b}(\lambda)}{\sqrt{f_{a, a}(\lambda) f_{b, b}(\lambda)}} \\ 
+  \\ 
+  | R_{a, b} (\lambda) |^2 
+     \quad & \quad \text{coherence } \\ 
+  \\ 
+  Arg(\; R_{a, b} (\lambda) \;) 
+     \quad & \quad \text{phase } \\ 
   \\ 
   \rho_{\bullet, \bullet} (u) 
      \quad & \quad \text{autocorrelation matrix at time-shift } u \\ 
@@ -1439,7 +1492,7 @@ As described in [Recalibration of the Sunspot-Number: Status Report \| Solar Phy
 
 #### Description
 
-@fig-hnl-nyc-temps below shows the daily average temperature in Honolulu and New York City from `r min_dt_HNL` to `r max_dt_HNL`.[^hnl-nyc-impute]
+@fig-hnl-nyc-temps below shows the daily average temperature in Honolulu and New York City from `r min_dt_HNL` to `r max_dt_HNL` (for a total or `r n_days_HNL` days).[^hnl-nyc-impute]
 
 [^hnl-nyc-impute]: For convenience missing values have been imputed (estimated) with a weighted running average spanning 7 days.  This was done with `R` function `imputeTS::na.ma()`.  Of the `r n_days_HNL` days shown, there were `r n_miss_HNL` missing values for Honolulu and `r n_miss_NYC` missing values for NYC.
 
