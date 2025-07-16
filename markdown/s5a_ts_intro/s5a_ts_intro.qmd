@@ -664,18 +664,18 @@ $$ {#eq-ma-5-filter}
 
 As noted above, the moving average operation can help to reveal and thus model the trend in the process, $m_\bullet (t)$. Forming the residual series $X_\bullet (t) - m_\bullet (t)$ is called "de-trending".
 
-Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the "differencing" operator $\mathcal{D} = \mathcal{I} - \mathcal{B}$.
+Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the "differencing" operator $\nabla = \mathcal{I} - \mathcal{B}$.
 
 $$
 \begin{align}
   Y_\bullet (t) 
   &= X_\bullet (t)  - X_\bullet (t - 1) \\ 
   &= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\ 
-  &= \mathcal{D} \{ X_\bullet (\cdot) \} (t)
+  &= \nabla \{ X_\bullet (\cdot) \} (t)
 \end{align}
 $$ {#eq-diff-operator}
 
-In the DJIA stock index example, returns were defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here's the differencing operator $\mathcal{D}$ in the filtering format.
+In the DJIA stock index example, returns were defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here's the differencing operator $\nabla$ in the filtering format.
 
 $$
 \begin{align}
@@ -1014,141 +1014,52 @@ s5a_articles_tbl |>
 
 ## Glossary of Math Symbols
 
-```{r}
-#| label: s5a_symbol_tbl
-
-s5a_symbol_tbl <- tibble::tribble(
-  ~tag, ~symbol, ~dscr, 
-  
-  "a_u", 
-  "$a_{\\bullet, \\bullet} (u)$",
-  "matrix of filter coefficients at time-shift $u$", 
-  
-  "B", 
-  "$\\mathcal{B}$",
-  "back-shift operator", 
-  
-  "D", 
-  "$\\mathcal{D}$",
-  "difference operator, $\\mathcal{I} - \\mathcal{B}$", 
-  
-  "ACovF", 
-  "$\\gamma_{\\bullet, \\bullet} (u)$",
-  "auto-covariance matrix at time-shift $u$", 
-  
-  "I", 
-  "$\\mathcal{I}$",
-  "identity operator", 
-  
-  "m_vec", 
-  "$m_\\bullet (t)$",
-  "$E \\{ X_\\bullet (t) \\}$, expected value of $X_\\bullet (t)$",
-  
-  "T", 
-  "$T$",
-  "number of time series observations",
-  
-  "mu_X", 
-  "$\\mu_X$",
-  "the expected value of random variable $X (t_0)$",
-  
-  "N_d", 
-  "$N_d$",
-  "number of independent draws (effective sample size)",
-  
-  "S_X_T", 
-  "$S_{X, T}$",
-  "the sample sum of T observations of $X (t)$",
-  
-  "sig2_X", 
-  "$\\sigma_X^2$",
-  "the variance of random variable $X (t_0)$",
-  
-  "t_0", 
-  "$t_0$",
-  "initial time index of a time series data set",
-  
-  "X_vec", 
-  "$X_\\bullet (t)$",
-  "$(X_1 (t), \\ldots, X_d (t))$, a multivariate random process"
-)
-```
-
-```{r}
-#| label: s5a_symbol_tbl__save
-
-# save file only when updated
-save_to_file <- FALSE
-if (save_to_file) {
-  # TSV format
-  s5a_symbol_tbl |> readr::write_tsv(here::here(
-    "markdown", "s5a_ts_intro", "s5a_symbol_tbl.txt"
-  ))
-}
-```
-
-```{r}
-#| label: s5a_symbol_tbl__kable
-#| eval: false
-
-s5a_symbol_tbl |>
-  dplyr::select(symbol, dscr) |>
-  knitr::kable(
-    format = "html",
-	escape = FALSE,
-	caption = "Glossary of Mathematical Symbols (s)",
-	col.names = c("s", "description")
-  )
-```
-
 $$
 \begin{align}
-
   {a_{\bullet, \bullet} (u)} 
     \quad & \quad \text{matrix of filter coefficients at time-shift } u \\ 
-    
+    \\ 
   \mathcal{B} 
      \quad & \quad \text{back-shift operator } \\ 
-     
-  \mathcal{D} 
+    \\ 
+  \nabla 
      \quad & \quad \text{difference operator } \mathcal{I - B} \\ 
-     
+    \\ 
   \gamma_{\bullet, \bullet} (u) 
      \quad & \quad \text{auto-covariance matrix at time-shift } u \\ 
-     
+    \\ 
   \mathcal{I} 
      \quad & \quad \text{identity operator } \\ 
-     
+    \\ 
   m_\bullet (t) 
      \quad & \quad E \{ X_\bullet (t) \} \text{, expected value of } X_\bullet (t) \\ 
-     
+    \\ 
   \mu_X 
      \quad & \quad E\{ X (t_0) \} \text{, expected value of } X (t_0) \\ 
-     
+    \\   
   \hat{\mu} _X
      \quad & \quad \text{sample mean, } S_{X, T} / T \\ 
-     
+    \\ 
   N_d 
      \quad & \quad \text{number of independent draws (effective sample size) } \\ 
-     
+    \\ 
   \rho_{\bullet, \bullet} (u) 
      \quad & \quad \text{auto-correlation matrix at time-shift } u \\ 
      
   S_{X, T} 
      \quad & \quad \text{the sample sum of T observations of } X (\cdot) \\ 
-     
+    \\ 
   \sigma_X^2 
      \quad & \quad Var \{ X (t_0) \} \text{, variance of } X (t_0) \\ 
-     
+    \\ 
   T 
      \quad & \quad \text{number of time series observations } \\ 
-     
+    \\ 
   t_0 
      \quad & \quad \text{initial time index of time series observations } \\ 
-     
+    \\ 
   X_\bullet (t) 
      \quad & \quad (X_1 (t), \ldots, X_d (t)) \text{, a multivariate random process } 
-     
 \end{align}
 $$
 
