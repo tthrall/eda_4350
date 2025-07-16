@@ -365,9 +365,9 @@ $$ {#eq-ACovF-sum}
 
 @eq-ACovF-sum is an example of a "mixing" condition.  It implies that $X_\bullet(t)$ and $X_\bullet(t + u)$ have vanishingly small correlation as $|u| \rightarrow \infty$.
 
-Setting $b = a$, we obtain $f_{a, a} (\lambda)$, called the _power spectrum_ of $X_a (\cdot)$.
+Setting $b = a$, we obtain $f_{a, a} (\cdot)$, called the _power spectrum_ of $X_a (\cdot)$.
 
-If $b \ne a$ then $f_{a, b} (\lambda)$ is called the _cross-spectrum_ of $\{ X_a (\cdot), X_b (\cdot) \}$.  The _coherency_ of $X_a(\cdot), X_b(\cdot)$ at frequency $\lambda$, denoted $R_{a, b} (\lambda)$, is the following normalization of the cross-spectrum.
+If $b \ne a$ then $f_{a, b} (\cdot)$ is called the _cross-spectrum_ of $\{ X_a (\cdot), X_b (\cdot) \}$.  The _coherency_ of $X_a(\cdot), X_b(\cdot)$ at frequency $\lambda$, denoted $R_{a, b} (\lambda)$, is the following normalization of the cross-spectrum.
 
 $$
 \begin{align}
@@ -1335,7 +1335,7 @@ hnl_nyc_cp_long <- hnl_nyc_freq_tbl |>
     values_to = "value")
 ```
 
-@fig-hnl-nyc-cp-zoom shows the two cities to be perfectly coherent and in phase at frequenccies near the annual cycle, as expected.
+@fig-hnl-nyc-cp-zoom shows the two cities to be nearly perfectly coherent and in phase at frequenccies near the annual cycle, as expected.
 
 ```{r}
 #| label: fig-hnl-nyc-cp-zoom
