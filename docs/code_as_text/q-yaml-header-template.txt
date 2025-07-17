@@ -1,0 +1,24 @@
+---
+title: "TitleXxx"
+subtitle: "SubtitleYyy"
+author:
+  - name: "Send comments to: Tony T (tthrall)"
+date: last-modified
+date-format: HH:mm ddd D-MMM-YYYY
+editor: source
+toc: true
+toc-depth: 3
+format:
+  html:
+    toc_float: true
+    code-fold: true
+    code-summary: "Show the code"
+  pdf: default
+  docx: default
+params:
+  file_id: "pfx"
+  file_prefix: "pfx_part_Zzz"
+abstract:
+  "Introduce Zzz.  <br><br>"
+bibliography: pfx_references.bib
+---

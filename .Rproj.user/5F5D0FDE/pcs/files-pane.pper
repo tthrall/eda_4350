@@ -1,13 +1,13 @@
 {
     "sortOrder": [
         {
-            "columnIndex": 4,
-            "ascending": false
-        },
-        {
             "columnIndex": 2,
             "ascending": true
+        },
+        {
+            "columnIndex": 4,
+            "ascending": false
         }
     ],
-    "path": "~/GitHub/eda_4350/data/xl"
+    "path": "~/GitHub/eda_4350/markdown/s5c_ts_fourier"
 }
