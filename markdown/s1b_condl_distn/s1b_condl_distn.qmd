@@ -99,7 +99,7 @@ The box-plot below can be regarded as the (sample) *conditional distribution* of
 
 ```{r}
 #| label: fig-f-mpt
-#| fig-cap: "Range of son's height for given height of father"
+#| fig-cap: "Range of son heights for given height of father"
 
 g_f_mpt <- father_son_ht |> 
   dplyr::filter(! is.na(f_mpt)) |> 
@@ -110,7 +110,7 @@ g_f_mpt <- father_son_ht |>
   ggplot2::geom_boxplot() + 
   ggplot2::labs(title = "Son heights per father's height") + 
   ggplot2::xlab("father's height rounded to nearest odd inch") + 
-  ggplot2::ylab("son's height in inches")
+  ggplot2::ylab("son heights in inches")
 g_f_mpt
 ```
 
@@ -138,7 +138,7 @@ The figure below represents these sample conditional averages per father's heigh
 
 ```{r}
 #| label: fig-s-avg-per-f-mpt
-#| fig-cap: "Average of sons' heights per father's height"
+#| fig-cap: "Average of son heights per father's height"
 
 g_s_avg_per_f_mpt <- s_stats_per_f_mpt |> 
   ggplot2::ggplot(mapping = aes(
@@ -156,7 +156,7 @@ g_s_avg_per_f_mpt <- s_stats_per_f_mpt |>
     linewidth = 2, 
     color = "red") + 
   ggplot2::labs(
-    title = "Average of sons' heights per father's height", 
+    title = "Average of son heights per father's height", 
     subtitle = "(dotted red line shows father's height + 1 inch)")  + 
   ggplot2::xlab("father's height rounded to nearest odd inch") + 
   ggplot2::ylab("average of son heights in inches")
@@ -174,7 +174,7 @@ $$
   Z_x(X) = \frac{X - \mu_x}{\sigma_x} \\
   Z_y(Y) = \frac{Y - \mu_y}{\sigma_y} \\
 \end{align}
-$$
+$$ {#eq-z-score}
 
 Here $\mu$ signifies the average (arithmetic mean) height across the entire population, and $\sigma$ denotes the population standard deviation. Thus $Z_x(X)$ gives the number of standard deviations above or below the population average (expected value).
 
@@ -185,7 +185,7 @@ $$
   \hat{\mu}_x &= \frac{1}{n} \sum_{k = 1}^{n} x_k \\ 
   \hat{\sigma}_{x}^2 &= \frac{1}{n-1} \sum_{k = 1}^{n} (x_k - \hat{\mu}_x)^2 \\ 
 \end{align} 
-$$
+$$ {#eq-sample-moments-2}
 
 So the term "z-score" or "standard unit" is usually understood with respect to the sample distribution.
 
@@ -194,7 +194,7 @@ $$
   \hat{Z}_x(x_k) = \frac{x_k - \hat{\mu}_x}{\hat{\sigma}_x} \\ 
   \hat{Z}_y(y_k) = \frac{y_k - \hat{\mu}_y}{\hat{\sigma}_y} \\ 
 \end{align} 
-$$
+$$ {#eq-sample-z-score}
 
 ### SD line
 
@@ -206,7 +206,7 @@ $$
   y & = \mathcal{l}_{SD}(x) \\
   &= \hat{\mu}_y + \frac{\hat{\sigma}_y}{\hat{\sigma}_x} (x - \hat{\mu}_x) \\
 \end{align}
-$$
+$$ {#eq-sd-line}
 
 Of all lines $y = \mathcal{l}(x)$ we might draw through the $(x_k,y_k)$ data points, the SD line $y = \mathcal{l}_{SD}(x)$ minimizes the sum of squared distances from each $(x_k,y_k)$ data point to its orthogonal projection to the line.
 
@@ -214,16 +214,18 @@ Of all lines $y = \mathcal{l}(x)$ we might draw through the $(x_k,y_k)$ data poi
 
 Consider the father's height as the predictor variable $(x)$ and the son's height as the response variable $(y)$. We now seek a line that minimizes a different metric, namely the distance between the son's height and its linear prediction based on the father's height. In statistical parlance we are regressing the son's height on the father's height. (Because we have just *one* predictor variable this is called *simple* linear regression.) The minimizing line is called the regression line, and has the following equation.
 
-$$\begin{align}   
+$$
+\begin{align}   
   \text{Regression line: } \\   
 y & = \mathcal{l}_{R}(x) \\   
-&= \hat{\mu}_y + \hat{r}  \frac{\hat{\sigma}_y}{\hat{\sigma}_x} (x - \hat{\mu}_x) \\ \end{align} $$
+&= \hat{\mu}_y + \hat{r}  \frac{\hat{\sigma}_y}{\hat{\sigma}_x} (x - \hat{\mu}_x) \\ \end{align} 
+$$ {#eq-regression-line}
 
 An equivalent equation is $\hat{Z}_y(y) = \hat{r} \hat{Z}_x(x)$, where $\hat{r}$ denotes the sample correlation coefficient.
 
 $$
   \hat{r} = \frac{1}{n-1} \sum_{k = 1}^{n} \hat{Z}_x(x_k) \hat{Z}_y(y_k)
-$$
+$$ {#eq-sample-cor}
 
 Note that $\hat{r}$ is restricted to the closed interval $[-1, 1]$.
 
@@ -520,7 +522,7 @@ $$
   P(X \in A, \; Y \in B) &= P(X \in A) \times P(Y \in B) \\ \\
   & \text{for all possible sets } A, B \\ 
 \end{align}
-$$
+$$ {#eq-xy-indep}
 
 If $P(X \in A) > 0$ then statistical independence implies:
 
@@ -530,7 +532,7 @@ $$
   &= P(Y \in B) \\ \\ 
   & \text{whenever } P(X \in A) > 0 
 \end{align}
-$$
+$$ {#eq-indep-y-per-x}
 
 That is, the conditional probability of random variable $Y$ belonging to set $B$ given that $X$ belongs to set $A$ is equal to the unconditional probability that $Y$ belongs to set $B$. It follows that the conditional expectation $E(Y | X)$ does not depend on $X$, and thus equals the constant $E(Y)$, the unconditional expected value of $Y$.
 
@@ -637,11 +639,11 @@ In the early 1900's [Karl Pearson](https://en.wikipedia.org/wiki/Karl_Pearson) d
 
 $$
 \begin{align}
-  \chi^2 &= \sum_{j = 1}^J {\sum_{k = 1}^K {\frac{(O_{j,k} - E_{j,k})^2}{E_{j,k}}}} \\ 
+  \chi^2 &= \sum_{j = 1}^J {\sum_{k = 1}^K {\frac{(O_{j,k} - E_{j,k})^2}{E_{j,k}}}} \\ \\ 
   O_{j,k} &= \text{observed count for cell } \{j, k\} \\ 
   E_{j,k} &= \text{expected count for cell } \{j, k\} \\ 
 \end{align}
-$$
+$$ {#eq-chi-sq-statistic}
 
 Under the assumption of independence Pearson determined the probability distribution of the $\chi^2$ statistic mathematically based on the notion of "degrees of freedom".
 
@@ -669,7 +671,7 @@ $$
 \begin{align}
   \frac{O_{j,k} - E_{j,k}}{\sqrt{E_{j,k}}} \\ 
 \end{align}
-$$
+$$ {#eq-pearson-residuals}
 
 These terms are called "Pearson residuals". For the handedness data, the Pearson residuals are as follows.
 
@@ -1099,7 +1101,7 @@ $$
   & \text{with } p_k = \text{probability of drawing value } k \\ 
   & \text{and } K = \text{number of distinct values}
 \end{align}
-$$
+$$ {#eq-entropy-finite-distn}
 
 (This definition of $H$ uses a base-2 logarithm $\log_2()$ to match our yes-no question game. The units of this $H$ are the required number of yes-no questions, that is, binary digits, or "bits". $H$ is sometimes defined using the natural logarithm $\log_e()$ yielding a unit called "nats". Changing the base of the logarithm changes $H$ by a multiplicative constant.)
 
@@ -1145,7 +1147,7 @@ $$
   &= H_X \times \sum_{k = 1}^K p_Y(k) \; + \; \sum_{j = 1}^J p_X(j) \times H_Y \\ 
   &= H_X + H_Y
 \end{align}
-$$
+$$ {#eq-entropy-xy-indep}
 
 In words, when $(X, Y)$ are independent, their joint entropy equals the sum of their respective entropies.
 
@@ -1167,13 +1169,13 @@ $$
 \begin{align}
   MI_{X, Y} &= H_X + H_Y - H_{X, Y} \\
 \end{align}
-$$
+$$ {#eq-mutual-info-xy}
 
 $MI$ is non-negative, and is zero when $(X, Y)$ are independent.
 
 ### KL Divergence
 
-Continuing from the discussion of mutual information, suppose that an ill-informed contestant has optimized their questioning strategy for the box $\{ A_1, A_1, B_1, C_1, A_2, A_2, B_2, C_2 \}$, in which letters and numbers occur independently, when in fact the box is $\{ A_1, A_2, B_1, C_2 \}$. The contestant's strategy requires an average of $\frac{5}{2}$ questions to determine the randomly drawn letter-number combination with certainty, but for the actual box one requires just 2 questions. The misinformation about the box from which tickets are randomly drawn costs the contestant, on average, $\frac{1}{2}$ a question more than necessary.
+Continuing from the discussion of mutual information, suppose that an ill-informed contestant has optimized their questioning strategy for the box $\{ A_1, A_1, B_1, C_1, A_2, A_2, B_2, C_2 \}$, in which letters and numbers occur independently, when in fact the box is $\{ A_1, A_2, B_1, C_2 \}$. The contestant's strategy requires an average of $\frac{5}{2}$ questions to determine the randomly drawn letter-number combination with certainty, but for the actual box one requires just 2 questions. The misinformation about the box from which tickets are randomly drawn costs the contestant, on average, $\frac{1}{2}$ per question more than necessary.
 
 Kullback-Liebler divergence is a mathematical representation of this phenomenon. It is defined as follows.
 
@@ -1187,7 +1189,7 @@ $$
   & \text{with } P(x) = \text{reference probability mass function} \\ 
   & \text{and } Q(x) = \text{alternative probability mass function} \\
 \end{align}
-$$
+$$ {#eq-kullback-liebler-divergence}
 
 In the example above, $P(\cdot)$ is the probability of drawing any given letter-number combination from $\{ A_1, A_2, B_1, C_2 \}$, and $Q(\cdot)$ is the corresponding probability for $\{ A_1, A_1, B_1, C_1, A_2, A_2, B_2, C_2 \}$. Here is the tally of the sum defining $KL(P \; || \; Q)$.
 

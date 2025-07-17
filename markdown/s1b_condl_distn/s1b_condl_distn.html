@@ -131,7 +131,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">18:22 Thu 17-Jul-2025</p>
+      <p class="date">20:06 Thu 17-Jul-2025</p>
     </div>
   </div>
   
@@ -161,7 +161,7 @@ window.Quarto = {
 <img src="s1b_condl_distn_files/figure-html/fig-f-mpt-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-f-mpt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Range of son’s height for given height of father
+Figure&nbsp;1: Range of son heights for given height of father
 </figcaption>
 </figure>
 </div>
@@ -200,7 +200,7 @@ Table&nbsp;1: Son stats per father’s height
 <img src="s1b_condl_distn_files/figure-html/fig-s-avg-per-f-mpt-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-s-avg-per-f-mpt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Average of sons’ heights per father’s height
+Figure&nbsp;2: Average of son heights per father’s height
 </figcaption>
 </figure>
 </div>
@@ -211,50 +211,52 @@ Figure&nbsp;2: Average of sons’ heights per father’s height
 <section id="z-scores-transforming-data-values-to-standard-units" class="level2">
 <h2 class="anchored" data-anchor-id="z-scores-transforming-data-values-to-standard-units">Z-Scores: transforming data values to standard units</h2>
 <p>Imagine choosing a father-son pair at random from the entire population and measuring their respective heights. This would be an example of a pair of random variables <span class="math inline">\((X, Y)\)</span>. If we happened to know the average and standard deviation of (father, son) heights, respectively, from the entire population, we could convert the given heights to so-called standard units, or z-scores, as follows.</p>
-<p><span class="math display">\[
+<p><span id="eq-z-score"><span class="math display">\[
 \begin{align}
   Z_x(X) = \frac{X - \mu_x}{\sigma_x} \\
   Z_y(Y) = \frac{Y - \mu_y}{\sigma_y} \\
 \end{align}
-\]</span></p>
+\tag{1}\]</span></span></p>
 <p>Here <span class="math inline">\(\mu\)</span> signifies the average (arithmetic mean) height across the entire population, and <span class="math inline">\(\sigma\)</span> denotes the population standard deviation. Thus <span class="math inline">\(Z_x(X)\)</span> gives the number of standard deviations above or below the population average (expected value).</p>
 <p>Of course we seldom have precise values for these population parameters. In practice we then use sample estimates of the parameters, say <span class="math inline">\(\hat{\mu}\)</span> for the sample average and <span class="math inline">\(\hat{\sigma}\)</span> for the sample standard deviation.</p>
-<p><span class="math display">\[
+<p><span id="eq-sample-moments-2"><span class="math display">\[
 \begin{align}
   \hat{\mu}_x &amp;= \frac{1}{n} \sum_{k = 1}^{n} x_k \\
   \hat{\sigma}_{x}^2 &amp;= \frac{1}{n-1} \sum_{k = 1}^{n} (x_k - \hat{\mu}_x)^2 \\
 \end{align}
-\]</span></p>
+\tag{2}\]</span></span></p>
 <p>So the term “z-score” or “standard unit” is usually understood with respect to the sample distribution.</p>
-<p><span class="math display">\[
+<p><span id="eq-sample-z-score"><span class="math display">\[
 \begin{align}
   \hat{Z}_x(x_k) = \frac{x_k - \hat{\mu}_x}{\hat{\sigma}_x} \\
   \hat{Z}_y(y_k) = \frac{y_k - \hat{\mu}_y}{\hat{\sigma}_y} \\
 \end{align}
-\]</span></p>
+\tag{3}\]</span></span></p>
 <section id="sd-line" class="level3">
 <h3 class="anchored" data-anchor-id="sd-line">SD line</h3>
 <p>The line given by the equation <span class="math inline">\(\hat{Z}_y(y) = \hat{Z}_x(x)\)</span> is called the “SD line”. Here’s an equivalent equation of this line.</p>
-<p><span class="math display">\[
+<p><span id="eq-sd-line"><span class="math display">\[
 \begin{align}
   \text{SD line: } \\
   y &amp; = \mathcal{l}_{SD}(x) \\
   &amp;= \hat{\mu}_y + \frac{\hat{\sigma}_y}{\hat{\sigma}_x} (x - \hat{\mu}_x) \\
 \end{align}
-\]</span></p>
+\tag{4}\]</span></span></p>
 <p>Of all lines <span class="math inline">\(y = \mathcal{l}(x)\)</span> we might draw through the <span class="math inline">\((x_k,y_k)\)</span> data points, the SD line <span class="math inline">\(y = \mathcal{l}_{SD}(x)\)</span> minimizes the sum of squared distances from each <span class="math inline">\((x_k,y_k)\)</span> data point to its orthogonal projection to the line.</p>
 </section>
 <section id="regression-line" class="level3">
 <h3 class="anchored" data-anchor-id="regression-line">Regression line</h3>
 <p>Consider the father’s height as the predictor variable <span class="math inline">\((x)\)</span> and the son’s height as the response variable <span class="math inline">\((y)\)</span>. We now seek a line that minimizes a different metric, namely the distance between the son’s height and its linear prediction based on the father’s height. In statistical parlance we are regressing the son’s height on the father’s height. (Because we have just <em>one</em> predictor variable this is called <em>simple</em> linear regression.) The minimizing line is called the regression line, and has the following equation.</p>
-<p><span class="math display">\[\begin{align}   
+<p><span id="eq-regression-line"><span class="math display">\[
+\begin{align}   
   \text{Regression line: } \\   
 y &amp; = \mathcal{l}_{R}(x) \\   
-&amp;= \hat{\mu}_y + \hat{r}  \frac{\hat{\sigma}_y}{\hat{\sigma}_x} (x - \hat{\mu}_x) \\ \end{align} \]</span></p>
+&amp;= \hat{\mu}_y + \hat{r}  \frac{\hat{\sigma}_y}{\hat{\sigma}_x} (x - \hat{\mu}_x) \\ \end{align}
+\tag{5}\]</span></span></p>
 <p>An equivalent equation is <span class="math inline">\(\hat{Z}_y(y) = \hat{r} \hat{Z}_x(x)\)</span>, where <span class="math inline">\(\hat{r}\)</span> denotes the sample correlation coefficient.</p>
-<p><span class="math display">\[
+<p><span id="eq-sample-cor"><span class="math display">\[
   \hat{r} = \frac{1}{n-1} \sum_{k = 1}^{n} \hat{Z}_x(x_k) \hat{Z}_y(y_k)
-\]</span></p>
+\tag{6}\]</span></span></p>
 <p>Note that <span class="math inline">\(\hat{r}\)</span> is restricted to the closed interval <span class="math inline">\([-1, 1]\)</span>.</p>
 <p>The figure below shows the SD line and the Regression line for the father-son data.</p>
 <div class="cell">
@@ -522,20 +524,20 @@ Figure&nbsp;6: Scatter diagram of (x, y) per group
 <section id="definition" class="level3">
 <h3 class="anchored" data-anchor-id="definition">Definition</h3>
 <p>The pair of random variables <span class="math inline">\((X, Y)\)</span> is defined to be statistically independent if</p>
-<p><span class="math display">\[
+<p><span id="eq-xy-indep"><span class="math display">\[
 \begin{align}
   P(X \in A, \; Y \in B) &amp;= P(X \in A) \times P(Y \in B) \\ \\
   &amp; \text{for all possible sets } A, B \\
 \end{align}
-\]</span></p>
+\tag{7}\]</span></span></p>
 <p>If <span class="math inline">\(P(X \in A) &gt; 0\)</span> then statistical independence implies:</p>
-<p><span class="math display">\[
+<p><span id="eq-indep-y-per-x"><span class="math display">\[
 \begin{align}
   P(Y \in B \; | \; X \in A) &amp;= \frac{P(X \in A, \; Y \in B)}{P(X \in A)} \\
   &amp;= P(Y \in B) \\ \\
   &amp; \text{whenever } P(X \in A) &gt; 0
 \end{align}
-\]</span></p>
+\tag{8}\]</span></span></p>
 <p>That is, the conditional probability of random variable <span class="math inline">\(Y\)</span> belonging to set <span class="math inline">\(B\)</span> given that <span class="math inline">\(X\)</span> belongs to set <span class="math inline">\(A\)</span> is equal to the unconditional probability that <span class="math inline">\(Y\)</span> belongs to set <span class="math inline">\(B\)</span>. It follows that the conditional expectation <span class="math inline">\(E(Y | X)\)</span> does not depend on <span class="math inline">\(X\)</span>, and thus equals the constant <span class="math inline">\(E(Y)\)</span>, the unconditional expected value of <span class="math inline">\(Y\)</span>.</p>
 </section>
 <section id="the-case-when-x-and-y-are-categorical-variables" class="level3">
@@ -625,23 +627,23 @@ Table&nbsp;7: XXX
 </div>
 <p>If handedness and sex were independent, we should see similar percentages of males and females for each type of handedness. The above table indeed shows similar percentages, but are they close enough to conclude independence?</p>
 <p>In the early 1900’s <a href="https://en.wikipedia.org/wiki/Karl_Pearson">Karl Pearson</a> developed the chi-squared test of independence of categorical variables. The reasoning is as follows. Suppose we accept as population estimates the data percentages of handedness (across males and females), and we also accept the somewhat different percentages of males and females in the sample. These so-called <em>marginal</em> distributions are not in dispute. What we’re investigating concerns the cell percentages, combinations of handedness and sex. Under the assumption of independence we would expect each cell percentage in the data to be close to the product of the handedness percentage and the male or female percentage. That product is an <em>expected</em> cell percentage (assuming independence). Multiplying the expected cell percentage by the by the sample size <span class="math inline">\(n\)</span> (number of people in the sample) gives an expected cell count. Pearson’s test of independence is based on the following chi-squared statistic.</p>
-<p><span class="math display">\[
+<p><span id="eq-chi-sq-statistic"><span class="math display">\[
 \begin{align}
-  \chi^2 &amp;= \sum_{j = 1}^J {\sum_{k = 1}^K {\frac{(O_{j,k} - E_{j,k})^2}{E_{j,k}}}} \\
+  \chi^2 &amp;= \sum_{j = 1}^J {\sum_{k = 1}^K {\frac{(O_{j,k} - E_{j,k})^2}{E_{j,k}}}} \\ \\
   O_{j,k} &amp;= \text{observed count for cell } \{j, k\} \\
   E_{j,k} &amp;= \text{expected count for cell } \{j, k\} \\
 \end{align}
-\]</span></p>
+\tag{9}\]</span></span></p>
 <p>Under the assumption of independence Pearson determined the probability distribution of the <span class="math inline">\(\chi^2\)</span> statistic mathematically based on the notion of “degrees of freedom”.</p>
 <p>That is, for each row-index <span class="math inline">\(j\)</span> the expected counts summed across <span class="math inline">\(k\)</span> are constrained to match the corresponding sum of the observed values (the sum for row <span class="math inline">\(j\)</span>). Similarly, for each column-index <span class="math inline">\(k\)</span> the expected counts summed across <span class="math inline">\(j\)</span> are constrained to match the corresponding sum of the observed values (the sum for column <span class="math inline">\(k\)</span>). Given these fixed marginal sums, cell values can vary with <span class="math inline">\((J-1) \times (K-1)\)</span> degrees of freedom.</p>
 <p>Under the assumption of independence and for a large sample size <span class="math inline">\(n\)</span>, the chi-squared statistic approximately follows the distribution of the sum of squared independent standard normal variables, the number of independent normal variables matching the degrees of freedom.</p>
 <p>For the handedness data the degrees of freedom equals 2, and the value of the statistic is 11.8, which is beyond the 99% quantile of the corresponding chi-squared distribution (and thus yields a “p-value” of less than 1%). This would be regarded as strong evidence against the assumption of independence.</p>
 <p>The chi-squared statistic is the sum of squared terms of the following form.</p>
-<p><span class="math display">\[
+<p><span id="eq-pearson-residuals"><span class="math display">\[
 \begin{align}
   \frac{O_{j,k} - E_{j,k}}{\sqrt{E_{j,k}}} \\
 \end{align}
-\]</span></p>
+\tag{10}\]</span></span></p>
 <p>These terms are called “Pearson residuals”. For the handedness data, the Pearson residuals are as follows.</p>
 <div class="cell">
 <div id="tbl-hs-resid-wide" class="cell quarto-float quarto-figure quarto-figure-center anchored">
@@ -938,7 +940,7 @@ Table&nbsp;12: Percent of applications per department
 <section id="definition-1" class="level3">
 <h3 class="anchored" data-anchor-id="definition-1">Definition</h3>
 <p>The mathematical definition of entropy (usually denoted <span class="math inline">\(H\)</span>) gives a lower bound on the average number of required questions that follow an optimal strategy. For a finite probability distribution <span class="math inline">\(p_{\bullet} = (p_1, p_2, \ldots, p_K)\)</span> the mathematical definition is as follows.</p>
-<p><span class="math display">\[
+<p><span id="eq-entropy-finite-distn"><span class="math display">\[
 \begin{align}
   H(p_1, p_2, \ldots, p_K) \\
   &amp;= \sum_{k = 1}^K { p_k \times \log_2(\frac{1}{p_k}) } \\
@@ -947,7 +949,7 @@ Table&nbsp;12: Percent of applications per department
   &amp; \text{with } p_k = \text{probability of drawing value } k \\
   &amp; \text{and } K = \text{number of distinct values}
 \end{align}
-\]</span></p>
+\tag{11}\]</span></span></p>
 <p>(This definition of <span class="math inline">\(H\)</span> uses a base-2 logarithm <span class="math inline">\(\log_2()\)</span> to match our yes-no question game. The units of this <span class="math inline">\(H\)</span> are the required number of yes-no questions, that is, binary digits, or “bits”. <span class="math inline">\(H\)</span> is sometimes defined using the natural logarithm <span class="math inline">\(\log_e()\)</span> yielding a unit called “nats”. Changing the base of the logarithm changes <span class="math inline">\(H\)</span> by a multiplicative constant.)</p>
 <p>For the first box in the game above, we have a single value <span class="math inline">\(A\)</span>, which is thus drawn with probability one, which yields <span class="math inline">\(H = 0\)</span>.</p>
 <p>For the second box we have two values, each drawn with probability <span class="math inline">\(\frac{1}{2}\)</span>, so <span class="math inline">\(H = 1\)</span>.</p>
@@ -972,7 +974,7 @@ Table&nbsp;12: Percent of applications per department
 \end{align}
 \]</span></p>
 <p>The entropy of the distribution of <span class="math inline">\((X, Y)\)</span> is:</p>
-<p><span class="math display">\[
+<p><span id="eq-entropy-xy-indep"><span class="math display">\[
 \begin{align}
   H_{X, Y} &amp;= H(\; \{ p_{X, Y}(j, k) \} \;) \\
   &amp;= - \sum_{j = 1}^J{\sum_{k = 1}^K {p_{X, Y}(j,k) \times log_2(\; p_{X, Y} (j,k) \;)}} \\
@@ -981,7 +983,7 @@ Table&nbsp;12: Percent of applications per department
   &amp;= H_X \times \sum_{k = 1}^K p_Y(k) \; + \; \sum_{j = 1}^J p_X(j) \times H_Y \\
   &amp;= H_X + H_Y
 \end{align}
-\]</span></p>
+\tag{12}\]</span></span></p>
 <p>In words, when <span class="math inline">\((X, Y)\)</span> are independent, their joint entropy equals the sum of their respective entropies.</p>
 </section>
 <section id="mutual-information" class="level3">
@@ -992,18 +994,18 @@ Table&nbsp;12: Percent of applications per department
 <p>Let’s continue to suppose that <span class="math inline">\((X, Y)\)</span> are dependent. An ill-informed contestant might adopt the strategy optimal for the independent case, attacking one variable at a time. But this strategy would no longer be optimal. There would now be instances in which knowledge of one variable would reduce the average number of additional questions required to determine the value of the other variable. Thus the joint entropy <span class="math inline">\(H_{X, Y}\)</span> never exceeds the entropy <span class="math inline">\(H_X + H_Y\)</span> of the independent case.</p>
 <p>The reduction in entropy when the distribution of <span class="math inline">\((X, Y)\)</span> is changed from independent to dependent (while retaining the original marginal distributions) goes by different names, including “information gain” and (less ambiguously) “mutual information”.</p>
 <p>We define mutual information <span class="math inline">\((MI)\)</span> as this reduction.</p>
-<p><span class="math display">\[
+<p><span id="eq-mutual-info-xy"><span class="math display">\[
 \begin{align}
   MI_{X, Y} &amp;= H_X + H_Y - H_{X, Y} \\
 \end{align}
-\]</span></p>
+\tag{13}\]</span></span></p>
 <p><span class="math inline">\(MI\)</span> is non-negative, and is zero when <span class="math inline">\((X, Y)\)</span> are independent.</p>
 </section>
 <section id="kl-divergence" class="level3">
 <h3 class="anchored" data-anchor-id="kl-divergence">KL Divergence</h3>
-<p>Continuing from the discussion of mutual information, suppose that an ill-informed contestant has optimized their questioning strategy for the box <span class="math inline">\(\{ A_1, A_1, B_1, C_1, A_2, A_2, B_2, C_2 \}\)</span>, in which letters and numbers occur independently, when in fact the box is <span class="math inline">\(\{ A_1, A_2, B_1, C_2 \}\)</span>. The contestant’s strategy requires an average of <span class="math inline">\(\frac{5}{2}\)</span> questions to determine the randomly drawn letter-number combination with certainty, but for the actual box one requires just 2 questions. The misinformation about the box from which tickets are randomly drawn costs the contestant, on average, <span class="math inline">\(\frac{1}{2}\)</span> a question more than necessary.</p>
+<p>Continuing from the discussion of mutual information, suppose that an ill-informed contestant has optimized their questioning strategy for the box <span class="math inline">\(\{ A_1, A_1, B_1, C_1, A_2, A_2, B_2, C_2 \}\)</span>, in which letters and numbers occur independently, when in fact the box is <span class="math inline">\(\{ A_1, A_2, B_1, C_2 \}\)</span>. The contestant’s strategy requires an average of <span class="math inline">\(\frac{5}{2}\)</span> questions to determine the randomly drawn letter-number combination with certainty, but for the actual box one requires just 2 questions. The misinformation about the box from which tickets are randomly drawn costs the contestant, on average, <span class="math inline">\(\frac{1}{2}\)</span> per question more than necessary.</p>
 <p>Kullback-Liebler divergence is a mathematical representation of this phenomenon. It is defined as follows.</p>
-<p><span class="math display">\[
+<p><span id="eq-kullback-liebler-divergence"><span class="math display">\[
 \begin{align}
   KL(P \; || \; Q) \\
   &amp;= E_P \left( \log_2 \left( \frac{ 1 }{ Q(X) } \right) \right) - E_P \left( \log_2 \left( \frac{ 1 }{ P(X) } \right) \right) \\  
@@ -1013,7 +1015,7 @@ Table&nbsp;12: Percent of applications per department
   &amp; \text{with } P(x) = \text{reference probability mass function} \\
   &amp; \text{and } Q(x) = \text{alternative probability mass function} \\
 \end{align}
-\]</span></p>
+\tag{14}\]</span></span></p>
 <p>In the example above, <span class="math inline">\(P(\cdot)\)</span> is the probability of drawing any given letter-number combination from <span class="math inline">\(\{ A_1, A_2, B_1, C_2 \}\)</span>, and <span class="math inline">\(Q(\cdot)\)</span> is the corresponding probability for <span class="math inline">\(\{ A_1, A_1, B_1, C_1, A_2, A_2, B_2, C_2 \}\)</span>. Here is the tally of the sum defining <span class="math inline">\(KL(P \; || \; Q)\)</span>.</p>
 <div class="cell">
 <div id="tbl-kl-tbl" class="cell quarto-float quarto-figure quarto-figure-center anchored">
