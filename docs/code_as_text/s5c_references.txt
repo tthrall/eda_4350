@@ -1,0 +1,281 @@
+
+@book{box1970time,
+  title={Time Series Analysis: Forecasting and Control},
+  author={Box, G.E.P. and Jenkins, G.M.},
+  isbn={9780816210947},
+  lccn={lc77079534},
+  series={Holden-Day series in time series analysis and digital processing},
+  url={https://books.google.co.uk/books?id=5BVfnXaq03oC},
+  year={1970},
+  publisher={Holden-Day}
+}
+
+@book{brillinger2001,
+author = {Brillinger, David R.},
+title = {Time series: data analysis and theory},
+year = {2001},
+isbn = {0898715016},
+publisher = {Society for Industrial and Applied Mathematics},
+address = {USA},
+abstract = {This book will be most useful to applied mathematicians, communication engineers, signal processors, statisticians, and time series researchers, both applied and theoretical. Readers should have some background in complex function theory and matrix algebra and should have successfully completed the equivalent of an upper division course in statistics.}
+}
+
+@book{hamming1989,
+author = {Hamming, R. W.},
+title = {Digital filters (3rd ed.)},
+year = {1989},
+isbn = {0132128126},
+publisher = {Prentice Hall International (UK) Ltd.},
+address = {GBR}
+}
+
+@book{hyndman2021forecasting,
+  title={Forecasting: Principles and Practice},
+  author={Hyndman, R.J. and Athanasopoulos, G.},
+  isbn={9780987507136},
+  url={https://otexts.com/fpp3/},
+  year={2021},
+  publisher={OTexts}
+}
+
+@book{shumway2025,
+	title = {Time Series Analysis and Its Applications},
+	author = {Shumway and Stoffer},
+	year = {2025},
+	date = {2025},
+	publisher = {Springer Nature Switzerland},
+	doi = {10.1007/978-3-031-70584-7},
+	url = {http://dx.doi.org/10.1007/978-3-031-70584-7},
+	langid = {en}
+}
+
+@book{whittle1951hypothesis,
+  title={Hypothesis Testing in Time Series Analysis},
+  author={Whittle, P.},
+  series={Statistics Upsala},
+  url={https://books.google.co.uk/books?id=AaIzvQEACAAJ},
+  year={1951},
+  publisher={Almqvist \& Wiksells}
+}
+
+@article{astsa,
+	title = {astsa: Applied Statistical Time Series Analysis},
+	author = {Stoffer, David},
+	year = {2025},
+	date = {2025},
+	doi = {10.32614/CRAN.package.astsa},
+	url = {https://CRAN.R-project.org/package=astsa}
+}
+
+@article{brillinger1993digitalrainbow,
+author = {Brillinger, David R.},
+title = {The digital rainbow: Some history and applications of numerical spectrum analysis},
+journal = {Canadian Journal of Statistics},
+volume = {21},
+number = {1},
+pages = {1-19},
+keywords = {Fourier analysis, inverse problem, nuclear magnetic resonance, periodogram, seismology, spectrum, time series},
+doi = {https://doi.org/10.2307/3315653},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.2307/3315653},
+eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.2307/3315653},
+abstract = {Abstract Statistical concepts and techniques are basic to scientific investigation. One concept that enjoys both a theoretical and a physical existence is the spectrum. A spectrum may be described as a display of the intensity or variability of a phenomenon versus period or frequency. Spectra are particularly useful in the study of systems subject to resonance, but have many other uses. This paper begins with some of the historical development of the field, describing a sequence of contributions by Michelson, Schuster, Einstein, Fisher, Bartlett, Tukey, and Whittle. The paper next presents collaborative applications to the study of the free oscillations of the earth, to the dispersion of seismic surface waves and to nuclear-magnetic-resonance spectroscopy. Finally, there is mention of open problems and opinions on future directions.},
+year = {1993}
+}
+
+@article{datasets,
+	title = {R: A Language and Environment for Statistical Computing},
+	author = {, R Core Team},
+	year = {2025},
+	date = {2025},
+	url = {https://www.R-project.org/}
+}
+
+@article{FFT_Wikipedia_2025,
+  title = {Fast Fourier transform | Wikipedia},
+	url = {https://en.wikipedia.org/wiki/Fast_Fourier_transform},
+  journal = {Wikipedia},
+  publisher = {Wikimedia Foundation},
+  year = {2025},
+  month = {Jul}
+}
+
+@article{hyndman2002state,
+  title={A state space framework for automatic forecasting using exponential smoothing methods},
+  author={Hyndman, Rob J and Koehler, Anne B and Snyder, Ralph D and Grose, Simone},
+  journal={International Journal of forecasting},
+  volume={18},
+  number={3},
+  pages={439--454},
+  year={2002},
+  publisher={Elsevier}
+}
+
+@article{holt1957forecasting,
+title = {Forecasting seasonals and trends by exponentially weighted moving averages},
+journal = {International Journal of Forecasting},
+volume = {20},
+number = {1},
+pages = {5-10},
+year = {2004},
+issn = {0169-2070},
+doi = {https://doi.org/10.1016/j.ijforecast.2003.09.015},
+url = {https://www.sciencedirect.com/science/article/pii/S0169207003001134},
+author = {Charles C. Holt},
+keywords = {Exponential smoothing, Forecasting, Local seasonals, Local trends},
+abstract = {The paper provides a systematic development of the forecasting expressions for exponential weighted moving averages. Methods for series with no trend, or additive or multiplicative trend are examined. Similarly, the methods cover non-seasonal, and seasonal series with additive or multiplicative error structures. The paper is a reprinted version of the 1957 report to the Office of Naval Research (ONR 52) and is being published here to provide greater accessibility.}
+}
+
+@article{hwwntest,
+	title = {hwwntest: Tests of White Noise using Wavelets},
+	author = {Savchev, Delyan and Nason, Guy},
+	year = {2023},
+	date = {2023},
+	doi = {10.32614/CRAN.package.hwwntest},
+	url = {https://CRAN.R-project.org/package=hwwntest}
+}
+
+@article{ljung1978,
+	title = {On a measure of lack of fit in time series models},
+	author = {Ljung, G. M. and Box, G. E. P.},
+	year = {1978},
+	month = {08},
+	date = {1978-08-01},
+	journal = {Biometrika},
+	pages = {297--303},
+	volume = {65},
+	number = {2},
+	doi = {10.1093/biomet/65.2.297},
+	url = {http://dx.doi.org/10.1093/biomet/65.2.297},
+	langid = {en}
+}
+
+@article{MASS,
+	title = {Modern Applied Statistics with S},
+	author = {Venables, W. N. and Ripley, B. D.},
+	year = {2002},
+	date = {2002},
+	url = {https://www.stats.ox.ac.uk/pub/MASS4/}
+}
+
+@article{Newton1672spectrum,
+author = {Newton, Isaac },
+title = {A letter of Mr. Isaac Newton, Professor of the Mathematicks in the University of Cambridge; containing his new theory about light and colors: sent by the author to the publisher from Cambridge, Febr. 6. 1671/72; in order to be communicated to the R. Society},
+journal = {Philosophical Transactions of the Royal Society of London},
+volume = {6},
+number = {80},
+pages = {3075-3087},
+year = {1672},
+doi = {10.1098/rstl.1671.0072},
+URL = {https://royalsocietypublishing.org/doi/abs/10.1098/rstl.1671.0072},
+eprint = {https://royalsocietypublishing.org/doi/pdf/10.1098/rstl.1671.0072},
+abstract = { Sir, To perform my late promise to you, I shall without further ceremony acquaint you, that in the beginning of the Year 1666 (at which time I applyed my self to the grinding of Optick glasses of other figures than Spherical,) I procured me a Triangular glass-Prisme, to try therewith the celebrated Phœnomena of Colours. }
+}
+
+@article{peng2020timeseries,
+	title = {A Very Short Course on Time Series Analysis},
+	author = {Roger D. Peng},
+	year = {2020},
+	date = {2025},
+	url = {https://bookdown.org/rdpeng/timeseriesbook/}
+}
+
+@article{ryantibs2023timeseries,
+	title = {Introduction to Time Series: Fall 2023},
+	author = {Ryan Tibshirani},
+	year = {2023},
+	date = {2025},
+	url = {https://www.stat.berkeley.edu/~ryantibs/timeseries-f23/}
+}
+
+@article{schuster1898,
+  title     = "On the investigation of hidden periodicities with application to
+               a supposed 26 day period of meteorological phenomena",
+  author    = "Schuster, Arthur",
+  abstract  = "1. Obvious and hidden periodicities. A variable quantity may
+               show periodic changes which become obvious as soon as a
+               sufficient record has been obtained; such are the semi‐diurnal
+               changes of the tides, or the eleven years recurrence of sunspot
+               maxima. We may call these obvious periodicities. Most often,
+               however, small periodic variations are hidden behind irregular
+               fluctuations, and their investigation then becomes a matter of
+               considerable difficulty.",
+  journal   = "Terr. Magn.",
+  publisher = "American Geophysical Union (AGU)",
+  volume    =  3,
+  number    =  1,
+  pages     = "13--41",
+  month     =  mar,
+  year      =  1898,
+  copyright = "http://onlinelibrary.wiley.com/termsAndConditions\#vor",
+  language  = "en"
+}
+
+@article{shumway1988,
+	title = {Modeling mortality fluctuations in los angeles as functions of pollution and weather effects},
+	author = {Shumway, R.H. and Azari, A.S. and Pawitan, Y.},
+	year = {1988},
+	month = {04},
+	date = {1988-04},
+	journal = {Environmental Research},
+	pages = {224--241},
+	volume = {45},
+	number = {2},
+	doi = {10.1016/s0013-9351(88)80049-5},
+	url = {http://dx.doi.org/10.1016/S0013-9351(88)80049-5},
+	langid = {en}
+}
+
+@article{stats,
+	title = {R: A Language and Environment for Statistical Computing},
+	author = {, R Core Team},
+	year = {2025},
+	date = {2025},
+	url = {https://www.R-project.org/}
+}
+
+@article{thomson1977,
+	title = {Spectrum Estimation Techniques for Characterization and Development of WT4 Waveguide-I},
+	author = {Thomson, David J.},
+	year = {1977},
+	month = {11},
+	date = {1977-11},
+	journal = {Bell System Technical Journal},
+	pages = {1769--1815},
+	volume = {56},
+	number = {9},
+	doi = {10.1002/j.1538-7305.1977.tb00591.x},
+	url = {http://dx.doi.org/10.1002/j.1538-7305.1977.tb00591.x},
+	langid = {en}
+}
+
+@article{wiener1930GHA,
+  title     = "Generalized harmonic analysis",
+  author    = "Wiener, Norbert",
+  journal   = "Acta Math.",
+  publisher = "International Press of Boston",
+  volume    =  55,
+  number    =  0,
+  pages     = "117--258",
+  year      =  1930,
+  language  = "en"
+}
+
+@article{winters1960forecasting,
+author = {Winters, Peter R.},
+title = {Forecasting Sales by Exponentially Weighted Moving Averages},
+year = {1960},
+issue_date = {April 1960},
+publisher = {INFORMS},
+address = {Linthicum, MD, USA},
+volume = {6},
+number = {3},
+issn = {0025-1909},
+url = {https://doi.org/10.1287/mnsc.6.3.324},
+doi = {10.1287/mnsc.6.3.324},
+abstract = {The growing use of computers for mechanized inventory control and production planning has brought with it the need for explicit forecasts of sales and usage for individual products and materials. These forecasts must be made on a routine basis for thousands of products, so that they must be made quickly, and, both in terms of computing time and information storage, cheaply; they should be responsive to changing conditions. The paper presents a method of forecasting sales which has these desirable characteristics, and which in terms of ability to forecast compares favorably with other, more traditional methods. Several models of the exponential forecasting system are presented, along with several examples of application.},
+journal = {Manage. Sci.},
+month = apr,
+pages = {324–342},
+numpages = {19}
+}
+

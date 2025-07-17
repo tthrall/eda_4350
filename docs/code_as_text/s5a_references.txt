@@ -1,0 +1,83 @@
+
+@book{shumway2025,
+	title = {Time Series Analysis and Its Applications},
+	author = {Shumway, Robert H. and Stoffer, David S.},
+	year = {2025},
+	date = {2025},
+	publisher = {Springer Nature Switzerland},
+	doi = {10.1007/978-3-031-70584-7},
+	url = {http://dx.doi.org/10.1007/978-3-031-70584-7},
+	langid = {en}
+}
+
+@article{astsa,
+	title = {astsa: Applied Statistical Time Series Analysis},
+	author = {Stoffer, David},
+	year = {2025},
+	date = {2025},
+	doi = {10.32614/CRAN.package.astsa},
+	url = {https://CRAN.R-project.org/package=astsa}
+}
+
+@article{hwwntest,
+	title = {hwwntest: Tests of White Noise using Wavelets},
+	author = {Savchev, Delyan and Nason, Guy},
+	year = {2023},
+	date = {2023},
+	doi = {10.32614/CRAN.package.hwwntest},
+	url = {https://CRAN.R-project.org/package=hwwntest}
+}
+
+@article{stats,
+	title = {R: A Language and Environment for Statistical Computing},
+	author = {, R Core Team},
+	year = {2025},
+	date = {2025},
+	url = {https://www.R-project.org/}
+}
+
+@article{thomson1977,
+	title = {Spectrum Estimation Techniques for Characterization and Development of WT4 Waveguide-I},
+	author = {Thomson, David J.},
+	year = {1977},
+	month = {11},
+	date = {1977-11},
+	journal = {Bell System Technical Journal},
+	pages = {1769--1815},
+	volume = {56},
+	number = {9},
+	doi = {10.1002/j.1538-7305.1977.tb00591.x},
+	url = {http://dx.doi.org/10.1002/j.1538-7305.1977.tb00591.x},
+	langid = {en}
+}
+
+@article{datasets,
+	title = {R: A Language and Environment for Statistical Computing},
+	author = {, R Core Team},
+	year = {2025},
+	date = {2025},
+	url = {https://www.R-project.org/}
+}
+
+@article{MASS,
+	title = {Modern Applied Statistics with S},
+	author = {Venables, W. N. and Ripley, B. D.},
+	year = {2002},
+	date = {2002},
+	url = {https://www.stats.ox.ac.uk/pub/MASS4/}
+}
+
+@article{ljung1978,
+	title = {On a measure of lack of fit in time series models},
+	author = {Ljung, G. M. and Box, G. E. P.},
+	year = {1978},
+	month = {08},
+	date = {1978-08-01},
+	journal = {Biometrika},
+	pages = {297--303},
+	volume = {65},
+	number = {2},
+	doi = {10.1093/biomet/65.2.297},
+	url = {http://dx.doi.org/10.1093/biomet/65.2.297},
+	langid = {en}
+}
