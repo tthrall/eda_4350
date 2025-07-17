@@ -3,24 +3,29 @@ title: "Conditional Distributions"
 subtitle: "Part 1, session 1b of Data Mining Intro"
 author: 
   - name: "Send comments to: Tony T (adthral)"
-date: "`r format(Sys.time(), '%Y-%m-%d %H:%M', usetz = TRUE)`"
+date: last-modified
+date-format: HH:mm ddd D-MMM-YYYY
 editor: source
-output: 
-  html_document:
-    toc: true
-    df_print: paged
-    mathjax: default
-  word_document:
-    toc: true
-    df_print: tibble
-  pdf_document:
-    toc: true
-    df_print: tibble
+toc: true
+toc-depth: 3
+format:
+  html:
+    toc_float: true
+    code-fold: true
+    code-summary: "Show the code"
+  pdf: default
+  docx: default
+params:
+  file_id: "s1b"
+  file_prefix: "s1b_condl_distn"
 abstract: 
   "Review the concepts of conditional distribution, conditional expectation, simple linear regression, statistical independence, entropy, and KL divergence."
 ---
 
-```{r setup, include=FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
   echo    = FALSE, 
   error   = FALSE, 
@@ -29,7 +34,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r libraries}
+```{r}
+#| label: CRAN-libraries
+
 library(assertthat)
 library(here)
 library(latex2exp)
@@ -39,7 +46,9 @@ library(UsingR)
 
 ```
 
-```{r local_source}
+```{r}
+#| label: local-source
+
 # previously used functions to load small data sets
 
 # source(here("code", "handedness_data.R"))
@@ -50,16 +59,20 @@ library(UsingR)
 
 ## Heights of Fathers and Sons
 
-```{r father_son_ht}
+```{r}
+#| label: father-son-ht
+
 father_son_ht <- UsingR::father.son |> 
-  as_tibble() |> 
-  rename(father = fheight, son = sheight)
+  tibble::as_tibble() |> 
+  dplyr::rename(father = fheight, son = sheight)
 ```
 
-```{r fs_moments}
+```{r}
+#| label: fs-moments
+
 # vector of first and second central moments
 fs_moments <- father_son_ht |> 
-  summarise(
+  dplyr::summarise(
     f_avg = mean(father, na.rm = TRUE), 
     s_avg = mean(son, na.rm = TRUE), 
     f_sd  = sd(father, na.rm = TRUE), 
@@ -69,12 +82,14 @@ fs_moments <- father_son_ht |>
   as.vector() |> list_simplify()
 ```
 
-```{r f_mpt}
+```{r}
+#| label: f-mpt
+
 # construct additional variables
 # f_ivl: successive 2-inch intervals of father heights
 # f_mpt: mid-point of each interval
 father_son_ht <- father_son_ht |> 
-  mutate(
+  dplyr::mutate(
     f_ivl = cut(father, seq(58, 76, 2)), 
     f_mpt = (2 * ceiling(father/2)) - 1
   )
@@ -82,18 +97,27 @@ father_son_ht <- father_son_ht |>
 
 The box-plot below can be regarded as the (sample) *conditional distribution* of sons' heights grouped by the height (rounded to the nearest odd inch) of each son's father.
 
-```{r g_f_mpt}
+```{r}
+#| label: fig-f-mpt
+#| fig-cap: "Range of son's height for given height of father"
+
 g_f_mpt <- father_son_ht |> 
-  filter(! is.na(f_mpt)) |> 
-  ggplot(mapping = aes(
+  dplyr::filter(! is.na(f_mpt)) |> 
+  ggplot2::ggplot(mapping = aes(
     x = f_mpt |> as_factor(), 
     y = son
   )) + 
-  geom_boxplot()
+  ggplot2::geom_boxplot() + 
+  ggplot2::labs(title = "Son heights per father's height") + 
+  ggplot2::xlab("father's height rounded to nearest odd inch") + 
+  ggplot2::ylab("son's height in inches")
 g_f_mpt
 ```
 
-```{r s_stats_per_f_mpt}
+```{r}
+#| label: tbl-s-stats-per-f-mpt
+#| tbl-cap: "Son stats per father's height"
+
 # son statistics per f_ivl
 s_stats_per_f_mpt <- father_son_ht |>    
   group_by(f_ivl, f_mpt) |>    
@@ -112,25 +136,30 @@ The last column in the table above is the sample average of the son's height giv
 
 The figure below represents these sample conditional averages per father's height as diamonds, whose area is roughly proportional to the number of sons in each group. The figure includes a reference line showing the father's (midpoint) height plus 1 inch, corresponding to our previous calculation of an average son-minus father difference.
 
-```{r g_s_avg_per_f_mpt}
-g_s_avg_per_f_mpt <- s_stats_per_f_mpt |> ggplot(mapping = aes(
+```{r}
+#| label: fig-s-avg-per-f-mpt
+#| fig-cap: "Average of sons' heights per father's height"
+
+g_s_avg_per_f_mpt <- s_stats_per_f_mpt |> 
+  ggplot2::ggplot(mapping = aes(
   x = f_mpt, 
   y = s_avg, 
 )) + 
-  geom_line() + 
-  geom_count(
+  ggplot2::geom_line() + 
+  ggplot2::geom_count(
     shape = 23, 
     size = s_stats_per_f_mpt$s_count |> sqrt()) + 
-  geom_abline(
+  ggplot2::geom_abline(
     intercept = 1, 
     slope = 1, 
     linetype = "dotted", 
     linewidth = 2, 
     color = "red") + 
-  labs(
+  ggplot2::labs(
     title = "Average of sons' heights per father's height", 
-    subtitle = "(dotted red line shows father's height + 1 inch)"
-  )
+    subtitle = "(dotted red line shows father's height + 1 inch)")  + 
+  ggplot2::xlab("father's height rounded to nearest odd inch") + 
+  ggplot2::ylab("average of son heights in inches")
 g_s_avg_per_f_mpt
 ```
 
@@ -200,13 +229,19 @@ Note that $\hat{r}$ is restricted to the closed interval $[-1, 1]$.
 
 The figure below shows the SD line and the Regression line for the father-son data.
 
-```{r g_fs_points}
+```{r}
+#| label: fig-fs-points
+#| fig-cap: "XXX"
+
 g_fs_points <- father_son_ht |> 
   ggplot(mapping = aes(x = father, y = son)) + 
   geom_point()
 ```
 
-```{r g_fs_lines}
+```{r}
+#| label: fig-fs-lines
+#| fig-cap: "Father-son heights: regression line and SD line"
+
 SD_slope = fs_moments[["s_sd"]] / fs_moments[["f_sd"]]
 R_slope  = fs_moments[["r"]] * SD_slope
 
@@ -231,7 +266,7 @@ g_fs_lines <- g_fs_points +
   ) + 
   labs(
     title = "Father-son heights", 
-    subtitle = "SD line (dotted red), Regression line (solid blue)"
+    subtitle = "Regression line (solid blue), SD line (dotted red)"
   )
 g_fs_lines
 ```
@@ -240,7 +275,9 @@ The two lines intersect at the "point of averages", that is, at $(\hat{\mu}_x, \
 
 The following figure and table summarize the regression "residuals", that is the son's height $(y)$ minus the height $(\hat{y})$ predicted by the linear model.
 
-```{r lm_fs}
+```{r}
+#| label: lm-fs
+
 # call functon stats::lm() to fit a linear model
 lm_fs <- lm(
   data = father_son_ht, 
@@ -249,7 +286,9 @@ lm_fs <- lm(
 lm_fs
 ```
 
-```{r fs_residuals}
+```{r}
+#| label: fs-residuals
+
 # join fitted values and regression residuals to original data
 fs_residuals <- father_son_ht |> 
   mutate(
@@ -258,7 +297,10 @@ fs_residuals <- father_son_ht |>
   )
 ```
 
-```{r g_fs_residuals}
+```{r}
+#| label: fig-fs-residuals
+#| fig-cap: "Variation of son heights from regression line"
+
 # histogram of residuals
 g_fs_residuals <- fs_residuals |> 
   ggplot(mapping = aes(x = residual)) + 
@@ -270,31 +312,38 @@ g_fs_residuals <- fs_residuals |>
 g_fs_residuals
 ```
 
-```{r fs_residuals__smy}
+```{r}
+#| label: tbl-fs-residuals
+#| tbl-cap: "Stats: son's height minus predicted height"
+
 # summarize distribution of residuals
 fs_residuals$residual |> summary() |> print(digits = 1)
 ```
 
 There are many ways to examine how well a model represents the data. Here's a scatter diagram of the value predicted (fitted) by the model versus the son's actual height.
 
-```{r g_resid_son}
+```{r}
+#| label: fig-resid-son
+#| fig-cap: "Model-fitted value versus son's height"
+
 # scatter diagram with (x, y) = (son, fitted)
 g_resid_son <- fs_residuals |> 
-  ggplot(mapping = aes(
+  ggplot2::ggplot(mapping = aes(
     x = son, y = fitted_value
   )) + 
-  geom_point() + 
-  geom_abline(
+  ggplot2::geom_point() + 
+  ggplot2::geom_abline(
     intercept = 0, 
     slope = 1, 
     linetype = "dotted", 
     linewidth = 2, 
     colour = "red"
   ) + 
-  labs(
+  ggplot2::labs(
     title = "Model-fitted value versus son's height", 
-    subtitle = "(reference line: fitted = son)"
-  )
+    subtitle = "(reference line: fitted = son)") + 
+  ggplot2::xlab("son's height in inches") + 
+  ggplot2::ylab("son's height estimated from father's height")
 g_resid_son
 ```
 
@@ -304,7 +353,10 @@ We see that the sons who are extremely short or extremely tall are not represent
 
 The father-son data set is well approximated by a bivariate normal distribution. The parameter estimates are as follows.
 
-```{r fs_moments__show}
+```{r}
+#| label: tbl-fs-moments
+#| tbl-cap: "Father-son heights: average, sd, and correlation"
+
 fs_moments |> print(digits = 1)
 ```
 
@@ -316,7 +368,9 @@ Among the mathematical properties of normal distributions is the fact that if th
 
 Team up with a classmate and load the diamond data provided by R package ggplot2. Of the 10 variables (data columns) choose one of them as the response variable $(y)$, and another as a predictor variable $(x)$. Construct a scatter diagram of $(x, y)$ data points. Calculate the equation of the regression line. Is the predictor variable useful, or irrelevant? The R package stats includes potentially helpful functions including a linear regression function, `stats::lm()`, and a local polynomial regression function `stats::loess()`. Take 20 minutes to prepare to report out to the class.
 
-```{r diamonds}
+```{r}
+#| label: diamonds
+
 # make your own copy of the diamond data
 diamonds <- ggplot2::diamonds
 ```
@@ -325,7 +379,9 @@ diamonds <- ggplot2::diamonds
 
 The R package `stats` contains functions that generate pseudo-random numbers following normal and other well-known statistical distributions. Here are some functions for simulating independent instances of a continuous or discrete random variable. In the table below, the "value" column distinguishes the function output as either continuous (`dbl`) or discrete (`int`).
 
-```{r rng_tbl}
+```{r}
+#| label: rng-tbl
+
 rng_tbl <- tibble::tribble(
     ~fn, ~value, ~distribution,
     "rbeta", "dbl", "Beta",
@@ -348,7 +404,10 @@ rng_tbl <- tibble::tribble(
   )
 ```
 
-```{r rng_tbl__kable}
+```{r}
+#| label: tbl-rng-tbl
+#| tbl-cap: "Some random number generators in the R stats package"
+
 rng_tbl |> knitr::kable(
   caption = "Some random number generators in the R stats package"
 )
@@ -370,7 +429,9 @@ In the present context this means that both the SD line and the Regression line 
 
 Professor [Frank Anscombe](https://en.wikipedia.org/wiki/Frank_Anscombe) constructed the "Anscombe Quartet": 4 data sets, each consisting of 11 observations of $(x, y)$ pairs of numeric values. Here are the statistics per group.
 
-```{r anscombe_tbl}
+```{r}
+#| label: anscombe-tbl
+
 anscombe_tbl <- datasets::anscombe |> 
   as_tibble()
 
@@ -409,7 +470,10 @@ xy_long <- x_tbl |> left_join(
   arrange(grp, idx)
 ```
 
-```{r xy_stats}
+```{r}
+#| label: tbl-xy-stats
+#| tbl-cap: "Identical (x, y) stats per group"
+
 xy_stats <- xy_long |> 
   summarise(
     .by   = grp, 
@@ -424,17 +488,20 @@ xy_stats
 
 The four groups share virtually identical averages, standard deviations, and $(x, y)$ correlation coefficients. Consequently the four data sets generate identical regression lines. Yet, as shown below, the pattern of $(x, y)$ values differs markedly among these data sets.
 
-```{r g_xy}
+```{r}
+#| label: fig-xy
+#| fig-cap: "Scatter diagram of (x, y) per group"
+
 g_xy <- xy_long |> 
-  ggplot(mapping = aes(
+  ggplot2::ggplot(mapping = aes(
     x = x, y = y, group = grp
   )) + 
-  geom_point() + 
-  facet_grid(cols = vars(grp))
+  ggplot2::geom_point() + 
+  ggplot2::facet_grid(cols = vars(grp))
 g_xy
 ```
 
-Moral: pay attention to the data! The graphical and tabular summaries we choose to present should be useful and informative. For example, it might be helpful to note that group 2 looks like the partial outline of a parabola. We should note that group 3 consists of 10 points falling on a line, with one outlier. In group 4 we should note that 10 of the 11 data $x$-values are identical. We want to minimize the chance of inadvertently conveying false impressions by merely reporting standard summary statistics.
+Moral: pay attention to the data! The graphical and tabular summaries we choose to present should be useful and informative. For example, it might be helpful to note that group 2 looks like the partial outline of a parabola. We should note that group 3 consists of 10 points falling on a line, with one outlier. In group 4 we should note that of the 11 data points, 10 have identical $x$-values. We want to minimize the chance of inadvertently conveying false impressions by merely reporting standard summary statistics.
 
 ## Statistical Independence
 
@@ -450,18 +517,18 @@ The pair of random variables $(X, Y)$ is defined to be statistically independent
 
 $$
 \begin{align}
-  P(X \in A, \; Y \in B) &= P(X \in A) \times P(Y \in B) \\
+  P(X \in A, \; Y \in B) &= P(X \in A) \times P(Y \in B) \\ \\
   & \text{for all possible sets } A, B \\ 
 \end{align}
 $$
 
-If $P(A) > 0$ then statistical independence implies:
+If $P(X \in A) > 0$ then statistical independence implies:
 
 $$
 \begin{align}
   P(Y \in B \; | \; X \in A) &= \frac{P(X \in A, \; Y \in B)}{P(X \in A)} \\ 
-  &= P(Y \in B) \\ 
-  & \text{whenever } P(A) > 0 \\
+  &= P(Y \in B) \\ \\ 
+  & \text{whenever } P(X \in A) > 0 
 \end{align}
 $$
 
@@ -473,7 +540,9 @@ As previously noted, for a pair $(X,Y)$ of continuous variables, the correlation
 
 To illustrate, we use data on handedness (right, left, or ambidextrous) of US adults aged 25-34. The data were collected by the US Health and Nutrition Examination Survey (HANES), as cited in [FPP](https://www.goodreads.com/book/show/147358.Statistics). The question we investigate is whether handedness is independent of sex (male, female). For each of the six possible combinations of handedness and sex, the table below counts the number of people in the sample having that combination.
 
-```{r hs_tbl}
+```{r}
+#| label: hs-tbl
+
 hs_tbl <- tibble::tribble(
     ~sex, ~hnd, ~count,
     "male",   "right",  934L,
@@ -485,7 +554,9 @@ hs_tbl <- tibble::tribble(
   )
 ```
 
-```{r hs_wide}
+```{r}
+#| label: hs-wide
+
 hs_wide <- hs_tbl |> 
   pivot_wider(
     names_from  = "sex", 
@@ -493,7 +564,10 @@ hs_wide <- hs_tbl |>
   )
 ```
 
-```{r hs_wide__kable}
+```{r}
+#| label: tbl-hs-wide
+#| tbl-cap: "XXX"
+
 hs_wide |> knitr::kable(
   caption = "Handedness counts among sampled males and females", 
   col.names = c("handedness", "male", "female")
@@ -502,7 +576,9 @@ hs_wide |> knitr::kable(
 
 The percentages of handedness among males and among females are as follows.
 
-```{r h_smy}
+```{r}
+#| label: h-smy
+
 h_smy <- hs_tbl |> 
   summarise(
     .by = "hnd", 
@@ -516,7 +592,9 @@ h_smy <- hs_tbl |>
 # 3 ambi     28
 ```
 
-```{r s_smy}
+```{r}
+#| label: s-smy
+
 s_smy <- hs_tbl |> 
   summarise(
     .by = "sex", 
@@ -529,7 +607,9 @@ s_smy <- hs_tbl |>
 # 2 female  1170
 ```
 
-```{r hs_pct_wide}
+```{r}
+#| label: hs-pct-wide
+
 m_total <- s_smy[[1, 2]]
 f_total <- s_smy[[2, 2]]
 
@@ -540,7 +620,10 @@ hs_pct_wide <- hs_wide |>
   )
 ```
 
-```{r hs_pct_wide__kable}
+```{r}
+#| label: tbl-hs-pct-wide
+#| tbl-cap: "XXX"
+
 hs_pct_wide |> knitr::kable(
   caption = "Percentage handedness among males, and among females", 
   col.names = c("handedness", "male", "female"), 
@@ -566,7 +649,9 @@ That is, for each row-index $j$ the expected counts summed across $k$ are constr
 
 Under the assumption of independence and for a large sample size $n$, the chi-squared statistic approximately follows the distribution of the sum of squared independent standard normal variables, the number of independent normal variables matching the degrees of freedom.
 
-```{r hs_chi_sq}
+```{r}
+#| label: hs-chi-sq
+
 hs_chi_sq <- hs_wide |> 
   dplyr::select(male, female) |> 
   as.matrix() |> 
@@ -588,7 +673,9 @@ $$
 
 These terms are called "Pearson residuals". For the handedness data, the Pearson residuals are as follows.
 
-```{r hs_resid_wide}
+```{r}
+#| label: hs-resid-wide
+
 # Pearson residuals
 hs_resid_wide <- hs_wide |> 
   dplyr::select(hnd) |> 
@@ -598,20 +685,24 @@ hs_resid_wide <- hs_wide |>
   )
 ```
 
-```{r hs_resid_wide__kable}
+```{r}
+#| label: tbl-hs-resid-wide
+#| tbl-cap: "XXX"
+
 hs_resid_wide |> knitr::kable(
   caption = "Pearson residuals for handedness data", 
   col.names = c("handedness", "male", "female"), 
   digits = 1
 )
-
 ```
 
 Roughly speaking, under independence the magnitude of cell values should align with the scale of standard normal variables. For the handedness data, the large value of the chi-square statistic cannot be attributed to a single cell of the table, but rather to the left-handed and ambidextrous cells (handedness to which males are more prone than females).
 
 ### Simpson's Paradox
 
-```{r ucb_admissions}
+```{r}
+#| label: ucb-admissions
+
 # reformat data
 ucb_admissions <- datasets::UCBAdmissions |> 
   as_tibble() |> 
@@ -621,7 +712,9 @@ ucb_admissions <- datasets::UCBAdmissions |>
   dplyr::select(dept, sex, admit, count)
 ```
 
-```{r ucb_sex_smy}
+```{r}
+#| label: ucb-sex-smy
+
 # count Male and Female applicants
 ucb_sex_smy <- ucb_admissions |> 
   summarise(
@@ -636,14 +729,18 @@ ucb_sex_smy <- ucb_admissions |>
 # 2 Female  1835
 ```
 
-```{r ucb_total_applicants}
+```{r}
+#| label: ucb-total-applicants
+
 # count all applicants
 ucb_total_applicants <- 
   ucb_sex_smy[[1, 2]] + 
   ucb_sex_smy[[2, 2]]
 ```
 
-```{r ucb_sa_smy}
+```{r}
+#| label: ucb-sa-smy
+
 # count admissions/rejections per sex
 ucb_sa_smy <- ucb_admissions |> 
   summarise(
@@ -660,7 +757,9 @@ ucb_sa_smy <- ucb_admissions |>
 # 4 Female Rejected  1278
 ```
 
-```{r ucb_sa_wide}
+```{r}
+#| label: ucb-sa-wide
+
 # count Males and Females in separate columns
 ucb_sa_wide <- ucb_sa_smy |> 
   pivot_wider(
@@ -675,7 +774,9 @@ ucb_sa_wide <- ucb_sa_smy |>
 # 2 Rejected  1493   1278
 ```
 
-```{r ucb_sa_pct}
+```{r}
+#| label: ucb-sa-pct
+
 # convert counts to percentages
 ucb_sa_pct <- ucb_sa_wide |> 
   mutate(
@@ -692,7 +793,10 @@ ucb_sa_pct <- ucb_sa_wide |>
 
 We now turn to a different set of categorical data from a study of graduate admissions at UC Berkeley in 1973 available in R as `datasets::UCBAdmissions`. The study was prompted by a concern of bias against females. The table below summarizes admission percentages for males and for females across the six largest departments.
 
-```{r ucb_sa_pct__kable}
+```{r}
+#| label: tbl-ucb-sa-pct
+#| tbl-cap: "XXX"
+
 ucb_sa_pct |> 
   rename(decision = admit) |> 
   knitr::kable(
@@ -703,7 +807,9 @@ ucb_sa_pct |>
 
 These percentages look damning, but the table below, showing admission rates per department, tells a different story.
 
-```{r ucb_dept_smy}
+```{r}
+#| label: ucb-dept-smy
+
 # applicants per department
 ucb_dept_smy <- ucb_admissions |> 
   summarise(
@@ -726,7 +832,9 @@ ucb_dept_smy <- ucb_admissions |>
 # 6 F       714  15.8
 ```
 
-```{r ucb_da_smy}
+```{r}
+#| label: ucb-da-smy
+
 # count addmissions/rejections per department
 ucb_da_smy <- ucb_admissions |> 
   summarise(
@@ -735,7 +843,9 @@ ucb_da_smy <- ucb_admissions |>
   )
 ```
 
-```{r ucb_da_wide}
+```{r}
+#| label: ucb-da-wide
+
 # move (Admitted, Rejected) into separate columns
 ucb_da_wide <- ucb_da_smy |> 
   pivot_wider(
@@ -754,7 +864,9 @@ ucb_da_wide <- ucb_da_smy |>
 # 6 F           46      668
 ```
 
-```{r ucb_da_pct}
+```{r}
+#| label: ucb-da-pct
+
 # overall admission rate per department
 ucb_da_pct <- ucb_da_wide |> 
   mutate(
@@ -773,7 +885,9 @@ ucb_da_pct <- ucb_da_wide |>
 # 6 F           46      668   6.44
 ```
 
-```{r ucb_m_da_pct}
+```{r}
+#| label: ucb-m-da-pct
+
 # filter on males
 # count per-department applications and admissions
 
@@ -808,7 +922,9 @@ ucb_m_da_pct <- ucb_m_da_wide |>
   )
 ```
 
-```{r ucb_f_da_pct}
+```{r}
+#| label: ucb-f-da-pct
+
 # filter on females
 # count per-department applications and admissions
 
@@ -843,7 +959,9 @@ ucb_f_da_pct <- ucb_f_da_wide |>
   )
 ```
 
-```{r ucb_das_pct}
+```{r}
+#| label: ucb-das-pct
+
 # admission rate of each department:  
 # among males, among females, and overall
 ucb_das_pct <- ucb_da_pct |> 
@@ -863,7 +981,10 @@ ucb_das_pct <- ucb_da_pct |>
   dplyr::select(dept, M_pct, F_pct, MF_pct)
 ```
 
-```{r ucb_das_pct__kable}
+```{r}
+#| label: tbl-ucb-das-pct
+#| tbl-cap: "Admission percentages per department"
+
 ucb_das_pct |> knitr::kable(
   caption = "Admission percentages per department", 
   col.names = c("dept", "among_males", "among_females", "overall"), 
@@ -875,7 +996,9 @@ The table shows that four of the six departments admitted a greater percentage o
 
 The answer can be found by: (1) noting that the table above lists departments, labeled A through F, in descending order of overall admission rates; and (2) examining the following table that shows each department's share of applicants: male, female, and overall.
 
-```{r ucb_ds_smy}
+```{r}
+#| label: ucb-ds-smy
+
 # count number of applicantions per (dept, sex)
 ucb_ds_smy <- ucb_admissions |> 
   summarise(
@@ -884,7 +1007,9 @@ ucb_ds_smy <- ucb_admissions |>
   )
 ```
 
-```{r ucb_ds_wide}
+```{r}
+#| label: ucb-ds-wide
+
 # list (Male, Female) as separate columns
 ucb_ds_wide <- ucb_ds_smy |> 
   pivot_wider(
@@ -896,7 +1021,10 @@ ucb_ds_wide <- ucb_ds_smy |>
   )
 ```
 
-```{r ucb_ds_wide__kable}
+```{r}
+#| label: tbl-ucb-ds-wide
+#| tbl-cap: "Number of applications per department"
+
 ucb_ds_wide |> knitr::kable(
   caption = "Number of applications per department", 
   col.names = c("dept", "from_males", "from_females", "overall")
@@ -906,6 +1034,8 @@ ucb_ds_wide |> knitr::kable(
 Here are the same counts but now converted into per-department percentage of applications from males, females, and overall, respectively.
 
 ```{r ucb_ds_pct}
+#| label: ucb-ds-pct
+
 # convert counts to percents
 ucb_ds_pct <- ucb_ds_wide |> 
   mutate(
@@ -915,7 +1045,10 @@ ucb_ds_pct <- ucb_ds_wide |>
   )
 ```
 
-```{r ucb_ds_pct__kable}
+```{r}
+#| label: tbl-ucb-ds-pct
+#| tbl-cap: "Percent of applications per department"
+
 ucb_ds_pct |> knitr::kable(
   caption = "Percent of applications per department", 
   col.names = c("dept", "from_males", "from_females", "overall"), 
@@ -1058,7 +1191,9 @@ $$
 
 In the example above, $P(\cdot)$ is the probability of drawing any given letter-number combination from $\{ A_1, A_2, B_1, C_2 \}$, and $Q(\cdot)$ is the corresponding probability for $\{ A_1, A_1, B_1, C_1, A_2, A_2, B_2, C_2 \}$. Here is the tally of the sum defining $KL(P \; || \; Q)$.
 
-```{r kl_tbl}
+```{r}
+#| label: kl-tbl
+
 kl_tbl <- tibble::tibble(
   ltr        = rep(LETTERS[1:3], 2), 
   num        = rep(1:2, each = 3), 
@@ -1071,7 +1206,10 @@ kl_tbl <- tibble::tibble(
 kl_sum = sum(kl_tbl$term, na.rm = TRUE)
 ```
 
-```{r kl_tbl__kable}
+```{r}
+#| label: tbl-kl-tbl
+#| tbl-cap: "XXX"
+
 kl_tbl |> 
   dplyr::select(- ltr, - num) |> 
   knitr::kable(

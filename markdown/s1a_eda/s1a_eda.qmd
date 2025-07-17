@@ -102,7 +102,7 @@ g_f_mpt <- father_son_ht |>
     y = son
   )) + 
   ggplot2::geom_boxplot() + 
-  ggplot2::labs(title = "Son's height per father's height") + 
+  ggplot2::labs(title = "Son heights per father's height") + 
   ggplot2::xlab("father's height rounded to nearest odd inch") + 
   ggplot2::ylab("son's height in inches")
 g_f_mpt
