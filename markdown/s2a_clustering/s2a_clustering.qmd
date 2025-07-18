@@ -3,19 +3,22 @@ title: "Clustering: EDA in Higher Dimensions"
 subtitle: "Part 1, session 2a of Data Mining Intro"
 author: 
   - name: "Send comments to: Tony T (adthral)"
-date: "`r format(Sys.time(), '%Y-%m-%d %H:%M', usetz = TRUE)`"
+date: last-modified
+date-format: HH:mm ddd D-MMM-YYYY
 editor: source
-output: 
-  html_document:
-    toc: true
-    df_print: paged
-    mathjax: default
-  word_document:
-    toc: true
-    df_print: tibble
-  pdf_document:
-    toc: true
-    df_print: tibble
+toc: true
+toc-depth: 3
+format:
+  html:
+    toc_float: true
+    code-fold: true
+    code-summary: "Show the code"
+    html-math-method: mathjax
+  pdf: default
+  docx: default
+params:
+  file_id: "s2a"
+  file_prefix: "s2a_clustering"
 abstract: 
   "Introduce statistical clustering methods."
 ---
