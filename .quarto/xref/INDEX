@@ -64,5 +64,8 @@
   },
   "markdown/s1b_condl_distn/s1b_condl_distn.qmd": {
     "s1b_condl_distn.html": "6bf22f2d"
+  },
+  "markdown/s2a_clustering/s2a_clustering.qmd": {
+    "s2a_clustering.html": "f8c32d89"
   }
 }

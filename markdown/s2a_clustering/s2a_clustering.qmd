@@ -23,7 +23,10 @@ abstract:
   "Introduce statistical clustering methods."
 ---
 
-```{r setup, include=FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
   echo    = FALSE, 
   error   = FALSE, 
@@ -32,7 +35,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r libraries}
+```{r}
+#| label: CRAN-libraries
+
 library(assertthat)
 library(dbscan)
 library(GGally)
@@ -47,7 +52,9 @@ library(UsingR)
 
 ```
 
-```{r local_source}
+```{r}
+#| label: local-source
+
 source(here("code", "rmse_per_grp.R"))
 source(here("code", "xtabs_to_jaccard.R"))
 ```
@@ -68,12 +75,16 @@ In this session we'll discuss another way to simplify the data, namely, to group
 
 ## US Colleges
 
-```{r college}
+```{r}
+#| label: college
+
 college <- ISLR2::College |> 
   as_tibble(rownames = "college_name")
 ```
 
-```{r college_vars_tbl}
+```{r}
+#| label: college-vars-tbl
+
 college_vars_tbl <- tibble::tibble(
   var_name = names(college),
 ) |> 
@@ -121,9 +132,12 @@ college_vars_tbl <- tibble::tibble(
   )
 ```
 
-To illustrate ideas we'll use data about US universities and colleges from 1995, described in the book, *An Introduction to Statistical Learning with applications in R* ([ISLR](https://www.statlearning.com)). The data are recorded within the R package `ISLR2` as `ISLR2::College`. From the R command `help("College")` we see that the data consist of 777 observations (data rows), and obtain the following description of the variables (data columns).
+To illustrate ideas we'll use data about US universities and colleges from 1995, described in the book, *An Introduction to Statistical Learning with applications in R* ([ISLR](https://www.statlearning.com)). The data are recorded within the `R` package `ISLR2` as `ISLR2::College`. From the `R` command `help("College")` we see that the data consist of 777 observations (data rows), and obtain the following description of the variables (data columns).
 
-```{r college_vars_tbl__kable}
+```{r}
+#| label: tbl-college-vars-tbl
+#| tbl-cap: "Variables in the ISLR2::College data set"
+
 college_vars_tbl |> knitr::kable(
   caption = "US college variables (1995 issue of USNWR)", 
   col.names = c("variable", "description")
@@ -150,7 +164,9 @@ Consider the distinction between more expensive versus less expensive schools as
 
 Before proceeding, let's examine the distribution of these variables via density estimates and a scatter plot.
 
-```{r college_factors}
+```{r}
+#| label: college-factors
+
 # split selected variables at their median value
 college_factors <- college |> 
   mutate(
@@ -176,13 +192,17 @@ top_10_mid  <- median(college_factors$ Top10perc)
 expend_mid  <- median(college_factors$ Expend)
 ```
 
-```{r g_grp_var_matrix}
+```{r}
+#| label: fig-grp-var-matrix
+#| fig-cap: "Distribution of variables `Top10perc` and `Expend`"
+
 # Form a matrix of figures, showing each 
 # distinct pair of variables in a scatter diagram.
 g_grp_var_matrix <- college_factors |> 
   GGally::ggpairs(
     columns = c("Top10perc", "Expend")
-  )
+  ) + 
+  ggplot2::labs("Variables `Top10perc` and `Expend`")
 g_grp_var_matrix
 ```
 
@@ -190,7 +210,10 @@ We see that `Top10perc` and `Expend` are positively correlated, and have relativ
 
 Now let's look at the two variables more closely, one at a time.
 
-```{r g_top_10}
+```{r}
+#| label: fig-top-10
+#| fig-cap: "Pct of new students per college from top 10% in their HS"
+
 g_top_10 <- college_factors |> 
   ggplot(mapping = aes(x = Top10perc)) + 
   geom_histogram() + 
@@ -204,14 +227,17 @@ g_top_10 <- college_factors |>
 g_top_10
 ```
 
-```{r g_Expend}
+```{r}
+#| label: fig-expend
+#| fig-cap: "Instructional expenditure per student"
+
 g_Expend <- college_factors |> 
-  ggplot(mapping = aes(x = Expend)) + 
-  geom_histogram() + 
-  geom_vline(
+  ggplot2::ggplot(mapping = aes(x = Expend)) + 
+  ggplot2::geom_histogram() + 
+  ggplot2::geom_vline(
     xintercept = expend_mid, linewidth = 2, colour = "red"
   ) + 
-  labs(
+  ggplot2::labs(
     title = "Instructional expenditure per student", 
     subtitle = "(vertical line at median)"
   )
@@ -224,15 +250,18 @@ For each of the variables shown we create a binary variable having two levels, "
 
 To check this grouping of the data let's first select the variables from which we defined the 4 groups and examine the scatter diagram, now using the color and shape of each data point to distinguish the different groups.
 
-```{r g_top_10_Expend}
+```{r}
+#| label: fig-top-10-expend
+#| fig-cap: "(Top10perc, Expend): binary grouping"
+
 g_top_10_Expend <- college_factors |> 
-  ggplot(mapping = aes(
+  ggplot2::ggplot(mapping = aes(
     x = Top10perc, y = Expend, 
     colour = grp_lbl, shape = grp_lbl
   )) + 
-  scale_shape_manual(values = 0:3) +
-  geom_point() + 
-  labs(
+  ggplot2::scale_shape_manual(values = 0:3) +
+  ggplot2::geom_point() + 
+  ggplot2::labs(
     title = "(Top10perc, Expend)", 
     subtitle = "grouped by binary versions of the two variables"
   )
@@ -245,15 +274,17 @@ The table below shows the mean per group of the underlying grouping variables.
 
 Note: we've calculated the mean per group of *all* the numeric variables. We'll return to those calculations in the next section.
 
-```{r means_per_grp}
+```{r}
+#| label: means-per-grp
+
 means_per_grp <- college_factors |> 
   # remove original non-numeric variables
   dplyr::select(- college_name, - Private) |> 
   # reduce grouping variables to just grp_lbl
   dplyr::select(- top_10_fct, - expend_fct) |> 
   # vector of mean values per group
-  summarise(across(
-    .cols = everything(), 
+  dplyr::summarise(dplyr::across(
+    .cols = tidyselect::everything(), 
     .fns  = ~ mean(.x, na.rm = TRUE)
   ), 
   # grouping variable
@@ -261,10 +292,13 @@ means_per_grp <- college_factors |>
   # group size: number of original data rows per group
   count = n()
   ) |> 
-  arrange(grp_lbl)
+  dplyr::arrange(grp_lbl)
 ```
 
-```{r means_per_grp__kable}
+```{r}
+#| label: tbl-means-per-grp
+#| tbl-cap: "(`Top10perc`, `Expend`): mean values per group"
+
 means_per_grp |> 
   dplyr::select(
     grp_lbl, count, Top10perc, Expend
@@ -287,7 +321,9 @@ So how well do the groups constructed above perform against these criteria? We w
 
 The following table lists the mean, standard deviation, and coefficient of variation $(cv = \frac{sd}{mean})$ per variable. The variables having the largest mean value are listed first.
 
-```{r college_moments}
+```{r}
+#| label: college-moments
+
 # calculate unconditional mean and sd of each numeric variable
 
 college_means <- college_factors |> 
@@ -296,13 +332,13 @@ college_means <- college_factors |>
   # remove grouping variables
   dplyr::select(- top_10_fct, - expend_fct, - grp_lbl) |> 
   # vector of mean values per group
-  summarise(across(
-    .cols = everything(), 
+  dplyr::summarise(dplyr::across(
+    .cols = tidyselect::everything(), 
     .fns  = ~ mean(.x, na.rm = TRUE)
   )) |> 
   # pivot row vector to column vector
-  pivot_longer(
-    cols = everything(), 
+  tidyr::pivot_longer(
+    cols = tidyselect::everything(), 
     names_to = "var", 
     values_to = "mean"
   )
@@ -313,27 +349,30 @@ college_std_devs <- college_factors |>
   # remove grouping variables
   dplyr::select(- top_10_fct, - expend_fct, - grp_lbl) |> 
   # vector of mean values per group
-  summarise(across(
+  dplyr::summarise(dplyr::across(
     .cols = everything(), 
     .fns  = ~ sd(.x, na.rm = TRUE)
   )) |> 
   # pivot row vector to column vector
-  pivot_longer(
+  tidyr::pivot_longer(
     cols = everything(), 
     names_to = "var", 
     values_to = "sd"
   )
 
 college_moments <- college_means |> 
-  left_join(
+  dplyr::left_join(
     y  = college_std_devs, 
     by = "var"
   ) |> 
-  mutate(cv = sd / mean) |> 
-  arrange(desc(mean))
+  dplyr::mutate(cv = sd / mean) |> 
+  dplyr::arrange(desc(mean))
 ```
 
-```{r college_moments__kable}
+```{r}
+#| label: tbl-college-moments
+#| tbl-cap: "College variables: mean, sd, and cv = sd/mean"
+
 college_moments |> knitr::kable(
   caption = "Mean, SD, and CV = SD/Mean", 
   col.names = c("variable", "mean", "sd", "cv"), 
@@ -349,7 +388,9 @@ This issue can be addressed in a few different ways. For now we standardize each
 
 Having standardized the college numeric variables we now calculate Euclidean distances. That is, within each group we calculate the distance of each point to the group mean vector. This vector of point-minus-mean is referred to as "error" (more precisely, "mean deviation") in statistical parlance. We calculate the squared Euclidean length of this vector, and sum these squared distances across all points in the group. The result is called the (within-group) sum of squared errors (SSE). Here are the calculated SSE values (and related statistics) per group.
 
-```{r college_z_scores}
+```{r}
+#| label: college-z-scores
+
 # convert numeric data into standard units (z-scores)
 college_z_scores <- college_factors |> 
   # remove original non-numeric variables
@@ -357,7 +398,7 @@ college_z_scores <- college_factors |>
   # grouping variables: use only grp_lbl
   dplyr::select(- top_10_fct, - expend_fct) |> 
   # standardize numeric variables
-  mutate(across(
+  dplyr::mutate(across(
     .cols = - grp_lbl, 
     .fns  = ~ (.x - mean(.x))/sd(.x)
   ))
@@ -366,70 +407,72 @@ college_z_scores <- college_factors |>
 n_z_score_vars <- ncol(college_z_scores) - 1L
 ```
 
-```{r coll_z_stats_per_grp}
+```{r}
+#| label: coll-z-stats-per-grp
+
 # compute z-score means and std-devs per group
 
 # number of observations per group as a data frame
 coll_counts_per_grp <- college_z_scores |> 
-  summarise(
+  dplyr::summarise(
     .by = grp_lbl, 
     count = n()
   ) |> 
-  arrange(grp_lbl) |> 
-  column_to_rownames("grp_lbl")
+  dplyr::arrange(grp_lbl) |> 
+  tibble::column_to_rownames("grp_lbl")
 
 coll_z_means_per_grp <- college_z_scores |> 
-  summarise(
+  dplyr::summarise(
     .by = grp_lbl, 
-    across(
-      .cols = everything(), 
+    dplyr::across(
+      .cols = tidyselect::everything(), 
       .fns  = ~ mean(.x, na.rm = TRUE)
     )
   ) |> 
-  arrange(grp_lbl)
+  dplyr::arrange(grp_lbl)
 
 coll_z_sds_per_grp <- college_z_scores |> 
-  summarise(
+  dplyr::summarise(
     .by = grp_lbl, 
-    across(
-      .cols = everything(), 
+    dplyr::across(
+      .cols = tidyselect::everything(), 
       .fns  = ~ sd(.x, na.rm = TRUE)
     )
   ) |> 
-  arrange(grp_lbl)
+  dplyr::arrange(grp_lbl)
 
 # transpose coll_z_sds_per_grp
 grp_z_sds_per_var <- coll_z_sds_per_grp |> 
-  column_to_rownames("grp_lbl") |> 
+  tibble::column_to_rownames("grp_lbl") |> 
   t() |> 
-  as_tibble(rownames = "var")
+  tibble::as_tibble(rownames = "var")
 
 grp_z_ss <- grp_z_sds_per_var |> 
   # (RMSE per var) to (MSE per var)
-  mutate(across(
+  dplyr::mutate( dplyr::across(
     .cols = - var, 
     .fns  = ~ .x^2
   )) |> 
   # (MSE per var) to (SSE per var)
-  mutate(
+  dplyr::mutate(
     g_00 = g_00 * (-1 + coll_counts_per_grp[["g_00", "count"]]), 
     g_01 = g_01 * (-1 + coll_counts_per_grp[["g_01", "count"]]), 
     g_10 = g_10 * (-1 + coll_counts_per_grp[["g_10", "count"]]), 
     g_11 = g_11 * (-1 + coll_counts_per_grp[["g_11", "count"]])
   ) |> 
   # sum (SSE per var) across vars
-  summarise(across(
+  dplyr::summarise(dplyr::across(
     .cols = - var, 
     .fns  = ~ sum(.x, na.rm = TRUE)
   )) |> 
   # transpose to facilitate summing across groups
-  pivot_longer(
+  tidyr::pivot_longer(
     cols = everything(), 
     names_to = "group", 
     values_to = "SSE"
   ) |> 
   # calculate (count, df, MSE, RMSE) per group
-  mutate(
+  dplyr::mutate(
     count = coll_counts_per_grp [, "count"], 
     df    = count - n_z_score_vars, 
     MSE   = SSE / df, 
@@ -443,7 +486,10 @@ grp_z_ss <- grp_z_sds_per_var |>
 grp_z_ss_all <- sum(grp_z_ss$SSE, na.rm = TRUE)
 ```
 
-```{r grp_z_ss__kable}
+```{r}
+#| label: tbl-grp-z-ss
+#| tbl-cap: "Point-center distances per group"
+
 grp_z_ss |> knitr::kable(
   caption = "Point-center distances per group", 
   digits = 1
@@ -484,7 +530,9 @@ We now provide the `kmeans()` function with cluster centers in the form of the g
 
 The resulting clusters are shown in the scatter diagrams below, where for purposes of comparison we have projected the clusters onto the grouping variables we previously adopted.
 
-```{r m_kmeans_ctrs}
+```{r}
+#| label: m-kmeans-ctrs
+
 # to ensure reproducibility, set random seed
 set.seed(42) # nod to Hitchhiker's Guide to the Galaxy
 
@@ -492,7 +540,7 @@ set.seed(42) # nod to Hitchhiker's Guide to the Galaxy
 m_kmeans_ctrs <- college_z_scores |>
   # remove grp_lbl
   dplyr::select(- grp_lbl) |>
-  kmeans(
+  stats::kmeans(
     centers = coll_z_means_per_grp |>
       # remove grp_lbl
       dplyr::select(- grp_lbl)
@@ -502,13 +550,18 @@ m_kmeans_ctrs <- college_z_scores |>
 km_wcss <- m_kmeans_ctrs$ tot.withinss
 ```
 
-```{r college_km_ctrs}
+```{r}
+#| label: college-km-ctrs
+
 # # assign observations to km clusters
 college_km_ctrs <- college_z_scores |>
-  mutate(cluster = m_kmeans_ctrs$ cluster)
+  dplyr::mutate(cluster = m_kmeans_ctrs$ cluster)
 ```
 
-```{r g_top_10_Expend_kmc}
+```{r}
+#| label: fig-top-10-expend-kmc
+#| fig-cap: "(`Top10perc`, `Expend`): clusters identified by kmeans()"
+
 g_top_10_Expend_kmc <- college_km_ctrs |>
   mutate(cluster = as_factor(cluster)) |>
   ggplot(mapping = aes(
@@ -519,7 +572,7 @@ g_top_10_Expend_kmc <- college_km_ctrs |>
   geom_point() +
   labs(
     title = "(Top10perc, Expend)",
-    subtitle = "identified by kmeans cluster"
+    subtitle = "clusters identified by kmeans()"
   )
 g_top_10_Expend_kmc
 ```
@@ -528,7 +581,10 @@ g_top_10_Expend_kmc
 
 The figure above shows that the `kmeans()` clusters are distinct from but similar to the groups formed above whose mean values served as initial cluster centers. Here are the number of observations belonging to each combination of $g_{x,y}$ group and `kmeans()` cluster.
 
-```{r xtabs_cluster_grp}
+```{r}
+#| label: tbl-xtabs-cluster-grp
+#| tbl-cap: "Overlap: binary groups v kmeans clusters"
+
 xtabs_cluster_grp <- xtabs(
   data    = college_km_ctrs, 
   formula = ~ cluster + grp_lbl
@@ -542,26 +598,33 @@ $$
 \begin{align}
   J(A, B) &= \frac{\left| A \cap B \right|}{\left| A \cup B \right|}
 \end{align}
-$$
+$$ {#eq-Jaccard-similarity-measure}
 
 Letting $(A, B)$ denote the respective (row, column) of each cell in the above table, we obtain the following table of Jaccard similarity measures of each (`cluster`, `grp_lbl`) combination.
 
-```{r jaccard_cluster_grp_lst}
+```{r}
+#| label: jaccard-cluster-grp-lst
+
 jaccard_cluster_grp_lst <- xtabs_cluster_grp |> 
   xtabs_to_jaccard()
 ```
 
-```{r jaccard_cluster_grp_wide}
+```{r}
+#| label: jaccard-cluster-grp-wide
+
 jaccard_cluster_grp_wide <- 
   jaccard_cluster_grp_lst [["xt_sim_long"]] |> 
   dplyr::select(cluster, grp_lbl, jaccard) |> 
-  pivot_wider(
+  tidyr::pivot_wider(
     names_from = "grp_lbl", 
     values_from = "jaccard"
   )
 ```
 
-```{r jaccard_cluster_grp_wide__kable}
+```{r}
+#| label: tbl-jaccard-cluster-grp-wide
+#| tbl-cap: "Jaccard similarity: binary groups v kmeans clusters"
+
 jaccard_cluster_grp_wide |> 
   knitr::kable(
     caption = "Jaccard similarity measures", 
@@ -569,7 +632,9 @@ jaccard_cluster_grp_wide |>
   )
 ```
 
-```{r jaccard_cluster_grp_avg}
+```{r}
+#| label: jaccard-cluster-grp-avg
+
 jaccard_cluster_grp_avg <- jaccard_cluster_grp_lst [[2]]
 ```
 
@@ -579,19 +644,26 @@ The weighted average (weighted by cell count) of these similarity values is `r r
 
 The two figures below show the range of point-center distances for the original grouping and for the `kmeans()` clustering. In the latter case, points are closer to the mean of the cluster, as can be seen by comparing the scale of the two figures. The total within-cluster sum of squares is `r as.integer(round(km_wcss))` for `kmeans()` compared to `r as.integer(round(grp_z_ss_all))` for the original grouping.
 
-```{r group_norms_lst}
+```{r}
+#| label: group-norms-lst
+
 group_norms_lst <- college_km_ctrs |> 
   dplyr::select(- cluster) |> 
   pt_ctr_dist(grp_name = "grp_lbl")
 ```
 
-```{r cluster_norms_lst}
+```{r}
+#| label: cluster-norms-lst
+
 cluster_norms_lst <- college_km_ctrs |> 
   dplyr::select(- grp_lbl) |> 
   pt_ctr_dist(grp_name = "cluster")
 ```
 
-```{r g_grp_norms}
+```{r}
+#| label: fig-grp-norms
+#| fig-cap: "Initial binary grouping: point-center distances"
+
 group_norms_lst$ grp_norms |> 
   ggplot(mapping = aes(y = norm)) + 
   geom_boxplot() + 
@@ -601,7 +673,10 @@ group_norms_lst$ grp_norms |>
   )
 ```
 
-```{r g_cluster_norms}
+```{r}
+#| label: fig-cluster-norms
+#| fig-cap: "K-means clusters: point-center distances"
+
 cluster_norms_lst$ grp_norms |> 
   ggplot(mapping = aes(y = norm)) + 
   geom_boxplot() + 
@@ -612,7 +687,7 @@ cluster_norms_lst$ grp_norms |>
   )
 ```
 
-### Results for random inital cluster centers
+### Results for random initial cluster centers
 
 Let's run `kmeans()` again, this time specifying only the desired number $K$ of clusters. The function will then select $K$ rows of the data at random as the initial set of cluster centers. In any case, no matter how the initial cluster centers may be selected, that selection influences the subsequent iterative formation of clusters.
 
@@ -620,20 +695,25 @@ To make the algorithm more robust we specify parameter `nstart`, the number time
 
 We now run `kmeans()` again, setting $K = 4$ and `nstart = 25`. For purposes of comparison with previous results, here is a projection of the resulting 4 clusters onto a (Top10perc, Expend) scatter diagram.
 
-```{r m_kmeans_nstart}
+```{r}
+#| label: m-kmeans-nstart
+
 # to ensure reproducibility, set random seed
 set.seed(42)
 
 m_kmeans_nstart <- college_z_scores |>
   # remove grp_lbl
   dplyr::select(- grp_lbl) |>
-  kmeans(
+  stats::kmeans(
     centers = 4, 
     nstart = 25
   )
 ```
 
-```{r g_top_10_Expend_nstart}
+```{r}
+#| label: fig-top-10-expend-nstart
+#| fig-cap: "Clusters identified from repeated random cluster centers"
+
 g_top_10_Expend_nstart <- college_z_scores |>
   mutate(
     cluster = m_kmeans_nstart$ cluster |> as_factor()
@@ -655,10 +735,12 @@ Interestingly, we again see strong separation of clusters associated with the va
 
 The table below shows the number of observations in each combination of the original grouping and the new `kmeans()` clusters.
 
-```{r xtabs_nstart_grp}
+```{r}
+#| label: xtabs-nstart-grp
+
 xtabs_nstart_grp <- xtabs(
   data    = college_z_scores |> 
-  mutate(
+  dplyr::mutate(
     cluster = m_kmeans_nstart$ cluster |> as_factor()
   ), 
   formula = ~ cluster + grp_lbl
@@ -670,10 +752,13 @@ As with the previous `kmeans()` clusters, we again see two of the clusters well 
 
 The similarity of the current clusters with the previous clusters prompts us to examine the number of observations in each pair (old, new) clusters, distinguishing the two as (cl_group, cl_nstart).
 
-```{r xtabs_cl_group_nstart}
+```{r}
+#| label: tbl-xtabs-cl-group-nstart
+#| tbl-cap: "kmeans() clusters formed with and without `nstart`"
+
 xtabs_cl_group_nstart  <- xtabs(
   data    = college_z_scores |> 
-  mutate(
+  dplyr::mutate(
     cl_group  = m_kmeans_ctrs$ cluster |> as_factor(), 
     cl_nstart = m_kmeans_nstart$ cluster |> as_factor()
   ), 
@@ -684,16 +769,21 @@ xtabs_cl_group_nstart
 
 We see that the new clusters are essentially a relabeling of the previous clusters. The figure below of new point-center distances is essentially the same as the previous figure with the first two clusters swapped. In fact the total within-cluster sum of squares is unchanged from the previous clustering.
 
-```{r nstart_norms_lst}
+```{r}
+#| label: nstart-norms-lst
+
 nstart_norms_lst <- college_z_scores |> 
   dplyr::select(- grp_lbl) |> 
-  mutate(
+  dplyr::mutate(
     cluster = m_kmeans_nstart$ cluster |> as_factor()
   ) |> 
   pt_ctr_dist(grp_name = "cluster")
 ```
 
-```{r g_nstart_norms}
+```{r}
+#| label: fig-nstart-norms
+#| fig-cap: "Revised point-center distances (nstart = 25)"
+
 g_nstart_norms <- nstart_norms_lst$ grp_norms |> 
   ggplot(mapping = aes(y = norm)) + 
   geom_boxplot() + 
@@ -711,7 +801,9 @@ So far in our application of `kmeans()` to the college data we have set $K = 4$.
 
 For the college data, the figure below shows how WCSS decreases as $K$ increases.
 
-```{r mk_tbl}
+```{r}
+#| label: mk-tbl
+
 # run kmeans on college data for successive values of k
 
 # to ensure reproducibility, set random seed
@@ -737,20 +829,21 @@ for (k in 2:k_max) {
 }
 ```
 
-```{r g_mk_tbl}
+```{r}
+#| label: fig-mk-tbl
+#| fig-cap: "Within-cluster sum of squares versus number of clusters"
+
 g_mk_tbl <- mk_tbl |> 
-  ggplot(mapping = aes(
+  ggplot2::ggplot(mapping = aes(
     x = k, y = wcss
   )) + 
-  scale_x_continuous(
-    name = NULL, 
-    breaks = seq(2, 12, 2)
-  ) + 
-  geom_line() + 
-  labs(
+  ggplot2::scale_x_continuous(
+    name = "K", 
+    breaks = seq(2, 12, 2)) + 
+  ggplot2::geom_line() + 
+  ggplot2::labs(
     title = "WCSS versus K for college z-scores", 
-    subtitle = "(nstart = 20)"
-  )
+    subtitle = "(nstart = 20)")
 g_mk_tbl
 ```
 
