@@ -10,8 +10,10 @@ toc: true
 toc-depth: 3
 format:
   html:
+    toc_float: true
     code-fold: true
     code-summary: "Show the code"
+    html-math-method: mathjax
 params:
   file_id: "s1a"
   file_prefix: "s1a_eda"
