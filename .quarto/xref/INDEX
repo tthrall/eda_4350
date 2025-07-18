@@ -67,5 +67,8 @@
   },
   "markdown/s2a_clustering/s2a_clustering.qmd": {
     "s2a_clustering.html": "f8c32d89"
+  },
+  "markdown/s2b_text_analysis/s2b_text_analysis.qmd": {
+    "s2b_text_analysis.html": "6b50a944"
   }
 }

@@ -23,7 +23,10 @@ abstract:
   "Introduce basic ideas and methods of text analysis."
 ---
 
-```{r setup, include=FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
   echo    = FALSE, 
   error   = FALSE, 
@@ -32,7 +35,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r libraries}
+```{r}
+#| label: CRAN-libraries
+
 library(assertthat)
 library(GGally)
 library(gutenbergr)
@@ -54,7 +59,9 @@ topicmodels_loaded <- require(topicmodels)
 
 ```
 
-```{r local_source}
+```{r}
+#| label: local-source
+
 source(here("code", "rmse_per_grp.R"))
 source(here("code", "xtabs_to_jaccard.R"))
 ```
@@ -69,7 +76,9 @@ This session highlights some basic ideas and methods that underpin a rapidly adv
 
 Toward the end of Shakespeare's play "Macbeth", the protagonist proclaims:
 
-```{r sound_fury}
+```{r}
+#| label: sound-fury
+
 sound_fury <- c("Life's but a walking shadow, a poor player ",
           "That struts and frets his hour upon the stage, ",
           "And then is heard no more: it is a tale ", 
@@ -83,7 +92,11 @@ sound_fury
 
 For purposes of technical analysis we break these flowing lines into a table of words. We begin as follows.
 
-```{r sf_line_tbl, echo=TRUE}
+```{r}
+#| label: lst-sf-line-tbl
+#| lst-cap: ""
+#| echo: true
+
 sf_line_tbl <- tibble::tibble(
   l_idx = 24:28, 
   line  = sound_fury
@@ -93,7 +106,11 @@ sf_line_tbl
 
 The table above merely identifies the original line number of each line. The next step is to break each line into a sequence of "tokens", where a *token* is a meaningful unit of text (such as a word) to be used as the unit of analysis. ("Tokenization" is the process of splitting text into tokens.) Applying `tidytext::unnest_tokens()` to the data table above, we obtain the following table, with just one token (word) per row.
 
-```{r sf_token_tbl, echo=TRUE}
+```{r}
+#| label: lst-sf-token-tbl
+#| lst-cap: ""
+#| echo: true
+
 sf_token_tbl <- sf_line_tbl |> 
   tidytext::unnest_tokens(
     input  = "line", 
@@ -104,7 +121,11 @@ sf_token_tbl
 
 The next step is to remove so-called stop-words, that is, articles ("a", "the", ...), connectors ("and", "or", ...) and other words that provide structure to a sentence but otherwise carry little information. The `tidytext` package contains a data frame, `stop_words`, of such words, which enables us to remove them from the above table of tokens.
 
-```{r sf_tokens_xsw, echo=TRUE}
+```{r}
+#| label: lst-sf-tokens-xsw
+#| lst-cap: ""
+#| echo: true
+
 sf_tokens_xsw <- sf_token_tbl |> 
   anti_join(
     y  = tidytext::stop_words, 
@@ -123,7 +144,9 @@ We'll use larger bodies of text via the following R packages.
 
 Here are the number of strings per book.
 
-```{r ja_strings_per_book}
+```{r}
+#| label: ja-strings-per-book
+
 ja_strings_per_book <- austen_books() |> 
   summarise(
     .by = book, 
@@ -134,7 +157,9 @@ ja_strings_per_book
 
 Here are the ten words used most frequently across these novels (excluding stop-words).
 
-```{r ja_plus_chapters}
+```{r}
+#| label: ja-plus-chapters
+
 # new columns per book: line number, chapter
 ja_plus_chapters <- austen_books() |> 
   mutate(
@@ -150,7 +175,9 @@ ja_plus_chapters <- austen_books() |>
   )
 ```
 
-```{r ja_words_raw}
+```{r}
+#| label: ja-words-raw
+
 # break each line of text into several rows of words
 ja_words_raw <- ja_plus_chapters |> 
   unnest_tokens(
@@ -159,7 +186,9 @@ ja_words_raw <- ja_plus_chapters |>
   )
 ```
 
-```{r ja_words_xsw}
+```{r}
+#| label: ja-words-xsw
+
 # remove stop-words
 ja_words_xsw <- ja_words_raw |> 
   anti_join(
@@ -167,14 +196,19 @@ ja_words_xsw <- ja_words_raw |>
     by = "word")
 ```
 
-```{r ja_word_ct}
+```{r}
+#| label: ja-word-ct
+
 # count the number of occurrences of each word
 # list largest counts first
 ja_word_ct <- ja_words_xsw |> 
   dplyr::count(word, sort = TRUE)
 ```
 
-```{r ja_word_ct__kable}
+```{r}
+#| label: tbl-ja-word-ct
+#| tbl-cap: "Jane Austen: frequent (non-stop) words"
+
 ja_word_ct |> 
   dplyr::slice_head(n = 10) |> 
   knitr::kable(
@@ -191,7 +225,9 @@ The collection boasts over 75000 free electronic books. The data frame `gutenber
 
 As a contrast with Jane Austen, here are some well-known science fiction novels of H.G. Wells (1866-1946).
 
-```{r hgwells_books}
+```{r}
+#| label: hgwells-books
+
 hgwells_books <- tibble::tribble(
   ~id, ~title,
     35L, "The Time Machine",
@@ -204,7 +240,9 @@ hgwells_books
 
 Among these novels, here are the most frequently used words (again excluding stop-words).
 
-```{r hgwells_lines}
+```{r}
+#| label: hgwells-lines
+
 # load file as tibble by one of these methods
 uncl_download <- FALSE
 load_rda      <- TRUE
@@ -221,7 +259,9 @@ if (uncl_download) {
 }
 ```
 
-```{r hgwells_words}
+```{r}
+#| label: hgwells-words
+
 # break each line into rows, one word per row
 hgwells_words <- hgwells_lines |> 
   unnest_tokens(
@@ -234,7 +274,9 @@ hgwells_words <- hgwells_lines |>
     by = "word")
 ```
 
-```{r hgwells_words__write}
+```{r}
+#| label: save-hgwells-books
+
 # save as text file just once
 save_file <- FALSE
 if (save_file) {
@@ -244,12 +286,17 @@ if (save_file) {
 }
 ```
 
-```{r hgwells_word_ct}
+```{r}
+#| label: hgwells-word-ct
+
 hgwells_word_ct <- hgwells_words |> 
   dplyr::count(word, sort = TRUE)
 ```
 
-```{r hgwells_word_ct__kable}
+```{r}
+#| label: tbl-hgwells-word-ct
+#| tbl-cap: "H.G. Wells: frequent (non-stop) words"
+
 hgwells_word_ct |> 
   dplyr::slice_head(n = 10) |> 
   knitr::kable(
@@ -272,7 +319,7 @@ $$
 \begin{align}
   tf(t_0, d_0) &= \frac{\mathcal{n}(t_0, d_0)}{\sum_{t \in d_0}\mathcal{n}(t, d_0)}
 \end{align}
-$$
+$$ {#eq-term-frequency}
 
 As for inverse document frequency (idf), there are several alternative definitions. Here's the definition we'll use.
 
@@ -284,11 +331,13 @@ $$
   & \mathcal{D} = \text{corpus of documents } \\
   & \mathcal{D}_t = \{ d \in \mathcal{D} : t \in d  \}
 \end{align}
-$$
+$$ {#eq-inverse-doc-frequency}
 
 Example: let $\mathcal{D}$ denote the set of Jane Austen's 6 novels, and let each novel take its turn as the document $d_0$ of interest. For each book, the most distinctive word (that maximizes tf-idf) is as follows.
 
-```{r ja_book_wd_ct}
+```{r}
+#| label: ja-book-wd-ct
+
 # count (book, word) occurrences
 # including stop-words
 ja_book_wd_ct <- ja_words_raw |> 
@@ -296,21 +345,28 @@ ja_book_wd_ct <- ja_words_raw |>
   dplyr::count(book, word)
 ```
 
-```{r ja_tf_idf}
+```{r}
+#| label: ja-tf-idf
+
 # calculate (tf, idf, tf-idf)
 ja_tf_idf <- ja_book_wd_ct |> 
   tidytext::bind_tf_idf(word, book, n) |> 
   arrange(book, desc(tf_idf))
 ```
 
-```{r ja_max_wd_per_book}
+```{r}
+#| label: ja-max-wd-per-book
+
 # use max tf-idf to find the most distinctive word per book
 ja_max_wd_per_book <- ja_tf_idf |> 
   group_by(book) |> 
   filter(tf_idf == max(tf_idf, na.rm = TRUE))
 ```
 
-```{r ja_max_wd_per_book__kable}
+```{r}
+#| label: tbl-ja-max-wd-per-book
+#| tbl-cap: "Jane Austen: max tf-idf word per book"
+
 ja_max_wd_per_book |> 
   knitr::kable(
     caption = "Max tf-idf word per book", 
@@ -346,7 +402,11 @@ A widely used implementation of DTMs in R is the `DocumentTermMatrix` class in t
 
 As an example, here's a description of Associated Press newspaper articles included as a DTM in the `topicmodels` package.
 
-```{r AssociatedPress, echo=TRUE}
+```{r}
+#| label: lst-Associated-Press
+#| lst-cap: ""
+#| echo: true
+
 if (topicmodels_loaded) {
   data("AssociatedPress", package = "topicmodels")
 }
@@ -365,14 +425,22 @@ This Associated Press DTM consists of 2246 documents (rows) and 10473 terms (col
 
 The inaugural addresses of US presidents, provided by package `quanteda`, is an interesting example of a document-features matrix (DFM), a variant of a DTM. Here are the identifying variables for the first 6 presidential addresses.
 
-```{r inaug_dfm, R.options=list(quanteda_print_dfm_max_ndoc = 0, quanteda_print_dfm_max_nfeat = 0), echo=TRUE}
+```{r R.options=list(quanteda_print_dfm_max_ndoc = 0, quanteda_print_dfm_max_nfeat = 0)}
+#| label: lst-inaug-dfm
+#| lst-cap: ""
+#| echo: true
+
 data("data_corpus_inaugural", package = "quanteda")
 head(docvars(data_corpus_inaugural), 6)
 ```
 
 Here is a list of tokens from the addresses given in 1861, 1933, and 1961.
 
-```{r some_presidential_tokens, echo=TRUE}
+```{r}
+#| label: lst-some-presidential-tokens
+#| lst-cap: ""
+#| echo: true
+
 some_presidential_tokens <- data_corpus_inaugural |> 
   corpus_subset(Year %in% c(1861L, 1933L, 1961L)) |> 
   tokens()
@@ -381,7 +449,11 @@ some_presidential_tokens
 
 Here is a rendering of this list of tokens as a document-feature matrix (DFM).
 
-```{r presidential_dfm, echo=TRUE}
+```{r}
+#| label: lst-presidential-dfm
+#| lst-cap: ""
+#| echo: true
+
 presidential_dfm <- some_presidential_tokens |> 
   quanteda::dfm()
 presidential_dfm
@@ -389,13 +461,19 @@ presidential_dfm
 
 We now reconfigure the DFM as a tidy data frame (tibble).
 
-```{r presidential_tbl, echo=TRUE}
+```{r}
+#| label: lst-presidential-tbl
+#| lst-cap: ""
+#| echo: true
+
 presidential_tbl <- presidential_dfm |> 
   tidytext::tidy()
 presidential_tbl
 ```
 
-```{r presidential_tbl__save}
+```{r}
+#| label: save-presidential-tbl
+
 # save as text file just once
 save_file <- FALSE
 if (save_file) {
@@ -426,7 +504,11 @@ To illustrate, we'll apply function `LDA()` to the data set (DTM) `AssociatedPre
 
 [^1]: Function `LDA()` in package `topicmodels` returns a topic model of class "LDA_VEM". LDA denotes latent Dirichlet allocation. VEM denotes the Variational Expectation Maximization (EM) algorithm.
 
-```{r ap_lda, echo=TRUE}
+```{r}
+#| label: lst-ap-lda
+#| lst-cap: ""
+#| echo: true
+
 if (topicmodels_loaded) {
   ap_lda <- AssociatedPress |> 
     LDA(
@@ -440,7 +522,9 @@ if (topicmodels_loaded) {
 
 We now construct (topic, term) probabilities (called $\beta$ in the LDA literature).
 
-```{r ap_topics}
+```{r}
+#| label: ap-topics
+
 # TODO: overcome error generated by tidy(ap_lda)
 # in the meantime, patch as follows
 
@@ -477,7 +561,9 @@ if (topicmodels_loaded) {
 ap_topics |> print(digits = 2)
 ```
 
-```{r ap_topics__save}
+```{r}
+#| label: save-ap-topics
+
 # save as text file just once
 save_file <- FALSE
 if (save_file) {
@@ -489,12 +575,16 @@ if (save_file) {
 
 Here are the most probable terms for each of the two constructed topics, along with their probabilities (beta), shown as a bar chart.
 
-```{r ap_top_terms}
+```{r}
+#| label: ap-top-terms
+
 ap_top_terms <- ap_topics |> 
   slice_max(beta, n = 10, by = "topic")
 ```
 
-```{r ap_top_terms_wide}
+```{r}
+#| label: ap-top-terms-wide
+
 # afterthought: display bar chart, not this table
 ap_top_terms_1 <- ap_top_terms |> 
   dplyr::filter(topic == 1L)
@@ -509,7 +599,10 @@ ap_top_terms_wide <- tibble::tibble(
 )
 ```
 
-```{r g_ap_top_terms}
+```{r}
+#| label: fig-ap-top-terms
+#| fig-cap: "AP articles: most probable terms by topic"
+
 g_ap_top_terms <- ap_top_terms |> 
   mutate(term = reorder_within(
     x = term, 
@@ -533,11 +626,13 @@ $$
 \begin{align}
   \log_2 \left( \frac{\beta_2}{\beta_1} \right)
 \end{align}
-$$
+$$ {#eq-log-ratio-topic-term}
 
 restricting the set of terms to those assigned to both topics $(\min(\beta_1, \beta_2) > 0)$ with at least one of them exceeding a probability threshhold, say $(\max(\beta_1, \beta_2) > 0.001)$.
 
-```{r beta_ratio_wide}
+```{r}
+#| label: beta-ratio-wide
+
 beta_ratio_wide <- ap_topics |> 
   mutate(topic = paste0("beta_", topic)) |> 
   pivot_wider(names_from = topic, values_from = beta) |> 
@@ -548,7 +643,10 @@ beta_ratio_wide <- ap_topics |>
   mutate(log_ratio = log2(beta_2 / beta_1))
 ```
 
-```{r g_beta_ratio_wide}
+```{r}
+#| label: fig-beta-ratio-wide
+#| fig-cap: "Log2 ratio of beta in topic 2 / topic 1"
+
 g_beta_ratio_wide <- beta_ratio_wide |> 
   group_by(direction = log_ratio > 0) |> 
   slice_max(abs(log_ratio), n = 10) |> 
