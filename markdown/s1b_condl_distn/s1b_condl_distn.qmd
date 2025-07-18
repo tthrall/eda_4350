@@ -13,6 +13,7 @@ format:
     toc_float: true
     code-fold: true
     code-summary: "Show the code"
+    html-math-method: mathjax
   pdf: default
   docx: default
 params:
