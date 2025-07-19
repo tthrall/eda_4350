@@ -23,7 +23,10 @@ abstract:
   "Introduce basic ideas and methods of statistical simulation studies."
 ---
 
-```{r setup, include=FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
   echo    = FALSE, 
   error   = FALSE, 
@@ -32,7 +35,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r libraries}
+```{r}
+#| label: CRAN-libraries
+
 library(assertthat)
 library(GGally)
 # library(gutenbergr)
@@ -51,7 +56,9 @@ library(tufte)
 
 ```
 
-```{r local_source}
+```{r}
+#| label: local-source
+
 # source(here("code", "rmse_per_grp.R"))
 # source(here("code", "xtabs_to_jaccard.R"))
 source(here("code", "gen_circuit.R"))
@@ -72,7 +79,9 @@ As mentioned in an earlier session, the R `stats` package provides random number
 -   `qunif()` quantile, return $x$ having prescribed cumulative probability $p$
 -   `runif()` generate indpendent instances $(X_1, \ldots, X_n)$ of a uniform random variable
 
-```{r rng_tbl}
+```{r}
+#| label: rng-tbl
+
 rng_tbl <- tibble::tribble(
     ~fn, ~value, ~distribution,
     "rbeta", "dbl", "Beta",
@@ -95,10 +104,12 @@ rng_tbl <- tibble::tribble(
   )
 ```
 
-```{r dpqr_tbl}
+```{r}
+#| label: dpqr-tbl
+
 # separate function prefix (type) from remaining name
 dpqr_tbl <- rng_tbl |> 
-  mutate(
+  dplyr::mutate(
     prefix = "[d, p, q, r]", 
     suffix = stringr::str_remove(fn, "r")
   ) |> 
@@ -111,9 +122,12 @@ dpqr_tbl <- rng_tbl |>
 
 The `stats` package includes the following continuous distributions.
 
-```{r dpqr_dbl__kable}
+```{r}
+#| label: tbl-dpqr-tbl
+#| tbl-cap: "Continuous Distributions from `stats`"
+
 dpqr_tbl |> 
-  filter(value == "dbl") |> 
+  dplyr::filter(value == "dbl") |> 
   dplyr::select(- value) |> 
   knitr::kable(
     caption = "Continuous Distributions from `stats`"
@@ -126,9 +140,12 @@ These distributions have interesting histories and relationships. For example a 
 
 The `stats` package also includes the following discrete distributions.
 
-```{r dpqr_int__kable}
+```{r}
+#| label: tbl-dpqr-int
+#| tbl-cap: "Discrete Distributions from `stats`"
+
 dpqr_tbl |> 
-  filter(value == "int") |> 
+  dplyr::filter(value == "int") |> 
   dplyr::select(- value) |> 
   knitr::kable(
     caption = "Discrete Distributions from `stats`"
@@ -156,7 +173,7 @@ $$
   \frac{ \text{Var} \left\{ \hat{\mathcal{m}} \right\} }{ \text{Var} \left\{ \hat{\mu} \right\} } &\approx \frac{\pi}{2} \\ 
   &\approx 1.57
 \end{align}
-$$
+$$ {#eq-variance-mean-v-median}
 
 This ratio of variances in the normal case can be verified by simulation.
 
@@ -185,14 +202,20 @@ The precision of the estimate improves as the number $n$ of randomly generated p
 
 The figure below shows a simple closed curve within the unit square centered at the origin.
 
-```{r c_tbl}
+```{r}
+#| label: c-tbl
+
 c_tbl <- gen_circuit_tbl()
 ```
 
-```{r g_c_tbl}
+```{r}
+#| label: fig-c-tbl
+#| fig-cap: "Monte Carlo estimation of area"
+
 g_c_tbl <- c_tbl |> 
-  ggplot(mapping = aes(x = c, y = s)) + 
-  geom_path()
+  ggplot2::ggplot(mapping = aes(x = c, y = s)) + 
+  ggplot2::geom_path() + 
+  ggplot2::labs("Monte Carlo estimation of area")
 g_c_tbl
 ```
 
@@ -216,7 +239,7 @@ This is a common application of Mote Carlo simulation: estimating the volume of 
 
 $$
 \left\{ \hat{\mu}_r \right\}_{r = 1}^R
-$$
+$$ {#eq-sim-sample-mean}
 
 2.  Suppose $(U_1, \ldots, U_n)$ are independent and identically distributed random variables following the standard uniform distribution on the interval $(0, 1)$. Now set $X_j = - \log_e(U_j)$ for $j = 1, \ldots, n$. What is the distribution of $(X_1, \ldots, X_n)$?
 
