@@ -117,7 +117,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">11:59 Sat 19-Jul-2025</p>
+      <p class="date">19:40 Sat 19-Jul-2025</p>
     </div>
   </div>
   
@@ -127,7 +127,7 @@ window.Quarto = {
 <div>
   <div class="abstract">
     <div class="block-title">Abstract</div>
-    Introduce basic ideas and methods of statistical simulation studies.
+    Introduce basic ideas and methods of statistical simulation studies. <br><br>
   </div>
 </div>
 
@@ -350,12 +350,52 @@ Figure&nbsp;1: Monte Carlo estimation of area
 </div>
 </div>
 <p>The closed curve defines an interior region <span class="math inline">\(\mathcal{R}\)</span> bounded by the square <span class="math inline">\(\mathcal{S} = [-0.5, 0.5] \times [-0.5, 0.5]\)</span>. We assume that for any point <span class="math inline">\((x, y) \in \mathcal{S}\)</span> we can determine whether the point is inside or outside <span class="math inline">\(\mathcal{R}\)</span>. The Monte Carlo estimate of the area of this region is the proportion of points randomly selected from <span class="math inline">\(\mathcal{S}\)</span> that fall within <span class="math inline">\(\mathcal{R}\)</span> multiplied by the area of <span class="math inline">\(\mathcal{S}\)</span> (which is 1 in this case).</p>
-<p>In the current example, the closed curve shown above is a deformation of the unit circle in which the Euclidean norm at each point, <span class="math inline">\(t\)</span>, along the circle has been multiplied by a prescribed positive continuous function, <span class="math inline">\(f(t)\)</span>. Consequently a point <span class="math inline">\((x, y)\)</span> is in the interior of the closed curve if <span class="math inline">\(x^2 + y^2 &lt; f^2(t)\)</span>, where <span class="math inline">\(t \in [0,1)\)</span> equals <span class="math inline">\(\arctan(y, x) \mod{2 \pi}\)</span>.</p>
+<p>In the current example, the closed curve shown above is a deformation of the unit circle in which the Euclidean norm at each point, <span class="math inline">\(t\)</span>, along the circle has been multiplied by a prescribed positive continuous function, <span class="math inline">\(f(t)\)</span>. Consequently a point <span class="math inline">\((x, y)\)</span> is in the interior of the closed curve if <span class="math inline">\(x^2 + y^2 &lt; f^2(t)\)</span>, where <span class="math inline">\(t \in [0,1)\)</span> equals <span class="math inline">\(\arctan(y, x) \bmod{2 \pi}\)</span>.</p>
 <p>This is a common application of Mote Carlo simulation: estimating the volume of given region <span class="math inline">\(\mathcal{R}\)</span> in Euclidean space, under the assumption that, for any given point, we can determine whether the point is inside or outside the region.</p>
 </section>
 <section id="importance-sampling" class="level3">
 <h3 class="anchored" data-anchor-id="importance-sampling">Importance Sampling</h3>
-<p>[TODO]</p>
+<p>The above description of Monte Carlo simulation is also called rejection sampling, and can be generalized as follows. Let <span class="math inline">\(\mathcal{R}\)</span> denote a region of <span class="math inline">\(\mathbb{R}^d\)</span> having a finite volume <span class="math inline">\(| \mathcal{R} |\)</span>. We want to estimate the average value, <span class="math inline">\(\mu(f, \mathcal{R})\)</span> of any given integrable function <span class="math inline">\(f\)</span> on <span class="math inline">\(\mathcal{R}\)</span>.</p>
+<p><span id="eq-mu-f-region"><span class="math display">\[
+\begin{align}
+  \mu(f, \mathcal{R}) &amp;= \frac{1}{| \mathcal{R} |} \int_\mathcal{R} f(x) \; dx
+\end{align}
+\tag{2}\]</span></span></p>
+<p>This corresponds to the expected value of <span class="math inline">\(f(X)\)</span> when the random vector <span class="math inline">\(X\)</span> has a uniform probability distribution over <span class="math inline">\(\mathcal{R}\)</span>. More generally, suppose we also have some probability density function <span class="math inline">\(p(\cdot)\)</span> restricted to <span class="math inline">\(\mathcal{R}\)</span>, and we want to calculate the expected value of <span class="math inline">\(f(X)\)</span> when <span class="math inline">\(X\)</span> has probability density <span class="math inline">\(p(\cdot)\)</span>.</p>
+<p><span id="eq-mu-f-p"><span class="math display">\[
+\begin{align}
+  \mu(f, p) &amp;= \int_\mathcal{R} f(x) \times p(x) \; dx
+\end{align}
+\tag{3}\]</span></span></p>
+<p>Now. it may not be convenient or feasible to generate a random sample of vectors <span class="math inline">\(\{ X_1, \ldots, X_n \}\)</span> from the probability distribution having given density function <span class="math inline">\(p(\cdot)\)</span>. But we may be able to generate a random sample of vectors <span class="math inline">\(\{ Y_1, \ldots, Y_n \}\)</span> from a density function <span class="math inline">\(q(\cdot)\)</span> defined on a region <span class="math inline">\(\mathcal{S}\)</span> containing <span class="math inline">\(\mathcal{R}\)</span>. Then <span class="math inline">\(\mu(f, p)\)</span> can be expressed as the following weighted expectation of <span class="math inline">\(f(Y)\)</span>.</p>
+<p><span id="eq-mu-w-f-q"><span class="math display">\[
+\begin{align}
+  \mu(f, p) &amp;= \int_\mathcal{R} w(y) \times f(y) \times q(y) \; dy  \\ \\
+  &amp; \text{where } \\ \\
+  w(y) &amp;= \frac{p(y)}{q(y)}
+\end{align}
+\tag{4}\]</span></span></p>
+<p>The estimated value takes the form of the following weighted sum.</p>
+<p><span id="eq-avg-w-f-q"><span class="math display">\[
+\begin{align}
+  \hat{\mu}(f, p) &amp;= \frac{\sum_{j = 1}^n w(Y_j) \; f(Y_j)}
+  {\sum_{k = 1}^n w(Y_k)}
+\end{align}
+\tag{5}\]</span></span></p>
+<p>This approach is called <em>importance sampling</em>, and has many variations. Here is an example. Suppose <span class="math inline">\(Z\)</span> has a standard normal distribution with density function <span class="math inline">\(\phi(\cdot)\)</span> and cumulative probability function <span class="math inline">\(\Phi(\cdot)\)</span>, and we want to determine the following conditional expectation.</p>
+<p><span id="eq-mu-f-z-conditional"><span class="math display">\[
+\begin{align}
+  \mu(f, p) &amp;= \int_\mathcal{R} f(z) \times p(z) \; dz \\ \\
+  &amp; \text{where } \\ \\
+  \mathcal{R} &amp;= \{ z \; : \; z \ge 6 \} \\
+  p(z) &amp;=
+  \begin{cases}
+    0 &amp; \text{if } z &lt; 6 \\
+    \frac{\phi(z)}{1 - \Phi(6)} &amp; \text{if } z \ge 6
+  \end{cases}
+\end{align}
+\tag{6}\]</span></span></p>
+<p>A naive approach to estimating <span class="math inline">\(\mu(f, p)\)</span> would be to generate standard normal variables <span class="math inline">\(\{ Z_1, \ldots, Z_n \}\)</span>, rejecting those values less than 6, and then averaging <span class="math inline">\(f(Z_\nu)\)</span> across the remaining values. The problem is that we would expect only one in a billion values to pass this threshhold, making that algorithm highly inefficient. Alternatively, we could define <span class="math inline">\(Y_\nu = 12 | Z_\nu |\)</span>, thereby lowering the probability of rejection from nearly unity to about 0.38. The weighting function <span class="math inline">\(w(\cdot)\)</span> assigns zero weight in the rejection region and then rapidly decreases on the interval <span class="math inline">\([6, \infty)\)</span>.</p>
 </section>
 </section>
 <section id="markov-chain-monte-carlo-mcmc" class="level2">
@@ -369,7 +409,7 @@ Figure&nbsp;1: Monte Carlo estimation of area
 </ol>
 <p><span id="eq-sim-sample-mean"><span class="math display">\[
 \left\{ \hat{\mu}_r \right\}_{r = 1}^R
-\tag{2}\]</span></span></p>
+\tag{7}\]</span></span></p>
 <ol start="2" type="1">
 <li><p>Suppose <span class="math inline">\((U_1, \ldots, U_n)\)</span> are independent and identically distributed random variables following the standard uniform distribution on the interval <span class="math inline">\((0, 1)\)</span>. Now set <span class="math inline">\(X_j = - \log_e(U_j)\)</span> for <span class="math inline">\(j = 1, \ldots, n\)</span>. What is the distribution of <span class="math inline">\((X_1, \ldots, X_n)\)</span>?</p></li>
 <li><p>In the Monte Carlo illustration above, what is the standard error of estimate of <span class="math inline">\(\pi\)</span>?</p></li>

@@ -20,7 +20,8 @@ params:
   file_id: "s3b"
   file_prefix: "s3b_stat_sim"
 abstract: 
-  "Introduce basic ideas and methods of statistical simulation studies."
+  "Introduce basic ideas and methods of statistical simulation studies.  <br><br>"
+bibliography: s3b_references.bib
 ---
 
 ```{r}
@@ -221,13 +222,63 @@ g_c_tbl
 
 The closed curve defines an interior region $\mathcal{R}$ bounded by the square $\mathcal{S} = [-0.5, 0.5] \times [-0.5, 0.5]$. We assume that for any point $(x, y) \in \mathcal{S}$ we can determine whether the point is inside or outside $\mathcal{R}$. The Monte Carlo estimate of the area of this region is the proportion of points randomly selected from $\mathcal{S}$ that fall within $\mathcal{R}$ multiplied by the area of $\mathcal{S}$ (which is 1 in this case).
 
-In the current example, the closed curve shown above is a deformation of the unit circle in which the Euclidean norm at each point, $t$, along the circle has been multiplied by a prescribed positive continuous function, $f(t)$. Consequently a point $(x, y)$ is in the interior of the closed curve if $x^2 + y^2 < f^2(t)$, where $t \in [0,1)$ equals $\arctan(y, x) \mod{2 \pi}$.
+In the current example, the closed curve shown above is a deformation of the unit circle in which the Euclidean norm at each point, $t$, along the circle has been multiplied by a prescribed positive continuous function, $f(t)$. Consequently a point $(x, y)$ is in the interior of the closed curve if $x^2 + y^2 < f^2(t)$, where $t \in [0,1)$ equals $\arctan(y, x) \bmod{2 \pi}$.
 
 This is a common application of Mote Carlo simulation: estimating the volume of given region $\mathcal{R}$ in Euclidean space, under the assumption that, for any given point, we can determine whether the point is inside or outside the region.
 
 ### Importance Sampling
 
-\[TODO\]
+The above description of Monte Carlo simulation is also called rejection sampling, and can be generalized as follows.  Let $\mathcal{R}$ denote a region of $\mathbb{R}^d$ having a finite volume $| \mathcal{R} |$.  We want to estimate the average value, $\mu(f, \mathcal{R})$ of any given integrable function $f$ on $\mathcal{R}$.
+
+$$
+\begin{align}
+  \mu(f, \mathcal{R}) &= \frac{1}{| \mathcal{R} |} \int_\mathcal{R} f(x) \; dx
+\end{align}
+$$ {#eq-mu-f-region}
+
+This corresponds to the expected value of $f(X)$ when the random vector $X$ has a uniform probability distribution over $\mathcal{R}$.  More generally, suppose we also have some probability density function $p(\cdot)$ restricted to $\mathcal{R}$, and we want to calculate the expected value of $f(X)$ when $X$ has probability density $p(\cdot)$.
+
+$$
+\begin{align}
+  \mu(f, p) &= \int_\mathcal{R} f(x) \times p(x) \; dx
+\end{align}
+$$ {#eq-mu-f-p}
+
+Now. it may not be convenient or feasible to generate a random sample of vectors $\{ X_1, \ldots, X_n \}$ from the probability distribution having given density function $p(\cdot)$.  But we may be able to generate a random sample of vectors $\{ Y_1, \ldots, Y_n \}$ from a density function $q(\cdot)$ defined on a region $\mathcal{S}$ containing $\mathcal{R}$.  Then $\mu(f, p)$ can be expressed as the following weighted expectation of $f(Y)$. 
+
+$$
+\begin{align}
+  \mu(f, p) &= \int_\mathcal{R} w(y) \times f(y) \times q(y) \; dy  \\ \\ 
+  & \text{where } \\ \\ 
+  w(y) &= \frac{p(y)}{q(y)}
+\end{align}
+$$ {#eq-mu-w-f-q}
+
+The estimated value takes the form of the following weighted sum.
+
+$$
+\begin{align}
+  \hat{\mu}(f, p) &= \frac{\sum_{j = 1}^n w(Y_j) \; f(Y_j)}
+  {\sum_{k = 1}^n w(Y_k)}
+\end{align}
+$$ {#eq-avg-w-f-q}
+
+This approach is called _importance sampling_, and has many variations.  Here is an example.  Suppose $Z$ has a standard normal distribution with density function $\phi(\cdot)$ and cumulative probability function $\Phi(\cdot)$, and we want to determine the following conditional expectation.
+
+$$
+\begin{align}
+  \mu(f, p) &= \int_\mathcal{R} f(z) \times p(z) \; dz \\ \\ 
+  & \text{where } \\ \\ 
+  \mathcal{R} &= \{ z \; : \; z \ge 6 \} \\ 
+  p(z) &= 
+  \begin{cases}
+    0 & \text{if } z < 6 \\ 
+    \frac{\phi(z)}{1 - \Phi(6)} & \text{if } z \ge 6
+  \end{cases}
+\end{align}
+$$ {#eq-mu-f-z-conditional}
+
+A naive approach to estimating $\mu(f, p)$ would be to generate standard normal variables $\{ Z_1, \ldots, Z_n \}$, rejecting those values less than 6, and then averaging $f(Z_\nu)$ across the remaining values.  The problem is that we would expect only one in a billion values to pass this threshhold, making that algorithm highly inefficient.  Alternatively, we could define $Y_\nu = 12 | Z_\nu |$, thereby lowering the probability of rejection from nearly unity to about `r round(2 * pnorm(0.5) - 1, 2)`.  The weighting function $w(\cdot)$ assigns zero weight in the rejection region and then rapidly decreases on the interval $[6, \infty)$.
 
 ## Markov Chain Monte Carlo (MCMC)
 
