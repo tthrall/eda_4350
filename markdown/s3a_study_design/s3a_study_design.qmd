@@ -23,7 +23,10 @@ abstract:
   "Introduce basic ideas and methods in statistical sampling theory and the design of experimental or observational studies.  <br><br>"
 ---
 
-```{r setup, include=FALSE}
+```{r}
+#| label: setup
+#| include: false
+
 knitr::opts_chunk$set(
   echo    = FALSE, 
   error   = FALSE, 
@@ -32,7 +35,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r libraries}
+```{r}
+#| label: CRAN-libraries
+
 library(assertthat)
 library(GGally)
 # library(gutenbergr)
@@ -51,7 +56,9 @@ library(tufte)
 
 ```
 
-```{r local_source}
+```{r}
+#| label: local-source
+
 # source(here("code", "rmse_per_grp.R"))
 # source(here("code", "xtabs_to_jaccard.R"))
 ```
@@ -66,7 +73,9 @@ As our world becomes evermore connected digitally, the available data of interes
 
 We begin with examples of observational and experimental studies, and review some sampling strategies under practical constraints.
 
-```{r example_FPP_page}
+```{r}
+#| label: example-FPP-page
+
 # for instructor use only: 
 # record FPP page number per example
 example_FPP_page <- tibble::tribble(
@@ -82,7 +91,7 @@ example_FPP_page <- tibble::tribble(
 # save file just once
 save_file <- FALSE
 if (save_file) {
-  example_FPP_page |> write_tsv(here(
+  example_FPP_page |> readr::write_tsv(here(
     "data", "retain", "example_FPP_page.txt"
   ))
 }
@@ -98,7 +107,9 @@ The *Literary Digest* magazine, however, predicted a decisive Landon victory bas
 
 George Gallup had just created his polling organization. Gallup took a sample of 3,000 voters to estimate what the *Digest* would predict, and took a sample of 50,000 voters to predict the election. Here are the results.
 
-```{r lit_digest_tbl}
+```{r}
+#| label: lit-digest-tbl
+
 lit_digest_tbl <- tibble::tribble(
   ~source, ~FDR_prediction, 
   "Digest", 43L, 
@@ -108,7 +119,10 @@ lit_digest_tbl <- tibble::tribble(
 )
 ```
 
-```{r lit_digest_tbl__kable}
+```{r}
+#| label: tbl-lit-digest-tbl
+#| tbl-cap: "Predicted % for FDR in 1936"
+
 lit_digest_tbl |> knitr::kable(
   caption = "Predicted % for FDR in 1936", 
   col.names = c("source", "FDR predicted %")
@@ -123,7 +137,9 @@ Moral: a large sample size alone does not guarantee accuracy. Ask yourself how t
 
 Truman was a colorful and effective US president, but he was the underdog in the 1948 elelction. Three major polling organizations covered the election: Crossley for the Hearst newspapers, Gallup (synicated in \~100 newspapers across the country), and Roper for *Fortune* magazine. By the fall of 1948, all three put Dewey ahead of Truman by 5 or more percentage points. Here are the predicted and actual percentages.
 
-```{r truman_dewey_tbl}
+```{r}
+#| label: truman-dewey-tbl
+
 truman_dewey_tbl <- tibble::tribble(
   ~source, ~Truman, ~Dewey, ~Thrumond, ~Wallace, 
   "Crossley", 45L, 50L, 2L, 3L, 
@@ -133,7 +149,10 @@ truman_dewey_tbl <- tibble::tribble(
 )
 ```
 
-```{r truman_dewey_tbl__kable}
+```{r}
+#| label: tbl-truman-dewey-tbl
+#| tbl-cap: "Predicted % per candidate in 1948"
+
 truman_dewey_tbl |> knitr::kable(
   caption = "Predicted % per candidate in 1948"
 )
@@ -174,7 +193,9 @@ The hallmark of a probability sample is that the chance of including any given i
 
 Since the 1952 election Gallup and other pollsters have used probability samples, and have, on the whole, reduced the magnitude of prediction error. Here are the prediction errors of the Gallup organization. (Ross Perot's candidacy made 1992 an especially challenging year to predict.)
 
-```{r us_elections_48_04}
+```{r}
+#| label: us-elections-48-04
+
 us_elections_48_04 <- tibble::tribble(
   ~year, ~n, ~winner, ~Gallup, ~actual, ~error, 
   1952, 5385, "Eisenhower", 51, 55.1, -4.1,  
@@ -198,7 +219,10 @@ us_elections_48_04 <- tibble::tribble(
   ))
 ```
 
-```{r us_elections_48_04__kable}
+```{r}
+#| label: tbl-us-elections-48-04
+#| tbl-cap: "Gallup prediction accuracy: 1952-2004"
+
 us_elections_48_04 |> knitr::kable(
   caption = "Gallup prediction accuracy: 1952-2004"
 )
@@ -228,7 +252,9 @@ The decision to test rather than adopt a promising drug is a difficult question 
 
 The National Foundation for Infantile Paralysis (NFIP) ran a controlled experiment among children in grades 1-3, an especially vulnerable age group. The field trial was carried out in selected school districts throughout the country, where the risk of polio was high. AS originally designed, the NFIP vaccinated all children in grade 2 whose parents consented to the vaccination, leaving unvaccinated those children in grade 2 whose parents did not consetn. Children in grades 1 and 3 were used as the controld group (were not vaccinated). The following table shows the results.
 
-```{r salk_blind}
+```{r}
+#| label: salk-blind
+
 salk_blind <- tibble::tribble(
   ~assignment, ~size, ~rate, 
   "treatment",  200000, 28, 
@@ -243,13 +269,15 @@ salk_blind <- tibble::tribble(
 # save file just once
 save_file <- FALSE
 if (save_file) {
-  salk_blind |> write_tsv(here(
+  salk_blind |> readr::write_tsv(here(
     "data", "retain", "salk_blind.txt"
   ))
 }
 ```
 
-```{r salk_nfip}
+```{r}
+#| label: salk-nfip
+
 salk_nfip <- tibble::tribble(
   ~grade, ~assignment, ~size, ~rate, 
   "2",    "treatment",  225000, 25, 
@@ -264,15 +292,18 @@ salk_nfip <- tibble::tribble(
 # save file just once
 save_file <- FALSE
 if (save_file) {
-  salk_nfip |> write_tsv(here(
+  salk_nfip |> readr::write_tsv(here(
     "data", "retain", "salk_nfip.txt"
   ))
 }
 ```
 
-```{r salk_nfip__kable}
+```{r}
+#| label: tbl-salk-nfip
+#| tbl-cap: "Polio rate per 100,000 subjects (NFIP study)"
+
 salk_nfip |> knitr::kable(
-  caption = "NFIP: polio rate per 100,000 subjects"
+  caption = "Polio rate per 100,000 subjects"
 )
 ```
 
@@ -280,7 +311,10 @@ Participating public health experts raised several concerns with the NFIP design
 
 Consequently a second experiment was conducted in which both the treatment and control group came from the same population of children whose parents consented to vaccination. Those children would be assigned at random either to the treatment (vaccinated) or control (unvaccinated) group. Moreover, this was to be a "double-blind" experiment: the assignment of each participating child would be closely held among the administrators of the experiment, and not shared with participating parents, medical staff responsible for injections (of either the vaccine or a saline solution), or physicians determining whether a paricipating child had or had not contracted polio. Children whose parents did not consent to vaccination would be tracked separately from others. Here are the results of the double-blind experiment.
 
-```{r salk_blind__kable}
+```{r}
+#| label: tbl-salk-blind
+#| tbl-cap: "Polio rate per 100,000 subjects (double-blind study)"
+
 salk_blind |> knitr::kable(
   caption = "Double-Blind: polio rate per 100,000 subjects"
 )
@@ -297,7 +331,9 @@ Key points:
 
 In some cases of cirrhosis of the liver, the patient may start to hemorrhage and bleed to death. One treatment involves surgery to redirect the flow of blood through a portacaval shunt. The operation to create the shunt is long and hazardous. Do the benefits outweigh the risks? The effectiveness of this surgery has been evaluated in 51 studies, summarized in the following table.
 
-```{r portacaval_tbl}
+```{r}
+#| label: portacaval-tbl
+
 portacaval_tbl <- tibble::tribble(
   ~design, ~marked, ~moderate, ~none,  
   "No controls",                  24, 7, 1, 
@@ -312,13 +348,16 @@ portacaval_tbl <- tibble::tribble(
 # save file just once
 save_file <- FALSE
 if (save_file) {
-  portacaval_tbl |> write_tsv(here(
+  portacaval_tbl |> readr::write_tsv(here(
     "data", "retain", "portacaval_tbl.txt"
   ))
 }
 ```
 
-```{r portacaval_tbl__kable}
+```{r}
+#| label: tbl-portacaval_tbl
+#| tbl-cap: "Shunt evaluations: degree of enthusiasm per study design"
+
 portacaval_tbl |> knitr::kable(
   caption = "Shunt evaluations: degree of enthusiasm per study design"
 )
@@ -330,7 +369,9 @@ A randomized, controlled experiment begins with a well-defined patient populatio
 
 This sort of bias seems to have been at work in the poorly-controlled studies of the portacaval shunt. In both the well-controlled and the poorly-controlled studies, about 60% of the surgery patients were still alive 3 years after the operation. In the randomized controlled experiments, the percentage of controls who survived the experiment by 3 years was also about 60%. But only 45% of the controls in the non-randomized experiments survived for 3 years.
 
-```{r shunt_survival}
+```{r}
+#| label: shunt-survival
+
 shunt_survival <- tibble::tribble(
   ~design, ~surgery, ~control, 
   "randomized",     60, 60, 
@@ -344,13 +385,16 @@ shunt_survival <- tibble::tribble(
 # save file just once
 save_file <- FALSE
 if (save_file) {
-  shunt_survival |> write_tsv(here(
+  shunt_survival |> readr::write_tsv(here(
     "data", "retain", "shunt_survival.txt"
   ))
 }
 ```
 
-```{r shunt_survival__kable}
+```{r}
+#| label: tbl-shunt-survival
+#| tbl-cap: "Survival rate per (design, assignment)"
+
 shunt_survival |> knitr::kable(
   caption = "% patients alive after 3 years per (design, assignment)"
 )
@@ -372,7 +416,9 @@ In the US, accuracy in weighing at the supermarket ultimately depends on the acc
 
 Here are the first 5 measurements of NB10 in grams, along with the deficit (shortfall) from 10 grams expressed in micrograms.
 
-```{r NB10_first_5}
+```{r}
+#| label: NB10-first-5
+
 NB10_first_5 <- tibble::tibble(
   measurement = c(9.999591, 9.999600, 9.999594, 9.999601, 9.999598)
 ) |> 
@@ -383,13 +429,16 @@ NB10_first_5 <- tibble::tibble(
 # save file just once
 save_file <- FALSE
 if (save_file) {
-  NB10_first_5 |> write_tsv(here(
+  NB10_first_5 |> readr::write_tsv(here(
     "data", "retain", "NB10_first_5.txt"
   ))
 }
 ```
 
-```{r NB10_first_5__kable}
+```{r}
+#| label: tbl-NB10-first-5
+#| tbl-cap: "NB10: measurement (grams) and deficit (micrograms)"
+
 NB10_first_5 |> knitr::kable(
   caption = "NB10: measurement (grams) and deficit (micrograms)"
 )
@@ -397,7 +446,9 @@ NB10_first_5 |> knitr::kable(
 
 Here are all 100 measurements expressed as deficits in micrograms.
 
-```{r NB10_wide}
+```{r}
+#| label: NB10-wide
+
 NB10_wide <- tibble::tribble(
   ~idx_1, ~d_1, ~idx_2, ~d_2, ~idx_3, ~d_3, ~idx_4, ~d_4, 
   1, 409, 26, 397, 51, 404, 76, 404, 
@@ -432,7 +483,9 @@ NB10_wide <- tibble::tribble(
   ))
 ```
 
-```{r NB10_long}
+```{r}
+#| label: NB10-long
+
 NB10_long <- tibble::tribble(
   ~idx, ~deficit, 
   1, 409, 26, 397, 51, 404, 76, 404, 
@@ -470,13 +523,16 @@ NB10_long <- tibble::tribble(
 # save file just once
 save_file <- FALSE
 if (save_file) {
-  NB10_long |> write_tsv(here(
+  NB10_long |> readr::write_tsv(here(
     "data", "retain", "NB10_long.txt"
   ))
 }
 ```
 
-```{r NB10_wide__kable}
+```{r}
+#| label: tbl-NB10-wide
+#| tbl-cap: "NB10 (index, deficit)"
+
 NB10_wide |> knitr::kable(
   caption = "NB10 (index, deficit)", 
   col.names = rep(c("index", "deficit"), 4)
@@ -485,16 +541,22 @@ NB10_wide |> knitr::kable(
 
 Here is the distribution of the NB10 deficits expressed as a histogram.
 
-```{r g_NB10}
-g_NB10 <- NB10_long |> ggplot(mapping = aes(x = deficit)) + 
-  geom_histogram(fill = "coral") + 
-  labs(
+```{r}
+#| label: fig-NB10
+#| fig-cap: "NB10: micrograms below 10 grams"
+
+g_NB10 <- NB10_long |> 
+  ggplot2::ggplot(mapping = aes(x = deficit)) + 
+  ggplot2::geom_histogram(fill = "coral") + 
+  ggplot2::labs(
     title = "NB10: micrograms below 10 grams"
   )
 g_NB10
 ```
 
-```{r NB10_stats}
+```{r}
+#| label: NB10-stats
+
 NB10_stats <- NB10_long |> 
   summarise(
     avg = mean(deficit, na.rm = TRUE), 
@@ -506,14 +568,18 @@ The average deficit is `r round(NB10_stats$avg, 0)` micrograms, and the standard
 
 The next figure shows the deficits expressed in standard units. The histogram has been smoothed into an approximate density function, with a standard normal curve superimposed.
 
-```{r NB10_z_score}
+```{r}
+#| label: NB10-z-score
+
 NB10_z_score <- NB10_long |> 
   dplyr::mutate(
     z_score = (deficit - NB10_stats$avg)/NB10_stats$sd
   )
 ```
 
-```{r NB10_normal_approx}
+```{r}
+#| label: NB10-normal-approx
+
 NB10_normal_approx <- tibble::tibble(
   z = seq(
     from = min(NB10_z_score$ z_score, na.rm = TRUE), 
@@ -524,15 +590,18 @@ NB10_normal_approx <- tibble::tibble(
 )
 ```
 
-```{r g_NB10_z_score}
+```{r}
+#| label: fig-NB10-z-score
+#| fig-cap: "NB10: z-scores and standard normal curve"
+
 g_NB10_z_score <- NB10_z_score |> 
-  ggplot(mapping = aes(x = z_score)) + 
-  stat_density(geom = "area", outline.type = "both") + 
-  geom_histogram(fill = "blue", stat = "density") + 
-  labs(
+  ggplot2::ggplot(mapping = aes(x = z_score)) + 
+  ggplot2::stat_density(geom = "area", outline.type = "both") + 
+  ggplot2::geom_histogram(fill = "blue", stat = "density") + 
+  ggplot2::labs(
     title = "NB10: z-scores and standard normal curve"
   ) + 
-  geom_line(
+  ggplot2::geom_line(
     data = NB10_normal_approx, 
     mapping = aes(
       x = z, y = d, 
@@ -563,7 +632,7 @@ $$
 \begin{align}
   D_{\bullet} &= (D_1, \ldots, D_n)
 \end{align}
-$$
+$$ {#eq-deficit-vector}
 
 as independent, identically distributed random variables (whose common distribution is something like the histogram shown above). Each measured deficit $D_j$ is represented as the sum of $\mu_d$, the actual (but unknown) deficit, plus $\epsilon_j$, a chance error.
 
@@ -571,7 +640,7 @@ $$
 \begin{align}
   D_j &= \mu_D + \epsilon_j
 \end{align}
-$$
+$$ {#eq-deficit-model}
 
 We assume the population distribution of the chance errors has the same shape and scale as that of measured deficits, but with a population mean value of zero. Thus the chance errors have the same population standard deviation, $\sigma_D$, as the measured deficits. Based on the 100 NB10 measurements this unknown value is not too far from 6.5 micrograms.
 
@@ -588,7 +657,7 @@ $$
   Var \left\{ S(D_{\bullet}) \right\} &= n \; Var \left\{ \epsilon_j \right\} \\ 
   &= n \; \sigma_D^2 \\
 \end{align}
-$$
+$$ {#eq-sample-sum}
 
 Denoting the sample average as $A(\cdot)$, we have
 
@@ -606,7 +675,7 @@ $$
   SD \left\{ A(D_{\bullet}) \right\} &= \sqrt(Var \left\{ A(D_{\bullet}) \right\}) \\ 
   &= \frac{1}{\sqrt{n}}  \; \sigma_D \\
 \end{align}
-$$
+$$ {#eq-sample-avg}
 
 Thus the population standard deviation of the sample average $A(D_{\bullet})$ can be estimated from the sample standard deviation:
 
@@ -614,7 +683,7 @@ $$
 \begin{align}
   \hat{SD} \left\{ A(D_{\bullet}) \right\} &= \frac{1}{\sqrt{n}}  \; \hat{\sigma}_D \\
 \end{align}
-$$
+$$ {#eq-std-error}
 
 Returning to our sample of 100 NB10 measurements, with a sample average of about 405 micrograms and a sample standard deviation of about 6.5 micrograms, we have
 
@@ -623,7 +692,7 @@ $$
   \hat{SD} \left\{ A(D_{\bullet}) \right\} &= \frac{1}{\sqrt{100}}  \; 6.5 \\ 
   &= 0.65
 \end{align}
-$$
+$$ {#eq-std-error-calc}
 
 Our sample average of 405 micrograms probably deviates from the actual deficit of NB10 by no more 2 micrograms or so.
 
