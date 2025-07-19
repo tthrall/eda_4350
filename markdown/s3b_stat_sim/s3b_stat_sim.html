@@ -117,7 +117,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">19:40 Sat 19-Jul-2025</p>
+      <p class="date">20:05 Sat 19-Jul-2025</p>
     </div>
   </div>
   
@@ -385,7 +385,8 @@ Figure&nbsp;1: Monte Carlo estimation of area
 <p>This approach is called <em>importance sampling</em>, and has many variations. Here is an example. Suppose <span class="math inline">\(Z\)</span> has a standard normal distribution with density function <span class="math inline">\(\phi(\cdot)\)</span> and cumulative probability function <span class="math inline">\(\Phi(\cdot)\)</span>, and we want to determine the following conditional expectation.</p>
 <p><span id="eq-mu-f-z-conditional"><span class="math display">\[
 \begin{align}
-  \mu(f, p) &amp;= \int_\mathcal{R} f(z) \times p(z) \; dz \\ \\
+  \mu(f, p) &amp;= E \left \{ f(Z) \; | \; Z \ge 6  \right \} \\
+  &amp;= \int_\mathcal{R} f(z) \times p(z) \; dz \\ \\
   &amp; \text{where } \\ \\
   \mathcal{R} &amp;= \{ z \; : \; z \ge 6 \} \\
   p(z) &amp;=
@@ -395,7 +396,7 @@ Figure&nbsp;1: Monte Carlo estimation of area
   \end{cases}
 \end{align}
 \tag{6}\]</span></span></p>
-<p>A naive approach to estimating <span class="math inline">\(\mu(f, p)\)</span> would be to generate standard normal variables <span class="math inline">\(\{ Z_1, \ldots, Z_n \}\)</span>, rejecting those values less than 6, and then averaging <span class="math inline">\(f(Z_\nu)\)</span> across the remaining values. The problem is that we would expect only one in a billion values to pass this threshhold, making that algorithm highly inefficient. Alternatively, we could define <span class="math inline">\(Y_\nu = 12 | Z_\nu |\)</span>, thereby lowering the probability of rejection from nearly unity to about 0.38. The weighting function <span class="math inline">\(w(\cdot)\)</span> assigns zero weight in the rejection region and then rapidly decreases on the interval <span class="math inline">\([6, \infty)\)</span>.</p>
+<p>A naive approach to estimating <span class="math inline">\(\mu(f, p)\)</span> would be to generate standard normal variables <span class="math inline">\(\{ Z_1, \ldots, Z_n \}\)</span>, rejecting those values less than 6, and then averaging <span class="math inline">\(f(Z_\nu)\)</span> across the remaining values. The problem is that we would expect only one in a billion values to pass this threshhold, making that algorithm highly inefficient. Alternatively, we could define <span class="math inline">\(Y_\nu = 12 | Z_\nu |\)</span>, and apply the weighted averaging of <a href="#eq-avg-w-f-q" class="quarto-xref">Equation&nbsp;5</a>. The weighting function <span class="math inline">\(w(\cdot)\)</span> rapidly decreases on the interval <span class="math inline">\(y \in [6, \infty)\)</span> and otherwise assigns zero weight.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 </section>
 </section>
 <section id="markov-chain-monte-carlo-mcmc" class="level2">
@@ -423,7 +424,13 @@ Figure&nbsp;1: Monte Carlo estimation of area
 <p><a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo method - Wikipedia</a></p>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>If <span class="math inline">\(Y_\nu = 12 | Z_\nu |\)</span>, then the probability that <span class="math inline">\(Y_\nu \ge 6\)</span> is about 0.62.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

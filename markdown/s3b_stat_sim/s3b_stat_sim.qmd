@@ -267,7 +267,8 @@ This approach is called _importance sampling_, and has many variations.  Here is
 
 $$
 \begin{align}
-  \mu(f, p) &= \int_\mathcal{R} f(z) \times p(z) \; dz \\ \\ 
+  \mu(f, p) &= E \left \{ f(Z) \; | \; Z \ge 6  \right \} \\ 
+  &= \int_\mathcal{R} f(z) \times p(z) \; dz \\ \\ 
   & \text{where } \\ \\ 
   \mathcal{R} &= \{ z \; : \; z \ge 6 \} \\ 
   p(z) &= 
@@ -278,7 +279,9 @@ $$
 \end{align}
 $$ {#eq-mu-f-z-conditional}
 
-A naive approach to estimating $\mu(f, p)$ would be to generate standard normal variables $\{ Z_1, \ldots, Z_n \}$, rejecting those values less than 6, and then averaging $f(Z_\nu)$ across the remaining values.  The problem is that we would expect only one in a billion values to pass this threshhold, making that algorithm highly inefficient.  Alternatively, we could define $Y_\nu = 12 | Z_\nu |$, thereby lowering the probability of rejection from nearly unity to about `r round(2 * pnorm(0.5) - 1, 2)`.  The weighting function $w(\cdot)$ assigns zero weight in the rejection region and then rapidly decreases on the interval $[6, \infty)$.
+A naive approach to estimating $\mu(f, p)$ would be to generate standard normal variables $\{ Z_1, \ldots, Z_n \}$, rejecting those values less than 6, and then averaging $f(Z_\nu)$ across the remaining values.  The problem is that we would expect only one in a billion values to pass this threshhold, making that algorithm highly inefficient.  Alternatively, we could define $Y_\nu = 12 | Z_\nu |$, and apply the weighted averaging of @eq-avg-w-f-q.  The weighting function $w(\cdot)$ rapidly decreases on the interval $y \in [6, \infty)$ and otherwise assigns zero weight.[^is-xmpl-12-z]
+
+[^is-xmpl-12-z]: If $Y_\nu = 12 | Z_\nu |$, then the probability that $Y_\nu \ge 6$ is about `r round(2 * pnorm(-0.5), 2)`. 
 
 ## Markov Chain Monte Carlo (MCMC)
 
