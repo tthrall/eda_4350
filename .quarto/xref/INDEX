@@ -76,5 +76,8 @@
   },
   "markdown/s3b_stat_sim/s3b_stat_sim.qmd": {
     "s3b_stat_sim.html": "df1d31b0"
+  },
+  "markdown/s6a_topic_review/s6a_topic_review.qmd": {
+    "s6a_topic_review.html": "ef7a214b"
   }
 }
