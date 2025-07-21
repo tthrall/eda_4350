@@ -3,18 +3,22 @@ title: "Preparing to Teach Part 1"
 subtitle: "Part 1, session 6b of Data Mining Intro"
 author: 
   - name: "Send comments to: Tony T (adthral)"
-date: "`r format(Sys.time(), '%Y-%m-%d %H:%M', usetz = TRUE)`"
-output: 
-  html_document:
-    toc: true
-    df_print: paged
-    mathjax: default
-  word_document:
-    toc: true
-    df_print: tibble
-  pdf_document:
-    toc: true
-    df_print: tibble
+date: last-modified
+date-format: HH:mm ddd D-MMM-YYYY
+editor: source
+toc: true
+toc-depth: 3
+format:
+  html:
+    toc_float: true
+    code-fold: true
+    code-summary: "Show the code"
+    html-math-method: mathjax
+  pdf: default
+  docx: default
+params:
+  file_id: "s6b"
+  file_prefix: "s6b_discussion"
 abstract: 
   "Teaching Part 1: audience, goals, content, and pedagogy."
 ---
@@ -85,7 +89,6 @@ part_1_review_exercises |>
     col.names = c("heading", "prep (minutes)")
   )
 ```
-
 
 ## Primary References for the Course
 
@@ -194,4 +197,3 @@ Each of us goes about learning a new area in our own distinct manner. As instruc
 -   As a community of instructors, how should we share our successes and challenges?
 
 -   How, if at all, should we vet potential instructors?
-
