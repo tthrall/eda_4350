@@ -143,7 +143,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">05:56 Mon 21-Jul-2025</p>
+      <p class="date">16:56 Mon 21-Jul-2025</p>
     </div>
   </div>
   
@@ -586,7 +586,7 @@ Figure&nbsp;1: Monte Carlo estimation of area
   \alpha(y \; | \; x) &amp;= \max \left \{1, \frac{ \phi(y) }{ \phi(x) } \right \}
 \end{align}
 \tag{20}\]</span></span></p>
-<p>Here are two simulations, each starting at <span class="math inline">\(X(0) = 0\)</span>, but with <span class="math inline">\(\delta \in \{ 0.1, 1.0 \}\)</span>, respectively. Recall that <span class="math inline">\(| X(t+1) - X(t) | \le \delta\)</span>. Thus the first trajectory is much smoother than the second.</p>
+<p>Here are three simulations, each starting at <span class="math inline">\(X(0) = 0\)</span>, but with <span class="math inline">\(\delta \in \{ \frac{1}{8}, \frac{1}{2}, 2 \}\)</span>, respectively. Recall that <span class="math inline">\(| X(t+1) - X(t) | \le \delta\)</span>. Thus the trajectories are decreasingly smooth.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-nrw-trajectory" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -595,13 +595,13 @@ Figure&nbsp;1: Monte Carlo estimation of area
 <img src="s3b_stat_sim_files/figure-html/fig-nrw-trajectory-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nrw-trajectory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: X(t) with small and large jumps
+Figure&nbsp;2: X(t) with small to large jumps
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Next we see histograms of the generated values. For the series with <span class="math inline">\(\delta = 0.1\)</span>, more time would have been needed to traverse a greater portion of the normal distribution values.</p>
+<p>Next we see histograms of the generated values. For the first and smoothest series more time would have been needed to traverse a greater portion of the normal distribution values.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-nrw-hist" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -610,13 +610,13 @@ Figure&nbsp;2: X(t) with small and large jumps
 <img src="s3b_stat_sim_files/figure-html/fig-nrw-hist-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nrw-hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Histograms of X(t) with small and large jumps
+Figure&nbsp;3: Histograms of X(t) with small to large jumps
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Comparing the two sets of summary statistics below, we see that the first random walk was confined to a narrower range of values centered at <code>-1</code>.</p>
+<p>Comparing the sets of summary statistics below, we see that the first random walk was confined to a narrower range of values. The final column is the effective sample size estimated by <code>R</code> function <code>astsa::ESS()</code>.</p>
 <div id="tbl-nrw-smy" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nrw-smy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -624,11 +624,12 @@ Table&nbsp;3: Summary statistics: normal random walks
 </figcaption>
 <div aria-describedby="tbl-nrw-smy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 7
-  delta   min    q_1    avg    q_3   max    sd
-  &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1 01    -2.01 -1.48  -1.04  -0.650 0.248 0.527
-2 10    -2.79 -0.879 -0.216  0.446 2.54  0.928</code></pre>
+<pre><code># A tibble: 3 × 9
+  d_idx   min    q_1    avg    q_3   max    sd     n    ess
+  &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+1 1     -2.07 -1.54  -0.995 -0.505 0.525 0.650  1024   4.07
+2 2     -3.06 -1.12  -0.303  0.601 2.53  1.10   1024  15.6 
+3 3     -3.37 -0.773 -0.151  0.555 3.23  0.985  1024 212.  </code></pre>
 </div>
 </div>
 </figure>

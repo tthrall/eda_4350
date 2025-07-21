@@ -40,6 +40,7 @@ knitr::opts_chunk$set(
 #| label: CRAN-libraries
 
 library(assertthat)
+library(astsa)
 library(GGally)
 # library(gutenbergr)
 library(here)
@@ -560,7 +561,7 @@ $$
 \end{align}
 $$ {#eq-Metro-accept-ratio-normal}
 
-Here are two simulations, each starting at $X(0) = 0$, but with $\delta \in \{ 0.1, 1.0 \}$, respectively.  Recall that $| X(t+1) - X(t) | \le \delta$. Thus the first trajectory is much smoother than the second.
+Here are three simulations, each starting at $X(0) = 0$, but with $\delta \in \{ \frac{1}{8}, \frac{1}{2}, 2 \}$, respectively.  Recall that $| X(t+1) - X(t) | \le \delta$. Thus the trajectories are decreasingly smooth.
 
 ```{r}
 #| label: alpha-nrm-ln
@@ -604,40 +605,40 @@ gen_nrw <- function(
 
 set.seed(97)
 
+# try several values of delta
+d_vec <- c(1, 4, 16)/8
+
 nrm_rw_wide <- tibble::tibble(
-  x_01  = gen_nrw(delta = 0.1), 
-  x_10  = gen_nrw(delta = 1.0), 
-  t_idx = 1:length(x_01)
+  x_1   = gen_nrw(delta = d_vec [[1]]), 
+  x_2   = gen_nrw(delta = d_vec [[2]]), 
+  x_3   = gen_nrw(delta = d_vec [[3]]), 
+  t_idx = 1:length(x_1)
 ) |> 
-  dplyr::select(t_idx, x_01, x_10)
+  dplyr::select(t_idx, x_1:x_3)
 
 nrm_rw_long <- nrm_rw_wide |> 
   tidyr::pivot_longer(
-    cols = x_01:x_10, 
-    names_to = "d_chr", 
+    cols = x_1:x_3, 
+    names_to = "d_idx", 
     names_prefix = "x_", 
-    values_to = "value"
+    values_to = "z"
   )
 
 ```
 
 ```{r}
 #| label: fig-nrw-trajectory
-#| fig-cap: "X(t) with small and large jumps"
+#| fig-cap: "X(t) with small to large jumps"
 
 g_nrm_rw <- nrm_rw_long |> 
-  dplyr::group_by(d_chr) |> 
-  dplyr::rename(
-    time = t_idx, 
-    z = value, 
-    delta = d_chr
-  ) |> 
+  dplyr::group_by(d_idx) |> 
+  dplyr::rename(time = t_idx) |> 
   ggplot2::ggplot(mapping = aes(
-    x = time, y = z, fill = delta, color = delta
+    x = time, y = z, fill = d_idx, color = d_idx
   )) + 
   ggplot2::geom_line(show.legend = FALSE) + 
   ggplot2::facet_grid(
-    rows = vars(delta)
+    rows = vars(d_idx)
   ) + 
   ggplot2::labs(
     title = "Normal random walks"
@@ -645,52 +646,44 @@ g_nrm_rw <- nrm_rw_long |>
 g_nrm_rw
 ```
 
-Next we see histograms of the generated values.  For the series with $\delta = 0.1$, more time would have been needed to traverse a greater portion of the normal distribution values.
+Next we see histograms of the generated values.  For the first and smoothest series more time would have been needed to traverse a greater portion of the normal distribution values.
 
 ```{r}
 #| label: fig-nrw-hist
-#| fig-cap: "Histograms of X(t) with small and large jumps"
+#| fig-cap: "Histograms of X(t) with small to large jumps"
 
 g_hist_nrm_rw <- nrm_rw_long |> 
-  dplyr::group_by(d_chr) |> 
-  dplyr::rename(
-    time = t_idx, 
-    z = value, 
-    delta = d_chr
-  ) |> 
+  dplyr::group_by(d_idx) |> 
+  dplyr::rename(time = t_idx) |> 
   ggplot2::ggplot(mapping = aes(
-    x = z, fill = delta, color = delta
+    x = z, fill = d_idx, color = d_idx
   )) + 
   ggplot2::geom_histogram(show.legend = FALSE) + 
-  ggplot2::facet_grid(
-    rows = vars(delta)
-  ) + 
+  ggplot2::facet_grid(rows = vars(d_idx)) + 
   ggplot2::labs(
     title = "Histograms of normal random walks"
   )
 g_hist_nrm_rw
 ```
 
-Comparing the two sets of summary statistics below, we see that the first random walk was confined to a narrower range of values centered at `-1`.
+Comparing the sets of summary statistics below, we see that the first random walk was confined to a narrower range of values.  The final column is the effective sample size estimated by `R` function `astsa::ESS()`.
 
 ```{r}
 #| label: tbl-nrw-smy
 #| tbl-cap: "Summary statistics: normal random walks"
 
 nrm_rw_smy <- nrm_rw_long |> 
-  dplyr::group_by(d_chr) |> 
-  dplyr::rename(
-    time = t_idx, 
-    z = value, 
-    delta = d_chr
-  ) |> 
+  dplyr::group_by(d_idx) |> 
+  dplyr::rename(time = t_idx) |> 
   dplyr::summarise(
     min = min(z), 
     q_1 = stats::quantile(z, probs = 0.25), 
     avg = mean(z), 
     q_3 = stats::quantile(z, probs = 0.75), 
     max = max(z), 
-    sd  = sd(z)
+    sd  = sd(z), 
+    n   = n(), 
+    ess = astsa::ESS(z)
   )
 nrm_rw_smy |> print(digits = 2)
 ```
