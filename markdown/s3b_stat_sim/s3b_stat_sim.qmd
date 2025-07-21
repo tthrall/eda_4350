@@ -69,9 +69,7 @@ source(here("code", "gen_circuit.R"))
 
 ## Introduction {#sec-introduction}
 
-Statistical simulation is used to model the behavior of complex systems and analyze potential outcomes of various scenarios by generating random data from specified distributions. Simulations augment analytic solutions, enabling researchers to explore different possibilities and assess alternative methods.
-
-Here are some of the uses of statistical simulation.
+Statistical simulation generates random data from specified distributions in order to model the behavior of complex systems and analyze potential outcomes of various scenarios. Simulations augment analytic solutions, enabling researchers to explore different possibilities and assess alternative methods.  Here are some of the uses of statistical simulation.
 
   - Comparing statistical methods
   - Assessing the robustness of data analyses
@@ -80,7 +78,9 @@ Here are some of the uses of statistical simulation.
 
 ## Generating Random Numbers from a Given Distribution {#sec-rng}
 
-As mentioned in an earlier session, the R `stats` package provides random number generators for commonly used probability distributions. For each random number generator the package also provides the probability density function (for continuous distributions) or the probability mass function (for discrete distributions), along with cumulative versions (incomplete integrals or sums), and the inverse of the cumulative versions, the quantile functions. The naming convention is illustrated by the uniform distribution over a finite interval (unit interval by default).
+As mentioned in an earlier session, the R `stats` package provides random number generators for commonly used probability distributions. For each random number generator the package also provides the probability density function (for continuous distributions) or the probability mass function (for discrete distributions), along with cumulative versions (incomplete integrals or sums), and the inverse of the cumulative versions, the quantile functions. The naming convention is illustrated by the uniform distribution over a finite interval (unit interval by default).[^art-Rrng]
+
+[^art-Rrng]: See @Rrng.
 
 -   `dunif()` density at a given point $x$
 -   `punif()` cumulative probability, that $X \le x$
@@ -142,7 +142,9 @@ dpqr_tbl |>
   )
 ```
 
-These distributions have interesting histories and relationships. For example a beta variable $X$ having shape parameters $(\alpha, \beta)$ can be expressed as the ratio $U/(U + V)$, where $(U, V)$ are independent gamma variables having a common scale parameter, and respective shape parameters $(\alpha, \beta)$. See the resources listed below if interested.
+These distributions have interesting histories and relationships.[^book-rng-history] For example a beta variable $X$ having shape parameters $(\alpha, \beta)$ can be expressed as the ratio $U/(U + V)$, where $(U, V)$ are independent gamma variables having a common scale parameter, and respective shape parameters $(\alpha, \beta)$. See the resources listed below if interested.
+
+[^book-rng-history]:  See @forbes2010statistical and @johnson1985distributions.
 
 ### Discrete Distributions
 
@@ -160,7 +162,7 @@ dpqr_tbl |>
   )
 ```
 
-Again, these distributions have interesting histories and relationships. For example the Poisson distribution can described as the limiting case of binomial distributions, $\text{Binom}(n, p_n)$ such that the respective expected values, $n \times p_n$, converge to a finite, non-zero value $\lambda$ for increasingly large $n$. Equivalently we can write $p_n \approx \lambda/n$, so that $p_n$, the probability of success on a single Bernoulli trial, becomes vanishingly small as the number $n$ of Bernoulli trials increases. For this reason the Poisson distribution has been called "the law of rare events".
+Again, these distributions have interesting histories and relationships. For example the Poisson distribution can described as the limiting case of binomial distributions, $\text{Binom}(n, p_n)$ such that the respective expected values, $n \times p_n$, converge to $\lambda > 0$ as $n \rightarrow \infty$. Equivalently we can write $p_n \approx \lambda/n$, so that $p_n$, the probability of success on a single Bernoulli trial, becomes vanishingly small as the number $n$ of Bernoulli trials increases. For this reason the Poisson distribution has been called "the law of rare events".
 
 ## Example Application {#sec-mean-v-median-example}
 
@@ -233,7 +235,9 @@ In the current example, the closed curve shown above is a deformation of the uni
 
 This is a common application of Mote Carlo simulation: estimating the volume of given region $\mathcal{R}$ in Euclidean space, under the assumption that, for any given point, we can determine whether the point is inside or outside the region.
 
-### Importance Sampling
+### Importance Sampling [^art-importance-sampling]
+
+[^art-importance-sampling]:  See @Tokdar_Kass_2010.
 
 The above description of Monte Carlo simulation is also called rejection sampling, and can be generalized as follows.  Let $\mathcal{R}$ denote a region of $\mathbb{R}^d$ having a finite volume $| \mathcal{R} |$.  We want to estimate the average value, $\mu(f, \mathcal{R})$ of any given integrable function $f: \mathcal{R} \rightarrow \mathbb{R}$.
 
@@ -667,7 +671,7 @@ g_hist_nrm_rw <- nrm_rw_long |>
 g_hist_nrm_rw
 ```
 
-The extremes of the two random walks are similar, but the first random walk was confined to a narrower range of values centered at `-1`.
+Comparing the two sets of summary statistics below, we see that the first random walk was confined to a narrower range of values centered at `-1`.
 
 ```{r}
 #| label: tbl-nrw-smy

@@ -107,7 +107,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#sec-est-pi" id="toc-sec-est-pi" class="nav-link" data-scroll-target="#sec-est-pi">Example 1: estimate <span class="math inline">\(\pi\)</span></a></li>
   <li><a href="#sec-est-area" id="toc-sec-est-area" class="nav-link" data-scroll-target="#sec-est-area">Example 2: estimate area of an arbitrary region</a></li>
-  <li><a href="#importance-sampling" id="toc-importance-sampling" class="nav-link" data-scroll-target="#importance-sampling">Importance Sampling</a></li>
+  <li><a href="#importance-sampling-art-importance-sampling" id="toc-importance-sampling-art-importance-sampling" class="nav-link" data-scroll-target="#importance-sampling-art-importance-sampling">Importance Sampling </a></li>
   </ul></li>
   <li><a href="#sec-mcmc" id="toc-sec-mcmc" class="nav-link" data-scroll-target="#sec-mcmc">Markov Chain Monte Carlo (MCMC) </a>
   <ul class="collapse">
@@ -143,7 +143,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">21:58 Sun 20-Jul-2025</p>
+      <p class="date">05:56 Mon 21-Jul-2025</p>
     </div>
   </div>
   
@@ -164,8 +164,7 @@ window.Quarto = {
 <hr>
 <section id="sec-introduction" class="level2">
 <h2 class="anchored" data-anchor-id="sec-introduction">Introduction</h2>
-<p>Statistical simulation is used to model the behavior of complex systems and analyze potential outcomes of various scenarios by generating random data from specified distributions. Simulations augment analytic solutions, enabling researchers to explore different possibilities and assess alternative methods.</p>
-<p>Here are some of the uses of statistical simulation.</p>
+<p>Statistical simulation generates random data from specified distributions in order to model the behavior of complex systems and analyze potential outcomes of various scenarios. Simulations augment analytic solutions, enabling researchers to explore different possibilities and assess alternative methods. Here are some of the uses of statistical simulation.</p>
 <ul>
 <li>Comparing statistical methods</li>
 <li>Assessing the robustness of data analyses</li>
@@ -175,7 +174,7 @@ window.Quarto = {
 </section>
 <section id="sec-rng" class="level2">
 <h2 class="anchored" data-anchor-id="sec-rng">Generating Random Numbers from a Given Distribution</h2>
-<p>As mentioned in an earlier session, the R <code>stats</code> package provides random number generators for commonly used probability distributions. For each random number generator the package also provides the probability density function (for continuous distributions) or the probability mass function (for discrete distributions), along with cumulative versions (incomplete integrals or sums), and the inverse of the cumulative versions, the quantile functions. The naming convention is illustrated by the uniform distribution over a finite interval (unit interval by default).</p>
+<p>As mentioned in an earlier session, the R <code>stats</code> package provides random number generators for commonly used probability distributions. For each random number generator the package also provides the probability density function (for continuous distributions) or the probability mass function (for discrete distributions), along with cumulative versions (incomplete integrals or sums), and the inverse of the cumulative versions, the quantile functions. The naming convention is illustrated by the uniform distribution over a finite interval (unit interval by default).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <ul>
 <li><code>dunif()</code> density at a given point <span class="math inline">\(x\)</span></li>
 <li><code>punif()</code> cumulative probability, that <span class="math inline">\(X \le x\)</span></li>
@@ -270,7 +269,7 @@ Table&nbsp;1: Continuous Distributions from <code>stats</code>
 </figure>
 </div>
 </div>
-<p>These distributions have interesting histories and relationships. For example a beta variable <span class="math inline">\(X\)</span> having shape parameters <span class="math inline">\((\alpha, \beta)\)</span> can be expressed as the ratio <span class="math inline">\(U/(U + V)\)</span>, where <span class="math inline">\((U, V)\)</span> are independent gamma variables having a common scale parameter, and respective shape parameters <span class="math inline">\((\alpha, \beta)\)</span>. See the resources listed below if interested.</p>
+<p>These distributions have interesting histories and relationships.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> For example a beta variable <span class="math inline">\(X\)</span> having shape parameters <span class="math inline">\((\alpha, \beta)\)</span> can be expressed as the ratio <span class="math inline">\(U/(U + V)\)</span>, where <span class="math inline">\((U, V)\)</span> are independent gamma variables having a common scale parameter, and respective shape parameters <span class="math inline">\((\alpha, \beta)\)</span>. See the resources listed below if interested.</p>
 </section>
 <section id="discrete-distributions" class="level3">
 <h3 class="anchored" data-anchor-id="discrete-distributions">Discrete Distributions</h3>
@@ -325,7 +324,7 @@ Table&nbsp;2: Discrete Distributions from <code>stats</code>
 </figure>
 </div>
 </div>
-<p>Again, these distributions have interesting histories and relationships. For example the Poisson distribution can described as the limiting case of binomial distributions, <span class="math inline">\(\text{Binom}(n, p_n)\)</span> such that the respective expected values, <span class="math inline">\(n \times p_n\)</span>, converge to a finite, non-zero value <span class="math inline">\(\lambda\)</span> for increasingly large <span class="math inline">\(n\)</span>. Equivalently we can write <span class="math inline">\(p_n \approx \lambda/n\)</span>, so that <span class="math inline">\(p_n\)</span>, the probability of success on a single Bernoulli trial, becomes vanishingly small as the number <span class="math inline">\(n\)</span> of Bernoulli trials increases. For this reason the Poisson distribution has been called “the law of rare events”.</p>
+<p>Again, these distributions have interesting histories and relationships. For example the Poisson distribution can described as the limiting case of binomial distributions, <span class="math inline">\(\text{Binom}(n, p_n)\)</span> such that the respective expected values, <span class="math inline">\(n \times p_n\)</span>, converge to <span class="math inline">\(\lambda &gt; 0\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>. Equivalently we can write <span class="math inline">\(p_n \approx \lambda/n\)</span>, so that <span class="math inline">\(p_n\)</span>, the probability of success on a single Bernoulli trial, becomes vanishingly small as the number <span class="math inline">\(n\)</span> of Bernoulli trials increases. For this reason the Poisson distribution has been called “the law of rare events”.</p>
 </section>
 </section>
 <section id="sec-mean-v-median-example" class="level2">
@@ -386,8 +385,8 @@ Figure&nbsp;1: Monte Carlo estimation of area
 <p>In the current example, the closed curve shown above is a deformation of the unit circle in which the Euclidean norm at each point, <span class="math inline">\(t\)</span>, along the circle has been multiplied by a prescribed positive continuous function, <span class="math inline">\(f(t)\)</span>. Consequently a point <span class="math inline">\((x, y)\)</span> is in the interior of the closed curve if <span class="math inline">\(x^2 + y^2 &lt; f^2(t)\)</span>, where <span class="math inline">\(t \in [0,1)\)</span> equals <span class="math inline">\(\arctan(y, x) \bmod{2 \pi}\)</span>.</p>
 <p>This is a common application of Mote Carlo simulation: estimating the volume of given region <span class="math inline">\(\mathcal{R}\)</span> in Euclidean space, under the assumption that, for any given point, we can determine whether the point is inside or outside the region.</p>
 </section>
-<section id="importance-sampling" class="level3">
-<h3 class="anchored" data-anchor-id="importance-sampling">Importance Sampling</h3>
+<section id="importance-sampling-art-importance-sampling" class="level3">
+<h3 class="anchored" data-anchor-id="importance-sampling-art-importance-sampling">Importance Sampling <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></h3>
 <p>The above description of Monte Carlo simulation is also called rejection sampling, and can be generalized as follows. Let <span class="math inline">\(\mathcal{R}\)</span> denote a region of <span class="math inline">\(\mathbb{R}^d\)</span> having a finite volume <span class="math inline">\(| \mathcal{R} |\)</span>. We want to estimate the average value, <span class="math inline">\(\mu(f, \mathcal{R})\)</span> of any given integrable function <span class="math inline">\(f: \mathcal{R} \rightarrow \mathbb{R}\)</span>.</p>
 <p><span id="eq-mu-f-region"><span class="math display">\[
 \begin{align}
@@ -431,7 +430,7 @@ Figure&nbsp;1: Monte Carlo estimation of area
 \end{align}
 \tag{6}\]</span></span></p>
 <p>A naive approach to estimating <span class="math inline">\(\mu(f, p)\)</span> would be to generate standard normal variables <span class="math inline">\(\{ Z_1, \ldots, Z_n \}\)</span>, rejecting those values less than 6, and then averaging <span class="math inline">\(f(Z_\nu)\)</span> across the remaining values. The problem is that we would expect only one in a billion values to pass this threshhold, making that algorithm highly inefficient.</p>
-<p>Alternatively, we could define <span class="math inline">\(Y_\nu = 12 | Z_\nu |\)</span>, and apply the weighted averaging of <a href="#eq-avg-w-f-q" class="quarto-xref">Equation&nbsp;5</a>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Alternatively, we could define <span class="math inline">\(Y_\nu = 12 | Z_\nu |\)</span>, and apply the weighted averaging of <a href="#eq-avg-w-f-q" class="quarto-xref">Equation&nbsp;5</a>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 <p><span id="eq-mu-f-z-conditional"><span class="math display">\[
 \begin{align}
   w(y) &amp;= \frac{p(y)}{q(y)} \\ \\
@@ -448,7 +447,7 @@ Figure&nbsp;1: Monte Carlo estimation of area
 </section>
 </section>
 <section id="sec-mcmc" class="level2">
-<h2 class="anchored" data-anchor-id="sec-mcmc">Markov Chain Monte Carlo (MCMC) <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></h2>
+<h2 class="anchored" data-anchor-id="sec-mcmc">Markov Chain Monte Carlo (MCMC) <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></h2>
 <section id="overview" class="level3">
 <h3 class="anchored" data-anchor-id="overview">Overview</h3>
 <p>Markov Chain Monte Carlo (MCMC) simulation encompasses many variations. The basic problem to be addressed is the same as that of importance sampling:</p>
@@ -502,7 +501,7 @@ Figure&nbsp;1: Monte Carlo estimation of area
   \pi_n &amp;= \pi_0  \; T^n
 \end{align}
 \tag{12}\]</span></span></p>
-<p>Under regularity conditions<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> there is a unique stationary distribution, say <span class="math inline">\(\pi_\infty\)</span>, such that <span class="math inline">\(\pi_n \rightarrow \pi_\infty\)</span>. Convergence is accompanied by diminishing values of <span class="math inline">\(\lVert \pi_{n+1} - \pi_n \rVert\)</span>.</p>
+<p>Under regularity conditions<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> there is a unique stationary distribution, say <span class="math inline">\(\pi_\infty\)</span>, such that <span class="math inline">\(\pi_n \rightarrow \pi_\infty\)</span>. Convergence is accompanied by diminishing values of <span class="math inline">\(\lVert \pi_{n+1} - \pi_n \rVert\)</span>.</p>
 </section>
 <section id="time-reversal" class="level3">
 <h3 class="anchored" data-anchor-id="time-reversal">Time Reversal</h3>
@@ -525,7 +524,7 @@ Figure&nbsp;1: Monte Carlo estimation of area
 <p>Equations of this form are called <em>local balance equations</em>. If they hold then marginal distribution <span class="math inline">\(\pi_\infty\)</span> along with transition probabilities <span class="math inline">\(p_{a, b}\)</span> define a stationary Markov chain.</p>
 </section>
 <section id="metropolis-hastings-algorithmart-mh-algo" class="level3">
-<h3 class="anchored" data-anchor-id="metropolis-hastings-algorithmart-mh-algo">Metropolis-Hastings Algorithm<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></h3>
+<h3 class="anchored" data-anchor-id="metropolis-hastings-algorithmart-mh-algo">Metropolis-Hastings Algorithm<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></h3>
 <p>Suppose now that <span class="math inline">\(q(Y \; | \; X )\)</span> is a transition density from which we can generate a random sequence <span class="math inline">\(X(0), X(1), \ldots\)</span>, and let <span class="math inline">\(p(x)\)</span> denote the prescribed stationary distribution of <span class="math inline">\(X(\cdot)\)</span>. Also suppose that the current state of the generated sequence is <span class="math inline">\(X(t) = x\)</span>.</p>
 <section id="outline" class="level4">
 <h4 class="anchored" data-anchor-id="outline">Outline</h4>
@@ -617,7 +616,7 @@ Figure&nbsp;3: Histograms of X(t) with small and large jumps
 </div>
 </div>
 </div>
-<p>The extremes of the two random walks are similar, but the first random walk was confined to a narrower range of values centered at <code>-1</code>.</p>
+<p>Comparing the two sets of summary statistics below, we see that the first random walk was confined to a narrower range of values centered at <code>-1</code>.</p>
 <div id="tbl-nrw-smy" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nrw-smy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -662,19 +661,34 @@ Table&nbsp;3: Summary statistics: normal random walks
 
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-forbes2010statistical" class="csl-entry" role="listitem">
+Forbes, C., M. Evans, N. Hastings, and B. Peacock. 2010. <em>Statistical Distributions</em>. Wiley Series in Probability and Statistics - Applied Probability and Statistics Section Series. Wiley. <a href="https://books.google.co.uk/books?id=OA4AJZsnOpMC">https://books.google.co.uk/books?id=OA4AJZsnOpMC</a>.
+</div>
+<div id="ref-johnson1985distributions" class="csl-entry" role="listitem">
+Johnson, N. L., and S. Kotz. 1985. <em>Distributions in Statistics</em>. Distributions in Statistics, v. 4. Wiley. <a href="https://books.google.co.uk/books?id=NSzEtAEACAAJ">https://books.google.co.uk/books?id=NSzEtAEACAAJ</a>.
+</div>
 <div id="ref-MH_algo_Wikipedia_2025" class="csl-entry" role="listitem">
 <span>“Metropolis–Hastings Algorithm | Wikipedia.”</span> 2025. <em>Wikipedia</em>, July. <a href="https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm">https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm</a>.
 </div>
 <div id="ref-rdpeng2022advstatcomp" class="csl-entry" role="listitem">
 Peng, Roger D. 2025. <em>Advanced Statistical Computing</em>. <a href="https://bookdown.org/rdpeng/advstatcomp/">https://bookdown.org/rdpeng/advstatcomp/</a>.
 </div>
+<div id="ref-Rrng" class="csl-entry" role="listitem">
+R Core Team. 2025. <span>“R: Random Number Generation.”</span> <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Random.html">https://stat.ethz.ch/R-manual/R-devel/library/base/html/Random.html</a>.
+</div>
+<div id="ref-Tokdar_Kass_2010" class="csl-entry" role="listitem">
+Tokdar, Surya T., and Robert E. Kass. 2010. <span>“Importance Sampling: A Review.”</span> <em>WIREs Computational Statistics</em> 2 (1): 54–60. https://doi.org/<a href="https://doi.org/10.1002/wics.56">https://doi.org/10.1002/wics.56</a>.
+</div>
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>If <span class="math inline">\(Y_\nu = 12 | Z_\nu |\)</span>, then the probability that <span class="math inline">\(Y_\nu \ge 6\)</span> is about 0.62.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>See <span class="citation" data-cites="rdpeng2022advstatcomp">Peng (<a href="#ref-rdpeng2022advstatcomp" role="doc-biblioref">2025, chap. 7</a>)</span><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>A unique, stationary distribution exists if the chain is aperiodic, and if all states communicate and are positive recurrent. For further details see the <a href="https://en.wikipedia.org/wiki/Discrete-time_Markov_chain#Stationary_distributions">Wikipedia article</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>See <span class="citation" data-cites="MH_algo_Wikipedia_2025"><span>“Metropolis–Hastings Algorithm | Wikipedia”</span> (<a href="#ref-MH_algo_Wikipedia_2025" role="doc-biblioref">2025</a>)</span>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>See <span class="citation" data-cites="Rrng"> (<a href="#ref-Rrng" role="doc-biblioref">2025</a>)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>See <span class="citation" data-cites="forbes2010statistical">Forbes et al. (<a href="#ref-forbes2010statistical" role="doc-biblioref">2010</a>)</span> and <span class="citation" data-cites="johnson1985distributions">Johnson and Kotz (<a href="#ref-johnson1985distributions" role="doc-biblioref">1985</a>)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>See <span class="citation" data-cites="Tokdar_Kass_2010">Tokdar and Kass (<a href="#ref-Tokdar_Kass_2010" role="doc-biblioref">2010</a>)</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>If <span class="math inline">\(Y_\nu = 12 | Z_\nu |\)</span>, then the probability that <span class="math inline">\(Y_\nu \ge 6\)</span> is about 0.62.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>See <span class="citation" data-cites="rdpeng2022advstatcomp">Peng (<a href="#ref-rdpeng2022advstatcomp" role="doc-biblioref">2025, chap. 7</a>)</span><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>A unique, stationary distribution exists if the chain is aperiodic, and if all states communicate and are positive recurrent. For further details see the <a href="https://en.wikipedia.org/wiki/Discrete-time_Markov_chain#Stationary_distributions">Wikipedia article</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>See <span class="citation" data-cites="MH_algo_Wikipedia_2025"><span>“Metropolis–Hastings Algorithm | Wikipedia”</span> (<a href="#ref-MH_algo_Wikipedia_2025" role="doc-biblioref">2025</a>)</span>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
