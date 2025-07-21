@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Send comments to: Tony T (adthral)">
+<meta name="author" content="Send comments to: Tony T (tthrall)">
 
 <title>The Dirichlet Distribution</title>
 <style>
@@ -21,7 +21,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="xtra_Dirichlet_dstn_files/libs/clipboard/clipboard.min.js"></script>
@@ -67,10 +87,27 @@ window.Quarto = {
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#the-multinomial-distribution" id="toc-the-multinomial-distribution" class="nav-link" data-scroll-target="#the-multinomial-distribution">The Multinomial Distribution</a></li>
+  <li><a href="#bayesian-inference" id="toc-bayesian-inference" class="nav-link" data-scroll-target="#bayesian-inference">Bayesian Inference</a></li>
+  <li><a href="#the-dirichlet-probability-distribution" id="toc-the-dirichlet-probability-distribution" class="nav-link" data-scroll-target="#the-dirichlet-probability-distribution">The Dirichlet Probability Distribution</a>
+  <ul class="collapse">
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#special-case-alpha_k-fracalpha_k" id="toc-special-case-alpha_k-fracalpha_k" class="nav-link" data-scroll-target="#special-case-alpha_k-fracalpha_k">Special Case: <span class="math inline">\(\alpha_k = \frac{\alpha_{+}}{K}\)</span></a></li>
+  <li><a href="#posterior-distribution" id="toc-posterior-distribution" class="nav-link" data-scroll-target="#posterior-distribution">Posterior Distribution</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="xtra_Dirichlet_dstn.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="xtra_Dirichlet_dstn.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -86,14 +123,14 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Send comments to: Tony T (adthral) </p>
+             <p>Send comments to: Tony T (tthrall) </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">Invalid Date</p>
+      <p class="date">12:48 Mon 21-Jul-2025</p>
     </div>
   </div>
   
@@ -103,7 +140,7 @@ window.Quarto = {
 <div>
   <div class="abstract">
     <div class="block-title">Abstract</div>
-    The Dirichlet and Multinomial distributions are introduced in preparation for a discussion of Latent Dirichlet Allocation (LDA).
+    The Dirichlet and Multinomial distributions are introduced in preparation for a discussion of Latent Dirichlet Allocation (LDA). <br><br>
   </div>
 </div>
 
@@ -114,12 +151,12 @@ window.Quarto = {
 <hr>
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">Background</h2>
-<p>Latent Dirichlet Allocation (LDA) was proposed as a method of topic modeling in 2003 in a paper by Blei, Ng, and Jordan. The method is briefly mentioned in Part 1 of the course. Several course participants requested a more detailed description. This note prepares for the requested response by introducing the Dirichlet and Multinomial distributions.</p>
+<p>Latent Dirichlet Allocation (LDA) was proposed as a method of topic modeling in a 2003 paper by Blei, Ng, and Jordan<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The method is briefly mentioned in Part 1 of the course. Several course participants requested a more detailed description. This note prepares for the requested response by introducing the Dirichlet and Multinomial distributions.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 </section>
 <section id="the-multinomial-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="the-multinomial-distribution">The Multinomial Distribution</h2>
 <p>Consider a categorical (qualitative) random variable <span class="math inline">\(X\)</span> that randomly selects one of <span class="math inline">\(K\)</span> distinct categories <span class="math inline">\(\{c_1, \ldots, c_K \}\)</span>.</p>
-<p><span class="math display">\[
+<p><span id="eq-categorical-dstn"><span class="math display">\[
 \begin{align}
   X &amp;\in (c_1, \ldots, c_K) \\
   \\
@@ -127,10 +164,10 @@ window.Quarto = {
   \\
   \sum_{k = 1}^K p_k &amp;= 1 \\
 \end{align}
-\]</span></p>
+\tag{1}\]</span></span></p>
 <p>Probability vector <span class="math inline">\(p_{\bullet} = (p_1, \ldots, p_K)\)</span> is thus the probability distribution of <span class="math inline">\(X\)</span> on <span class="math inline">\(\{c_1, \ldots, c_K \}\)</span>.</p>
-<p>If the categories are ordered, we might represent <span class="math inline">\(X\)</span> numerically as a random index <span class="math inline">\(k \in \{1, \ldots, K \}\)</span>. But for present purposes we suppose the categories are not ordered, and we represent <span class="math inline">\(X\)</span> as a vector of random indicator variables<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<p><span class="math display">\[
+<p>If the categories are ordered, we might represent <span class="math inline">\(X\)</span> numerically as a random index <span class="math inline">\(k \in \{1, \ldots, K \}\)</span>. But for present purposes we suppose the categories are not ordered, and we represent <span class="math inline">\(X\)</span> as a vector of random indicator variables<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p><span id="eq-indicator-encoding"><span class="math display">\[
 \begin{align}
   I_{\bullet} &amp;= (I_1, \ldots, I_K) \\
   \\
@@ -142,9 +179,9 @@ window.Quarto = {
   \vdots \\
   I_{\bullet} &amp;= \mathbb{e}_K = (0, 0, \ldots, 1)  \text{, with probability } p_K \\
 \end{align}
-\]</span></p>
+\tag{2}\]</span></span></p>
 <p>That is, the random indicator vector <span class="math inline">\(I_{\bullet}\)</span> selects one of the Euclidean basis vectors <span class="math inline">\(\mathbb{e}_k \in \mathbb{R}^K\)</span> with probability <span class="math inline">\(p_k\)</span>. Therefore the expected value of <span class="math inline">\(I_{\bullet}\)</span> equals the vector of category probabilities <span class="math inline">\(p_{\bullet} = (p_1, \ldots, p_K)\)</span>.</p>
-<p><span class="math display">\[
+<p><span id="eq-e-indicator-vec"><span class="math display">\[
 \begin{align}
   E(I_k) &amp;= P(I_k = 1) \\
   &amp; = P(X = c_k) \\
@@ -154,28 +191,28 @@ window.Quarto = {
   &amp;= (p_1, \ldots, p_K) \\
   &amp;= p_{\bullet} \\
 \end{align}
-\]</span></p>
+\tag{3}\]</span></span></p>
 <p>Now suppose that <span class="math inline">\((X_1, \ldots, X_n)\)</span> are independent random variables all having the same distribution as <span class="math inline">\(X\)</span>. Corresponding to <span class="math inline">\(X_{\nu}\)</span> we have an indicator vector that we’ll denote as <span class="math inline">\(I_{\bullet}^{(\nu)}\)</span>. Let <span class="math inline">\(S_{\bullet}\)</span> denote the sum over the <span class="math inline">\(n\)</span> indicator vectors <span class="math inline">\(\{ I_{\bullet}^{(\nu)} \}_{\nu}\)</span>.</p>
-<p><span class="math display">\[
+<p><span id="eq-count-vector"><span class="math display">\[
 \begin{align}
   S_{\bullet} &amp;= \sum_{\nu = 1}^n I_{\bullet}^{(\nu)} \text{, so that } \\
   \\
   S_k &amp;= \sum_{\nu = 1}^n I_k^{(\nu)} \\
   &amp;= \text{ number of } \nu \text{ such that } X_{\nu} = c_k
 \end{align}
-\]</span></p>
+\tag{4}\]</span></span></p>
 <p>For any given set of possible counts <span class="math inline">\(s_{\bullet} = (s_1, \ldots, s_K)\)</span>, that is, of non-negative integers summing to <span class="math inline">\(n\)</span>, and for a given probability vector <span class="math inline">\(p_{\bullet}\)</span>, the probability that <span class="math inline">\(S_{\bullet} = s_{\bullet}\)</span> is as follows.</p>
-<p><span class="math display">\[
+<p><span id="eq-p-multinomial"><span class="math display">\[
 \begin{align}
   P(S_{\bullet} = s_{\bullet} \; | \; p_{\bullet}) &amp;= {n \choose s_{\bullet}} \prod_{k = 1}^K p_k^{s_k}
 \end{align}
-\]</span></p>
+\tag{5}\]</span></span></p>
 <p>where</p>
-<p><span class="math display">\[
+<p><span id="eq-n-combinatorial-vec"><span class="math display">\[
 \begin{align}
   {n \choose s_{\bullet}} &amp;= \frac{n!}{s_1! s_2! \cdots s_K!}
 \end{align}
-\]</span></p>
+\tag{6}\]</span></span></p>
 <p>gives the number of assignments of <span class="math inline">\(n\)</span> objects to the <span class="math inline">\(K\)</span> categories such that each category <span class="math inline">\(c_k\)</span> receives the prescribed number <span class="math inline">\(s_k\)</span> of objects.</p>
 <p>The probability distribution of <span class="math inline">\(S_{\bullet}\)</span> is called the <em>multinomial distribution</em>.</p>
 <p>For <span class="math inline">\(K = 2\)</span>, this simplifies to the binomial distribution, with parameters <span class="math inline">\((n, p)\)</span>, where <span class="math inline">\((p_1, p_2) = (p, \; 1 - p)\)</span>. If <span class="math inline">\(\nu\)</span> denotes the observed number of succeses in <span class="math inline">\(n\)</span> Bernoulli trials, then <span class="math inline">\((s_1, s_2) = (\nu, \; n - \nu)\)</span>.</p>
@@ -188,52 +225,57 @@ window.Quarto = {
 <p>More specifically, it turns out to be mathematically convenient to represent prior information about probability <span class="math inline">\(p\)</span> as a member of the beta family of probability distributions over the unit interval. The uniform distribution is the special case of setting beta shape parameters to the values <span class="math inline">\((1, 1)\)</span>. Alternatively setting the shape parameters to <span class="math inline">\((2, 2)\)</span> gives a density function symmetric about the mode at <span class="math inline">\(p = 1/2\)</span>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="xtra_Dirichlet_dstn_files/figure-html/g_beta_xmpl-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-beta-xmpl" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-beta-xmpl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="xtra_Dirichlet_dstn_files/figure-html/fig-beta-xmpl-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beta-xmpl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Alternative prior densities of parameter p
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>In general, a beta distribution having shape parameters <span class="math inline">\((\alpha, \beta)\)</span> has the following density function.</p>
-<p><span class="math display">\[
+<p><span id="eq-d-beta"><span class="math display">\[
 \begin{align}
   P(p) &amp;= \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} p^{\alpha - 1} (1-p)^{\beta -1 } \\
   \\
   &amp; \text{with }  \alpha &gt; 0 \text{, and } \beta &gt; 0
 \end{align}
-\]</span></p>
+\tag{7}\]</span></span></p>
 <p>Suppose now that we adopt the distribution just mentioned, <span class="math inline">\(\mathcal{Beta}(\alpha, \beta)\)</span>, as the prior distribution of success probability <span class="math inline">\(p\)</span>, for some specified positive parameter values <span class="math inline">\((\alpha, \beta)\)</span>. We then observe <span class="math inline">\(s_1\)</span> successes and <span class="math inline">\(s_2\)</span> failures from <span class="math inline">\(n = s_1 + s_2\)</span> independent Bernoulli trials. Based on these observations we update the prior distribution to form the posterior distribution of <span class="math inline">\(p\)</span> as follows.</p>
-<p><span class="math display">\[
+<p><span id="eq-beta-posterior-formula"><span class="math display">\[
 \begin{align}
   P(p \; | \; S_{\bullet} = s_{\bullet}) &amp;= \frac{P(p, \;  S_{\bullet}=s_{\bullet})}{P(S_{\bullet}=s_{\bullet})} \\
   &amp;= \frac{P(S_{\bullet}=s_{\bullet} \; | \; p) \; P(p)}{P(S_{\bullet}=s_{\bullet})} \\
 \end{align}
-\]</span></p>
+\tag{8}\]</span></span></p>
 <p>Note that</p>
-<p><span class="math display">\[
+<p><span id="eq-beta-posterior-calc"><span class="math display">\[
 \begin{align}
   P(S_{\bullet}=s_{\bullet} \; | \; p) \; P(p) &amp;= {n \choose s_1} p^{s_1} (1 - p)^{n - s_1} \times \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} p^{\alpha - 1} (1-p)^{\beta -1 } \\
   &amp;= {n \choose s_1} \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} p^{s_1 + \alpha - 1} (1 - p)^{n - s_1 + \beta - 1} \\
   &amp;= \frac{(s_1 + s_2)!}{s_1! s_2!} \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} p^{\alpha + s_1 - 1} (1 - p)^{\beta + s_2 - 1} \\
 \end{align}
-\]</span></p>
+\tag{9}\]</span></span></p>
 <p>so that</p>
-<p><span class="math display">\[
+<p><span id="eq-p-marginal-binomial"><span class="math display">\[
 \begin{align}
   P(S_{\bullet} = s_{\bullet}) &amp;= \int_0^1 P(S_{\bullet}=s_{\bullet} \; | \; p) \; P(p) \,dp \\
   &amp;= \frac{(s_1 + s_2)!}{s_1! s_2!} \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \int_0^1 p^{\alpha + s_1 - 1} (1 - p)^{\beta + s_2 - 1} \,dp \\
   &amp;= \frac{(s_1 + s_2)!}{s_1! s_2!} \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \frac{\Gamma(\alpha + s_1)\Gamma(\beta + s_2)}{\Gamma(\alpha + \beta + s_1 + s_2)} \\
 \end{align}
-\]</span></p>
+\tag{10}\]</span></span></p>
 <p>Consequently, the ratio of the last two expressions gives</p>
-<p><span class="math display">\[
+<p><span id="eq-p-posterior-binomial"><span class="math display">\[
 \begin{align}
   P(p \; | \; S_{\bullet} = s_{\bullet}) &amp;= \frac{P(p, \;  S_{\bullet}=s_{\bullet})}{P(S_{\bullet}=s_{\bullet})} \\
   &amp;= \frac{P(S_{\bullet}=s_{\bullet} \; | \; p) \; P(p)}{P(S_{\bullet}=s_{\bullet})} \\
   &amp;= \frac{\Gamma(\alpha + \beta + s_1 + s_2)}{\Gamma(\alpha + s_1) \Gamma(\beta + s_2)} p^{\alpha + s_1 - 1} (1-p)^{\beta + s_2 -1}
 \end{align}
-\]</span></p>
+\tag{11}\]</span></span></p>
 <p>That is, the posterior distribution is <span class="math inline">\(\mathcal{Beta}(\alpha + s_1, \beta + s_2)\)</span>.</p>
 <p>This is the “mathematical convenience” previously alluded to: the prior and posterior probability distributions of <span class="math inline">\(p\)</span> belong to the same family of parametric probability distributions, namely the <span class="math inline">\(\mathcal{Beta}\)</span> family. For this reason the <span class="math inline">\(\mathcal{Beta}\)</span> family is said to be <em>conjugate</em> to the binomial family.</p>
 </section>
@@ -242,36 +284,36 @@ window.Quarto = {
 <section id="definition" class="level3">
 <h3 class="anchored" data-anchor-id="definition">Definition</h3>
 <p>The binomial distribution is a special case of the multinomial distribution in which the number of categories <span class="math inline">\(K\)</span> is equal to 2. (In the discussion above we referred to the categories as success and failue, respectively.) More generally, for a fixed integer <span class="math inline">\(K \ge 2\)</span>, the family of distributions conjugate to the multinomial family of distributions over <span class="math inline">\(K\)</span> categories is the following <em>Dirichlet</em> family.</p>
-<p><span class="math display">\[
+<p><span id="eq-d-Dirichlet"><span class="math display">\[
 \begin{align}
   P(p_{\bullet}) &amp;= \frac{\Gamma(\alpha_1+ \cdots + \alpha_K)}{\Gamma(\alpha_1) \times \cdots \times \Gamma(\alpha_K)} \prod_{k = 1}^K p_k^{\alpha_k - 1} \\
   \\
   &amp; \text{with }  \alpha_k &gt; 0 \text{ for } k \in \{1, \ldots, K \}
 \end{align}
-\]</span></p>
+\tag{12}\]</span></span></p>
 <p>This is the <span class="math inline">\(\mathcal{Dirichlet}(\alpha_{\bullet})\)</span> distribution over <span class="math inline">\(p_{\bullet}\)</span>, where probability vector <span class="math inline">\(p_{\bullet}\)</span> ranges over the <span class="math inline">\(K - 1\)</span> dimesional simplex such that each component <span class="math inline">\(p_k\)</span> is non-negative and all the components <span class="math inline">\((p_1, \cdots, p_K)\)</span> together sum to unity.</p>
 </section>
 <section id="special-case-alpha_k-fracalpha_k" class="level3">
 <h3 class="anchored" data-anchor-id="special-case-alpha_k-fracalpha_k">Special Case: <span class="math inline">\(\alpha_k = \frac{\alpha_{+}}{K}\)</span></h3>
-<p>We will denote the sum of the components of <span class="math inline">\(\alpha_{\bullet} = (\alpha_1, \ldots, \alpha_K)\)</span> as <span class="math inline">\(\alpha_{+}\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p><span class="math display">\[
+<p>We will denote the sum of the components of <span class="math inline">\(\alpha_{\bullet} = (\alpha_1, \ldots, \alpha_K)\)</span> as <span class="math inline">\(\alpha_{+}\)</span>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p><span id="eq-alpha-sum-notation"><span class="math display">\[
 \begin{align}
   \alpha_{+} &amp;= \sum_{k = 1}^K \alpha_k \\
 \end{align}
-\]</span></p>
+\tag{13}\]</span></span></p>
 <p>Consider the special case in which all the components of <span class="math inline">\(\alpha_{\bullet}\)</span> have the same value</p>
-<p><span class="math display">\[
+<p><span id="eq-uniform-alpha"><span class="math display">\[
 \begin{align}
   \alpha_k &amp;= \frac{\alpha_{+}}{K} \\
   &amp; \text{for } k \in \{1, \dots, K \}
 \end{align}
-\]</span></p>
+\tag{14}\]</span></span></p>
 <p>The probability distribution is then symmetric in the components of <span class="math inline">\(p_{\bullet}\)</span>, and <span class="math inline">\(\alpha_{+}\)</span> is referred to as the <em>concentration parameter</em>. The uniform distribution over the domain of <span class="math inline">\(p_{\bullet}\)</span> (that is, over the <span class="math inline">\(K - 1\)</span> dimensional simplex) is obtained by setting <span class="math inline">\(\alpha_{+} = K\)</span>. Setting <span class="math inline">\(\alpha_{+} &gt; K\)</span> concentrates the distribution around the centroid</p>
-<p><span class="math display">\[
+<p><span id="eq-simplex-center"><span class="math display">\[
 \begin{align}
   p_{\textbf{ctr}} &amp;= (\frac{1}{K}, \ldots, \frac{1}{K}) \\
 \end{align}
-\]</span></p>
+\tag{15}\]</span></span></p>
 <p>For example the previous figure shows two alternative concentrations of the symmetric beta density function of scalar parameter <span class="math inline">\(p\)</span>, where <span class="math inline">\((p_1, p_2) = (p, \; 1 - p)\)</span>, and <span class="math inline">\(p_{\textbf{ctr}} = (\frac{1}{2}, \frac{1}{2})\)</span>.</p>
 <p>Alternatively, setting <span class="math inline">\(\alpha_{+} &lt; K\)</span> concentrates the distribution away from the centroid toward the corners of the simplex.</p>
 </section>
@@ -279,25 +321,34 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="posterior-distribution">Posterior Distribution</h3>
 <p>Recall that <span class="math inline">\(S_{\bullet}\)</span> constructed above has a multinomial distribution if it can be represented as the sum of <span class="math inline">\(n\)</span> independent trials, each trial yielding one of the Euclidean basis vectors <span class="math inline">\(\mathbb{e}_k\)</span> with probability <span class="math inline">\(p_k\)</span>. Then <span class="math inline">\(S_k\)</span>, the <span class="math inline">\(k^{th}\)</span> component of <span class="math inline">\(S_{\bullet}\)</span>, counts the number of trials yielding <span class="math inline">\(\mathbb{e}_k\)</span>.</p>
 <p>Now suppose that <span class="math inline">\(p_{\bullet}\)</span> has prior distribution <span class="math inline">\(\mathcal{Dirichlet}(\alpha_{\bullet})\)</span>, for some specification of <span class="math inline">\(\alpha_{\bullet}\)</span>, and that the observed outcome of the <span class="math inline">\(n\)</span> trials is a given vector <span class="math inline">\(s_{\bullet}\)</span> of counts. What is the posterior distribution of <span class="math inline">\(p_{\bullet}\)</span> given the observation <span class="math inline">\(S_{\bullet} = s_{\bullet}\)</span>? This turns out to be</p>
-<p><span class="math display">\[
+<p><span id="eq-Dirichlet-posterior"><span class="math display">\[
 \begin{align}
   \{ p_{\bullet} \; | \; s_{\bullet} \} &amp;\sim \mathcal{Dirichlet}(\alpha_{\bullet} + s_{\bullet})
 \end{align}
-\]</span></p>
+\tag{16}\]</span></span></p>
 <p>That is, the Dirichlet family is conjugate to the multinomial family, just as the beta family is conjugate to the binomial family.</p>
 </section>
 </section>
-<section id="resources" class="level2">
-<h2 class="anchored" data-anchor-id="resources">Resources</h2>
-<p><a href="https://en.wikipedia.org/wiki/Dirichlet_distribution">Dirichlet distribution - Wikipedia</a></p>
+<section id="references" class="level2 unnumbered">
+
+
 </section>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-BNJ2003LDA" class="csl-entry" role="listitem">
+Blei, David M., Andrew Y. Ng, and Michael I. Jordan. 2003. <span>“Latent Dirichlet Allocation.”</span> <em>J. Mach. Learn. Res.</em> 3 (null): 993–1022.
+</div>
+<div id="ref-wiki_Dirichlet_dstn" class="csl-entry" role="listitem">
+<span>“Dirichlet Distribution | Wikipedia.”</span> 2025. <em>Wikipedia</em>, July. <a href="https://en.wikipedia.org/wiki/Dirichlet_distribution">https://en.wikipedia.org/wiki/Dirichlet_distribution</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>In machine learning this mapping of a categorical variable to an indicator vector is called “one-hot encoding”.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>An alternative notation for the sum of <span class="math inline">\((\alpha_1, \ldots, \alpha_K)\)</span> is <span class="math inline">\(\alpha_0\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>See <span class="citation" data-cites="BNJ2003LDA">Blei, Ng, and Jordan (<a href="#ref-BNJ2003LDA" role="doc-biblioref">2003</a>)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>See <span class="citation" data-cites="wiki_Dirichlet_dstn"><span>“Dirichlet Distribution | Wikipedia”</span> (<a href="#ref-wiki_Dirichlet_dstn" role="doc-biblioref">2025</a>)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>In machine learning this mapping of a categorical variable to an indicator vector is called “one-hot encoding”.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>An alternative notation for the sum of <span class="math inline">\((\alpha_1, \ldots, \alpha_K)\)</span> is <span class="math inline">\(\alpha_0\)</span>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
