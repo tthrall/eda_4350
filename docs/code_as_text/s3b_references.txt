@@ -1,0 +1,72 @@
+
+@book{forbes2010statistical,
+  title={Statistical Distributions},
+  author={Forbes, C. and Evans, M. and Hastings, N. and Peacock, B.},
+  isbn={9780470390634},
+  lccn={2009052131},
+  series={Wiley Series in Probability and Statistics - Applied Probability and Statistics Section Series},
+  url={https://books.google.co.uk/books?id=OA4AJZsnOpMC},
+  year={2010},
+  publisher={Wiley}
+}
+
+@book{johnson1985distributions,
+  title={Distributions in Statistics},
+  author={Johnson, N.L. and Kotz, S.},
+  number={v. 4},
+  isbn={9780471844020},
+  series={Distributions in Statistics},
+  url={https://books.google.co.uk/books?id=NSzEtAEACAAJ},
+  year={1985},
+  publisher={Wiley}
+}
+
+@book{rdpeng2022advstatcomp,
+	title = {Advanced Statistical Computing},
+	author = {Roger D. Peng},
+	year = {2022},
+	date = {2025},
+	url = {https://bookdown.org/rdpeng/advstatcomp/}
+}
+
+@article{MC_method_Wikipedia_2025,
+  title = {Monte Carlo method | Wikipedia},
+	url = {https://en.wikipedia.org/wiki/Monte_Carlo_method},
+  journal = {Wikipedia},
+  publisher = {Wikimedia Foundation},
+  year = {2025},
+  month = {Jul}
+}
+
+@article{MH_algo_Wikipedia_2025,
+  title = {Metropolis–Hastings algorithm | Wikipedia},
+	url = {https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm},
+  journal = {Wikipedia},
+  publisher = {Wikimedia Foundation},
+  year = {2025},
+  month = {Jul}
+}
+
+@article{Tokdar_Kass_2010,
+  author = {Tokdar, Surya T. and Kass, Robert E.},
+  title = {Importance sampling: a review},
+  journal = {WIREs Computational Statistics},
+  volume = {2},
+  number = {1},
+  pages = {54-60},
+  keywords = {importance sampling, Monte Carlo approximation, sequential sampling, resampling, Markov chain sampling},
+  doi = {https://doi.org/10.1002/wics.56},
+  url = {https://wires.onlinelibrary.wiley.com/doi/abs/10.1002/wics.56},
+  eprint = {https://wires.onlinelibrary.wiley.com/doi/pdf/10.1002/wics.56},
+  abstract = {Abstract We provide a short overview of importance sampling—a popular sampling tool used for Monte Carlo computing. We discuss its mathematical foundation and properties that determine its accuracy in Monte Carlo approximations. We review the fundamental developments in designing efficient importance sampling (IS) for practical use. This includes parametric approximation with optimization-based adaptation, sequential sampling with dynamic adaptation through resampling and population-based approaches that make use of Markov chain sampling. Copyright © 2009 John Wiley \& Sons, Inc. This article is categorized under: Statistical and Graphical Methods of Data Analysis > Sampling},
+  year = {2010}
+}
+
+@article{Rrng,
+	title = {R: Random Number Generation},
+	author = {, R Core Team},
+	year = {2025},
+	date = {2025},
+	url = {https://stat.ethz.ch/R-manual/R-devel/library/base/html/Random.html}
+}
+
