@@ -36,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="s1b_condl_distn_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -131,7 +131,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">11:59 Fri 18-Jul-2025</p>
+      <p class="date">15:07 Thu 24-Jul-2025</p>
     </div>
   </div>
   
@@ -216,7 +216,7 @@ Figure&nbsp;2: Average of son heights per father’s height
   Z_x(X) = \frac{X - \mu_x}{\sigma_x} \\
   Z_y(Y) = \frac{Y - \mu_y}{\sigma_y} \\
 \end{align}
-\tag{1}\]</span></span></p>
+\qquad(1)\]</span></span></p>
 <p>Here <span class="math inline">\(\mu\)</span> signifies the average (arithmetic mean) height across the entire population, and <span class="math inline">\(\sigma\)</span> denotes the population standard deviation. Thus <span class="math inline">\(Z_x(X)\)</span> gives the number of standard deviations above or below the population average (expected value).</p>
 <p>Of course we seldom have precise values for these population parameters. In practice we then use sample estimates of the parameters, say <span class="math inline">\(\hat{\mu}\)</span> for the sample average and <span class="math inline">\(\hat{\sigma}\)</span> for the sample standard deviation.</p>
 <p><span id="eq-sample-moments-2"><span class="math display">\[
@@ -224,14 +224,14 @@ Figure&nbsp;2: Average of son heights per father’s height
   \hat{\mu}_x &amp;= \frac{1}{n} \sum_{k = 1}^{n} x_k \\
   \hat{\sigma}_{x}^2 &amp;= \frac{1}{n-1} \sum_{k = 1}^{n} (x_k - \hat{\mu}_x)^2 \\
 \end{align}
-\tag{2}\]</span></span></p>
+\qquad(2)\]</span></span></p>
 <p>So the term “z-score” or “standard unit” is usually understood with respect to the sample distribution.</p>
 <p><span id="eq-sample-z-score"><span class="math display">\[
 \begin{align}
   \hat{Z}_x(x_k) = \frac{x_k - \hat{\mu}_x}{\hat{\sigma}_x} \\
   \hat{Z}_y(y_k) = \frac{y_k - \hat{\mu}_y}{\hat{\sigma}_y} \\
 \end{align}
-\tag{3}\]</span></span></p>
+\qquad(3)\]</span></span></p>
 <section id="sd-line" class="level3">
 <h3 class="anchored" data-anchor-id="sd-line">SD line</h3>
 <p>The line given by the equation <span class="math inline">\(\hat{Z}_y(y) = \hat{Z}_x(x)\)</span> is called the “SD line”. Here’s an equivalent equation of this line.</p>
@@ -241,7 +241,7 @@ Figure&nbsp;2: Average of son heights per father’s height
   y &amp; = \mathcal{l}_{SD}(x) \\
   &amp;= \hat{\mu}_y + \frac{\hat{\sigma}_y}{\hat{\sigma}_x} (x - \hat{\mu}_x) \\
 \end{align}
-\tag{4}\]</span></span></p>
+\qquad(4)\]</span></span></p>
 <p>Of all lines <span class="math inline">\(y = \mathcal{l}(x)\)</span> we might draw through the <span class="math inline">\((x_k,y_k)\)</span> data points, the SD line <span class="math inline">\(y = \mathcal{l}_{SD}(x)\)</span> minimizes the sum of squared distances from each <span class="math inline">\((x_k,y_k)\)</span> data point to its orthogonal projection to the line.</p>
 </section>
 <section id="regression-line" class="level3">
@@ -252,11 +252,11 @@ Figure&nbsp;2: Average of son heights per father’s height
   \text{Regression line: } \\   
 y &amp; = \mathcal{l}_{R}(x) \\   
 &amp;= \hat{\mu}_y + \hat{r}  \frac{\hat{\sigma}_y}{\hat{\sigma}_x} (x - \hat{\mu}_x) \\ \end{align}
-\tag{5}\]</span></span></p>
+\qquad(5)\]</span></span></p>
 <p>An equivalent equation is <span class="math inline">\(\hat{Z}_y(y) = \hat{r} \hat{Z}_x(x)\)</span>, where <span class="math inline">\(\hat{r}\)</span> denotes the sample correlation coefficient.</p>
 <p><span id="eq-sample-cor"><span class="math display">\[
   \hat{r} = \frac{1}{n-1} \sum_{k = 1}^{n} \hat{Z}_x(x_k) \hat{Z}_y(y_k)
-\tag{6}\]</span></span></p>
+\qquad(6)\]</span></span></p>
 <p>Note that <span class="math inline">\(\hat{r}\)</span> is restricted to the closed interval <span class="math inline">\([-1, 1]\)</span>.</p>
 <p>The figure below shows the SD line and the Regression line for the father-son data.</p>
 <div class="cell">
@@ -529,7 +529,7 @@ Figure&nbsp;6: Scatter diagram of (x, y) per group
   P(X \in A, \; Y \in B) &amp;= P(X \in A) \times P(Y \in B) \\ \\
   &amp; \text{for all possible sets } A, B \\
 \end{align}
-\tag{7}\]</span></span></p>
+\qquad(7)\]</span></span></p>
 <p>If <span class="math inline">\(P(X \in A) &gt; 0\)</span> then statistical independence implies:</p>
 <p><span id="eq-indep-y-per-x"><span class="math display">\[
 \begin{align}
@@ -537,7 +537,7 @@ Figure&nbsp;6: Scatter diagram of (x, y) per group
   &amp;= P(Y \in B) \\ \\
   &amp; \text{whenever } P(X \in A) &gt; 0
 \end{align}
-\tag{8}\]</span></span></p>
+\qquad(8)\]</span></span></p>
 <p>That is, the conditional probability of random variable <span class="math inline">\(Y\)</span> belonging to set <span class="math inline">\(B\)</span> given that <span class="math inline">\(X\)</span> belongs to set <span class="math inline">\(A\)</span> is equal to the unconditional probability that <span class="math inline">\(Y\)</span> belongs to set <span class="math inline">\(B\)</span>. It follows that the conditional expectation <span class="math inline">\(E(Y | X)\)</span> does not depend on <span class="math inline">\(X\)</span>, and thus equals the constant <span class="math inline">\(E(Y)\)</span>, the unconditional expected value of <span class="math inline">\(Y\)</span>.</p>
 </section>
 <section id="the-case-when-x-and-y-are-categorical-variables" class="level3">
@@ -633,7 +633,7 @@ Table&nbsp;7: XXX
   O_{j,k} &amp;= \text{observed count for cell } \{j, k\} \\
   E_{j,k} &amp;= \text{expected count for cell } \{j, k\} \\
 \end{align}
-\tag{9}\]</span></span></p>
+\qquad(9)\]</span></span></p>
 <p>Under the assumption of independence Pearson determined the probability distribution of the <span class="math inline">\(\chi^2\)</span> statistic mathematically based on the notion of “degrees of freedom”.</p>
 <p>That is, for each row-index <span class="math inline">\(j\)</span> the expected counts summed across <span class="math inline">\(k\)</span> are constrained to match the corresponding sum of the observed values (the sum for row <span class="math inline">\(j\)</span>). Similarly, for each column-index <span class="math inline">\(k\)</span> the expected counts summed across <span class="math inline">\(j\)</span> are constrained to match the corresponding sum of the observed values (the sum for column <span class="math inline">\(k\)</span>). Given these fixed marginal sums, cell values can vary with <span class="math inline">\((J-1) \times (K-1)\)</span> degrees of freedom.</p>
 <p>Under the assumption of independence and for a large sample size <span class="math inline">\(n\)</span>, the chi-squared statistic approximately follows the distribution of the sum of squared independent standard normal variables, the number of independent normal variables matching the degrees of freedom.</p>
@@ -643,7 +643,7 @@ Table&nbsp;7: XXX
 \begin{align}
   \frac{O_{j,k} - E_{j,k}}{\sqrt{E_{j,k}}} \\
 \end{align}
-\tag{10}\]</span></span></p>
+\qquad(10)\]</span></span></p>
 <p>These terms are called “Pearson residuals”. For the handedness data, the Pearson residuals are as follows.</p>
 <div class="cell">
 <div id="tbl-hs-resid-wide" class="cell quarto-float quarto-figure quarto-figure-center anchored">
@@ -949,7 +949,7 @@ Table&nbsp;12: Percent of applications per department
   &amp; \text{with } p_k = \text{probability of drawing value } k \\
   &amp; \text{and } K = \text{number of distinct values}
 \end{align}
-\tag{11}\]</span></span></p>
+\qquad(11)\]</span></span></p>
 <p>(This definition of <span class="math inline">\(H\)</span> uses a base-2 logarithm <span class="math inline">\(\log_2()\)</span> to match our yes-no question game. The units of this <span class="math inline">\(H\)</span> are the required number of yes-no questions, that is, binary digits, or “bits”. <span class="math inline">\(H\)</span> is sometimes defined using the natural logarithm <span class="math inline">\(\log_e()\)</span> yielding a unit called “nats”. Changing the base of the logarithm changes <span class="math inline">\(H\)</span> by a multiplicative constant.)</p>
 <p>For the first box in the game above, we have a single value <span class="math inline">\(A\)</span>, which is thus drawn with probability one, which yields <span class="math inline">\(H = 0\)</span>.</p>
 <p>For the second box we have two values, each drawn with probability <span class="math inline">\(\frac{1}{2}\)</span>, so <span class="math inline">\(H = 1\)</span>.</p>
@@ -983,7 +983,7 @@ Table&nbsp;12: Percent of applications per department
   &amp;= H_X \times \sum_{k = 1}^K p_Y(k) \; + \; \sum_{j = 1}^J p_X(j) \times H_Y \\
   &amp;= H_X + H_Y
 \end{align}
-\tag{12}\]</span></span></p>
+\qquad(12)\]</span></span></p>
 <p>In words, when <span class="math inline">\((X, Y)\)</span> are independent, their joint entropy equals the sum of their respective entropies.</p>
 </section>
 <section id="mutual-information" class="level3">
@@ -998,7 +998,7 @@ Table&nbsp;12: Percent of applications per department
 \begin{align}
   MI_{X, Y} &amp;= H_X + H_Y - H_{X, Y} \\
 \end{align}
-\tag{13}\]</span></span></p>
+\qquad(13)\]</span></span></p>
 <p><span class="math inline">\(MI\)</span> is non-negative, and is zero when <span class="math inline">\((X, Y)\)</span> are independent.</p>
 </section>
 <section id="kl-divergence" class="level3">
@@ -1015,7 +1015,7 @@ Table&nbsp;12: Percent of applications per department
   &amp; \text{with } P(x) = \text{reference probability mass function} \\
   &amp; \text{and } Q(x) = \text{alternative probability mass function} \\
 \end{align}
-\tag{14}\]</span></span></p>
+\qquad(14)\]</span></span></p>
 <p>In the example above, <span class="math inline">\(P(\cdot)\)</span> is the probability of drawing any given letter-number combination from <span class="math inline">\(\{ A_1, A_2, B_1, C_2 \}\)</span>, and <span class="math inline">\(Q(\cdot)\)</span> is the corresponding probability for <span class="math inline">\(\{ A_1, A_1, B_1, C_1, A_2, A_2, B_2, C_2 \}\)</span>. Here is the tally of the sum defining <span class="math inline">\(KL(P \; || \; Q)\)</span>.</p>
 <div class="cell">
 <div id="tbl-kl-tbl" class="cell quarto-float quarto-figure quarto-figure-center anchored">
