@@ -70,7 +70,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="s2b_text_analysis_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -156,7 +156,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">19:54 Fri 18-Jul-2025</p>
+      <p class="date">15:15 Thu 24-Jul-2025</p>
     </div>
   </div>
   
@@ -460,7 +460,7 @@ Table&nbsp;2: H.G. Wells: frequent (non-stop) words
 \begin{align}
   tf(t_0, d_0) &amp;= \frac{\mathcal{n}(t_0, d_0)}{\sum_{t \in d_0}\mathcal{n}(t, d_0)}
 \end{align}
-\tag{1}\]</span></span></p>
+\qquad(1)\]</span></span></p>
 <p>As for inverse document frequency (idf), there are several alternative definitions. Here’s the definition we’ll use.</p>
 <p><span id="eq-inverse-doc-frequency"><span class="math display">\[
 \begin{align}
@@ -470,7 +470,7 @@ Table&nbsp;2: H.G. Wells: frequent (non-stop) words
   &amp; \mathcal{D} = \text{corpus of documents } \\
   &amp; \mathcal{D}_t = \{ d \in \mathcal{D} : t \in d  \}
 \end{align}
-\tag{2}\]</span></span></p>
+\qquad(2)\]</span></span></p>
 <p>Example: let <span class="math inline">\(\mathcal{D}\)</span> denote the set of Jane Austen’s 6 novels, and let each novel take its turn as the document <span class="math inline">\(d_0\)</span> of interest. For each book, the most distinctive word (that maximizes tf-idf) is as follows.</p>
 <div class="cell">
 <div id="tbl-ja-max-wd-per-book" class="cell quarto-float quarto-figure quarto-figure-center anchored">
@@ -756,7 +756,7 @@ Figure&nbsp;1: AP articles: most probable terms by topic
 \begin{align}
   \log_2 \left( \frac{\beta_2}{\beta_1} \right)
 \end{align}
-\tag{3}\]</span></span></p>
+\qquad(3)\]</span></span></p>
 <p>restricting the set of terms to those assigned to both topics <span class="math inline">\((\min(\beta_1, \beta_2) &gt; 0)\)</span> with at least one of them exceeding a probability threshhold, say <span class="math inline">\((\max(\beta_1, \beta_2) &gt; 0.001)\)</span>.</p>
 <div class="cell">
 <div class="cell-output-display">
