@@ -56,7 +56,7 @@ div.csl-indent {
 <link href="s5a_ts_intro_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -133,7 +133,7 @@ window.Quarto = {
   <li><a href="#glossary-of-math-symbols" id="toc-glossary-of-math-symbols" class="nav-link" data-scroll-target="#glossary-of-math-symbols">Glossary of Math Symbols</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="s5a_ts_intro.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="s5a_ts_intro.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -157,7 +157,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">13:07 Wed 16-Jul-2025</p>
+      <p class="date">15:28 Thu 24-Jul-2025</p>
     </div>
   </div>
   
@@ -525,7 +525,7 @@ Figure&nbsp;10: Earthquake and explosion sampled at 40 Hz
 \begin{align}
   X_\bullet (t) = (X_1 (t), \ldots, X_d (t))
 \end{align}
-\tag{1}\]</span></span></p>
+\qquad(1)\]</span></span></p>
 <p>In our example the number <span class="math inline">\(d\)</span> of data columns is two (<code>hare</code>, <code>lynx</code>), the unit of time is one year, and the sampling frequency is once per year. The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period.</p>
 <p><span class="math display">\[
 \begin{align}
@@ -537,14 +537,14 @@ Figure&nbsp;10: Earthquake and explosion sampled at 40 Hz
 \begin{align}
   m_\bullet (t) &amp;= E \{ X_\bullet (t) \}
 \end{align}
-\tag{2}\]</span></span></p>
+\qquad(2)\]</span></span></p>
 <p>In an additive model (which is most common), the residual random process, <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> , is assumed to be <strong>second-order stationary</strong>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> That is, if we shift <span class="math inline">\(X_\bullet (\cdot)\)</span> by any number of time units <span class="math inline">\(s\)</span> to obtain a new proces <span class="math inline">\(Y_\bullet (\cdot)\)</span>, we assume that the respective covariance structures of <span class="math inline">\(X_\bullet (\cdot)\)</span> and <span class="math inline">\(Y_\bullet (\cdot)\)</span> are the same.</p>
 <p><span id="eq-shift-operator"><span class="math display">\[
 \begin{align}
   Y_\bullet (t) &amp;= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
   &amp;= X_\bullet (t - s)
 \end{align}
-\tag{3}\]</span></span></p>
+\qquad(3)\]</span></span></p>
 <p>Here <span class="math inline">\(\mathcal{B}\)</span> denotes the <em>back-shift</em> operator that shifts time by one unit, so that <span class="math inline">\(\mathcal{B}^s\)</span> (that is, <span class="math inline">\(s\)</span> repeated applications of <span class="math inline">\(\mathcal{B}\)</span>) shifts time by <span class="math inline">\(s\)</span> units. Then second-order stationarity can be expressed as follows.</p>
 <p><span class="math display">\[
 \begin{align}
@@ -561,7 +561,7 @@ Figure&nbsp;10: Earthquake and explosion sampled at 40 Hz
   Cov \{ X_a (t + u), X_b (t) \}
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
-\tag{4}\]</span></span></p>
+\qquad(4)\]</span></span></p>
 <p>Consequently, second-order stationarity enables one to define and estimate the following <em>auto-covariance</em> function.</p>
 <p><span id="eq-auto-cov"><span class="math display">\[
 \begin{align}
@@ -571,7 +571,7 @@ Figure&nbsp;10: Earthquake and explosion sampled at 40 Hz
   \gamma_{a, b} (u) &amp;= Cov \{ X_a (t + u), X_b (t) \} \\
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
-\tag{5}\]</span></span></p>
+\qquad(5)\]</span></span></p>
 <p>The auto-covariance function is often rescaled to yield the <em>autocorrelation</em> function <span class="math inline">\(\rho_{\bullet, \bullet}(\cdot)\)</span>.</p>
 <p><span id="eq-auto-cor"><span class="math display">\[
 \begin{align}
@@ -581,7 +581,7 @@ Figure&nbsp;10: Earthquake and explosion sampled at 40 Hz
   \rho_{a, b} &amp;= cor \{ X_a (u), X_b (0) \} \\
   &amp;= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
-\tag{6}\]</span></span></p>
+\qquad(6)\]</span></span></p>
 </section>
 <section id="operations-on-time-series" class="level2">
 <h2 class="anchored" data-anchor-id="operations-on-time-series">Operations on Time Series</h2>
@@ -608,7 +608,7 @@ Figure&nbsp;11: Global temperatures: 5-year moving average
   Y_\bullet (t)
   &amp;= \frac{1}{5} \sum_{u = -2}^2 X_\bullet (t - u)
 \end{align}
-\tag{7}\]</span></span></p>
+\qquad(7)\]</span></span></p>
 <p>Here <span class="math inline">\(X_\bullet (\cdot)\)</span> is a two-component random process representing annual global averages of land and ocean temperatures. This 5-year moving average is an example of a linear, time-invariant <em>filter</em>, having the following general form.</p>
 <p><span id="eq-filter"><span class="math display">\[
 \begin{align}
@@ -616,7 +616,7 @@ Figure&nbsp;11: Global temperatures: 5-year moving average
   &amp;= a_{\bullet, \bullet} (\cdot) \; * \; X_\bullet (\cdot)  \\
   &amp;= \sum_u a_{\bullet, \bullet} (u) \; \times \; X_\bullet (t - u)
 \end{align}
-\tag{8}\]</span></span></p>
+\qquad(8)\]</span></span></p>
 <p>where <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> is a sequence of <span class="math inline">\(d \times d\)</span> matrices and <span class="math inline">\(*\)</span> denotes discrete convolution.</p>
 <p>For example, here’s the 5-year moving average above expressed in this format.</p>
 <p><span id="eq-ma-5-filter"><span class="math display">\[
@@ -627,7 +627,7 @@ Figure&nbsp;11: Global temperatures: 5-year moving average
       0 &amp; \text{ for } |u| &gt; 2
     \end{cases}
 \end{align}
-\tag{9}\]</span></span></p>
+\qquad(9)\]</span></span></p>
 <p>As noted above, the moving average operation can help to reveal and thus model the trend in the process, <span class="math inline">\(m_\bullet (t)\)</span>. Forming the residual series <span class="math inline">\(X_\bullet (t) - m_\bullet (t)\)</span> is called “de-trending”.</p>
 <p>Alternatively, if the trend is linear it may also be removed by forming differences of the current observation minus its predecessor. This is an application of the “differencing” operator <span class="math inline">\(\nabla = \mathcal{I} - \mathcal{B}\)</span>.</p>
 <p><span id="eq-diff-operator"><span class="math display">\[
@@ -637,7 +637,7 @@ Figure&nbsp;11: Global temperatures: 5-year moving average
   &amp;= (\mathcal{I} - \mathcal{B}) \{ X_\bullet (\cdot) \} (t) \\
   &amp;= \nabla \{ X_\bullet (\cdot) \} (t)
 \end{align}
-\tag{10}\]</span></span></p>
+\qquad(10)\]</span></span></p>
 <p>In the DJIA stock index example, returns were defined as the log-ratio of successive closing values, calculated as the difference in successive values of the logarithm of the closing values. Here’s the differencing operator <span class="math inline">\(\nabla\)</span> in the filtering format.</p>
 <p><span id="eq-diff-filter"><span class="math display">\[
 \begin{align}
@@ -648,7 +648,7 @@ Figure&nbsp;11: Global temperatures: 5-year moving average
       0  &amp; \text{ otherwise }
     \end{cases}
 \end{align}
-\tag{11}\]</span></span></p>
+\qquad(11)\]</span></span></p>
 <p>A moving average operation smooths the time series on which it operates. That is, it allows low-frequency components to pass, while diminishing high-frequency components. Therefore the moving average operation is categorized as a <em>low-pass</em> filter. The differencing operator can be categorized as a <em>high-pass</em> filter.</p>
 <p>In signal-processing applications a linear, time-invariant filter <span class="math inline">\(a_{\bullet, \bullet} (\cdot)\)</span> may be designed to extract certain types of signals that are contaminated by noise.</p>
 </section>
@@ -719,7 +719,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \\
   &amp; \text{where } -1 &lt; \theta &lt; 1
 \end{align}
-\tag{12}\]</span></span></p>
+\qquad(12)\]</span></span></p>
 <p>Then <span class="math inline">\(X(\cdot)\)</span> is an example of a moving average random process. In the theory of such processes one usually assumes that <span class="math inline">\(X(\cdot)\)</span> is observed for some interval of time <span class="math inline">\((t_0, \ldots, t_0 + T - 1)\)</span> and that <span class="math inline">\(W(\cdot)\)</span> is not observed. But for present purposes suppose that this is a simulation study in which both <span class="math inline">\(X(t)\)</span> and <span class="math inline">\(W(\cdot)\)</span> are generated over the same time interval and that the values of all parameters are known, including the population means, the population variances, and <span class="math inline">\(\theta\)</span>.</p>
 <p>Let’s focus on the calculation of the sample mean and its variance. For <span class="math inline">\(W(\cdot)\)</span> we have the following familiar formulas for the sum of observed values.</p>
 <p><span id="eq-ev-sum-uncorrelated"><span class="math display">\[
@@ -730,7 +730,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   Var \left \{ S_{W, T} \right \} &amp;= T \times Var \left \{ W(t_0) \right \}  \\
   &amp;= T \times \sigma_W^2
 \end{align}
-\tag{13}\]</span></span></p>
+\qquad(13)\]</span></span></p>
 <p>The sample mean is derived from the sample sum.</p>
 <p><span id="eq-ev-avg-uncorrelated"><span class="math display">\[
 \begin{align}
@@ -744,14 +744,14 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= \frac{Var \left \{ S_{W, T} \right \}}{T^2} \\
   &amp;= \frac{ \sigma_W^2 }{T}
 \end{align}
-\tag{14}\]</span></span></p>
+\qquad(14)\]</span></span></p>
 <p>The mean and variance of <span class="math inline">\(X(t)\)</span> can be expressed as respective functions of the mean and variance of <span class="math inline">\(Z(t)\)</span>.</p>
 <p><span id="eq-ev-ma-1-model"><span class="math display">\[
 \begin{align}
   \mu_X &amp;= (1 +\theta) \; \mu_Z \\
   \sigma_X^2 &amp;= (1 +\theta^2) \; \sigma_Z^2
 \end{align}
-\tag{15}\]</span></span></p>
+\qquad(15)\]</span></span></p>
 <p>The variance formula for the sample sum, <span class="math inline">\(S_{X, T}\)</span>, differs from that of <span class="math inline">\(S_{Z, T}\)</span>, because <span class="math inline">\(X(\cdot)\)</span> is auto-correlated. The auto-covariance function is</p>
 <p><span id="eq-auto-cov-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -763,7 +763,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{16}\]</span></span></p>
+\qquad(16)\]</span></span></p>
 <p>The auto-correlation function is thus<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
 <p><span id="eq-auto-cor-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -775,7 +775,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     0 &amp; \text{ for } |u| &gt; 1
   \end{cases}
 \end{align}
-\tag{17}\]</span></span></p>
+\qquad(17)\]</span></span></p>
 <p>Therefore</p>
 <p><span id="eq-var-sum-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -792,7 +792,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   &amp;= T \; \sigma_X^2 \; \frac{(1 + \theta)^2}{1 +\theta^2}
   - \sigma_X^2 \frac{2 \theta}{1 +\theta^2}
 \end{align}
-\tag{18}\]</span></span></p>
+\qquad(18)\]</span></span></p>
 <p>In short, ignoring the autocorrelation of <span class="math inline">\(X(\cdot)\)</span> would lead to erroneous calculations of the variance of <span class="math inline">\(S_{X, T}\)</span> and <span class="math inline">\(\hat{\mu}_X\)</span>.</p>
 </section>
 <section id="effective-sample-size-ess" class="level3">
@@ -803,13 +803,13 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
   \frac{\sigma_X^2}{N_d} &amp;= Var \left \{ \hat{\mu}_X \right \} \\
   &amp;= \frac{ Var \left \{ S_{X, T} \right \} }{T^2}
 \end{align}
-\tag{19}\]</span></span></p>
+\qquad(19)\]</span></span></p>
 <p>Equivalently</p>
 <p><span id="eq-ess-definition"><span class="math display">\[
 \begin{align}
   N_d &amp;= \frac{T^2 \sigma_X^2}{ Var \left \{ S_{X, T} \right \} }
 \end{align}
-\tag{20}\]</span></span></p>
+\qquad(20)\]</span></span></p>
 <p>In our moving average example this yields</p>
 <p><span id="eq-ess-limit-ma-1-model"><span class="math display">\[
 \begin{align}
@@ -821,7 +821,7 @@ Figure&nbsp;13: <span class="math inline">\(CO_2\)</span>: Mauna Loa, monthly fo
     T^2  &amp; \text{ as } \theta \rightarrow -1
   \end{cases}
 \end{align}
-\tag{21}\]</span></span></p>
+\qquad(21)\]</span></span></p>
 <p>As <span class="math inline">\(\theta\)</span> increases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> decreases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T/2\)</span>. In the other direction, as <span class="math inline">\(\theta\)</span> decreases from <span class="math inline">\(0\)</span> towards <span class="math inline">\(-1\)</span> the matching number of independent draws <span class="math inline">\(N_d\)</span> increases from <span class="math inline">\(T\)</span> towards <span class="math inline">\(T^2\)</span>.</p>
 <p>The point here is that care must be taken when calculating the variance of estimators derived from time series data. This is a known issue addressed by available software.</p>
 </section>
