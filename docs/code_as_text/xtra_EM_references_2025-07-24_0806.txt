@@ -1,0 +1,67 @@
+
+@book{rdpeng2022advstatcomp,
+	title = {Advanced Statistical Computing},
+	author = {Roger D. Peng},
+	year = {2022},
+	date = {2025},
+	url = {https://bookdown.org/rdpeng/advstatcomp/}
+}
+
+@article{mixtools2009,
+   title={mixtools: An R Package for Analyzing Mixture Models},
+   volume={32},
+   url={https://www.jstatsoft.org/index.php/jss/article/view/v032i06},
+   doi={10.18637/jss.v032.i06},
+   abstract={The &amp;lt;b&amp;gt;mixtools&amp;lt;/b&amp;gt; package for &amp;lt;code&amp;gt;R&amp;lt;/code&amp;gt; provides a set of functions for analyzing a variety of finite mixture models. These functions include both traditional methods, such as EM algorithms for univariate and multivariate normal mixtures, and newer methods that reflect some recent research in finite mixture models. In the latter category, &amp;lt;b&amp;gt;mixtools&amp;lt;/b&amp;gt; provides algorithms for estimating parameters in a wide range of different mixture-of-regression contexts, in multinomial mixtures such as those arising from discretizing continuous multivariate data, in nonparametric situations where the multivariate component densities are completely unspecified, and in semiparametric situations such as a univariate location mixture of symmetric but otherwise unspecified densities. Many of the algorithms of the &amp;lt;b&amp;gt;mixtools&amp;lt;/b&amp;gt; package are EM algorithms or are based on EM-like ideas, so this article includes an overview of EM algorithms for finite mixture models.},
+   number={6},
+   journal={Journal of Statistical Software},
+   author={Benaglia, Tatiana and Chauveau, Didier and Hunter, David R. and Young, Derek S.},
+   year={2009},
+   pages={1–29}
+}
+
+@article{Anderson_Olkin_2002,
+  title={Maximum-likelihood estimation of the parameters of a multivariate normal distribution},
+  url={https://www.sciencedirect.com/science/article/pii/0024379585900497},
+  journal={Linear Algebra and its Applications},
+  publisher={North-Holland},
+  author={Anderson, T. W. and Olkin, Ingram},
+  year={2002}, month={May}
+}
+
+@article{Dempster_Laird_Rubin_1977,
+  series={B},
+  title={Maximum likelihood from incomplete data via the em algorithm},
+  volume={39},
+  DOI={10.1111/j.2517-6161.1977.tb01600.x},
+  number={1},
+  journal={Journal of the Royal Statistical Society Series B: Statistical Methodology},
+  author={Dempster, A. P. and Laird, N. M. and Rubin, D. B.},
+  year={1977},
+  month={Sep},
+  pages={1–38},
+  collection={B}
+}
+
+@article{EM_algo_Wikipedia_2025,
+  title = {Expectation–maximization algorithm
+ | Wikipedia},
+	url = {https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm},
+  journal = {Wikipedia},
+  publisher = {Wikimedia Foundation},
+  year = {2025},
+  month = {Jul}
+}
+
+@article{Vandemeulebrouck_Roux_Cros_2013,
+  title={The plumbing of Old faithful geyser revealed by hydrothermal tremor},
+  volume={40},
+  DOI={10.1002/grl.50422},
+  number={10},
+  journal={Geophysical Research Letters},
+  author={Vandemeulebrouck, J. and Roux, P. and Cros, E.},
+  year={2013},
+  month={May},
+  pages={1989–1993}
+}
+
