@@ -149,8 +149,8 @@ Here are the number of strings per book.
 ```{r}
 #| label: ja-strings-per-book
 
-ja_strings_per_book <- austen_books() |> 
-  summarise(
+ja_strings_per_book <- janeaustenr::austen_books() |> 
+  dplyr::summarise(
     .by = book, 
     n_strings = n()
   )
@@ -163,12 +163,12 @@ Here are the ten words used most frequently across these novels (excluding stop-
 #| label: ja-plus-chapters
 
 # new columns per book: line number, chapter
-ja_plus_chapters <- austen_books() |> 
-  mutate(
+ja_plus_chapters <- janeaustenr::austen_books() |> 
+  dplyr::mutate(
     .by        = book, 
-    linenumber = row_number(),
+    linenumber = dplyr::row_number(),
     chapter    = cumsum(
-      str_detect(
+      stringr::str_detect(
         text, 
         regex(
           "^chapter [\\divxlc]",
@@ -182,7 +182,7 @@ ja_plus_chapters <- austen_books() |>
 
 # break each line of text into several rows of words
 ja_words_raw <- ja_plus_chapters |> 
-  unnest_tokens(
+  tidytext::unnest_tokens(
     input  = text, 
     output = word
   )
@@ -193,7 +193,7 @@ ja_words_raw <- ja_plus_chapters |>
 
 # remove stop-words
 ja_words_xsw <- ja_words_raw |> 
-  anti_join(
+  dplyr::anti_join(
     y  = tidytext::stop_words, 
     by = "word")
 ```
@@ -245,19 +245,39 @@ Among these novels, here are the most frequently used words (again excluding sto
 ```{r}
 #| label: hgwells-lines
 
+hgwells_lines <- NULL
+
 # load file as tibble by one of these methods
 uncl_download <- FALSE
-load_rda      <- TRUE
+load_rda      <- FALSE
+read_tsv      <- TRUE
 
 if (uncl_download) {
   hgwells_lines <- gutenberg_download(
     gutenberg_id = hgwells_books$ id)
 } else {
   if (load_rda) {
-    load(here("data", "rda", "hgwells.rda"))
+    load(here::here("data", "rda", "hgwells.rda"))
     hgwells_lines <- hgwells
     rm(hgwells)
+  } else {
+    if (read_tsv) {
+      hgwells_lines <- readr::read_tsv(here::here(
+        "data", "retain", "hgwells_lines.txt"
+      ))
+    }
   }
+}
+
+# save as text file only as needed
+save_file <- FALSE
+if (
+  save_file && 
+  (! is.null(hgwells_lines))
+) {
+  hgwells_lines |> readr::write_tsv(here::here(
+      "data", "retain", "hgwells_lines.txt"
+    ))
 }
 ```
 
@@ -266,7 +286,7 @@ if (uncl_download) {
 
 # break each line into rows, one word per row
 hgwells_words <- hgwells_lines |> 
-  unnest_tokens(
+  tidytext::unnest_tokens(
     input  = text, 
     output = word
   ) |> 
@@ -279,7 +299,7 @@ hgwells_words <- hgwells_lines |>
 ```{r}
 #| label: save-hgwells-books
 
-# save as text file just once
+# save as text only as needed
 save_file <- FALSE
 if (save_file) {
   hgwells_words |> write_tsv(
@@ -432,8 +452,8 @@ The inaugural addresses of US presidents, provided by package `quanteda`, is an 
 #| lst-cap: ""
 #| echo: true
 
-data("data_corpus_inaugural", package = "quanteda")
-head(docvars(data_corpus_inaugural), 6)
+utils::data("data_corpus_inaugural", package = "quanteda")
+utils::head(docvars(data_corpus_inaugural), 6)
 ```
 
 Here is a list of tokens from the addresses given in 1861, 1933, and 1961.
