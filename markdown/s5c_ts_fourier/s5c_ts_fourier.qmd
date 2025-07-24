@@ -10,7 +10,14 @@ toc: true
 toc-depth: 3
 format:
   html:
-    code: true
+    toc_float: true
+    code-fold: true
+    code-summary: "Show the code"
+    html-math-method:
+      method: mathjax
+      url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  pdf: default
+  docx: default
 params:
   file_id: "s5c"
   file_prefix: "s5c_ts_fourier"

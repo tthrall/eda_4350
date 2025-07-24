@@ -56,7 +56,7 @@ div.csl-indent {
 <link href="s5c_ts_fourier_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -144,7 +144,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="s5c_ts_fourier.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="s5c_ts_fourier.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -168,7 +168,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">12:26 Wed 16-Jul-2025</p>
+      <p class="date">15:35 Thu 24-Jul-2025</p>
     </div>
   </div>
   
@@ -229,7 +229,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   X_\bullet (t) = (X_1 (t), \ldots, X_d (t)) \in \mathbb{R}^d
 \end{align}
-\tag{1}\]</span></span></p>
+\qquad(1)\]</span></span></p>
 <p>If the number of data columns is two or greater <span class="math inline">\((d \ge 2)\)</span>, the process is said to be multivariate. Otherwise, if <span class="math inline">\(d = 1\)</span> the process is said to be univariate, and the notation is simplified to <span class="math inline">\(X (t)\)</span>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 <p>In our example there are two data columns (<code>HNL</code>, <code>NYC</code>), so that <span class="math inline">\(d = 2\)</span>, the unit of time is one day, and the sampling frequency is once per day.</p>
 <p>The random process is idealized to span all time <span class="math inline">\((t \in \mathbb{Z})\)</span>, but the data of course span some finite period, <span class="math inline">\(\tau_T\)</span>, of length <span class="math inline">\(T\)</span>.</p>
@@ -241,13 +241,13 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   T &amp;=  \text{ number of observatons } = t_f - t_0 + 1 \\
   \nu_T &amp;= \tau_T - t_0 =  \{ 0, 1, \ldots, T-1 \}
 \end{align}
-\tag{2}\]</span></span></p>
+\qquad(2)\]</span></span></p>
 <p>The expected value of the random process may be modeled by various functions of time: a constant, a linear trend, a seasonal component (periodic function), etc.</p>
 <p><span id="eq-m-bullet"><span class="math display">\[
 \begin{align}
   m_\bullet (t) &amp;= E \{ X_\bullet (t) \}
 \end{align}
-\tag{3}\]</span></span></p>
+\qquad(3)\]</span></span></p>
 </section>
 <section id="stationarity" class="level3">
 <h3 class="anchored" data-anchor-id="stationarity">Stationarity</h3>
@@ -257,7 +257,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   Y_\bullet (t) &amp;= \mathcal{B}^s \{ X_\bullet (\cdot) \} (t)  \\
   &amp;= X_\bullet (t - s)
 \end{align}
-\tag{4}\]</span></span></p>
+\qquad(4)\]</span></span></p>
 <p>Here <span class="math inline">\(\mathcal{B}\)</span> denotes the <em>back-shift</em> operator that shifts time by one unit, so that <span class="math inline">\(\mathcal{B}^s\)</span> (that is, <span class="math inline">\(s\)</span> repeated applications of <span class="math inline">\(\mathcal{B}\)</span>) shifts time by <span class="math inline">\(s\)</span> units. Then second-order stationarity can be expressed as follows.</p>
 <p><span class="math display">\[
 \begin{align}
@@ -277,7 +277,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   Cov \{ X_a (t + u), X_b (t) \}
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
-\tag{5}\]</span></span></p>
+\qquad(5)\]</span></span></p>
 <p>Consequently, second-order stationarity enables one to define and estimate the following <em>auto-covariance</em> function.</p>
 <p><span id="eq-ACovF"><span class="math display">\[
 \begin{align}
@@ -286,7 +286,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \gamma_{a, b} (u) &amp;= Cov \{ X_a (t + u), X_b (t) \} \\
   &amp;= Cov \{ X_a (u), X_b (0) \}
 \end{align}
-\tag{6}\]</span></span></p>
+\qquad(6)\]</span></span></p>
 <p>Although <span class="math inline">\(\gamma_{\bullet, \bullet} (u)\)</span> is a symmetric matrix at <span class="math inline">\(u = 0\)</span>, it is not generally symmetric at <span class="math inline">\(u \ne 0\)</span>. The symmetry relation we do have is that matrix <span class="math inline">\(\gamma_{\bullet, \bullet} (-u)\)</span> is the transpose of matrix <span class="math inline">\(\gamma_{\bullet, \bullet} (u)\)</span>.</p>
 <p><span id="eq-ACovF-symm"><span class="math display">\[
 \begin{align}
@@ -295,7 +295,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= Cov \{ X_b (t + u), X_a (t) \}   \\
   &amp;= \gamma_{b, a} (u)
 \end{align}
-\tag{7}\]</span></span></p>
+\qquad(7)\]</span></span></p>
 <p>In particular, <span class="math inline">\(\gamma_{a, a} (\cdot)\)</span> is an even function: <span class="math inline">\(\gamma_{a, a} (-u) = \gamma_{a, a} (u)\)</span>.</p>
 <p>Consequently, the time-reversed process <span class="math inline">\(Y_\bullet (t) = X_\bullet (-t)\)</span> has the same auto-covariance structure as the original process, allowing for this matrix transposition.</p>
 <p>The <em>autocorrelation (ACF)</em> function <span class="math inline">\(\rho_{\bullet, \bullet}(\cdot)\)</span> is the following scaled version of the auto-covariance function.</p>
@@ -306,7 +306,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \rho_{a, b} (u) &amp;= corr \{ X_a (u), X_b (0) \} \\
   &amp;= \frac{\gamma_{a, b} (u)}{\sqrt{\gamma_{a, a} (0) \; \gamma_{b, b} (0)}}
 \end{align}
-\tag{8}\]</span></span></p>
+\qquad(8)\]</span></span></p>
 </section>
 <section id="spectrum" class="level3">
 <h3 class="anchored" data-anchor-id="spectrum">Spectrum</h3>
@@ -316,7 +316,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   f(t) = \rho e^{i \lambda t + \phi}
 \end{align}
-\tag{9}\]</span></span></p>
+\qquad(9)\]</span></span></p>
 <p>are widely used as the basis of this frequency decomposition, for a function of this form is an eigen-function of the back-shift operator <span class="math inline">\(\mathcal{B}\)</span>.</p>
 <p><span id="eq-bs-eigen"><span class="math display">\[
 \begin{align}
@@ -325,7 +325,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= e^{- i \lambda s} \; \rho e^{i \lambda t + \phi} \\
   &amp;= e^{- i \lambda s} \; f (t)
 \end{align}
-\tag{10}\]</span></span></p>
+\qquad(10)\]</span></span></p>
 </section>
 <section id="spectrum-density-functions" class="level3">
 <h3 class="anchored" data-anchor-id="spectrum-density-functions">Spectrum density functions</h3>
@@ -334,14 +334,14 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   f_{\bullet, \bullet} (\lambda) &amp;= \sum_{u = -\infty}^\infty \gamma_{\bullet, \bullet} (u) \times e^{- i \lambda u}
 \end{align}
-\tag{11}\]</span></span></p>
+\qquad(11)\]</span></span></p>
 <p>where we assume that the elements of <span class="math inline">\(\gamma_{\bullet, \bullet} (\cdot)\)</span> are absolutely summable.</p>
 <p><span id="eq-ACovF-sum"><span class="math display">\[
 \begin{align}
   \sum_{u = -\infty}^\infty \left | \; \gamma_{a, b} (u) \; \right | &amp;&lt; \infty \\
   &amp;\text{for } a, b \in \{1, \ldots, d \}
 \end{align}
-\tag{12}\]</span></span></p>
+\qquad(12)\]</span></span></p>
 <p><a href="#eq-ACovF-sum" class="quarto-xref">Equation&nbsp;12</a> is an example of a “mixing” condition. It implies that <span class="math inline">\(X_\bullet(t)\)</span> and <span class="math inline">\(X_\bullet(t + u)\)</span> have vanishingly small correlation as <span class="math inline">\(|u| \rightarrow \infty\)</span>.</p>
 <p>Setting <span class="math inline">\(b = a\)</span>, we obtain <span class="math inline">\(f_{a, a} (\cdot)\)</span>, called the <em>power spectrum</em> of <span class="math inline">\(X_a (\cdot)\)</span>.</p>
 <p>If <span class="math inline">\(b \ne a\)</span> then <span class="math inline">\(f_{a, b} (\cdot)\)</span> is called the <em>cross-spectrum</em> of <span class="math inline">\(\{ X_a (\cdot), X_b (\cdot) \}\)</span>. The <em>coherency</em> of <span class="math inline">\(X_a(\cdot), X_b(\cdot)\)</span> at frequency <span class="math inline">\(\lambda\)</span>, denoted <span class="math inline">\(R_{a, b} (\lambda)\)</span>, is the following normalization of the cross-spectrum.</p>
@@ -349,14 +349,14 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   R_{a, b} (\lambda) &amp;= \frac{f_{a, b}(\lambda)}{\sqrt{f_{a, a}(\lambda) f_{b, b}(\lambda)}}
 \end{align}
-\tag{13}\]</span></span></p>
+\qquad(13)\]</span></span></p>
 <p>The modulus-squared of coherency, <span class="math inline">\(| R_{a, b} (\lambda) |^2\)</span>, is called the <em>coherence</em> of <span class="math inline">\(\{ X_a (\cdot), X_b (\cdot) \}\)</span> at frequency <span class="math inline">\(\lambda\)</span>. Similar to a squared correlation coefficient, this is a non-negative value no greater than unity. And the radian angle, <span class="math inline">\(Arg( R_{a, b} (\lambda) )\)</span>, is called the <em>phase</em> of <span class="math inline">\(\{ X_a (\cdot), X_b (\cdot) \}\)</span> at frequency <span class="math inline">\(\lambda\)</span>.</p>
 <p>From <a href="#eq-spec-dens" class="quarto-xref">Equation&nbsp;11</a> we see that <span class="math inline">\(f_{\bullet, \bullet} (\lambda)\)</span> is periodic with period <span class="math inline">\(2 \pi\)</span>.</p>
 <p><span id="eq-spec-periodic"><span class="math display">\[
 \begin{align}
   f_{\bullet, \bullet} (\lambda + 2 \pi) &amp;= f_{\bullet, \bullet} (\lambda)
 \end{align}
-\tag{14}\]</span></span></p>
+\qquad(14)\]</span></span></p>
 <p>Due to the symmetries of the auto-covariance function (<a href="#eq-ACovF-symm" class="quarto-xref">Equation&nbsp;7</a>), the spectrum density matrix is Hermitian, that is, equal to its own conjugate transpose.</p>
 <p><span id="eq-spec-hermitian"><span class="math display">\[
 \begin{align}
@@ -365,7 +365,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \sum_{\nu = -\infty}^\infty \gamma_{\bullet, \bullet} (\nu) \times e^{- i \lambda \nu} \\
   &amp;= f_{\bullet, \bullet} (\lambda)
 \end{align}
-\tag{15}\]</span></span></p>
+\qquad(15)\]</span></span></p>
 <p>We also have that matrix <span class="math inline">\(f_{\bullet, \bullet} (- \lambda)\)</span> is the transpose of <span class="math inline">\(f_{\bullet, \bullet} (\lambda)\)</span>.</p>
 <p><span id="eq-spec-transpose"><span class="math display">\[
 \begin{align}
@@ -374,31 +374,31 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \sum_{\nu = -\infty}^\infty \gamma_{\bullet, \bullet} (\nu)^\prime \times e^{- i \lambda \nu} \\
   &amp;= f_{\bullet, \bullet} (\lambda)^\prime
 \end{align}
-\tag{16}\]</span></span></p>
+\qquad(16)\]</span></span></p>
 <p>That is</p>
 <p><span id="eq-spec-elt-transpose"><span class="math display">\[
 \begin{align}
   f_{a, b} (- \lambda) &amp;= f_{b, a} (\lambda)
 \end{align}
-\tag{17}\]</span></span></p>
+\qquad(17)\]</span></span></p>
 <p>Setting <span class="math inline">\(b = a\)</span> we see that the power spectrum is an even function.</p>
 <p><span id="eq-poweer-spec-even"><span class="math display">\[
 \begin{align}
   f_{a, a} (- \lambda) &amp;= f_{a, a} (\lambda)
 \end{align}
-\tag{18}\]</span></span></p>
+\qquad(18)\]</span></span></p>
 <p>Lastly, <a href="#eq-spec-dens" class="quarto-xref">Equation&nbsp;11</a> has the following inverse.</p>
 <p><span id="eq-ACovF-from-spec-dens"><span class="math display">\[
 \begin{align}
   \gamma_{\bullet, \bullet} (u) &amp;= \frac{1}{2 \pi} \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \times e^{i \lambda u} \; d\lambda
 \end{align}
-\tag{19}\]</span></span></p>
+\qquad(19)\]</span></span></p>
 <p>Setting <span class="math inline">\(u = 0\)</span> we see that <span class="math inline">\(\gamma_{\bullet, \bullet} (0)\)</span>, the variance-covariance matrix of <span class="math inline">\(X_\bullet (t)\)</span>, is the average value of <span class="math inline">\(f_{\bullet, \bullet} (\cdot)\)</span>.</p>
 <p><span id="eq-cov-from-spec-dens"><span class="math display">\[
 \begin{align}
   \gamma_{\bullet, \bullet} (0) &amp;= \frac{1}{2 \pi} \int_{- \pi}^\pi f_{\bullet, \bullet} (\lambda) \; d\lambda
 \end{align}
-\tag{20}\]</span></span></p>
+\qquad(20)\]</span></span></p>
 </section>
 <section id="cramér-representation" class="level3">
 <h3 class="anchored" data-anchor-id="cramér-representation">Cramér representation</h3>
@@ -407,7 +407,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   X_\bullet (t) - m_\bullet (t) &amp;= \int_{0}^{2 \pi} e^{i \lambda t} \; dZ_\bullet (\lambda)
 \end{align}
-\tag{21}\]</span></span></p>
+\qquad(21)\]</span></span></p>
 <p>where <span class="math inline">\(Z_\bullet (\cdot)\)</span> is a random complex-valued measure having mean value zero and having orthogonal increments<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>:</p>
 <p><span id="eq-ortho-incr"><span class="math display">\[
 \begin{align}
@@ -415,13 +415,13 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{whenever } \\ \\
   \Delta_1 \; \cap \; \Delta_2 &amp;= \emptyset
 \end{align}
-\tag{22}\]</span></span></p>
+\qquad(22)\]</span></span></p>
 <p>The magnitude of <span class="math inline">\(dZ_\bullet (\lambda)\)</span> (which has mean zero) can be measured by the following complex-valued version of the variance-covariance matrix.</p>
 <p><span id="eq-var-Z"><span class="math display">\[
 \begin{align}
   E \left \{ dZ_\bullet ( \lambda ) \; dZ_\bullet ( \lambda )^* \right \} &amp;= f_{\bullet, \bullet} (\lambda) \; d \lambda
 \end{align}
-\tag{23}\]</span></span></p>
+\qquad(23)\]</span></span></p>
 </section>
 <section id="filtering" class="level3">
 <h3 class="anchored" data-anchor-id="filtering">Filtering</h3>
@@ -434,20 +434,20 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \\
   Y(t) &amp;= \sum_{\nu = - \infty}^\infty a(\nu) \times X(t - \nu)
 \end{align}
-\tag{24}\]</span></span></p>
+\qquad(24)\]</span></span></p>
 <p>Then <span class="math inline">\(Y(\cdot)\)</span> is said to be a <em>filtered</em> version of <span class="math inline">\(X(\cdot)\)</span>. One can show<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> that <span class="math inline">\(Y(\cdot)\)</span> has the following Cramér representation.</p>
 <p><span id="eq-filtered-Cramér"><span class="math display">\[
 \begin{align}
   Y (t) &amp;= \int_{0}^{2 \pi} e^{i \lambda t} \; dZ_Y (\lambda) \\
   &amp;= \int_{0}^{2 \pi} e^{i \lambda t} \; A(\lambda) \; dZ_X (\lambda)
 \end{align}
-\tag{25}\]</span></span></p>
+\qquad(25)\]</span></span></p>
 <p>where <span class="math inline">\(A(\lambda)\)</span> is the Fourier transform of <span class="math inline">\(a(\nu)\)</span>.</p>
 <p><span id="eq-transf-fn"><span class="math display">\[
 \begin{align}
   A(\lambda) &amp;= \sum_{\nu = - \infty}^\infty a (\nu) \times e^{- i \lambda \nu}
 \end{align}
-\tag{26}\]</span></span></p>
+\qquad(26)\]</span></span></p>
 <p>The Fourier transform <span class="math inline">\(A (\lambda)\)</span> is called the <em>transfer function</em> of the filter, and the function <span class="math inline">\(a(\nu)\)</span> is called the <em>impulse response</em> function of the filter. (If one replaces <span class="math inline">\(X (\cdot)\)</span> with an “impulse” equal to unity at zero and equal to zero elsewhere one obtains <span class="math inline">\(Y(t) = a(t)\)</span>.)</p>
 <p>From <a href="#eq-var-Z" class="quarto-xref">Equation&nbsp;23</a> we see that</p>
 <p><span id="eq-var-Z-Y"><span class="math display">\[
@@ -459,7 +459,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{so that } \\ \\
   f_{Y, Y} (\lambda) &amp;= \left | A(\lambda) \right |^2 \; f_{X, X} (\lambda)
 \end{align}
-\tag{27}\]</span></span></p>
+\qquad(27)\]</span></span></p>
 </section>
 <section id="white-noise" class="level3">
 <h3 class="anchored" data-anchor-id="white-noise">White noise</h3>
@@ -472,13 +472,13 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
     0 &amp; \text{for } u \ne 0
   \end{cases}
 \end{align}
-\tag{28}\]</span></span></p>
+\qquad(28)\]</span></span></p>
 <p>We use the following notation to specify a white noise process.</p>
 <p><span id="eq-wn-notation"><span class="math display">\[
 \begin{align}
   W &amp;\sim wn(0, \sigma_W^2)
 \end{align}
-\tag{29}\]</span></span></p>
+\qquad(29)\]</span></span></p>
 <p>The power spectrum density function, <span class="math inline">\(f_{W, W} (\lambda)\)</span> is readily seen to evaluate to the constant <span class="math inline">\(\sigma_W^2\)</span>.</p>
 <p><span id="eq-wn-spec-dens"><span class="math display">\[
 \begin{align}
@@ -486,7 +486,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \gamma_W (0) \\
   &amp;= \sigma_W^2
 \end{align}
-\tag{30}\]</span></span></p>
+\qquad(30)\]</span></span></p>
 </section>
 <section id="white-noise-filtered" class="level3">
 <h3 class="anchored" data-anchor-id="white-noise-filtered">White noise filtered</h3>
@@ -497,19 +497,19 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{where } \\ \\
   \sum_{\nu = 0}^\infty | \; \psi_\nu \; | &amp;&lt; \infty
 \end{align}
-\tag{31}\]</span></span></p>
+\qquad(31)\]</span></span></p>
 <p>From <a href="#eq-var-Z-Y" class="quarto-xref">Equation&nbsp;27</a> we see that</p>
 <p><span id="eq-spec-dens-causal"><span class="math display">\[
 \begin{align}
   f_{X, X} (\lambda) &amp;= \left | \psi(e^{-i \lambda}) \right |^2 \; \sigma_W^2
 \end{align}
-\tag{32}\]</span></span></p>
+\qquad(32)\]</span></span></p>
 <p>where <span class="math inline">\(\psi(\cdot)\)</span> denotes the power series having coefficients <span class="math inline">\(\psi (\nu)\)</span>.</p>
 <p><span id="eq-psi-power-series"><span class="math display">\[
 \begin{align}
   \psi (z) &amp;= \sum_{\nu = 0}^\infty \psi_\nu \times z^\nu \quad \text{for } |z| \le 1
 \end{align}
-\tag{33}\]</span></span></p>
+\qquad(33)\]</span></span></p>
 </section>
 <section id="arma-models" class="level3">
 <h3 class="anchored" data-anchor-id="arma-models">ARMA models</h3>
@@ -523,7 +523,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{so that } \\ \\
   X(t) &amp;= \sum_{j = 1}^p \phi_j \; X(t - j) \; + \; W(t) \; + \; \sum_{k = 1}^q \theta_k \; W(t - k)
 \end{align}
-\tag{34}\]</span></span></p>
+\qquad(34)\]</span></span></p>
 <p>Taking the multiplicative inverse of <span class="math inline">\(\phi(\cdot)\)</span> we can re-express this model as the following filtering of the white noise process <span class="math inline">\(W(\cdot)\)</span>.</p>
 <p><span id="eq-ARMA-p-q-causal"><span class="math display">\[
 \begin{align}
@@ -532,7 +532,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   \text{where } \\ \\
   \psi (z) &amp;= \frac{\theta(z)}{\phi(z)} = \sum_{\nu = 0}^\infty \psi_\nu \times z^\nu
 \end{align}
-\tag{35}\]</span></span></p>
+\qquad(35)\]</span></span></p>
 <p>The power-series expansion of the rational function <span class="math inline">\(\psi(\cdot)\)</span> requires the roots of polynomial <span class="math inline">\(\phi(\cdot)\)</span> to all have magnitude greater than unity, which we assume to be the case. Now let us specify some simple examples.</p>
 </section>
 <section id="ar1" class="level3">
@@ -542,14 +542,14 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   X(t) &amp;= \phi_1 \; X(t - 1) \; + \; W(t) \quad \text{with } | \phi_1 | &lt; 1
 \end{align}
-\tag{36}\]</span></span></p>
+\qquad(36)\]</span></span></p>
 <p>so that</p>
 <p><span id="eq-AR-1-psi"><span class="math display">\[
 \begin{align}
   \psi (z) &amp;= \frac{1}{1 - \phi_1 z} \\
   &amp;= \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu
 \end{align}
-\tag{37}\]</span></span></p>
+\qquad(37)\]</span></span></p>
 <p>and</p>
 <p><span id="eq-AR-1-spec"><span class="math display">\[
 \begin{align}
@@ -557,7 +557,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \left | \frac{1}{1 - \phi_1 e^{-i \lambda}} \right |^2 \; \sigma_W^2 \\
   &amp;= \frac{\sigma_W^2}{1 - 2 \phi_1 \cos(\lambda) + \phi_1^2}
 \end{align}
-\tag{38}\]</span></span></p>
+\qquad(38)\]</span></span></p>
 </section>
 <section id="ma1" class="level3">
 <h3 class="anchored" data-anchor-id="ma1">MA(1)</h3>
@@ -566,13 +566,13 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   Y(t) &amp;= W(t) \; + \; \theta_1 W(t - 1) \quad \text{with } | \theta_1 | &lt; 1
 \end{align}
-\tag{39}\]</span></span></p>
+\qquad(39)\]</span></span></p>
 <p>so that</p>
 <p><span id="eq-MA-1-psi"><span class="math display">\[
 \begin{align}
   \psi (z) &amp;= 1 + \theta_1 z
 \end{align}
-\tag{40}\]</span></span></p>
+\qquad(40)\]</span></span></p>
 <p>and</p>
 <p><span id="eq-MA-1-spec"><span class="math display">\[
 \begin{align}
@@ -580,7 +580,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \left | 1 + \theta_1 e^{-i \lambda} \right |^2 \; \sigma_W^2 \\
   &amp;= \left ( 1 + 2 \theta_1 \cos(\lambda) + \theta_1^2 \right ) \; \sigma_W^2 \\
 \end{align}
-\tag{41}\]</span></span></p>
+\qquad(41)\]</span></span></p>
 </section>
 <section id="arma1-1" class="level3">
 <h3 class="anchored" data-anchor-id="arma1-1">ARMA(1, 1)</h3>
@@ -589,7 +589,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
 \begin{align}
   Z(t) &amp;= \phi_1 Z(t - 1) \; + \; W(t) \; + \; \theta_1 W(t - 1)
 \end{align}
-\tag{42}\]</span></span></p>
+\qquad(42)\]</span></span></p>
 <p>so that</p>
 <p><span id="eq-ARMA-1-1-psi"><span class="math display">\[
 \begin{align}
@@ -597,7 +597,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= (1 + \theta_1 z) \; \sum_{\nu = 0}^\infty \phi_1^\nu \times z^\nu \\
   &amp;= 1 \; + \; \sum_{k = 1}^\infty (\phi_1^k + \theta_1 \; \phi_1^{k - 1}) \times z^k
 \end{align}
-\tag{43}\]</span></span></p>
+\qquad(43)\]</span></span></p>
 <p>and</p>
 <p><span id="eq-ARMA-1-1-spec"><span class="math display">\[
 \begin{align}
@@ -605,7 +605,7 @@ Table&nbsp;1: Temperatures (F) from Honolulu and New York City, 1995-2020
   &amp;= \left | \frac{1 + \theta_1 e^{-i \lambda}}{1 - \phi_1 e^{-i \lambda}} \right |^2 \; \sigma_W^2 \\
   &amp;= \frac{1 + 2 \theta_1 \cos(\lambda) + \theta_1^2}{1 - 2 \phi_1 \cos(\lambda) + \phi_1^2} \; \sigma_W^2
 \end{align}
-\tag{44}\]</span></span></p>
+\qquad(44)\]</span></span></p>
 </section>
 <section id="comparison-of-arma-models" class="level3">
 <h3 class="anchored" data-anchor-id="comparison-of-arma-models">Comparison of ARMA models</h3>
@@ -651,7 +651,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
 \begin{align}
   d_\bullet (\lambda) &amp;= \sum_{t = -n}^n X_\bullet (t) \times e^{- i \lambda t}
 \end{align}
-\tag{45}\]</span></span></p>
+\qquad(45)\]</span></span></p>
 </section>
 <section id="cramér-representation-1" class="level3">
 <h3 class="anchored" data-anchor-id="cramér-representation-1">Cramér representation</h3>
@@ -664,7 +664,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
   &amp;= \int_{0}^{2 \pi} \left \{ \sum_{t = -n}^n e^{i (\alpha - \lambda) t}  \right \} \; dZ_\bullet (\alpha) \\
   &amp;= \int_{0}^{2 \pi} \mathcal{D}_n (\alpha - \lambda) \; dZ_\bullet (\alpha)
 \end{align}
-\tag{46}\]</span></span></p>
+\qquad(46)\]</span></span></p>
 <p>Here <span class="math inline">\(\mathcal{D}_n (\cdot)\)</span> denotes the Dirichlet kernel function of order <span class="math inline">\(n\)</span>.</p>
 <p><span id="eq-Dirichlet-kernel-fn"><span class="math display">\[
 \begin{align}
@@ -675,7 +675,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
      \frac{\sin ((2n + 1) \theta / 2)}{\sin(\theta / 2)} &amp; \text{for } \theta \not \equiv 0 \bmod (2 \pi)
    \end{cases}
 \end{align}
-\tag{47}\]</span></span></p>
+\qquad(47)\]</span></span></p>
 </section>
 <section id="data-windows-and-their-frequency-kernels" class="level3">
 <h3 class="anchored" data-anchor-id="data-windows-and-their-frequency-kernels">Data windows and their frequency kernels</h3>
@@ -687,7 +687,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
   &amp;\text{where } \\ \\
   \mathcal{H}_n (\theta) &amp;= \sum_{\nu = -n}^n h(\frac{\nu}{n}) \times e^{i \theta \nu}
 \end{align}
-\tag{48}\]</span></span></p>
+\qquad(48)\]</span></span></p>
 <p>Function <span class="math inline">\(h(x)\)</span> (called a <em>convergence factor</em> or <em>data taper</em>) is typically chosen to be positive, even, and piecewise continuous, having a maximum of unity at <span class="math inline">\(x = 0\)</span>, and vanishing for <span class="math inline">\(|x| &gt; 1\)</span>. This ensures that the <span class="math inline">\(2 \pi\)</span>-periodic function <span class="math inline">\(\mathcal{H}_n (\theta)\)</span> (called a <em>frequency kernel</em>) integrates to unity over any interval of length <span class="math inline">\(2 \pi\)</span> and is increasingly concentrated near <span class="math inline">\(\theta \equiv 0 \bmod (2 \pi)\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a></p>
 <p>In time series applications, the data taper <span class="math inline">\(h(x)\)</span> is designed to produce a corresponding frequency kernel <span class="math inline">\(\mathcal{H}_n (\theta)\)</span> highly concentrated at frequency zero, to the degree allowed by other considerations, such as computational complexity.</p>
 </section>
@@ -701,7 +701,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
   &amp; \text{where } \\ \\
   \eta^2 &amp;= \int_{-1}^1 h(x)^2 \; dx
 \end{align}
-\tag{49}\]</span></span></p>
+\qquad(49)\]</span></span></p>
 <p>Moreover if <span class="math inline">\(0 \le \lambda_0 &lt; \lambda_1 &lt; \ldots &lt; \lambda_K \le \pi\)</span>, then <span class="math inline">\(\{ d_\bullet (\lambda_k) \}_k\)</span> are asymptotically independent.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a></p>
 </section>
 </section>
@@ -718,7 +718,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
   &amp; \text{where } \\ \\
   \eta^2 &amp;= \int_{-1}^1 h(x)^2 \; dx
 \end{align}
-\tag{50}\]</span></span></p>
+\qquad(50)\]</span></span></p>
 <p>Following conventional use of the symbol <span class="math inline">\(I\)</span> to denote “intensity”, we define the <em>periodogram</em> as the following complex-valued, non-negative definite matrix</p>
 <p><span id="eq-pgram"><span class="math display">\[
 \begin{align}
@@ -726,13 +726,13 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
   &amp; \text{where } \\ \\
   c_n &amp;= \left \{ (2n + 1) \; \pi \; \eta^2 \right \}^{-1}
 \end{align}
-\tag{51}\]</span></span></p>
+\qquad(51)\]</span></span></p>
 <p>so that</p>
 <p><span id="eq-e-pgram"><span class="math display">\[
 \begin{align}
   E \{ I_{\bullet, \bullet} (\lambda) \} &amp;\sim f_{\bullet, \bullet} (\lambda)
 \end{align}
-\tag{52}\]</span></span></p>
+\qquad(52)\]</span></span></p>
 <p>Thus the periodogram <span class="math inline">\(I_{\bullet, \bullet} (\lambda)\)</span> is an asymptotically unbiased estimate of the spectrum density <span class="math inline">\(f_{\bullet, \bullet} (\lambda)\)</span>. The problem is that the variance of <span class="math inline">\(I_{\bullet, \bullet} (\lambda)\)</span> elements remains large as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
 <p>Recall that under regularity conditions on <span class="math inline">\(X(\cdot)\)</span>, <span class="math inline">\(d_\bullet(\lambda)\)</span> follows an asymptotically normal distribution. Under those same conditions the asymptotic distribution of <span class="math inline">\(I_{\bullet, \bullet} (\lambda)\)</span> is a Wishart distribution, real if <span class="math inline">\(\lambda \equiv 0 \bmod \pi\)</span> and complex otherwise.</p>
 <p>A diagonal element of <span class="math inline">\(I_{\bullet, \bullet} (\lambda)\)</span>, say <span class="math inline">\(I_{a, a} (\lambda)\)</span>, is an estimate of <span class="math inline">\(f_{a, a} (\lambda)\)</span>, the power spectrum of <span class="math inline">\(X_a (\cdot)\)</span>. For <span class="math inline">\(\lambda \equiv 0 \bmod \pi\)</span>, the estimate is asymptotically distributed as <span class="math inline">\(f_{a, a} (\lambda) \times \chi_1^2\)</span>, where <span class="math inline">\(\chi_\nu^2\)</span> denotes a random variable having a chi-squared distribution with <span class="math inline">\(\nu\)</span> degrees of freedom. For <span class="math inline">\(\lambda \not \equiv 0 \bmod \pi\)</span>, the estimate is asymptotically distributed as <span class="math inline">\(f_{a, a} (\lambda) \times \chi_2^2 / 2\)</span>.<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a></p>
@@ -744,7 +744,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
     f_{a, a} (\lambda) \times \chi_2^2 / 2 &amp; \text{if } \lambda \not \equiv 0 \bmod \pi
   \end{cases}
 \end{align}
-\tag{53}\]</span></span></p>
+\qquad(53)\]</span></span></p>
 <p><span id="eq-var-pgram"><span class="math display">\[
 \begin{align}
   Var \{ I_{a, a} (\lambda) \} &amp;\sim
@@ -753,7 +753,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
     f_{a, a} (\lambda)^2 &amp; \text{if } \lambda \not \equiv 0 \bmod \pi
   \end{cases}
 \end{align}
-\tag{54}\]</span></span></p>
+\qquad(54)\]</span></span></p>
 <p>Thus <span class="math inline">\(I_{\bullet, \bullet} (\lambda)\)</span>, although asymptotically unbiased, is not a consistent estimator of <span class="math inline">\(f_{\bullet, \bullet} (\lambda)\)</span> since the variance of its diagonal elements remains bounded above zero as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
 </section>
 <section id="dft-discrete-fourier-transform" class="level3">
@@ -765,13 +765,13 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
   &amp; \text{where } \\ \\
   t_m &amp;= \frac{T - 1}{2}
 \end{align}
-\tag{55}\]</span></span></p>
+\qquad(55)\]</span></span></p>
 <p>The fast Fourier transform (FFT<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a>) enables efficient computation of the DFT at a set of <span class="math inline">\(S\)</span> frequencies, where <span class="math inline">\(S \ge T\)</span> is chosen to be a highly composite number.</p>
 <p><span id="eq-FFT-freqs"><span class="math display">\[
 \begin{align}
   \lambda_j &amp;= \frac{2 \pi j}{S} \quad \text{for } j \in \{0, \ldots, S - 1 \}
 \end{align}
-\tag{56}\]</span></span></p>
+\qquad(56)\]</span></span></p>
 <p>The computational steps are:</p>
 <ul>
 <li>apply taper <span class="math inline">\(h(\cdot)\)</span> to <span class="math inline">\(\{ X(t) \}_{t = 0}^{T-1}\)</span></li>
@@ -791,7 +791,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
   &amp; \int_{-\infty}^\infty | W(\alpha) | \; d \alpha &lt; \infty \\
   &amp; \int_{-\infty}^\infty W(\alpha) \; d \alpha = 1
 \end{align}
-\tag{57}\]</span></span></p>
+\qquad(57)\]</span></span></p>
 <p>Now we define <span class="math inline">\(\hat{f}_{\bullet, \bullet} (\lambda)\)</span> as follows.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a></p>
 <p><span id="eq-consistent-spec-dens-est"><span class="math display">\[
 \begin{align}
@@ -799,7 +799,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
   &amp; \text{where } \\ \\
   \lambda_j &amp;= \frac{2 \pi j}{S} \quad \forall j \in \mathbb{Z}
 \end{align}
-\tag{58}\]</span></span></p>
+\qquad(58)\]</span></span></p>
 <p>Under the previously mentioned regularity conditions for <span class="math inline">\(X_{\bullet, \bullet} (\cdot)\)</span>, <span class="math inline">\(\hat{f}_{\bullet, \bullet} (\lambda)\)</span> is a consistent estimator and is asymptotically normal.</p>
 <p>The asymptotic variance of <span class="math inline">\(\hat{f}_{a, a} (\lambda)\)</span>, the estimated power spectrum of <span class="math inline">\(X_a (\cdot)\)</span>, is as follows.</p>
 <p><span id="eq-v-consistent-pwr-spec-est"><span class="math display">\[
@@ -812,7 +812,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
   &amp; \text{where } \\ \\
   \omega^2 &amp;= \int_{- \infty}^\infty W(\alpha)^2 d \alpha
 \end{align}
-\tag{59}\]</span></span></p>
+\qquad(59)\]</span></span></p>
 <p>Taking the natural logarithm, and assuming <span class="math inline">\(f_{a, a} (\lambda) &gt; 0\)</span>, we have that <span class="math inline">\(\ln \hat{f}_{a, a} (\lambda)\)</span> is a consistent and asymptotically normal estimate of <span class="math inline">\(\ln f_{a, a} (\lambda)\)</span> with the following asymptotic variance.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
 <p><span id="eq-v-ln-pwr-spec-est"><span class="math display">\[
 \begin{align}
@@ -822,7 +822,7 @@ Figure&nbsp;2: Spectrum density function of each ARMA model
     \frac{2 \pi \omega^2}{\beta_T \; T} &amp; \text{for } \lambda \not \equiv 0 \bmod \pi
   \end{cases}
 \end{align}
-\tag{60}\]</span></span></p>
+\qquad(60)\]</span></span></p>
 </section>
 </section>
 <section id="sec-spec-examples" class="level2">
