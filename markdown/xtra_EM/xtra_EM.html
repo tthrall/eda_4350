@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="xtra_EM_files/libs/clipboard/clipboard.min.js"></script>
@@ -122,6 +142,7 @@ window.Quarto = {
   <li><a href="#group-membership-over-time" id="toc-group-membership-over-time" class="nav-link" data-scroll-target="#group-membership-over-time">Group Membership over Time</a></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
   <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="xtra_EM.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="xtra_EM.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </div>
@@ -147,7 +168,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">17:23 Wed 23-Jul-2025</p>
+      <p class="date">08:23 Thu 24-Jul-2025</p>
     </div>
   </div>
   
@@ -168,13 +189,13 @@ window.Quarto = {
 <hr>
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">Background</h2>
-<p>Latent Dirichlet Allocation (LDA) was proposed as a method of topic modeling in 2003 in a paper by Blei, Ng, and Jordan. The method is briefly mentioned in Part 1 of the course. Several course participants requested a more detailed description. This note prepares for the requested response by introducing the EM Algorithm.</p>
+<p>Latent Dirichlet Allocation (LDA) was proposed as a method of topic modeling in 2003 in a paper by Blei, Ng, and Jordan. The method is briefly mentioned in Part 1 of the course. Several course participants requested a more detailed description. This note prepares for the requested response by introducing the EM Algorithm.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 </section>
 <section id="example-old-faithful-eruptions" class="level2">
 <h2 class="anchored" data-anchor-id="example-old-faithful-eruptions">Example: Old Faithful eruptions</h2>
 <section id="delay-and-duration" class="level3">
 <h3 class="anchored" data-anchor-id="delay-and-duration">Delay and Duration</h3>
-<p>The figure below represents the duration of eruptions (“duration”) and the interval between eruptions (“delay”)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>The figure below represents the duration of eruptions (“duration”) and the interval between eruptions (“delay”)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> of the “Old Faithful” geyser in Yellowstone National Park, Wyoming from August 1 to August 15, 1985.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-faithful-tbl" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -192,7 +213,7 @@ Figure&nbsp;1: Old Faithful eruptions: delay and duration (minutes)
 </section>
 <section id="gausian-mixture-model" class="level3">
 <h3 class="anchored" data-anchor-id="gausian-mixture-model">Gausian Mixture Model</h3>
-<p>The figure shows two clusters of data points.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Here is probability model in which the delay and duration of each eruption follows one of two possible bivariate normal distributions depending on the group, <span class="math inline">\(G\)</span>, to which it belongs.</p>
+<p>The figure shows two clusters of data points.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Here is probability model in which the delay and duration of each eruption follows one of two possible bivariate normal distributions depending on the group, <span class="math inline">\(G\)</span>, to which it belongs.</p>
 <p><span id="eq-nrm-2-given-group"><span class="math display">\[
 \begin{align}
   \{ \; (\text{delay}, \text{duration}) \; | \; \text{group } G \; \} &amp;\sim \mathcal{N}(\mu_{\bullet}^{(G)}, \Sigma^{(G)}) \\ \\
@@ -213,11 +234,11 @@ Figure&nbsp;1: Old Faithful eruptions: delay and duration (minutes)
   &amp; \text{where } p_1 + p_2 = 1\\
 \end{align}
 \qquad(2)\]</span></span></p>
-<p>Fitting a single multivariate normal distribution is straightforward, but less so for the above mixture of bivariate normal distributions. The Expectation-Maximization (EM) algorithm provides an approach for doing so, as follows.</p>
+<p>Fitting a single multivariate normal distribution is straightforward<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, but less so for the above mixture of bivariate normal distributions. The Expectation-Maximization (EM) algorithm provides an approach for doing so, as follows.</p>
 </section>
 <section id="latent-variable-cluster-membership" class="level3">
 <h3 class="anchored" data-anchor-id="latent-variable-cluster-membership">Latent Variable: Cluster Membership</h3>
-<p>In the EM framework, we iteratively group-membership, <span class="math inline">\(G = g \in \{ 1, 2 \}\)</span>, to each data point. Based on this set of assignments we update the parameter estimates (the “E” step of the EM algorithm). The new set of parameter estimates yields a new estimate of the likelihood function. We then re-assign cluster-membership to maximize the updated likelihood estimate (the “M” step). The iteration terminates once the magnitude of changes falls below a prescribed threshold.</p>
+<p>In the EM framework, we iteratively assign group-membership, <span class="math inline">\(G = g \in \{ 1, 2 \}\)</span>, to each data point. Based on this set of assignments we update the parameter estimates (the “E” step of the EM algorithm). The new set of parameter estimates yields a new estimate of the likelihood function. We then re-assign cluster-membership to maximize the updated likelihood estimate (the “M” step). The iteration terminates once the magnitude of changes falls below a prescribed threshold.</p>
 <p>In <code>R</code> this procedure is implemented by the function <code>mixtools::mvnormalmixEM()</code>.</p>
 </section>
 <section id="initial-estimates" class="level3">
@@ -474,7 +495,7 @@ Table&nbsp;3: Summary statistics for initial clusters of data points
 </section>
 <section id="em-iterations" class="level2">
 <h2 class="anchored" data-anchor-id="em-iterations">EM Iterations</h2>
-<p>We illustrate the iterations of the EM algorithm using function <code>mvnormalmixEM()</code> in R package <code>mixtools</code>. We provide the function with our initial estimates of normal parameters.</p>
+<p>We illustrate the iterations of the EM algorithm using function <code>mvnormalmixEM()</code> in R package <code>mixtools</code>.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> We provide the function with our initial estimates of normal parameters.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
@@ -610,20 +631,40 @@ Figure&nbsp;5: Group 1 posterior probability over cumulative delay (days)
 </section>
 <section id="resources" class="level2">
 <h2 class="anchored" data-anchor-id="resources">Resources</h2>
-<p><a href="https://www.sciencedirect.com/science/article/pii/0024379585900497">Maximum-likelihood estimation of the parameters of a multivariate normal distribution</a> by T.W. Anderson and I. Olin, 1985. Linear Algebra and its Applications, Volume 70, pp 147-171.</p>
-<p><a href="https://www.ece.iastate.edu/~namrata/EE527_Spring08/Dempster77.pdf">Maximum Likelihood from Incomplete Data via the EM Algorithm</a>, by A.P. Dempster, N.M. Laird and D.B. Rubin, JRSS(B), 1977</p>
-<p><a href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">Expectation–maximization algorithm - Wikipedia</a></p>
+<p>In addition to the references listed below, see the following.</p>
 <p><a href="https://medium.com/@chloebee/the-em-algorithm-explained-52182dbb19d9">The EM Algorithm Explained</a> blog by Chloe Bi, 2019</p>
-<p><a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1002/grl.50422">The plumbing of Old Faithful Geyser revealed by hydrothermal tremor - Vandemeulebrouck - 2013 - Geophysical Research Letters - Wiley Online Library</a></p>
+</section>
+<section id="references" class="level2 unnumbered">
+
+
 </section>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Anderson_Olkin_2002" class="csl-entry" role="listitem">
+Anderson, T. W., and Ingram Olkin. 2002. <span>“Maximum-Likelihood Estimation of the Parameters of a Multivariate Normal Distribution.”</span> <em>Linear Algebra and Its Applications</em>, May. <a href="https://www.sciencedirect.com/science/article/pii/0024379585900497">https://www.sciencedirect.com/science/article/pii/0024379585900497</a>.
+</div>
+<div id="ref-mixtools2009" class="csl-entry" role="listitem">
+Benaglia, Tatiana, Didier Chauveau, David R. Hunter, and Derek S. Young. 2009. <span>“Mixtools: An r Package for Analyzing Mixture Models.”</span> <em>Journal of Statistical Software</em> 32 (6): 1–29. <a href="https://doi.org/10.18637/jss.v032.i06">https://doi.org/10.18637/jss.v032.i06</a>.
+</div>
+<div id="ref-EM_algo_Wikipedia_2025" class="csl-entry" role="listitem">
+<span>“Expectation–Maximization Algorithm | Wikipedia.”</span> 2025. <em>Wikipedia</em>, July. <a href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm</a>.
+</div>
+<div id="ref-rdpeng2022advstatcomp" class="csl-entry" role="listitem">
+Peng, Roger D. 2025. <em>Advanced Statistical Computing</em>. <a href="https://bookdown.org/rdpeng/advstatcomp/">https://bookdown.org/rdpeng/advstatcomp/</a>.
+</div>
+<div id="ref-Vandemeulebrouck_Roux_Cros_2013" class="csl-entry" role="listitem">
+Vandemeulebrouck, J., P. Roux, and E. Cros. 2013. <span>“The Plumbing of Old Faithful Geyser Revealed by Hydrothermal Tremor.”</span> <em>Geophysical Research Letters</em> 40 (10): 1989–93. <a href="https://doi.org/10.1002/grl.50422">https://doi.org/10.1002/grl.50422</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>“Delay” here refers to the length of time <em>preceding</em> the current eruption. The (<code>delay</code>, <code>duration</code>) variables are recorded in minutes.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Old Faithful eruptions are conjectured to occur in 2 distinct temporal patterns due to the presence of an upper and lower chamber beneath the vertical column (tube) that forms the geyser.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>See <span class="citation" data-cites="rdpeng2022advstatcomp">Peng (<a href="#ref-rdpeng2022advstatcomp" role="doc-biblioref">2025</a>, chp. 4)</span>, and <span class="citation" data-cites="EM_algo_Wikipedia_2025"><span>“Expectation–Maximization Algorithm | Wikipedia”</span> (<a href="#ref-EM_algo_Wikipedia_2025" role="doc-biblioref">2025</a>)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>“Delay” here refers to the length of time <em>preceding</em> the current eruption. The (<code>delay</code>, <code>duration</code>) variables are recorded in minutes.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>There are two prominent <code>R</code> packages representing the Old Faithful measurements during August, 1985. The <code>MASS::geyser</code> data set of 299 observations includes nocturnal measurements whose duration was coded as 2, 3 or 4 minutes, having originally been described as ‘short’, ‘medium’ or ‘long’. The <code>datasets::faithful</code> data set of 272 measurements, shown in the figure, excludes 27 of these nocturnal measurements.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Old Faithful eruptions are conjectured to occur in 2 distinct temporal patterns due to the presence of an upper and lower chamber beneath the vertical column (tube) that forms the geyser. See <span class="citation" data-cites="Vandemeulebrouck_Roux_Cros_2013">Vandemeulebrouck, Roux, and Cros (<a href="#ref-Vandemeulebrouck_Roux_Cros_2013" role="doc-biblioref">2013</a>)</span>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>See <span class="citation" data-cites="Anderson_Olkin_2002">Anderson and Olkin (<a href="#ref-Anderson_Olkin_2002" role="doc-biblioref">2002</a>)</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>See <span class="citation" data-cites="mixtools2009">Benaglia et al. (<a href="#ref-mixtools2009" role="doc-biblioref">2009</a>)</span>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
