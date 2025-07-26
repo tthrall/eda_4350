@@ -85,5 +85,8 @@
   },
   "markdown/xtra_EM/xtra_EM.qmd": {
     "xtra_EM.html": "97b0fe24"
+  },
+  "markdown/xtra_latent_dir_alloc/xtra_latent_dir_alloc.qmd": {
+    "xtra_latent_dir_alloc.html": "63ee3a21"
   }
 }
