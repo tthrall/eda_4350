@@ -41,22 +41,22 @@ knitr::opts_chunk$set(
 ```{r}
 #| label: CRAN-libraries
 
-library(assertthat)
-library(GGally)
-library(gutenbergr)
+# library(assertthat)
+# library(GGally)
+# library(gutenbergr)
 library(here)
-library(ISLR2)
-library(janeaustenr)
-library(latex2exp)
+# library(ISLR2)
+# library(janeaustenr)
+# library(latex2exp)
 # library(lda)
-library(quanteda)
+# library(quanteda)
 library(tidytext)
 library(tidyverse)
 library(tinytex)
 library(tm)
 library(tokenizers)
 # library(topicmodels)
-library(tufte)
+# library(tufte)
 
 # package topic models available?
 topicmodels_loaded <- require(topicmodels)
@@ -295,7 +295,7 @@ if (extract_from_AP_DTM) {
   rownames(beta_mat) <- paste0("topic_", 1:2)
   
   beta_tbl           <- beta_mat |> 
-    as_tibble(rownames = "topic") |> 
+    tibble::as_tibble(rownames = "topic") |> 
     dplyr::mutate(topic = 1:2)
   
   beta_long          <- beta_tbl |> 
@@ -328,6 +328,9 @@ if (extract_from_AP_DTM) {
   ))
 }
 
+# ap_topics |> object.size(): 1.1 MB
+# 1128400 bytes
+
 ap_topics |> print(n = 4, digits = 2)
 ```
 
@@ -339,7 +342,7 @@ Here are the most probable terms for each of the two constructed topics, along w
 #| label: ap-top-terms
 
 ap_top_terms <- ap_topics |> 
-  slice_max(beta, n = 10, by = "topic")
+  dplyr::slice_max(beta, n = 10, by = "topic")
 ```
 
 ```{r}
@@ -354,8 +357,8 @@ ap_top_terms_2 <- ap_top_terms |>
 
 ap_top_terms_wide <- tibble::tibble(
   rank    = 1:nrow(ap_top_terms_1), 
-  topic_1 = ap_top_terms_1$term, 
-  topic_2 = ap_top_terms_2$term
+  topic_1 = ap_top_terms_1$ term, 
+  topic_2 = ap_top_terms_2$ term
 )
 ```
 
@@ -364,17 +367,17 @@ ap_top_terms_wide <- tibble::tibble(
 #| fig-cap: "AP articles: most probable terms by topic"
 
 g_ap_top_terms <- ap_top_terms |> 
-  mutate(term = reorder_within(
+  dplyr::mutate(term = reorder_within(
     x = term, 
     by = beta, 
     within = topic)) |> 
-  ggplot(mapping = aes(
+  ggplot2::ggplot(mapping = aes(
     x = beta, y = term, fill = factor(topic)
   )) + 
-  geom_col(show.legend = FALSE) + 
-  facet_wrap(~ as_factor(topic), scales = "free") + 
-  scale_y_reordered() + 
-  labs(title = "AP articles: most probable terms by topic")
+  ggplot2::geom_col(show.legend = FALSE) + 
+  ggplot2::facet_wrap(~ as_factor(topic), scales = "free") + 
+  tidytext::scale_y_reordered() + 
+  ggplot2::labs(title = "AP articles: most probable terms by topic")
 g_ap_top_terms
 ```
 
@@ -394,13 +397,13 @@ restricting the set of terms to those assigned to both topics $(\min(\beta_1, \b
 #| label: beta-ratio-wide
 
 beta_ratio_wide <- ap_topics |> 
-  mutate(topic = paste0("beta_", topic)) |> 
-  pivot_wider(names_from = topic, values_from = beta) |> 
-  filter(
+  dplyr::mutate(topic = paste0("beta_", topic)) |> 
+  tidyr::pivot_wider(names_from = topic, values_from = beta) |> 
+  dplyr::filter(
     pmin(beta_1, beta_2) > 0, 
     pmax(beta_1, beta_2) > 0.001
   ) |> 
-  mutate(log_ratio = log2(beta_2 / beta_1))
+  dplyr::mutate(log_ratio = log2(beta_2 / beta_1))
 ```
 
 ```{r}
@@ -408,13 +411,13 @@ beta_ratio_wide <- ap_topics |>
 #| fig-cap: "Log2 ratio of beta in topic 2 / topic 1"
 
 g_beta_ratio_wide <- beta_ratio_wide |> 
-  group_by(direction = log_ratio > 0) |> 
-  slice_max(abs(log_ratio), n = 10) |> 
-  ungroup() |> 
-  mutate(term = reorder(term, log_ratio)) |> 
-  ggplot(aes(log_ratio, term)) +
-  geom_col() +
-  labs(x = "Log2 ratio of beta in topic 2 / topic 1", y = NULL)
+  dplyr::group_by(direction = log_ratio > 0) |> 
+  dplyr::slice_max(abs(log_ratio), n = 10) |> 
+  dplyr::ungroup() |> 
+  dplyr::mutate(term = reorder(term, log_ratio)) |> 
+  ggplot2::ggplot(aes(log_ratio, term)) +
+  ggplot2::geom_col() +
+  ggplot2::labs(x = "Log2 ratio of beta in topic 2 / topic 1", y = NULL)
 g_beta_ratio_wide
 ```
 
