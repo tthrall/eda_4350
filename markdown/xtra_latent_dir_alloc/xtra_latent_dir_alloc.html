@@ -131,30 +131,15 @@ window.Quarto = {
   <ul>
   <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
   <li><a href="#text-analysis" id="toc-text-analysis" class="nav-link" data-scroll-target="#text-analysis">Text Analysis</a></li>
-  <li><a href="#document-generating-model" id="toc-document-generating-model" class="nav-link" data-scroll-target="#document-generating-model">Document Generating Model</a></li>
+  <li><a href="#generative-model" id="toc-generative-model" class="nav-link" data-scroll-target="#generative-model">Generative Model</a></li>
   <li><a href="#news-article-example" id="toc-news-article-example" class="nav-link" data-scroll-target="#news-article-example">News Article Example</a>
   <ul class="collapse">
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  <li><a href="#lda-function" id="toc-lda-function" class="nav-link" data-scroll-target="#lda-function">LDA() function</a></li>
+  <li><a href="#lda-function" id="toc-lda-function" class="nav-link" data-scroll-target="#lda-function">LDA function</a></li>
   <li><a href="#output-interpretation" id="toc-output-interpretation" class="nav-link" data-scroll-target="#output-interpretation">Output interpretation</a></li>
   </ul></li>
-  <li><a href="#the-conjugacy-advantage" id="toc-the-conjugacy-advantage" class="nav-link" data-scroll-target="#the-conjugacy-advantage">The Conjugacy Advantage</a></li>
-  <li><a href="#gibbs-sampling-implementation" id="toc-gibbs-sampling-implementation" class="nav-link" data-scroll-target="#gibbs-sampling-implementation">Gibbs Sampling Implementation</a></li>
-  <li><a href="#why-this-works" id="toc-why-this-works" class="nav-link" data-scroll-target="#why-this-works">Why This Works</a></li>
-  <li><a href="#k-as-a-required-input" id="toc-k-as-a-required-input" class="nav-link" data-scroll-target="#k-as-a-required-input">K as a Required Input</a></li>
-  <li><a href="#choosing-k-in-practice" id="toc-choosing-k-in-practice" class="nav-link" data-scroll-target="#choosing-k-in-practice">Choosing K in Practice</a></li>
-  <li><a href="#evaluation-methods" id="toc-evaluation-methods" class="nav-link" data-scroll-target="#evaluation-methods">Evaluation Methods</a></li>
-  <li><a href="#practical-workflow" id="toc-practical-workflow" class="nav-link" data-scroll-target="#practical-workflow">Practical Workflow</a></li>
-  <li><a href="#random-initialization" id="toc-random-initialization" class="nav-link" data-scroll-target="#random-initialization">Random Initialization</a></li>
-  <li><a href="#why-random-assignment-works" id="toc-why-random-assignment-works" class="nav-link" data-scroll-target="#why-random-assignment-works">Why Random Assignment Works</a></li>
-  <li><a href="#the-self-organization-process" id="toc-the-self-organization-process" class="nav-link" data-scroll-target="#the-self-organization-process">The Self-Organization Process</a></li>
-  <li><a href="#alternative-initialization" id="toc-alternative-initialization" class="nav-link" data-scroll-target="#alternative-initialization">Alternative Initialization</a></li>
-  <li><a href="#the-core-gibbs-sampling-principle" id="toc-the-core-gibbs-sampling-principle" class="nav-link" data-scroll-target="#the-core-gibbs-sampling-principle">The Core Gibbs Sampling Principle</a></li>
-  <li><a href="#the-lda-gibbs-update" id="toc-the-lda-gibbs-update" class="nav-link" data-scroll-target="#the-lda-gibbs-update">The LDA Gibbs Update</a></li>
-  <li><a href="#breaking-down-this-formula" id="toc-breaking-down-this-formula" class="nav-link" data-scroll-target="#breaking-down-this-formula">Breaking Down This Formula</a></li>
-  <li><a href="#why-this-works-1" id="toc-why-this-works-1" class="nav-link" data-scroll-target="#why-this-works-1">Why This Works</a></li>
-  <li><a href="#the-sampling-process" id="toc-the-sampling-process" class="nav-link" data-scroll-target="#the-sampling-process">The Sampling Process</a></li>
-  <li><a href="#convergence-properties" id="toc-convergence-properties" class="nav-link" data-scroll-target="#convergence-properties">Convergence Properties</a></li>
+  <li><a href="#the-lda-gibbs-algorithm" id="toc-the-lda-gibbs-algorithm" class="nav-link" data-scroll-target="#the-lda-gibbs-algorithm">The LDA-Gibbs Algorithm</a></li>
+  <li><a href="#concluding-remarks" id="toc-concluding-remarks" class="nav-link" data-scroll-target="#concluding-remarks">Concluding Remarks</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="xtra_latent_dir_alloc.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="xtra_latent_dir_alloc.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
@@ -181,7 +166,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">14:51 Mon 28-Jul-2025</p>
+      <p class="date">19:23 Tue 29-Jul-2025</p>
     </div>
   </div>
   
@@ -208,27 +193,47 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="text-analysis">Text Analysis</h2>
 <p>Part 1, Session 2b, of the course presents an overview of text analysis based on <span class="citation" data-cites="Silge_Robinson_2017">Silge and Robinson (<a href="#ref-Silge_Robinson_2017" role="doc-biblioref">2017</a>)</span>. The authors use the <code>R</code> function <code>topicmodels::LDA()</code> with default parameter setting <code>method = VEM</code>, which denotes the Variational Expectation Maximization (EM) algorithm. In this note we use an alternative implementation of LDA described below.</p>
 </section>
-<section id="document-generating-model" class="level2">
-<h2 class="anchored" data-anchor-id="document-generating-model">Document Generating Model</h2>
-<p>LDA treats each document as a mixture of topics, and each topic as a mixture of words. LDA assumes that each document <span class="math inline">\(d\)</span> in a corpus of documents <span class="math inline">\(\mathcal{D}\)</span> is generated from two Dirichlet distributions: <span class="math inline">\(Dir(\alpha_\bullet)\)</span> over <span class="math inline">\(K\)</span> possible topics; and <span class="math inline">\(Dir(\beta_\bullet)\)</span> over <span class="math inline">\(N\)</span> possible words. This is a so-called bag-of-words model of the following form.</p>
+<section id="generative-model" class="level2">
+<h2 class="anchored" data-anchor-id="generative-model">Generative Model</h2>
+<p>LDA treats each document as a mixture of topics, and each topic as a mixture of words. LDA adopts a <em>bag-of-words</em> model in which each document <span class="math inline">\(d\)</span> in a corpus of documents <span class="math inline">\(\mathcal{D}\)</span> is generated from two Dirichlet distributions: <span class="math inline">\(Dir(\alpha_\bullet)\)</span> over <span class="math inline">\(K\)</span> possible topics; and <span class="math inline">\(Dir(\eta_\bullet)\)</span> over <span class="math inline">\(N\)</span> possible words. In this model documents are presumed to have been randomly generated as follows.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <ul>
-<li>Generate word probability vector <span class="math inline">\(\phi_\bullet (k) \sim Dir(\beta_\bullet )\)</span> for each topic index <span class="math inline">\(k \in \{ 1, 2, \ldots, K \}\)</span></li>
+<li>Generate word probability vector <span class="math inline">\(\phi_\bullet (k) \sim Dir(\eta_\bullet )\)</span> for each topic index <span class="math inline">\(k \in \{ 1, 2, \ldots, K \}\)</span></li>
 </ul>
-<p>Then for each document <span class="math inline">\(d \in \mathcal{D}\)</span> and for each word position <span class="math inline">\(\nu \in d\)</span>:</p>
+<p>Then for each document <span class="math inline">\(d \in \mathcal{D}\)</span> and for each word position <span class="math inline">\(\nu \in d\)</span>:<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <ol type="1">
 <li>Generate topic probability vector <span class="math inline">\(\theta_\bullet (d) \sim Dir(\alpha_\bullet)\)</span></li>
 <li>Assign topic index <span class="math inline">\(\kappa (d,\nu) \sim \theta_\bullet (d)\)</span></li>
 <li>Generate word index <span class="math inline">\(\omega (d,\nu) \sim \phi_\bullet (\kappa (d,\nu))\)</span></li>
 </ol>
+<p>These Dirichlet distributions are typically assumed to be symmetric. That is, if we define</p>
+<p><span id="eq-avg-Dirichlet-param"><span class="math display">\[
+\begin{align}
+  \bar{\alpha} &amp;= \frac{\alpha_+}{K} = \frac{1}{K} \sum_{k = 1}^K
+\alpha_k \\
+  \bar{\eta} &amp;= \frac{\eta_+}{N} = \frac{1}{N} \sum_{\nu = 1}^N
+\eta_\nu
+\end{align}
+\qquad(1)\]</span></span></p>
+<p>then current practice is to set all elements of vectors <span class="math inline">\(\alpha_\bullet\)</span> and <span class="math inline">\(\eta_\bullet\)</span> equal to their respective average values.</p>
+<p><span id="eq-symm-Dirichlet"><span class="math display">\[
+\begin{align}
+  \alpha_k &amp;= \bar{\alpha} \quad \text{for } k \in \{1, \ldots, K \} \\
+  \eta_\nu &amp;= \bar{\eta} \quad \text{for } \nu \in \{1, \ldots, N \}
+\end{align}
+\qquad(2)\]</span></span></p>
+<p>The values <span class="math inline">\(\bar{\alpha}\)</span> and <span class="math inline">\(\bar{\eta}\)</span> are called <em>concentration</em> parameters.</p>
+<p>For a symmetric Dirichlet distribution as above, if <span class="math inline">\(\bar{\alpha} &lt; 1\)</span> then for each document <span class="math inline">\(d\)</span>, <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a sparse probability vector <span class="math inline">\(\theta_\bullet (d)\)</span> that gives most of its weight to just a few of the K topics (with the selection of topics varying across documents). On the other hand, if <span class="math inline">\(\bar{\alpha} &gt; 1\)</span> then <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a more uniform probability vector <span class="math inline">\(\theta_\bullet (d)\)</span> spread more evenly across all topics.</p>
+<p>As for the distribution of words within a topic, in most applications the number <span class="math inline">\(N\)</span> of distinct words in the corpus <span class="math inline">\(\mathcal{D}\)</span> may be a few thousand or even a few tens of thousands. Then each topic is a mixture across a distinct subset of a large number of words, typically with <span class="math inline">\(\bar{\eta} &lt; 1\)</span>.</p>
+<p>See <span class="citation" data-cites="Antoniak_2023">Antoniak (<a href="#ref-Antoniak_2023" role="doc-biblioref">2023</a>)</span> for practical suggestions on these and other settings and workflows.</p>
 </section>
 <section id="news-article-example" class="level2">
 <h2 class="anchored" data-anchor-id="news-article-example">News Article Example</h2>
 <section id="data" class="level3">
 <h3 class="anchored" data-anchor-id="data">Data</h3>
-<p>The <code>R</code> package <code>topicmodels</code> includes the <code>AssociatedPress</code> data representing 2246 news articles from the AP news agency, mostly published around 1988. The data are in the form of a list<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that includes a sparse matrix giving the document-index, the term-index, and the frequency (number of occurrences) of the indexed term (word) within each document (news article). The list also contains a vector of the terms themselves.</p>
+<p>The <code>R</code> package <code>topicmodels</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> includes the <code>AssociatedPress</code> data representing 2246 news articles from the AP news agency, mostly published around 1988. The data are in the form of a list<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> that includes a sparse matrix giving the document-index, the term-index, and the frequency (number of occurrences) of the indexed term (word) within each document (news article). The list also contains a vector of the terms themselves.</p>
 </section>
 <section id="lda-function" class="level3">
-<h3 class="anchored" data-anchor-id="lda-function">LDA() function</h3>
+<h3 class="anchored" data-anchor-id="lda-function">LDA function</h3>
 <p>The <code>topicmodels</code> package also includes function <code>LDA()</code> that performs latent Dirichlet Allocation. The function determines the probable topic of each word within each document by one of two methods: (1) “VEM” (Variational Expectation Maximization); or else (2) “Gibbs” (Gibbs Sampling). The function output, depending on the choice of method, is a list conforming to the format of either <code>LDA_VEM</code> or else <code>LDA_Gibbs</code>. Here we choose the Gibbs Sampling method because it requires less memory.</p>
 <div class="cell">
 <details class="code-fold">
@@ -350,7 +355,7 @@ Figure&nbsp;1: AP articles: most probable terms by topic
 \begin{align}
   \log_2 \left( \frac{\beta_2}{\beta_1} \right)
 \end{align}
-\qquad(1)\]</span></span></p>
+\qquad(3)\]</span></span></p>
 <p>restricting the set of terms to those assigned to both topics <span class="math inline">\((\min(\beta_1, \beta_2) &gt; 0)\)</span> with at least one of them exceeding a probability threshhold, say <span class="math inline">\((\max(\beta_1, \beta_2) &gt; 0.001)\)</span>.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -369,139 +374,24 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
 <p>This figure further supports the earlier conjecture that topics 1 and 2 pertain to business and politics, respectively.</p>
 </section>
 </section>
-<section id="the-conjugacy-advantage" class="level2">
-<h2 class="anchored" data-anchor-id="the-conjugacy-advantage">The Conjugacy Advantage</h2>
-<p>The beauty lies in the conjugate relationships. Since Dir is conjugate to Multinomial:</p>
-<p><strong>For topic proportions:</strong> If θ_d ~ Dir(α) and we observe topic assignments z_d, then θ_d | z_d ~ Dir(α + n_d), where n_d is the vector of topic counts in document d.</p>
-<p><strong>For word distributions:</strong> If φ_k ~ Dir(β) and we observe words assigned to topic k, then φ_k | words ~ Dir(β + n_k), where n_k counts how often each word was assigned to topic k.</p>
+<section id="the-lda-gibbs-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="the-lda-gibbs-algorithm">The LDA-Gibbs Algorithm</h2>
+<p>The LDA identification of topics is a particular form of Markov chain Monte Carlo (MCMC) method. The data can be summarized as the set of unique words across the corpus of documents, along with counts of those unique words per document. The objective is to determine the topic of each word instance within each document.</p>
+<p>Assignment of topics to word positions is intially made at random in a manner similar to the generative model outlined above. We thereby have initial values for:</p>
+<p><span id="eq-log-ratio-topic-term"><span class="math display">\[
+\begin{align}
+  n_{d, k} &amp;= \text{number of assignments of topic } k \text{ to document } d \\
+  n_{w, k} &amp;= \text{number of assignments of topic } k \text{ to unique word } w \\
+  n_k &amp;= \text{number of assignments of topic } k \text{ across corpus } \mathcal{D}
+\end{align}
+\qquad(4)\]</span></span></p>
+<p>Then through many iterations the prior distributions <span class="math inline">\(Dir(\alpha_\bullet)\)</span> and <span class="math inline">\(Dir(\eta_\bullet)\)</span> are updated to form posterior distributions based on the data.</p>
+<p>The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the word in that position to each topic, conditioned on the current topic assignments of all other words. From this conditional distribution, a topic is generated and stored as the new topic assignment for the given word in the given position.</p>
+<p>A great computational savings is achieved by the choice of a Dirichlet prior for the multinomial distribution of unique topic instances per document, because the Dirichlet distribution is conjugate to the multinomial distribution. For further details on this updating algorithm see <span class="citation" data-cites="Steyvers_Griffiths_2007">Steyvers and Griffiths (<a href="#ref-Steyvers_Griffiths_2007" role="doc-biblioref">2007</a>)</span>.</p>
 </section>
-<section id="gibbs-sampling-implementation" class="level2">
-<h2 class="anchored" data-anchor-id="gibbs-sampling-implementation">Gibbs Sampling Implementation</h2>
-<p>The algorithm alternates between sampling topic assignments and updating the distributions:</p>
-<p><strong>Sampling z_{d,n}:</strong> For each word token, sample its topic assignment from: P(z_{d,n} = k | rest) ∝ (n_{d,k}^{-n} + α_k) × (n_{k,w}^{-n} + β_w) / (n_k^{-n} + Σβ)</p>
-<p>Where the superscript -n means “excluding the current token.”</p>
-<p><strong>Updating parameters:</strong> After each sampling sweep, the Dirichlet posteriors give us:</p>
-<ul>
-<li>θ_{d,k} = (n_{d,k} + α_k) / (Σ_j n_{d,j} + Σ_j α_j)</li>
-<li>φ_{k,w} = (n_{k,w} + β_w) / (Σ_v n_{k,v} + Σ_v β_v)</li>
-</ul>
-</section>
-<section id="why-this-works" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-works">Why This Works</h2>
-<p>The conjugacy means we can integrate out θ and φ analytically, leaving us to sample only the discrete topic assignments z. The sufficient statistics (count matrices n) fully capture everything we need to know about the posterior distributions.</p>
-<p>The algorithm converges because it’s doing collapsed Gibbs sampling on the joint posterior P(z, θ, φ | w, α, β), which has a unique stationary distribution under mild regularity conditions.</p>
-<p>This mathematical elegance - leveraging conjugacy to avoid explicitly storing continuous parameters - is what makes LDA tractable for large document collections.</p>
-<p>Claude: Is there anything else about LDA or related topics you’d like to explore while we’re on the subject?</p>
-<p>TT: Yes, please tell me about the number of topics (say K) used by the LDA algorithm. Can the user restrict the value of K?</p>
-<p>Claude: Yes, the user must specify K (the number of topics) as a hyperparameter before running LDA. This is both a requirement and a limitation of the algorithm.</p>
-</section>
-<section id="k-as-a-required-input" class="level2">
-<h2 class="anchored" data-anchor-id="k-as-a-required-input">K as a Required Input</h2>
-<p>Unlike some clustering algorithms that can determine the optimal number of clusters automatically, LDA requires you to decide on K upfront. The algorithm then finds the best K-topic solution given your choice, but it won’t tell you whether K=5 or K=10 would be better for your data.</p>
-</section>
-<section id="choosing-k-in-practice" class="level2">
-<h2 class="anchored" data-anchor-id="choosing-k-in-practice">Choosing K in Practice</h2>
-<p><strong>Too few topics (K too small):</strong> Topics become overly broad and less meaningful. You might get a generic “science” topic that mixes physics, biology, and chemistry when these should be separate themes.</p>
-<p><strong>Too many topics (K too large):</strong> Topics become overly specific or start splitting coherent themes. You might end up with separate topics for “baseball games” and “baseball statistics” when they could reasonably be one “baseball” topic.</p>
-<p><strong>Common approaches for selecting K:</strong></p>
-<ul>
-<li>Domain expertise (how many distinct themes do you expect?)</li>
-<li>Grid search with evaluation metrics</li>
-<li>Perplexity curves (though lower perplexity doesn’t always mean better interpretability)</li>
-<li>Topic coherence measures</li>
-<li>Human evaluation of topic quality</li>
-</ul>
-</section>
-<section id="evaluation-methods" class="level2">
-<h2 class="anchored" data-anchor-id="evaluation-methods">Evaluation Methods</h2>
-<p><strong>Perplexity</strong> measures how well the model predicts held-out documents (lower is better), but often doesn’t correlate with human judgments of topic quality.</p>
-<p><strong>Topic coherence</strong> measures like C_v or NPMI evaluate whether the top words in each topic frequently co-occur in the corpus, which better captures interpretability.</p>
-<p><strong>Human evaluation</strong> remains the gold standard - do the discovered topics make sense to domain experts?</p>
-</section>
-<section id="practical-workflow" class="level2">
-<h2 class="anchored" data-anchor-id="practical-workflow">Practical Workflow</h2>
-<p>Many practitioners run LDA with multiple K values (say, K ∈ {5, 10, 15, 20, 25}) and compare the results using both quantitative metrics and qualitative assessment of topic interpretability. The “right” K often depends on your specific use case and desired level of granularity.</p>
-<p>TT: Here’s another question. Suppose I experimented with LDA by selecting news articles that I knew to fall into one of two primary topics: politics and business. If I specified K=2 topics, how would LDA initiate the construction of the two clusters of documents?</p>
-<p>Claude: Great experimental setup! LDA’s initialization process is actually quite straightforward, though it has important implications for how the algorithm proceeds.</p>
-</section>
-<section id="random-initialization" class="level2">
-<h2 class="anchored" data-anchor-id="random-initialization">Random Initialization</h2>
-<p>LDA typically starts by <strong>randomly assigning each word token</strong> in every document to one of the K topics. So with K=2, every word in every document gets randomly assigned to either “topic 1” or “topic 2” initially.</p>
-<p>This means that at the start:</p>
-<ul>
-<li>Your political articles have words randomly split between both topics</li>
-<li>Your business articles also have words randomly split between both topics</li>
-<li>The initial topic-word distributions are essentially noise</li>
-</ul>
-</section>
-<section id="why-random-assignment-works" class="level2">
-<h2 class="anchored" data-anchor-id="why-random-assignment-works">Why Random Assignment Works</h2>
-<p>Even though this seems chaotic, the Gibbs sampling process quickly corrects these random assignments. Here’s the intuition:</p>
-<p><strong>Political words cluster together:</strong> Words like “election,” “senator,” “policy” appear frequently in your political documents. Even if initially scattered across both topics, the sampling process will tend to assign these co-occurring words to the same topic because it increases the likelihood.</p>
-<p><strong>Business words cluster together:</strong> Similarly, “revenue,” “CEO,” “market” co-occur in business documents, so they’ll gravitate toward the same topic (likely the opposite one from politics words).</p>
-</section>
-<section id="the-self-organization-process" class="level2">
-<h2 class="anchored" data-anchor-id="the-self-organization-process">The Self-Organization Process</h2>
-<p>Within just a few iterations, you’ll typically see:</p>
-<ol type="1">
-<li><strong>Topic separation:</strong> One topic starts accumulating political vocabulary, the other business vocabulary</li>
-<li><strong>Document alignment:</strong> Political articles develop higher probability for the “politics topic,” business articles for the “business topic”</li>
-<li><strong>Refinement:</strong> The boundaries become sharper as the algorithm converges</li>
-</ol>
-</section>
-<section id="alternative-initialization" class="level2">
-<h2 class="anchored" data-anchor-id="alternative-initialization">Alternative Initialization</h2>
-<p>Some implementations offer <strong>informed initialization</strong> where you can seed topics with specific words, but random initialization is standard because:</p>
-<ul>
-<li>It’s simpler to implement</li>
-<li>It avoids bias from user assumptions</li>
-<li>The algorithm is robust enough to find good solutions from random starts</li>
-</ul>
-<p>The key insight is that LDA’s probabilistic framework naturally pushes co-occurring words toward the same topics, so even random initialization leads to meaningful clustering when clear thematic structure exists in your data.</p>
-<p>TT: Thanks, that’s very helpful. Now help me to understand the Gibbs sampler.</p>
-<p>Claude: The Gibbs sampler is the computational engine that makes LDA inference tractable. It’s a Markov Chain Monte Carlo (MCMC) method that samples from complex joint distributions by iteratively sampling from simpler conditional distributions.</p>
-</section>
-<section id="the-core-gibbs-sampling-principle" class="level2">
-<h2 class="anchored" data-anchor-id="the-core-gibbs-sampling-principle">The Core Gibbs Sampling Principle</h2>
-<p>Instead of trying to sample from the complex joint posterior P(z, θ, φ | w, α, β) directly, Gibbs sampling breaks this into manageable pieces. It cycles through each variable, sampling from its conditional distribution given all other variables.</p>
-<p>For LDA, the key insight is that we can <strong>integrate out</strong> the continuous parameters θ and φ analytically (thanks to Dirichlet-multinomial conjugacy), leaving us to sample only the discrete topic assignments z.</p>
-</section>
-<section id="the-lda-gibbs-update" class="level2">
-<h2 class="anchored" data-anchor-id="the-lda-gibbs-update">The LDA Gibbs Update</h2>
-<p>For each word token w_{d,n} in document d at position n, we sample its topic assignment from:</p>
-<p>P(z_{d,n} = k | z_{-d,n}, w, α, β) ∝ (n_{d,k}^{-d,n} + α_k) × (n_{k,w_{d,n}}^{-d,n} + β_{w_{d,n}}) / (n_k^{-d,n} + Σ_v β_v)</p>
-<p>Where the superscript -d,n means “excluding the current token.”</p>
-</section>
-<section id="breaking-down-this-formula" class="level2">
-<h2 class="anchored" data-anchor-id="breaking-down-this-formula">Breaking Down This Formula</h2>
-<p><strong>First term (n_{d,k}^{-d,n} + α_k):</strong> How often topic k appears in document d (plus prior). This captures document-topic affinity.</p>
-<p><strong>Second term numerator (n_{k,w}^{-d,n} + β_w):</strong> How often word w appears in topic k (plus prior). This captures topic-word affinity.</p>
-<p><strong>Second term denominator (n_k^{-d,n} + Σ_v β_v):</strong> Normalization ensuring topic k’s word distribution sums to 1.</p>
-</section>
-<section id="why-this-works-1" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-works-1">Why This Works</h2>
-<p>The formula elegantly balances two forces:</p>
-<ul>
-<li><strong>Document consistency:</strong> Prefer topics that are already prominent in this document</li>
-<li><strong>Topic coherence:</strong> Prefer topics where this word commonly appears</li>
-</ul>
-</section>
-<section id="the-sampling-process" class="level2">
-<h2 class="anchored" data-anchor-id="the-sampling-process">The Sampling Process</h2>
-<ol type="1">
-<li><strong>Initialize:</strong> Randomly assign each word token to a topic</li>
-<li><strong>For each iteration:</strong>
-<ul>
-<li>Update count matrices (n_{d,k}, n_{k,w}, n_k) based on current assignments</li>
-<li>For each word token, sample new topic assignment using the formula above</li>
-<li>Repeat until convergence (typically 1000-2000 iterations)</li>
-</ul></li>
-</ol>
-</section>
-<section id="convergence-properties" class="level2">
-<h2 class="anchored" data-anchor-id="convergence-properties">Convergence Properties</h2>
-<p>The Markov chain has a unique stationary distribution equal to the posterior we want. After the burn-in period, samples approximate draws from P(z | w, α, β). We usually discard early samples and collect samples after convergence to estimate posterior quantities.</p>
-<p>The beauty is that each local decision (reassigning one word) considers global statistics (document and topic patterns), allowing complex topic structures to emerge from simple local updates.</p>
+<section id="concluding-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
+<p>Topic modeling is an active area of research that contributes to the statistical analysis of large document collections. The LDA model of document-generation enables Bayesian analysis of the latent structure of a corpus of documents.</p>
 </section>
 <section id="references" class="level2 unnumbered">
 
@@ -510,16 +400,28 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
 
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Antoniak_2023" class="csl-entry" role="listitem">
+Antoniak, Maria. 2023. <span>“Topic Modeling for the People.”</span> <em>Maria Antoniak</em>. University of Colorado Boulder. <a href="https://maria-antoniak.github.io/2022/07/27/topic-modeling-for-the-people.html">https://maria-antoniak.github.io/2022/07/27/topic-modeling-for-the-people.html</a>.
+</div>
 <div id="ref-BNJ2003LDA" class="csl-entry" role="listitem">
 Blei, David M., Andrew Y. Ng, and Michael I. Jordan. 2003. <span>“Latent Dirichlet Allocation.”</span> <em>J. Mach. Learn. Res.</em> 3 (null): 993–1022.
+</div>
+<div id="ref-Grün_Hornik_2011" class="csl-entry" role="listitem">
+Grün, Bettina, and Kurt Hornik. 2011. <span>“Topicmodels: An r Package for Fitting Topic Models.”</span> <em>Journal of Statistical Software</em> 40 (13): 1–30. <a href="https://doi.org/10.18637/jss.v040.i13">https://doi.org/10.18637/jss.v040.i13</a>.
 </div>
 <div id="ref-Silge_Robinson_2017" class="csl-entry" role="listitem">
 Silge, Julia, and David Robinson. 2017. <em>Text Mining with r: A Tidy Approach</em>. O’Reilly Media. <a href="https://www.tidytextmining.com/">https://www.tidytextmining.com/</a>.
 </div>
+<div id="ref-Steyvers_Griffiths_2007" class="csl-entry" role="listitem">
+Steyvers, Mark, and Tom Griffiths. 2007. <em>Probabilistic Topic Models</em>. <a href="https://cocosci.princeton.edu/tom/papers/SteyversGriffiths.pdf">https://cocosci.princeton.edu/tom/papers/SteyversGriffiths.pdf</a>.
+</div>
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>The Document Term Matrix (DTM) is a list format created by <code>R</code> package <code>tm</code>, devoted to topic mining.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Other authors use the verb “sample” rather than “generate” to mean random generation from a specified probability distribution.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>We assume that document <span class="math inline">\(d\)</span> consists of <span class="math inline">\(n_d\)</span> word positions, which is either a fixed positive integer, or else is generated independently of other random variables.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>See <span class="citation" data-cites="Grün_Hornik_2011">Grün and Hornik (<a href="#ref-Grün_Hornik_2011" role="doc-biblioref">2011</a>)</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The Document Term Matrix (DTM) is a list format created by <code>R</code> package <code>tm</code>, devoted to topic mining.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

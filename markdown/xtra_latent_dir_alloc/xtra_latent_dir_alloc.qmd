@@ -80,23 +80,57 @@ Latent Dirichlet Allocation (LDA) was proposed by @BNJ2003LDA as a method of top
 
 Part 1, Session 2b, of the course presents an overview of text analysis based on @Silge_Robinson_2017.  The authors use the `R` function `topicmodels::LDA()` with default parameter setting `method = VEM`, which denotes the Variational Expectation Maximization (EM) algorithm.  In this note we use an alternative implementation of LDA described below.
 
-## Document Generating Model
+## Generative Model
 
-LDA treats each document as a mixture of topics, and each topic as a mixture of words.  LDA assumes that each document $d$ in a corpus of documents $\mathcal{D}$ is generated from two Dirichlet distributions: $Dir(\alpha_\bullet)$ over $K$ possible topics; and $Dir(\beta_\bullet)$ over $N$ possible words.  This is a so-called bag-of-words model of the following form.
+LDA treats each document as a mixture of topics, and each topic as a mixture of words.  LDA adopts a _bag-of-words_ model in which each document $d$ in a corpus of documents $\mathcal{D}$ is generated from two Dirichlet distributions: $Dir(\alpha_\bullet)$ over $K$ possible topics; and $Dir(\eta_\bullet)$ over $N$ possible words.  In this model documents are presumed to have been randomly generated as follows.[^generate-v-sample]
 
-  - Generate word probability vector $\phi_\bullet (k) \sim Dir(\beta_\bullet )$ for each topic index $k \in \{ 1, 2, \ldots, K \}$
+[^generate-v-sample]: Other authors use the verb "sample" rather than "generate" to mean random generation from a specified probability distribution.
 
-Then for each document $d \in \mathcal{D}$ and for each word position $\nu \in d$:
+  - Generate word probability vector $\phi_\bullet (k) \sim Dir(\eta_\bullet )$ for each topic index $k \in \{ 1, 2, \ldots, K \}$
+
+Then for each document $d \in \mathcal{D}$ and for each word position $\nu \in d$:[^doc-length]
+
+[^doc-length]:  We assume that document $d$ consists of $n_d$ word positions, which is either a fixed positive integer, or else is generated independently of other random variables.
 
   1. Generate topic probability vector $\theta_\bullet (d) \sim Dir(\alpha_\bullet)$
   1. Assign topic index $\kappa (d,\nu) \sim \theta_\bullet (d)$
   1. Generate word index $\omega (d,\nu) \sim \phi_\bullet (\kappa (d,\nu))$
 
+These Dirichlet distributions are typically assumed to be symmetric.  That is, if we define 
+
+$$
+\begin{align}
+  \bar{\alpha} &= \frac{\alpha_+}{K} = \frac{1}{K} \sum_{k = 1}^K
+\alpha_k \\ 
+  \bar{\eta} &= \frac{\eta_+}{N} = \frac{1}{N} \sum_{\nu = 1}^N
+\eta_\nu
+\end{align}
+$$ {#eq-avg-Dirichlet-param}
+
+then current practice is to set all elements of vectors $\alpha_\bullet$ and $\eta_\bullet$ equal to their respective average values.
+
+$$
+\begin{align}
+  \alpha_k &= \bar{\alpha} \quad \text{for } k \in \{1, \ldots, K \} \\ 
+  \eta_\nu &= \bar{\eta} \quad \text{for } \nu \in \{1, \ldots, N \}
+\end{align}
+$$ {#eq-symm-Dirichlet}
+
+The values $\bar{\alpha}$ and $\bar{\eta}$ are called _concentration_ parameters.
+
+For a symmetric Dirichlet distribution as above, if $\bar{\alpha} < 1$ then for each document $d$, $Dir(\alpha_\bullet)$ tends to generate a sparse probability vector $\theta_\bullet (d)$ that gives most of its weight to just a few of the K topics (with the selection of topics varying across documents).  On the other hand, if $\bar{\alpha} > 1$ then $Dir(\alpha_\bullet)$ tends to generate a more uniform probability vector $\theta_\bullet (d)$ spread more evenly across all topics.
+
+As for the distribution of words within a topic, in most applications the number $N$ of distinct words in the corpus $\mathcal{D}$ may be a few thousand or even a few tens of thousands.  Then each topic is a mixture across a distinct subset of a large number of words, typically with $\bar{\eta} < 1$.
+
+See @Antoniak_2023 for practical suggestions on these and other settings and workflows.
+
 ## News Article Example
 
 ### Data
 
-The `R` package `topicmodels` includes the `AssociatedPress` data representing 2246 news articles from the AP news agency, mostly published around 1988.  The data are in the form of a list[^DTM] that includes a sparse matrix giving the document-index, the term-index, and the frequency (number of occurrences) of the indexed term (word) within each document (news article).  The list also contains a vector of the terms themselves.
+The `R` package `topicmodels`[^art-topicmodels] includes the `AssociatedPress` data representing 2246 news articles from the AP news agency, mostly published around 1988.  The data are in the form of a list[^DTM] that includes a sparse matrix giving the document-index, the term-index, and the frequency (number of occurrences) of the indexed term (word) within each document (news article).  The list also contains a vector of the terms themselves.
+
+[^art-topicmodels]:  See @Grün_Hornik_2011.
 
 [^DTM]: The Document Term Matrix (DTM) is a list format created by `R` package `tm`, devoted to topic mining.
 
@@ -386,159 +420,28 @@ g_beta_ratio_wide
 
 This figure further supports the earlier conjecture that topics 1 and 2 pertain to business and politics, respectively.
 
-## The LDA-Gibbs algorithm
+## The LDA-Gibbs Algorithm
 
-## The Conjugacy Advantage
+The LDA identification of topics is a particular form of Markov chain Monte Carlo (MCMC) method.  The data can be summarized as the set of unique words across the corpus of documents, along with counts of those unique words per document.  The objective is to determine the topic of each word instance within each document.
 
-The beauty lies in the conjugate relationships. Since Dir is conjugate to Multinomial:
+Assignment of topics to word positions is intially made at random in a manner similar to the generative model outlined above.  We thereby have initial values for: 
 
-**For topic proportions:** If θ_d ~ Dir(α) and we observe topic assignments z_d, then θ_d | z_d ~ Dir(α + n_d), where n_d is the vector of topic counts in document d.
+$$
+\begin{align}
+  n_{d, k} &= \text{number of assignments of topic } k \text{ to document } d \\ 
+  n_{w, k} &= \text{number of assignments of topic } k \text{ to unique word } w \\ 
+  n_k &= \text{number of assignments of topic } k \text{ across corpus } \mathcal{D} 
+\end{align}
+$$ {#eq-log-ratio-topic-term}
 
-**For word distributions:** If φ_k ~ Dir(β) and we observe words assigned to topic k, then φ_k | words ~ Dir(β + n_k), where n_k counts how often each word was assigned to topic k.
+Then through many iterations the prior distributions $Dir(\alpha_\bullet)$ and $Dir(\eta_\bullet)$ are updated to form posterior distributions based on the data.
 
-## Gibbs Sampling Implementation
+The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the word in that position to each topic, conditioned on the current topic assignments of all other words.  From this conditional distribution, a topic is generated and stored as the new topic assignment for the given word in the given position.
 
-The algorithm alternates between sampling topic assignments and updating the distributions:
+A great computational savings is achieved by the choice of a Dirichlet prior for the multinomial distribution of unique topic instances per document, because the Dirichlet distribution is conjugate to the multinomial distribution.  For further details on this updating algorithm see @Steyvers_Griffiths_2007.
 
-**Sampling z_{d,n}:** For each word token, sample its topic assignment from: P(z_{d,n} = k | rest) ∝ (n_{d,k}^{-n} + α_k) × (n_{k,w}^{-n} + β_w) / (n_k^{-n} + Σβ)
+## Concluding Remarks
 
-Where the superscript -n means "excluding the current token."
-
-**Updating parameters:** After each sampling sweep, the Dirichlet posteriors give us:
-
-- θ_{d,k} = (n_{d,k} + α_k) / (Σ_j n_{d,j} + Σ_j α_j)
-- φ_{k,w} = (n_{k,w} + β_w) / (Σ_v n_{k,v} + Σ_v β_v)
-
-## Why This Works
-
-The conjugacy means we can integrate out θ and φ analytically, leaving us to sample only the discrete topic assignments z. The sufficient statistics (count matrices n) fully capture everything we need to know about the posterior distributions.
-
-The algorithm converges because it's doing collapsed Gibbs sampling on the joint posterior P(z, θ, φ | w, α, β), which has a unique stationary distribution under mild regularity conditions.
-
-This mathematical elegance - leveraging conjugacy to avoid explicitly storing continuous parameters - is what makes LDA tractable for large document collections.
-
-Claude: Is there anything else about LDA or related topics you'd like to explore while we're on the subject?
-
-TT: Yes, please tell me about the number of topics (say K) used by the LDA algorithm. Can the user restrict the value of K?
-
-Claude: 
-Yes, the user must specify K (the number of topics) as a hyperparameter before running LDA. This is both a requirement and a limitation of the algorithm.
-
-## K as a Required Input
-
-Unlike some clustering algorithms that can determine the optimal number of clusters automatically, LDA requires you to decide on K upfront. The algorithm then finds the best K-topic solution given your choice, but it won't tell you whether K=5 or K=10 would be better for your data.
-
-## Choosing K in Practice
-
-**Too few topics (K too small):** Topics become overly broad and less meaningful. You might get a generic "science" topic that mixes physics, biology, and chemistry when these should be separate themes.
-
-**Too many topics (K too large):** Topics become overly specific or start splitting coherent themes. You might end up with separate topics for "baseball games" and "baseball statistics" when they could reasonably be one "baseball" topic.
-
-**Common approaches for selecting K:**
-
-- Domain expertise (how many distinct themes do you expect?)
-- Grid search with evaluation metrics
-- Perplexity curves (though lower perplexity doesn't always mean better interpretability)
-- Topic coherence measures
-- Human evaluation of topic quality
-
-## Evaluation Methods
-
-**Perplexity** measures how well the model predicts held-out documents (lower is better), but often doesn't correlate with human judgments of topic quality.
-
-**Topic coherence** measures like C_v or NPMI evaluate whether the top words in each topic frequently co-occur in the corpus, which better captures interpretability.
-
-**Human evaluation** remains the gold standard - do the discovered topics make sense to domain experts?
-
-## Practical Workflow
-
-Many practitioners run LDA with multiple K values (say, K ∈ {5, 10, 15, 20, 25}) and compare the results using both quantitative metrics and qualitative assessment of topic interpretability. The "right" K often depends on your specific use case and desired level of granularity.
-
-TT: Here's another question.  Suppose I experimented with LDA by selecting news articles that I knew to fall into one of two primary topics: politics and business.  If I specified K=2 topics, how would LDA initiate the construction of the two clusters of documents?
-
-Claude: Great experimental setup! LDA's initialization process is actually quite straightforward, though it has important implications for how the algorithm proceeds.
-
-## Random Initialization
-
-LDA typically starts by **randomly assigning each word token** in every document to one of the K topics. So with K=2, every word in every document gets randomly assigned to either "topic 1" or "topic 2" initially.
-
-This means that at the start:
-
-- Your political articles have words randomly split between both topics
-- Your business articles also have words randomly split between both topics
-- The initial topic-word distributions are essentially noise
-
-## Why Random Assignment Works
-
-Even though this seems chaotic, the Gibbs sampling process quickly corrects these random assignments. Here's the intuition:
-
-**Political words cluster together:** Words like "election," "senator," "policy" appear frequently in your political documents. Even if initially scattered across both topics, the sampling process will tend to assign these co-occurring words to the same topic because it increases the likelihood.
-
-**Business words cluster together:** Similarly, "revenue," "CEO," "market" co-occur in business documents, so they'll gravitate toward the same topic (likely the opposite one from politics words).
-
-## The Self-Organization Process
-
-Within just a few iterations, you'll typically see:
-
-1. **Topic separation:** One topic starts accumulating political vocabulary, the other business vocabulary
-2. **Document alignment:** Political articles develop higher probability for the "politics topic," business articles for the "business topic"
-3. **Refinement:** The boundaries become sharper as the algorithm converges
-
-## Alternative Initialization
-
-Some implementations offer **informed initialization** where you can seed topics with specific words, but random initialization is standard because:
-
-- It's simpler to implement
-- It avoids bias from user assumptions
-- The algorithm is robust enough to find good solutions from random starts
-
-The key insight is that LDA's probabilistic framework naturally pushes co-occurring words toward the same topics, so even random initialization leads to meaningful clustering when clear thematic structure exists in your data.
-
-TT: Thanks, that's very helpful. Now help me to understand the Gibbs sampler.
-
-Claude: The Gibbs sampler is the computational engine that makes LDA inference tractable. It's a Markov Chain Monte Carlo (MCMC) method that samples from complex joint distributions by iteratively sampling from simpler conditional distributions.
-
-## The Core Gibbs Sampling Principle
-
-Instead of trying to sample from the complex joint posterior P(z, θ, φ | w, α, β) directly, Gibbs sampling breaks this into manageable pieces. It cycles through each variable, sampling from its conditional distribution given all other variables.
-
-For LDA, the key insight is that we can **integrate out** the continuous parameters θ and φ analytically (thanks to Dirichlet-multinomial conjugacy), leaving us to sample only the discrete topic assignments z.
-
-## The LDA Gibbs Update
-
-For each word token w_{d,n} in document d at position n, we sample its topic assignment from:
-
-P(z_{d,n} = k | z_{-d,n}, w, α, β) ∝ (n_{d,k}^{-d,n} + α_k) × (n_{k,w_{d,n}}^{-d,n} + β_{w_{d,n}}) / (n_k^{-d,n} + Σ_v β_v)
-
-Where the superscript -d,n means "excluding the current token."
-
-## Breaking Down This Formula
-
-**First term (n_{d,k}^{-d,n} + α_k):** How often topic k appears in document d (plus prior). This captures document-topic affinity.
-
-**Second term numerator (n_{k,w}^{-d,n} + β_w):** How often word w appears in topic k (plus prior). This captures topic-word affinity.
-
-**Second term denominator (n_k^{-d,n} + Σ_v β_v):** Normalization ensuring topic k's word distribution sums to 1.
-
-## Why This Works
-
-The formula elegantly balances two forces:
-
-- **Document consistency:** Prefer topics that are already prominent in this document
-- **Topic coherence:** Prefer topics where this word commonly appears
-
-## The Sampling Process
-
-1. **Initialize:** Randomly assign each word token to a topic
-2. **For each iteration:**
-    - Update count matrices (n_{d,k}, n_{k,w}, n_k) based on current assignments
-    - For each word token, sample new topic assignment using the formula above
-    - Repeat until convergence (typically 1000-2000 iterations)
-
-## Convergence Properties
-
-The Markov chain has a unique stationary distribution equal to the posterior we want. After the burn-in period, samples approximate draws from P(z | w, α, β). We usually discard early samples and collect samples after convergence to estimate posterior quantities.
-
-The beauty is that each local decision (reassigning one word) considers global statistics (document and topic patterns), allowing complex topic structures to emerge from simple local updates.
+Topic modeling is an active area of research that contributes to the statistical analysis of large document collections.  The LDA model of document-generation enables Bayesian analysis of the latent structure of a corpus of documents.
 
 ## References
