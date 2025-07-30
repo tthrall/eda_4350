@@ -66,8 +66,7 @@ topicmodels_loaded <- require(topicmodels)
 ```{r}
 #| label: local-source
 
-source(here("code", "rmse_per_grp.R"))
-source(here("code", "xtabs_to_jaccard.R"))
+source(here("code", "text_helpers.R"))
 ```
 
 ------------------------------------------------------------------------
@@ -124,145 +123,129 @@ As for the distribution of words within a topic, in most applications the number
 
 See @Antoniak_2023 for practical suggestions on these and other settings and workflows.
 
-## News Article Example
+## Book Review Example
 
 ### Data
 
-The `R` package `topicmodels`[^art-topicmodels] includes the `AssociatedPress` data representing 2246 news articles from the AP news agency, mostly published around 1988.  The data are in the form of a list[^DTM] that includes a sparse matrix giving the document-index, the term-index, and the frequency (number of occurrences) of the indexed term (word) within each document (news article).  The list also contains a vector of the terms themselves.
+"Animal Farm" by George Orwell was published in 1945, and nearly forty years later (1984) "The Butter Battle Book" by Dr. Seuss was published.  The books are quite different of course, but they both allude to the Soviet Union in its earlier and later years, respectively.
 
-[^art-topicmodels]:  See @Grün_Hornik_2011.
+In 1945 "Animal Farm" by George Orwell was published, and nearly forty years later (1984) "The Butter Battle Book" by Dr. Seuss was published.  The books are quite different of course, but they both allude to the Soviet Union in its earlier and later years, respectively.
 
-[^DTM]: The Document Term Matrix (DTM) is a list format created by `R` package `tm`, devoted to topic mining.
+As a toy example of a corpus of documents, we have extracted Wikipedia's description of the plots of the two books, counting each paragraph as a separate document.
+
+```{r}
+#| label: af-pst-lst
+
+# Animal Farm: story plot from Wikipedia
+# list of tibbles: paragraphs, sentences, tokens
+af_pst_lst <- para2token(
+  file = here::here(
+    "data", "retain", "Animal_Farm_summary.txt")
+)
+
+af_para_tbl <- af_pst_lst$ para_tbl |> 
+  dplyr::mutate(src = "AF") |> 
+  dplyr::select(src, everything())
+
+af_token_tbl <- af_pst_lst$ token_tbl |> 
+  dplyr::mutate(src = "AF") |> 
+  dplyr::select(src, everything())
+```
+
+```{r}
+#| label: bbb-pst-lst
+
+# The Butter Battle Book: story plot from Wikipedia
+# list of tibbles: paragraphs, sentences, tokens
+bbb_pst_lst <- para2token(
+  file = here::here(
+    "data", "retain", "Butter_Battle_summary.txt")
+)
+
+bbb_para_tbl <- bbb_pst_lst$ para_tbl |> 
+  dplyr::mutate(src = "BBB") |> 
+  dplyr::select(src, everything())
+
+bbb_token_tbl <- bbb_pst_lst$ token_tbl |> 
+  dplyr::mutate(src = "BBB") |> 
+  dplyr::select(src, everything())
+```
+
+```{r}
+#| label: af-bbb-para-tbl
+
+af_bbb_para_tbl <- dplyr::bind_rows(
+  af_para_tbl, 
+  bbb_para_tbl
+)
+```
+
+Here are the successive paragraphs (stripped of punctuation and stop-words) summarizing the two books.
+
+```{r}
+#| label: tbl-af-bbb-para-tbl
+#| tbl-cap: "Paragraphs from summaries of two books"
+#| echo: true
+
+af_bbb_para_tbl |> print(width = 72)
+```
+
+
+```{r}
+#| label: af-bbb-token-tbl
+
+af_bbb_token_tbl <- dplyr::bind_rows(
+  af_token_tbl, 
+  bbb_token_tbl
+)
+```
+
+From these paragraphs, each treated as a document, we create the following `DocumentTermMatrix` object, which is a list that includes: 
+
+  - a sparse matrix giving the document-index, the term-index, and the frequency (number of occurrences) of the indexed term; and 
+  - a vector of the terms themselves
+
+```{r}
+#| label: af-bbb-dtm-lst
+#| echo: true
+
+af_bbb_dtm_lst <- 
+  tm::DocumentTermMatrix(x = af_bbb_para_tbl$ para)
+
+# af_bbb_dtm_lst  |> object.size(): 44 KB
+# 44464 bytes
+
+af_bbb_dtm_lst
+```
+
+Here is a table showing the frequency of each term within each document (paragraph).
+
+```{r}
+#| label: tbl-af-bbb-tf-tbl
+#| tbl-cap: "Term-frequency: number of occurrences of each term within each document"
+#| echo: true
+
+af_bbb_tf_tbl <- af_bbb_dtm_lst |> tidytext::tidy()
+af_bbb_tf_tbl
+```
 
 ### LDA function
 
-The `topicmodels` package also includes function `LDA()` that performs latent Dirichlet Allocation.  The function determines the probable topic of each word within each document by one of two methods: (1) "VEM" (Variational Expectation Maximization); or else (2) "Gibbs" (Gibbs Sampling).  The function output, depending on the choice of method, is a list conforming to the format of either `LDA_VEM` or else `LDA_Gibbs`.  Here we choose the Gibbs Sampling method because it requires less memory.
+We now employ function `topicmodels::LDA()`[^art-Grün_Hornik_2011] to perform latent Dirichlet Allocation.  The function determines the probable topic of each word within each document by one of two methods: (1) "VEM" (Variational Expectation Maximization); or else (2) "Gibbs" (Gibbs Sampling).  The function output, depending on the choice of method, is a list conforming to the format of either `LDA_VEM` or else `LDA_Gibbs`.  Here we choose the Gibbs Sampling method because it requires less memory.
+
+[^art-Grün_Hornik_2011]:  See @Grün_Hornik_2011.
 
 ```{r}
-#| label: lst-Associated-Press
-#| lst-cap: ""
-#| echo: true
-#| eval: false
-
-# avoid `topicmodels` if possible: it's slow to load
-if (topicmodels_loaded) {
-  data("AssociatedPress", package = "topicmodels")
-}
-
-# AssociatedPress |> object.size(): 5.5 MB
-
-# AssociatedPress
-# <<DocumentTermMatrix (documents: 2246, terms: 10473)>>
-# Non-/sparse entries: 302031/23220327
-# Sparsity           : 99%
-# Maximal term length: 18
-# Weighting          : term frequency (tf)
-
-# str(AssociatedPress)
-# List of 6
-#  $ i       : int [1:302031] 1 1 1 1 1 1 1 1 1 1 ...
-#  $ j       : int [1:302031] 116 153 218 272 299 302 447 455 548 597 ...
-#  $ v       : num [1:302031] 1 2 1 1 1 1 2 1 1 1 ...
-#  $ nrow    : int 2246
-#  $ ncol    : int 10473
-#  $ dimnames:List of 2
-#   ..$ Docs : NULL
-#   ..$ Terms: chr [1:10473] "aaron" "abandon" "abandoned" "abandoning" ...
-#  - attr(*, "class")= chr [1:2] "DocumentTermMatrix" "simple_triplet_matrix"
-#  - attr(*, "weighting")= chr [1:2] "term frequency" "tf"
-
-# object.size(AssociatedPress)
-# 5539768 bytes
-```
-
-Here are the first few terms extracted from the news articles.  They are listed alphabetically and indexed in that order.
-
-```{r}
-#| label: ap-terms-tbl
-#| eval: true
-
-# extract terms from `AssociatedPress` DTM
-# save as TSV file
-
-extract_from_AP_DTM <- FALSE
-if (extract_from_AP_DTM) {
-  ap_terms_tbl <- tibble::tibble(
-    term = AssociatedPress$ dimnames$ Terms, 
-    idx  = 1:length(term)
-  ) |> 
-    dplyr::select(idx, term)
-  
-  # save as TSV file only as needed
-  save_file <- FALSE
-  if (save_file) {
-    ap_terms_tbl |> readr::write_tsv(here::here(
-      "data", "retain", "ap_terms_tbl.txt"
-    ))
-  }
-} else {
-  ap_terms_tbl <- readr::read_tsv(here::here(
-    "data", "retain", "ap_terms_tbl.txt"
-  ))
-}
-
-# ap_terms_tbl |> object.size(): 0.75 MB
-# 748208 bytes
-
-ap_terms_tbl |> print(n = 4)
-```
-
-Here is the document-term matrix in sparse format.  The columns denote the index of the document, the index of the term, and the term-frequency, that is, the number of occurrences of the term within the document.
-
-```{r}
-#| label: ap-dtm-tbl
-#| eval: true
-
-# extract term-counts per doc from `AssociatedPress` DTM
-# save as TSV file
-
-extract_from_AP_DTM <- FALSE
-if (extract_from_AP_DTM) {
-  # document term matrix (DTM): sparse format
-  # the actual terms are stored in ap_terms_tbl
-  ap_dtm_tbl <- tibble::tibble(
-    # document (row) index
-    doc_idx = AssociatedPress$ i, 
-    # term (column) index
-    trm_idx = AssociatedPress$ j, 
-    # term-frequency count
-    tf_ct   = AssociatedPress$ v
-  )
-  
-  # save as TSV file only as needed
-  save_file <- FALSE
-  if (save_file) {
-    ap_dtm_tbl |> readr::write_tsv(here::here(
-      "data", "retain", "ap_dtm_tbl.txt"
-    ))
-  }
-} else {
-  ap_dtm_tbl <- readr::read_tsv(here::here(
-    "data", "retain", "ap_dtm_tbl.txt"
-  ))
-}
-
-# ap_dtm_tbl |> object.size(): 7.3 MB
-# 7252896 bytes
-
-ap_dtm_tbl |> print(n = 4)
-```
-
-```{r}
-#| label: lst-ap-gs
+#| label: lst-af-bbb-gs
 #| lst-cap: ""
 #| echo: true
 #| eval: false
 
 # Latent Dirichlet Allocation via Gibbs Sampling
 
-extract_from_AP_DTM <- FALSE
-if (extract_from_AP_DTM && topicmodels_loaded) {
-  ap_gs <- AssociatedPress |> 
+extract_from_DTM <- FALSE
+if (extract_from_DTM && topicmodels_loaded) {
+  af_bbb_gs <- af_bbb_dtm_lst |> 
     topicmodels::LDA(
       # number of topics
       k = 2, 
@@ -271,27 +254,29 @@ if (extract_from_AP_DTM && topicmodels_loaded) {
       control = list(seed = 1234)
     )
 } else {
-  # TODO: decide whether and how to store ap_gs
+  # TODO: decide whether and how to store LDA_Gibbs output
 }
 
-# ap_gs |> object.size(): 7.5 MB
-# 7493512 bytes
+# af_bbb_gs |> object.size(): 77 KB
+# 77032 bytes
 ```
 
 From the `LDA_Gibbs` output we extract the following "beta" matrix, that is the matrix of fitted probabilities that a term within a given document belongs to topic 1 or 2, respectively.
 
 ```{r}
-#| label: ap-topics
+#| label: af-bbb-topics
 #| eval: true
+#| echo: true
 
-# TODO: overcome error generated by tidy(ap_gs)
+# TODO: overcome error generated by tidytext::tidy(<LDA_Gibbs>)
+# when <LDA_Gibbs> is large and memory is constrained
 # in the meantime, patch as follows
 
-extract_from_AP_DTM <- FALSE
-if (extract_from_AP_DTM) {
+extract_from_DTM <- FALSE
+if (extract_from_DTM) {
   # beta: K (topics) by N (terms) of log-probabilities
-  beta_mat           <- ap_gs@beta
-  colnames(beta_mat) <- ap_gs@terms
+  beta_mat           <- af_bbb_gs@beta
+  colnames(beta_mat) <- af_bbb_gs@terms
   rownames(beta_mat) <- paste0("topic_", 1:2)
   
   beta_tbl           <- beta_mat |> 
@@ -306,67 +291,54 @@ if (extract_from_AP_DTM) {
     ) |> 
     dplyr::arrange(term)
   
-  # ap_topics: N by K tibble of probabilities
-  ap_topics <- beta_long |> 
+  # af_bbb_topics: N by K tibble of probabilities
+  af_bbb_topics <- beta_long |> 
     dplyr::mutate(
       beta = exp(ln_prob)
     ) |> 
     dplyr::select(- ln_prob)
   
-  # save ap_topics as TSV file only as needed
+  # save af_bbb_topics as TSV file only as needed
   save_file <- FALSE
   if (save_file) {
-    ap_topics |> readr::write_tsv(here::here(
-      "data", "retain", "ap_topics.txt"
+    af_bbb_topics |> readr::write_tsv(here::here(
+      "data", "retain", "af_bbb_topics.txt"
     ))
   }
   
 } else {
   # read in previously saved file
-  ap_topics <- read_tsv(here(
-    "data", "retain", "ap_topics.txt"
+  af_bbb_topics <- readr::read_tsv(here::here(
+    "data", "retain", "af_bbb_topics.txt"
   ))
 }
 
-# ap_topics |> object.size(): 1.1 MB
-# 1128400 bytes
+# af_bbb_topics |> object.size(): 49 KB
+# 48992 bytes
 
-ap_topics |> print(n = 4, digits = 2)
+af_bbb_topics |> print(n = 4, digits = 2)
 ```
+
 
 ### Output interpretation
 
 Here are the most probable terms for each of the two constructed topics, along with their probabilities (beta), shown as a bar chart.
 
 ```{r}
-#| label: ap-top-terms
+#| label: af-bbb-top-terms
+#| eval: true
 
-ap_top_terms <- ap_topics |> 
-  dplyr::slice_max(beta, n = 10, by = "topic")
+# set with_ties = F to limit returned tibble to <= n rows
+af_bbb_top_terms <- af_bbb_topics |> 
+  dplyr::slice_max(beta, n = 10, by = "topic", with_ties = FALSE)
 ```
 
 ```{r}
-#| label: ap-top-terms-wide
+#| label: fig-af-bbb-top-terms
+#| fig-cap: "AF-BBB paragraphs: most probable terms by topic"
+#| echo: true
 
-# afterthought: display bar chart, not this table
-ap_top_terms_1 <- ap_top_terms |> 
-  dplyr::filter(topic == 1L)
-
-ap_top_terms_2 <- ap_top_terms |> 
-  dplyr::filter(topic == 2L)
-
-ap_top_terms_wide <- tibble::tibble(
-  rank    = 1:nrow(ap_top_terms_1), 
-  topic_1 = ap_top_terms_1$ term, 
-  topic_2 = ap_top_terms_2$ term
-)
-```
-
-```{r}
-#| label: fig-ap-top-terms
-#| fig-cap: "AP articles: most probable terms by topic"
-
-g_ap_top_terms <- ap_top_terms |> 
+g_af_bbb_top_terms <- af_bbb_top_terms |> 
   dplyr::mutate(term = reorder_within(
     x = term, 
     by = beta, 
@@ -377,11 +349,11 @@ g_ap_top_terms <- ap_top_terms |>
   ggplot2::geom_col(show.legend = FALSE) + 
   ggplot2::facet_wrap(~ as_factor(topic), scales = "free") + 
   tidytext::scale_y_reordered() + 
-  ggplot2::labs(title = "AP articles: most probable terms by topic")
-g_ap_top_terms
+  ggplot2::labs(title = "AF-BBB paragraphs: most probable terms by topic")
+g_af_bbb_top_terms
 ```
 
-Topics 1 and 2 seem to pertain to business and politics, respectively, although "new" and "people" are prominent terms for both topics.
+Topics 1 and 2 seem to pertain to "The Butter Battle Book" and "Animal Farm", respectively, although we see "farm" in topic 1 and "battle"  in topic 2.
 
 Another way to compare topics 1 and 2 is to examine the terms shared by the two topics and then find the terms having the biggest disparity in (topic, term) probability (beta). Here's a bar chart showing the more prominent differences, expressed as
 
@@ -389,14 +361,14 @@ $$
 \begin{align}
   \log_2 \left( \frac{\beta_2}{\beta_1} \right)
 \end{align}
-$$ {#eq-log-ratio-topic-term}
+$$ {#eq-log2-ratio-topic-term}
 
 restricting the set of terms to those assigned to both topics $(\min(\beta_1, \beta_2) > 0)$ with at least one of them exceeding a probability threshhold, say $(\max(\beta_1, \beta_2) > 0.001)$.
 
 ```{r}
-#| label: beta-ratio-wide
+#| label: af-bbb-b-ratio-wide
 
-beta_ratio_wide <- ap_topics |> 
+af_bbb_b_ratio_wide <- af_bbb_topics |> 
   dplyr::mutate(topic = paste0("beta_", topic)) |> 
   tidyr::pivot_wider(names_from = topic, values_from = beta) |> 
   dplyr::filter(
@@ -407,10 +379,11 @@ beta_ratio_wide <- ap_topics |>
 ```
 
 ```{r}
-#| label: fig-beta-ratio-wide
+#| label: fig-af-bbb-b-ratio-wide
 #| fig-cap: "Log2 ratio of beta in topic 2 / topic 1"
+#| echo: true
 
-g_beta_ratio_wide <- beta_ratio_wide |> 
+g_af_bbb_b_ratio_wide <- af_bbb_b_ratio_wide |> 
   dplyr::group_by(direction = log_ratio > 0) |> 
   dplyr::slice_max(abs(log_ratio), n = 10) |> 
   dplyr::ungroup() |> 
@@ -418,10 +391,10 @@ g_beta_ratio_wide <- beta_ratio_wide |>
   ggplot2::ggplot(aes(log_ratio, term)) +
   ggplot2::geom_col() +
   ggplot2::labs(x = "Log2 ratio of beta in topic 2 / topic 1", y = NULL)
-g_beta_ratio_wide
+g_af_bbb_b_ratio_wide
 ```
 
-This figure further supports the earlier conjecture that topics 1 and 2 pertain to business and politics, respectively.
+This figure further supports the earlier conjecture that topic 1 best matches "The Butter Battle Book" and topic 2 best matches "Animal Farm".
 
 ## The LDA-Gibbs Algorithm
 

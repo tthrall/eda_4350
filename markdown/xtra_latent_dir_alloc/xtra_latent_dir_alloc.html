@@ -132,7 +132,7 @@ window.Quarto = {
   <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
   <li><a href="#text-analysis" id="toc-text-analysis" class="nav-link" data-scroll-target="#text-analysis">Text Analysis</a></li>
   <li><a href="#generative-model" id="toc-generative-model" class="nav-link" data-scroll-target="#generative-model">Generative Model</a></li>
-  <li><a href="#news-article-example" id="toc-news-article-example" class="nav-link" data-scroll-target="#news-article-example">News Article Example</a>
+  <li><a href="#book-review-example" id="toc-book-review-example" class="nav-link" data-scroll-target="#book-review-example">Book Review Example</a>
   <ul class="collapse">
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
   <li><a href="#lda-function" id="toc-lda-function" class="nav-link" data-scroll-target="#lda-function">LDA function</a></li>
@@ -166,7 +166,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">20:02 Tue 29-Jul-2025</p>
+      <p class="date">20:25 Wed 30-Jul-2025</p>
     </div>
   </div>
   
@@ -226,109 +226,186 @@ window.Quarto = {
 <p>As for the distribution of words within a topic, in most applications the number <span class="math inline">\(N\)</span> of distinct words in the corpus <span class="math inline">\(\mathcal{D}\)</span> may be a few thousand or even a few tens of thousands. Then each topic is a mixture across a distinct subset of a large number of words, typically with <span class="math inline">\(\bar{\eta} &lt; 1\)</span>.</p>
 <p>See <span class="citation" data-cites="Antoniak_2023">Antoniak (<a href="#ref-Antoniak_2023" role="doc-biblioref">2023</a>)</span> for practical suggestions on these and other settings and workflows.</p>
 </section>
-<section id="news-article-example" class="level2">
-<h2 class="anchored" data-anchor-id="news-article-example">News Article Example</h2>
+<section id="book-review-example" class="level2">
+<h2 class="anchored" data-anchor-id="book-review-example">Book Review Example</h2>
 <section id="data" class="level3">
 <h3 class="anchored" data-anchor-id="data">Data</h3>
-<p>The <code>R</code> package <code>topicmodels</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> includes the <code>AssociatedPress</code> data representing 2246 news articles from the AP news agency, mostly published around 1988. The data are in the form of a list<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> that includes a sparse matrix giving the document-index, the term-index, and the frequency (number of occurrences) of the indexed term (word) within each document (news article). The list also contains a vector of the terms themselves.</p>
+<p>“Animal Farm” by George Orwell was published in 1945, and nearly forty years later (1984) “The Butter Battle Book” by Dr.&nbsp;Seuss was published. The books are quite different of course, but they both allude to the Soviet Union in its earlier and later years, respectively.</p>
+<p>In 1945 “Animal Farm” by George Orwell was published, and nearly forty years later (1984) “The Butter Battle Book” by Dr.&nbsp;Seuss was published. The books are quite different of course, but they both allude to the Soviet Union in its earlier and later years, respectively.</p>
+<p>As a toy example of a corpus of documents, we have extracted Wikipedia’s description of the plots of the two books, counting each paragraph as a separate document.</p>
+<p>Here are the successive paragraphs (stripped of punctuation and stop-words) summarizing the two books.</p>
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>af_bbb_para_tbl <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">width =</span> <span class="dv">72</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="tbl-af-bbb-para-tbl" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-af-bbb-para-tbl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Paragraphs from summaries of two books
+</figcaption>
+<div aria-describedby="tbl-af-bbb-para-tbl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 3
+  src     pdx para                                                      
+  &lt;chr&gt; &lt;int&gt; &lt;chr&gt;                                                     
+1 AF        1 animal populace poorly run manor farm near willingdon eng…
+2 AF        2 napoleon enacts changes political structure farm replacin…
+3 AF        3 mr frederick neighbouring farmer attacks farm using blast…
+4 AF        4 years pass windmill rebuilt another windmill constructed …
+5 AF        5 napoleon holds dinner party pigs newly allied human farme…
+6 BBB       1 yooks zooks live opposite sides long curving wall yooks w…
+7 BBB       2 race begins zook patrolman named vanitch slingshots yook …
+8 BBB       3 yooks create gun called kickapoo kid loaded powerful pooa…
+9 BBB       4 resolution reached books end generals sides wall poised d…</code></pre>
+</div>
+</div>
+</figure>
+</div>
+<p>From these paragraphs, each treated as a document, we create the following <code>DocumentTermMatrix</code> object, which is a list that includes:</p>
+<ul>
+<li>a sparse matrix giving the document-index, the term-index, and the frequency (number of occurrences) of the indexed term; and</li>
+<li>a vector of the terms themselves</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>af_bbb_dtm_lst <span class="ot">&lt;-</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  tm<span class="sc">::</span><span class="fu">DocumentTermMatrix</span>(<span class="at">x =</span> af_bbb_para_tbl<span class="sc">$</span> para)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># af_bbb_dtm_lst  |&gt; object.size(): 44 KB</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 44464 bytes</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>af_bbb_dtm_lst</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;&lt;DocumentTermMatrix (documents: 9, terms: 485)&gt;&gt;
+Non-/sparse entries: 593/3772
+Sparsity           : 86%
+Maximal term length: 18
+Weighting          : term frequency (tf)</code></pre>
+</div>
+</div>
+<p>Here is a table showing the frequency of each term within each document (paragraph).</p>
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>af_bbb_tf_tbl <span class="ot">&lt;-</span> af_bbb_dtm_lst <span class="sc">|&gt;</span> tidytext<span class="sc">::</span><span class="fu">tidy</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>af_bbb_tf_tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="tbl-af-bbb-tf-tbl" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-af-bbb-tf-tbl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Term-frequency: number of occurrences of each term within each document
+</figcaption>
+<div aria-describedby="tbl-af-bbb-tf-tbl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 593 × 3
+   document term       count
+   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt;
+ 1 1        adopt          1
+ 2 1        adult          1
+ 3 1        alcoholic      1
+ 4 1        animal         3
+ 5 1        animalism      2
+ 6 1        animals        5
+ 7 1        announces      1
+ 8 1        aside          1
+ 9 1        associates     1
+10 1        assume         1
+# ℹ 583 more rows</code></pre>
+</div>
+</div>
+</figure>
+</div>
 </section>
 <section id="lda-function" class="level3">
 <h3 class="anchored" data-anchor-id="lda-function">LDA function</h3>
-<p>The <code>topicmodels</code> package also includes function <code>LDA()</code> that performs latent Dirichlet Allocation. The function determines the probable topic of each word within each document by one of two methods: (1) “VEM” (Variational Expectation Maximization); or else (2) “Gibbs” (Gibbs Sampling). The function output, depending on the choice of method, is a list conforming to the format of either <code>LDA_VEM</code> or else <code>LDA_Gibbs</code>. Here we choose the Gibbs Sampling method because it requires less memory.</p>
+<p>We now employ function <code>topicmodels::LDA()</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> to perform latent Dirichlet Allocation. The function determines the probable topic of each word within each document by one of two methods: (1) “VEM” (Variational Expectation Maximization); or else (2) “Gibbs” (Gibbs Sampling). The function output, depending on the choice of method, is a list conforming to the format of either <code>LDA_VEM</code> or else <code>LDA_Gibbs</code>. Here we choose the Gibbs Sampling method because it requires less memory.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb1" data-lst-cap=""><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># avoid `topicmodels` if possible: it's slow to load</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (topicmodels_loaded) {</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(<span class="st">"AssociatedPress"</span>, <span class="at">package =</span> <span class="st">"topicmodels"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># AssociatedPress |&gt; object.size(): 5.5 MB</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># AssociatedPress</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># &lt;&lt;DocumentTermMatrix (documents: 2246, terms: 10473)&gt;&gt;</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Non-/sparse entries: 302031/23220327</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Sparsity           : 99%</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Maximal term length: 18</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Weighting          : term frequency (tf)</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># str(AssociatedPress)</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># List of 6</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#  $ i       : int [1:302031] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#  $ j       : int [1:302031] 116 153 218 272 299 302 447 455 548 597 ...</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#  $ v       : num [1:302031] 1 2 1 1 1 1 2 1 1 1 ...</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#  $ nrow    : int 2246</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#  $ ncol    : int 10473</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#  $ dimnames:List of 2</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..$ Docs : NULL</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..$ Terms: chr [1:10473] "aaron" "abandon" "abandoned" "abandoning" ...</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">#  - attr(*, "class")= chr [1:2] "DocumentTermMatrix" "simple_triplet_matrix"</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#  - attr(*, "weighting")= chr [1:2] "term frequency" "tf"</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># object.size(AssociatedPress)</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 5539768 bytes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>Here are the first few terms extracted from the news articles. They are listed alphabetically and indexed in that order.</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10,473 × 2
-    idx term      
-  &lt;dbl&gt; &lt;chr&gt;     
-1     1 aaron     
-2     2 abandon   
-3     3 abandoned 
-4     4 abandoning
-# ℹ 10,469 more rows</code></pre>
-</div>
-</div>
-<p>Here is the document-term matrix in sparse format. The columns denote the index of the document, the index of the term, and the term-frequency, that is, the number of occurrences of the term within the document.</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 302,031 × 3
-  doc_idx trm_idx tf_ct
-    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
-1       1     116     1
-2       1     153     2
-3       1     218     1
-4       1     272     1
-# ℹ 302,027 more rows</code></pre>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb4" data-lst-cap=""><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Latent Dirichlet Allocation via Gibbs Sampling</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>extract_from_AP_DTM <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (extract_from_AP_DTM <span class="sc">&amp;&amp;</span> topicmodels_loaded) {</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  ap_gs <span class="ot">&lt;-</span> AssociatedPress <span class="sc">|&gt;</span> </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    topicmodels<span class="sc">::</span><span class="fu">LDA</span>(</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="co"># number of topics</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">k =</span> <span class="dv">2</span>, </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">"Gibbs"</span>, </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      <span class="co"># set seed to ensure results can be reproduced</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">1234</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co">: decide whether and how to store ap_gs</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ap_gs |&gt; object.size(): 7.5 MB</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 7493512 bytes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7" data-lst-cap=""><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Latent Dirichlet Allocation via Gibbs Sampling</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>extract_from_DTM <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (extract_from_DTM <span class="sc">&amp;&amp;</span> topicmodels_loaded) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  af_bbb_gs <span class="ot">&lt;-</span> af_bbb_dtm_lst <span class="sc">|&gt;</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    topicmodels<span class="sc">::</span><span class="fu">LDA</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      <span class="co"># number of topics</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">k =</span> <span class="dv">2</span>, </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">"Gibbs"</span>, </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="co"># set seed to ensure results can be reproduced</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">1234</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co">: decide whether and how to store LDA_Gibbs output</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># af_bbb_gs |&gt; object.size(): 77 KB</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 77032 bytes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>From the <code>LDA_Gibbs</code> output we extract the following “beta” matrix, that is the matrix of fitted probabilities that a term within a given document belongs to topic 1 or 2, respectively.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: overcome error generated by tidytext::tidy(&lt;LDA_Gibbs&gt;)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># when &lt;LDA_Gibbs&gt; is large and memory is constrained</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># in the meantime, patch as follows</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>extract_from_DTM <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (extract_from_DTM) {</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># beta: K (topics) by N (terms) of log-probabilities</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  beta_mat           <span class="ot">&lt;-</span> af_bbb_gs<span class="sc">@</span>beta</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(beta_mat) <span class="ot">&lt;-</span> af_bbb_gs<span class="sc">@</span>terms</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(beta_mat) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"topic_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  beta_tbl           <span class="ot">&lt;-</span> beta_mat <span class="sc">|&gt;</span> </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"topic"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">topic =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  beta_long          <span class="ot">&lt;-</span> beta_tbl <span class="sc">|&gt;</span> </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">cols      =</span> <span class="sc">-</span> topic, </span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">names_to  =</span> <span class="st">"term"</span>, </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">values_to =</span> <span class="st">"ln_prob"</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">arrange</span>(term)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># af_bbb_topics: N by K tibble of probabilities</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  af_bbb_topics <span class="ot">&lt;-</span> beta_long <span class="sc">|&gt;</span> </span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">beta =</span> <span class="fu">exp</span>(ln_prob)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span> ln_prob)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># save af_bbb_topics as TSV file only as needed</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  save_file <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (save_file) {</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    af_bbb_topics <span class="sc">|&gt;</span> readr<span class="sc">::</span><span class="fu">write_tsv</span>(here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>      <span class="st">"data"</span>, <span class="st">"retain"</span>, <span class="st">"af_bbb_topics.txt"</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># read in previously saved file</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>  af_bbb_topics <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_tsv</span>(here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data"</span>, <span class="st">"retain"</span>, <span class="st">"af_bbb_topics.txt"</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="co"># af_bbb_topics |&gt; object.size(): 49 KB</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="co"># 48992 bytes</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>af_bbb_topics <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">4</span>, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 20,946 × 3
-  topic term        beta
-  &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;
-1     1 aaron   1.69e-12
-2     2 aaron   3.90e- 5
-3     1 abandon 2.65e- 5
-4     2 abandon 3.99e- 5
-# ℹ 20,942 more rows</code></pre>
+<pre><code># A tibble: 970 × 3
+  topic term          beta
+  &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;
+1     1 abolishes 0.00271 
+2     2 abolishes 0.000245
+3     1 abridged  0.000247
+4     2 abridged  0.00269 
+# ℹ 966 more rows</code></pre>
 </div>
 </div>
 </section>
@@ -336,42 +413,70 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="output-interpretation">Output interpretation</h3>
 <p>Here are the most probable terms for each of the two constructed topics, along with their probabilities (beta), shown as a bar chart.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>g_af_bbb_top_terms <span class="ot">&lt;-</span> af_bbb_top_terms <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder_within</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> term, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> beta, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">within =</span> topic)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> beta, <span class="at">y =</span> term, <span class="at">fill =</span> <span class="fu">factor</span>(topic)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="fu">as_factor</span>(topic), <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span> </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  tidytext<span class="sc">::</span><span class="fu">scale_y_reordered</span>() <span class="sc">+</span> </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"AF-BBB paragraphs: most probable terms by topic"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>g_af_bbb_top_terms</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="fig-ap-top-terms" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-af-bbb-top-terms" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-ap-top-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="xtra_latent_dir_alloc_files/figure-html/fig-ap-top-terms-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-af-bbb-top-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="xtra_latent_dir_alloc_files/figure-html/fig-af-bbb-top-terms-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ap-top-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: AP articles: most probable terms by topic
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-af-bbb-top-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: AF-BBB paragraphs: most probable terms by topic
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Topics 1 and 2 seem to pertain to business and politics, respectively, although “new” and “people” are prominent terms for both topics.</p>
+<p>Topics 1 and 2 seem to pertain to “The Butter Battle Book” and “Animal Farm”, respectively, although we see “farm” in topic 1 and “battle” in topic 2.</p>
 <p>Another way to compare topics 1 and 2 is to examine the terms shared by the two topics and then find the terms having the biggest disparity in (topic, term) probability (beta). Here’s a bar chart showing the more prominent differences, expressed as</p>
-<p><span id="eq-log-ratio-topic-term"><span class="math display">\[
+<p><span id="eq-log2-ratio-topic-term"><span class="math display">\[
 \begin{align}
   \log_2 \left( \frac{\beta_2}{\beta_1} \right)
 \end{align}
 \qquad(3)\]</span></span></p>
 <p>restricting the set of terms to those assigned to both topics <span class="math inline">\((\min(\beta_1, \beta_2) &gt; 0)\)</span> with at least one of them exceeding a probability threshhold, say <span class="math inline">\((\max(\beta_1, \beta_2) &gt; 0.001)\)</span>.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>g_af_bbb_b_ratio_wide <span class="ot">&lt;-</span> af_bbb_b_ratio_wide <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(<span class="at">direction =</span> log_ratio <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice_max</span>(<span class="fu">abs</span>(log_ratio), <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder</span>(term, log_ratio)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(log_ratio, term)) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Log2 ratio of beta in topic 2 / topic 1"</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>g_af_bbb_b_ratio_wide</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="fig-beta-ratio-wide" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-af-bbb-b-ratio-wide" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-beta-ratio-wide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="xtra_latent_dir_alloc_files/figure-html/fig-beta-ratio-wide-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-af-bbb-b-ratio-wide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="xtra_latent_dir_alloc_files/figure-html/fig-af-bbb-b-ratio-wide-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beta-ratio-wide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-af-bbb-b-ratio-wide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>This figure further supports the earlier conjecture that topics 1 and 2 pertain to business and politics, respectively.</p>
+<p>This figure further supports the earlier conjecture that topic 1 best matches “The Butter Battle Book” and topic 2 best matches “Animal Farm”.</p>
 </section>
 </section>
 <section id="the-lda-gibbs-algorithm" class="level2">
@@ -421,7 +526,6 @@ Steyvers, Mark, and Tom Griffiths. 2007. <em>Probabilistic Topic Models</em>. <a
 <li id="fn1"><p>Other authors use the verb “sample” rather than “generate” to mean random generation from a specified probability distribution.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>We assume that document <span class="math inline">\(d\)</span> consists of <span class="math inline">\(n_d\)</span> word positions, which is either a fixed positive integer, or else is generated independently of other random variables.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>See <span class="citation" data-cites="Grün_Hornik_2011">Grün and Hornik (<a href="#ref-Grün_Hornik_2011" role="doc-biblioref">2011</a>)</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>The Document Term Matrix (DTM) is a list format created by <code>R</code> package <code>tm</code>, devoted to topic mining.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
