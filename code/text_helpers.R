@@ -9,7 +9,11 @@
 ##
 #  para2token()
 #    input:  a text file whose "lines" are actually paragraphs
-#    return: list of tibbles (paragraphs, sentences, words)
+#    return list of tibbles whose distinctive columns are:
+#      - input_tbl [para]: original input paragraphs
+#      - sentence_tbl [sntc]: sentences stripped of punctuation
+#      - token_tbl [word]: words stripped of stop-words
+#      - para_tbl [para]: paragraphs reconstructed from token_tbl
 ##
 para2token <- function(
     file,                   # passed to readr::read_lines()
