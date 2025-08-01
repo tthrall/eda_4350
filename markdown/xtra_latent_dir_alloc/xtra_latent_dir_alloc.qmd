@@ -324,7 +324,7 @@ Here are the successive paragraphs (stripped of punctuation and stop-words) summ
 af_bbb_para_tbl |> print(width = 72)
 ```
 
-From these paragraphs, each treated as a document, we create the following `DocumentTermMatrix` object, which is a list that includes: 
+From these paragraphs (each treated as a document) we create the following `DocumentTermMatrix` object, which is a list that includes: 
 
   - a sparse matrix giving the document-index, the term-index, and the frequency (number of occurrences) of the indexed term; and 
   - a vector of the terms themselves
@@ -372,7 +372,7 @@ Here we choose the Gibbs Sampling method because it requires less memory.  The `
 
 # Latent Dirichlet Allocation via Gibbs Sampling
 
-extract_from_DTM <- TRUE
+extract_from_DTM <- FALSE
 if (extract_from_DTM && topicmodels_loaded) {
   af_bbb_gs <- af_bbb_dtm_lst |> 
     topicmodels::LDA(
@@ -383,65 +383,112 @@ if (extract_from_DTM && topicmodels_loaded) {
       control = list(seed = 1234)
     )
   
-  # save output components as TSV files
-  # but save only as needed
-  save_file <- TRUE
+  ## 
+  # extract output as separate tibbles
+  ## 
+  
+  # z: topic assignment of successive words across corpus
+  af_bbb_gs_z <- af_bbb_gs@ z |> 
+    tibble::as_tibble_col(column_name = "z")
+  
+  # conc: initial concentration parameters
+  af_bbb_gs_conc <- tibble::tribble(
+    ~param, ~value, 
+    "alpha", af_bbb_gs@ alpha,
+    "delta", af_bbb_gs@ control@ delta)
+  
+  # terms: unique words across the corpus
+  af_bbb_gs_terms <- tibble::tibble(
+    tdx  = 1:length(af_bbb_gs@ terms), 
+    term = af_bbb_gs@ terms)
+  
+  # beta: topic-specific ln(probability) across unique terms
+  # Note: tibble is transpose of the K-by-N beta matrix
+  af_bbb_gs_beta <- af_bbb_gs@ beta |> 
+    t() |> tibble::as_tibble()
+  names(af_bbb_gs_beta) <- paste0("topic_", 1:2)
+  
+  # gamma: prob(topic | doc), a D-by-K matrix
+  af_bbb_gs_gamma <- af_bbb_gs@ gamma |> 
+    tibble::as_tibble()
+  names(af_bbb_gs_gamma) <- paste0("topic_", 1:2)
+  
+  # dw_assign: topic assignment per (doc, term)
+  af_bbb_gs_dw_assign <- tibble::tibble(
+    doc_idx   = af_bbb_gs@ wordassignments$ i, 
+    trm_idx   = af_bbb_gs@ wordassignments$ j, 
+    topic_idx = af_bbb_gs@ wordassignments$ v |> as.integer()
+  )
+  
+  ## 
+  # save output components as TSV files: only as needed
+  ## 
+  save_file <- FALSE
   if (save_file) {
     
     # z: topic assignment of successive words across corpus
-    af_bbb_gs_z <- af_bbb_gs@ z |> 
-      tibble::as_tibble_col(column_name = "z")
     af_bbb_gs_z |> readr::write_tsv(here::here(
       "data", "retain", "af_bbb_gs_z.txt"
     ))
     
     # conc: initial concentration parameters
-    af_bbb_gs_conc <- tibble::tribble(
-      ~param, ~value, 
-      "alpha", af_bbb_gs@ alpha,
-      "delta", af_bbb_gs@ control@ delta)
     af_bbb_gs_conc |> readr::write_tsv(here::here(
       "data", "retain", "af_bbb_gs_conc.txt"
     ))
     
     # terms: unique words across the corpus
-    af_bbb_gs_terms <- tibble::tibble(
-      tdx  = 1:length(af_bbb_gs@ terms), 
-      term = af_bbb_gs@ terms)
     af_bbb_gs_terms |> readr::write_tsv(here::here(
       "data", "retain", "af_bbb_gs_terms.txt"
     ))
     
     # beta: topic-specific ln(probability) across unique terms
-    # Note: saved tibble is transpose of the K-by-N beta matrix
-    af_bbb_gs_beta <- af_bbb_gs@ beta |> 
-      t() |> tibble::as_tibble()
-    names(af_bbb_gs_beta) <- paste0("topic_", 1:2)
     af_bbb_gs_beta |> readr::write_tsv(here::here(
       "data", "retain", "af_bbb_gs_beta.txt"
     ))
     
     # gamma: prob(topic | doc), a D-by-K matrix
-    af_bbb_gs_gamma <- af_bbb_gs@ gamma |> 
-      tibble::as_tibble()
-    names(af_bbb_gs_gamma) <- paste0("topic_", 1:2)
     af_bbb_gs_gamma |> readr::write_tsv(here::here(
       "data", "retain", "af_bbb_gs_gamma.txt"
     ))
     
     # dw_assign: topic assignment per (doc, term)
-    af_bbb_gs_dw_assign <- tibble::tibble(
-      doc_idx   = af_bbb_gs@ wordassignments$ i, 
-      trm_idx   = af_bbb_gs@ wordassignments$ j, 
-      topic_idx = af_bbb_gs@ wordassignments$ v |> as.integer()
-    )
     af_bbb_gs_dw_assign |> readr::write_tsv(here::here(
       "data", "retain", "af_bbb_gs_dw_assign.txt"
     ))
     
   }
 } else {
-  # TODO: decide whether and how to store LDA_Gibbs output
+  # read previously saved LDA-Gibbs components
+  
+  # z: topic assignment of successive words across corpus
+  af_bbb_gs_z <- readr::read_tsv(here::here(
+    "data", "retain", "af_bbb_gs_z.txt"
+  ))
+  
+  # conc: initial concentration parameters
+  af_bbb_gs_conc <- readr::read_tsv(here::here(
+    "data", "retain", "af_bbb_gs_conc.txt"
+  ))
+  
+  # terms: unique words across the corpus
+  af_bbb_gs_terms <- readr::read_tsv(here::here(
+    "data", "retain", "af_bbb_gs_terms.txt"
+  ))
+  
+  # beta: topic-specific ln(probability) across unique terms
+  af_bbb_gs_beta <- readr::read_tsv(here::here(
+    "data", "retain", "af_bbb_gs_beta.txt"
+  ))
+  
+  # gamma: prob(topic | doc), a D-by-K matrix
+  af_bbb_gs_gamma <- readr::read_tsv(here::here(
+    "data", "retain", "af_bbb_gs_gamma.txt"
+  ))
+  
+  # dw_assign: topic assignment per (doc, term)
+  af_bbb_gs_dw_assign <- readr::read_tsv(here::here(
+    "data", "retain", "af_bbb_gs_dw_assign.txt"
+  ))
 }
 ```
 
@@ -498,7 +545,7 @@ if (extract_from_DTM && topicmodels_loaded) {
 
 ```
 
-From the `LDA_Gibbs` output we extract the following "beta" matrix, that is the matrix of fitted probabilities that a term within a given document belongs to topic 1 or 2, respectively.
+From the `LDA_Gibbs` output we extract the following "beta" matrix consisting of two fitted probability vectors: the respective probability distributions of topic 1 and 2 across the unique terms of the corpus.
 
 ```{r}
 #| label: af-bbb-word-tally
@@ -512,20 +559,20 @@ From the `LDA_Gibbs` output we extract the following "beta" matrix, that is the 
 af_bbb_word_tally <- tibble::tibble(
   obj  = c(
     "af_bbb_token_tbl", 
-    "af_bbb_gs", 
+    "af_bbb_gs_z", 
     "af_bbb_vocab_wt", 
     "af_bbb_tf_tbl", 
     "af_bbb_vocab_lst", 
-    "af_bbb_gs"
+    "af_bbb_gs_terms"
   ), 
-  elt  = c("word", "z", "wt", "count", "af_bbb_vocab", "terms"), 
+  elt  = c("word", "z", "wt", "count", "af_bbb_vocab", "term"), 
   len  = c(
     af_bbb_token_tbl$ word         |> length(), 
-    af_bbb_gs@ z                   |> length(), 
+    af_bbb_gs_z$ z                 |> length(), 
     af_bbb_vocab_wt$ wt            |> length(), 
     af_bbb_tf_tbl$ count           |> length(), 
     af_bbb_vocab_lst$ af_bbb_vocab |> length(),
-    af_bbb_gs@ terms               |> length()
+    af_bbb_gs_terms$ term          |> length()
   ))
 
 # # af_bbb_word_tally
@@ -533,11 +580,11 @@ af_bbb_word_tally <- tibble::tibble(
 #   obj              elt            len
 #   <chr>            <chr>        <int>
 # 1 af_bbb_token_tbl word           725
-# 2 af_bbb_gs        z              717
+# 2 af_bbb_gs_z      z              717
 # 3 af_bbb_vocab_wt  wt             598
 # 4 af_bbb_tf_tbl    count          593
 # 5 af_bbb_vocab_lst af_bbb_vocab   486
-# 6 af_bbb_gs        terms          485
+# 6 af_bbb_gs_terms  term           485
 ```
 
 ```{r}
