@@ -131,14 +131,17 @@ window.Quarto = {
   <ul>
   <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
   <li><a href="#text-analysis" id="toc-text-analysis" class="nav-link" data-scroll-target="#text-analysis">Text Analysis</a></li>
-  <li><a href="#generative-model" id="toc-generative-model" class="nav-link" data-scroll-target="#generative-model">Generative Model</a></li>
   <li><a href="#book-review-example" id="toc-book-review-example" class="nav-link" data-scroll-target="#book-review-example">Book Review Example</a>
   <ul class="collapse">
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
   <li><a href="#lda-function" id="toc-lda-function" class="nav-link" data-scroll-target="#lda-function">LDA function</a></li>
   <li><a href="#output-interpretation" id="toc-output-interpretation" class="nav-link" data-scroll-target="#output-interpretation">Output interpretation</a></li>
   </ul></li>
-  <li><a href="#the-lda-gibbs-algorithm" id="toc-the-lda-gibbs-algorithm" class="nav-link" data-scroll-target="#the-lda-gibbs-algorithm">The LDA-Gibbs Algorithm</a></li>
+  <li><a href="#mathematical-framework" id="toc-mathematical-framework" class="nav-link" data-scroll-target="#mathematical-framework">Mathematical Framework</a>
+  <ul class="collapse">
+  <li><a href="#generative-model" id="toc-generative-model" class="nav-link" data-scroll-target="#generative-model">Generative Model</a></li>
+  <li><a href="#lda-gibbs-algorithm" id="toc-lda-gibbs-algorithm" class="nav-link" data-scroll-target="#lda-gibbs-algorithm">LDA-Gibbs Algorithm</a></li>
+  </ul></li>
   <li><a href="#concluding-remarks" id="toc-concluding-remarks" class="nav-link" data-scroll-target="#concluding-remarks">Concluding Remarks</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
@@ -166,7 +169,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">20:25 Wed 30-Jul-2025</p>
+      <p class="date">11:09 Fri 1-Aug-2025</p>
     </div>
   </div>
   
@@ -193,45 +196,12 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="text-analysis">Text Analysis</h2>
 <p>Part 1, Session 2b, of the course presents an overview of text analysis based on <span class="citation" data-cites="Silge_Robinson_2017">Silge and Robinson (<a href="#ref-Silge_Robinson_2017" role="doc-biblioref">2017</a>)</span>. The authors use the <code>R</code> function <code>topicmodels::LDA()</code> with default parameter setting <code>method = VEM</code>, which denotes the Variational Expectation Maximization (EM) algorithm. In this note we use an alternative implementation of LDA described below.</p>
 </section>
-<section id="generative-model" class="level2">
-<h2 class="anchored" data-anchor-id="generative-model">Generative Model</h2>
-<p>LDA treats each document as a mixture of topics, and each topic as a mixture of words. LDA adopts a <em>bag-of-words</em> model in which each document <span class="math inline">\(d\)</span> in a corpus of documents <span class="math inline">\(\mathcal{D}\)</span> is generated from two Dirichlet distributions: <span class="math inline">\(Dir(\alpha_\bullet)\)</span> over <span class="math inline">\(K\)</span> possible topics; and <span class="math inline">\(Dir(\eta_\bullet)\)</span> over <span class="math inline">\(N\)</span> possible words. In this model documents are presumed to have been randomly generated as follows.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<ul>
-<li>Generate word probability vector <span class="math inline">\(\phi_\bullet (k) \sim Dir(\eta_\bullet )\)</span> for each topic index <span class="math inline">\(k \in \{ 1, 2, \ldots, K \}\)</span></li>
-</ul>
-<p>Then for each document <span class="math inline">\(d \in \mathcal{D}\)</span> and for each word position <span class="math inline">\(\nu \in d\)</span>:<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<ol type="1">
-<li>Generate topic probability vector <span class="math inline">\(\theta_\bullet (d) \sim Dir(\alpha_\bullet)\)</span></li>
-<li>Assign topic index <span class="math inline">\(\kappa (d,\nu) \sim \theta_\bullet (d)\)</span></li>
-<li>Generate word index <span class="math inline">\(\omega (d,\nu) \sim \phi_\bullet (\kappa (d,\nu))\)</span></li>
-</ol>
-<p>These Dirichlet distributions are typically assumed to be symmetric. That is, if we define</p>
-<p><span id="eq-avg-Dirichlet-param"><span class="math display">\[
-\begin{align}
-  \bar{\alpha} &amp;= \frac{\alpha_+}{K} = \frac{1}{K} \sum_{k = 1}^K
-\alpha_k \\
-  \bar{\eta} &amp;= \frac{\eta_+}{N} = \frac{1}{N} \sum_{\nu = 1}^N
-\eta_\nu
-\end{align}
-\qquad(1)\]</span></span></p>
-<p>then current practice is to set all elements of vectors <span class="math inline">\(\alpha_\bullet\)</span> and <span class="math inline">\(\eta_\bullet\)</span> equal to their respective average values.</p>
-<p><span id="eq-symm-Dirichlet"><span class="math display">\[
-\begin{align}
-  \alpha_k &amp;= \bar{\alpha} \quad \text{for } k \in \{1, \ldots, K \} \\
-  \eta_\nu &amp;= \bar{\eta} \quad \text{for } \nu \in \{1, \ldots, N \}
-\end{align}
-\qquad(2)\]</span></span></p>
-<p>The values <span class="math inline">\(\bar{\alpha}\)</span> and <span class="math inline">\(\bar{\eta}\)</span> are called <em>concentration</em> parameters.</p>
-<p>For a symmetric Dirichlet distribution as above, if <span class="math inline">\(\bar{\alpha} &lt; 1\)</span> then for each document <span class="math inline">\(d\)</span>, <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a sparse probability vector <span class="math inline">\(\theta_\bullet (d)\)</span> that gives most of its weight to just a few of the K topics (with the selection of topics varying across documents). On the other hand, if <span class="math inline">\(\bar{\alpha} &gt; 1\)</span> then <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a more uniform probability vector <span class="math inline">\(\theta_\bullet (d)\)</span> spread more evenly across all topics.</p>
-<p>As for the distribution of words within a topic, in most applications the number <span class="math inline">\(N\)</span> of distinct words in the corpus <span class="math inline">\(\mathcal{D}\)</span> may be a few thousand or even a few tens of thousands. Then each topic is a mixture across a distinct subset of a large number of words, typically with <span class="math inline">\(\bar{\eta} &lt; 1\)</span>.</p>
-<p>See <span class="citation" data-cites="Antoniak_2023">Antoniak (<a href="#ref-Antoniak_2023" role="doc-biblioref">2023</a>)</span> for practical suggestions on these and other settings and workflows.</p>
-</section>
 <section id="book-review-example" class="level2">
 <h2 class="anchored" data-anchor-id="book-review-example">Book Review Example</h2>
+<p>As an experiment we construct a small set of documents from two distinct sources. We then run the documents through the LDA algorithm (without identifying the source of each document) specifying that <span class="math inline">\(K = 2\)</span> topics are to be constructed to see whether and how well the constructed topics match the original sources.</p>
 <section id="data" class="level3">
 <h3 class="anchored" data-anchor-id="data">Data</h3>
-<p>“Animal Farm” by George Orwell was published in 1945, and nearly forty years later (1984) “The Butter Battle Book” by Dr.&nbsp;Seuss was published. The books are quite different of course, but they both allude to the Soviet Union in its earlier and later years, respectively.</p>
-<p>In 1945 “Animal Farm” by George Orwell was published, and nearly forty years later (1984) “The Butter Battle Book” by Dr.&nbsp;Seuss was published. The books are quite different of course, but they both allude to the Soviet Union in its earlier and later years, respectively.</p>
+<p>“Animal Farm” by George Orwell was published in 1945<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, and nearly forty years later (1984) “The Butter Battle Book” by Dr.&nbsp;Seuss was published<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The books are quite different of course, but they both allude to the Soviet Union in its earlier and later years, respectively.</p>
 <p>As a toy example of a corpus of documents, we have extracted Wikipedia’s description of the plots of the two books, counting each paragraph as a separate document.</p>
 <p>Here are the successive paragraphs (stripped of punctuation and stop-words) summarizing the two books.</p>
 <details class="code-fold">
@@ -241,7 +211,7 @@ window.Quarto = {
 <div id="tbl-af-bbb-para-tbl" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-af-bbb-para-tbl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Paragraphs from summaries of two books
+Table&nbsp;1: Paragraphs summarizing ‘Animal Farm’ (AF), then ‘The Butter Battle Book’ (BBB)
 </figcaption>
 <div aria-describedby="tbl-af-bbb-para-tbl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -272,10 +242,13 @@ Table&nbsp;1: Paragraphs from summaries of two books
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>af_bbb_dtm_lst <span class="ot">&lt;-</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  tm<span class="sc">::</span><span class="fu">DocumentTermMatrix</span>(<span class="at">x =</span> af_bbb_para_tbl<span class="sc">$</span> para)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># af_bbb_dtm_lst  |&gt; object.size(): 44 KB</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 44464 bytes</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># date()</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] "Fri Aug  1 10:55:32 2025"</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>af_bbb_dtm_lst</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># af_bbb_dtm_lst  |&gt; object.size(): 44 KB</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 44464 bytes</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>af_bbb_dtm_lst</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;&lt;DocumentTermMatrix (documents: 9, terms: 485)&gt;&gt;
@@ -319,7 +292,8 @@ Table&nbsp;2: Term-frequency: number of occurrences of each term within each doc
 </section>
 <section id="lda-function" class="level3">
 <h3 class="anchored" data-anchor-id="lda-function">LDA function</h3>
-<p>We now employ function <code>topicmodels::LDA()</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> to perform latent Dirichlet Allocation. The function determines the probable topic of each word within each document by one of two methods: (1) “VEM” (Variational Expectation Maximization); or else (2) “Gibbs” (Gibbs Sampling). The function output, depending on the choice of method, is a list conforming to the format of either <code>LDA_VEM</code> or else <code>LDA_Gibbs</code>. Here we choose the Gibbs Sampling method because it requires less memory.</p>
+<p>We now employ function <code>topicmodels::LDA()</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> to perform latent Dirichlet allocation. The function determines the probable topic of each word within each document by one of two methods: (1) “VEM” (Variational Expectation Maximization); or else (2) “Gibbs” (Gibbs Sampling). The function output, depending on the choice of method, is a list conforming to the format of either <code>LDA_VEM</code> or else <code>LDA_Gibbs</code>.</p>
+<p>Here we choose the Gibbs Sampling method because it requires less memory. The <code>DocumentTermMatrix</code> (DTM) representing the corpus of documents (paragraphs) is the primary input to <code>topicmodels::LDA()</code>. (Note that the DTM does not identify the source of each document.) We specify that <code>LDA()</code> should construct <span class="math inline">\(K = 2\)</span> topics from this input corpus.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
@@ -339,8 +313,50 @@ Table&nbsp;2: Term-frequency: number of occurrences of each term within each doc
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co">: decide whether and how to store LDA_Gibbs output</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># af_bbb_gs |&gt; object.size(): 77 KB</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 77032 bytes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># date()</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] "Fri Aug  1 09:46:27 2025"</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co"># af_bbb_gs |&gt; object.size(): 62 KB</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 62072 bytes</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co"># af_bbb_gs |&gt; str()</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Formal class 'LDA_Gibbs' [package "topicmodels"] with 16 slots</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ seedwords      : NULL</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ z              : int [1:717] 1 2 2 2 2 2 2 2 2 2 ...</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ alpha          : num 25</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ call           : language topicmodels::LDA(x = af_bbb_dtm_lst, k = 2, method = "Gibbs", control = list(seed = 1234))</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ Dim            : int [1:2] 9 485</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ control        :Formal class 'LDA_Gibbscontrol' [package "topicmodels"] with 14 slots</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ delta        : num 0.1</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ iter         : int 2000</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ thin         : int 2000</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ burnin       : int 0</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ initialize   : chr "random"</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ alpha        : num 25</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ seed         : int 1234</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ verbose      : int 0</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ prefix       : chr "C:\\Users\\tthra\\AppData\\Local\\Temp\\Rtmpii0FrX\\file3809f25778"</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ save         : int 0</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ nstart       : int 1</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ best         : logi TRUE</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ keep         : int 0</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ estimate.beta: logi TRUE</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ k              : int 2</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ terms          : chr [1:485] "adopt" "adult" "alcoholic" "animal" ...</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ documents      : chr [1:9] "1" "2" "3" "4" ...</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ beta           : num [1:2, 1:485] -5.91 -8.32 -8.31 -5.92 -8.31 ...</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ gamma          : num [1:9, 1:2] 0.449 0.423 0.53 0.447 0.562 ...</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ wordassignments:List of 5</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..$ i   : int [1:593] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..$ j   : int [1:593] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..$ v   : num [1:593] 1 2 2 2 2 2 1 2 2 1 ...</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..$ nrow: int 9</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..$ ncol: int 485</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..- attr(*, "class")= chr "simple_triplet_matrix"</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ loglikelihood  : num -4730</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ iter           : int 2000</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ logLiks        : num(0) </span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ n              : int 717</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>From the <code>LDA_Gibbs</code> output we extract the following “beta” matrix, that is the matrix of fitted probabilities that a term within a given document belongs to topic 1 or 2, respectively.</p>
@@ -416,7 +432,7 @@ Table&nbsp;2: Term-frequency: number of occurrences of each term within each doc
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>g_af_bbb_top_terms <span class="ot">&lt;-</span> af_bbb_top_terms <span class="sc">|&gt;</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder_within</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">term =</span> tidytext<span class="sc">::</span><span class="fu">reorder_within</span>(</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> term, </span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> beta, </span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">within =</span> topic)) <span class="sc">|&gt;</span> </span>
@@ -442,13 +458,13 @@ Figure&nbsp;1: AF-BBB paragraphs: most probable terms by topic
 </div>
 </div>
 </div>
-<p>Topics 1 and 2 seem to pertain to “The Butter Battle Book” and “Animal Farm”, respectively, although we see “farm” in topic 1 and “battle” in topic 2.</p>
+<p>Topic 1’s top ten terms include “yooks” and “zooks”, which do not appear in the top ten terms of topic 2. So topic 1 seems to match “The Butter Battle Book”. Similarly, topic 2’s top ten terms include “napoleon”, “snowball”, and “jones”, which match “Animal Farm”. Note however that “farm” appears under topic 1 and “battle” appears under topic 2.</p>
 <p>Another way to compare topics 1 and 2 is to examine the terms shared by the two topics and then find the terms having the biggest disparity in (topic, term) probability (beta). Here’s a bar chart showing the more prominent differences, expressed as</p>
 <p><span id="eq-log2-ratio-topic-term"><span class="math display">\[
 \begin{align}
   \log_2 \left( \frac{\beta_2}{\beta_1} \right)
 \end{align}
-\qquad(3)\]</span></span></p>
+\qquad(1)\]</span></span></p>
 <p>restricting the set of terms to those assigned to both topics <span class="math inline">\((\min(\beta_1, \beta_2) &gt; 0)\)</span> with at least one of them exceeding a probability threshhold, say <span class="math inline">\((\max(\beta_1, \beta_2) &gt; 0.001)\)</span>.</p>
 <div class="cell">
 <details class="code-fold">
@@ -476,11 +492,46 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
 </div>
 </div>
 </div>
-<p>This figure further supports the earlier conjecture that topic 1 best matches “The Butter Battle Book” and topic 2 best matches “Animal Farm”.</p>
+<p>This figure further supports the earlier conjecture that topic 1 best matches “The Butter Battle Book” and topic 2 best matches “Animal Farm”. But the constructed topics are not identical to the original sources of the documents, since “farm” is a key term distinguishing topic 1 from topic 2.</p>
 </section>
 </section>
-<section id="the-lda-gibbs-algorithm" class="level2">
-<h2 class="anchored" data-anchor-id="the-lda-gibbs-algorithm">The LDA-Gibbs Algorithm</h2>
+<section id="mathematical-framework" class="level2">
+<h2 class="anchored" data-anchor-id="mathematical-framework">Mathematical Framework</h2>
+<section id="generative-model" class="level3">
+<h3 class="anchored" data-anchor-id="generative-model">Generative Model</h3>
+<p>LDA treats each document as a mixture of topics, and each topic as a mixture of words. LDA adopts a <em>bag-of-words</em> model in which each document <span class="math inline">\(d\)</span> in a corpus of documents <span class="math inline">\(\mathcal{D}\)</span> is generated from two Dirichlet distributions: <span class="math inline">\(Dir(\alpha_\bullet)\)</span> over <span class="math inline">\(K\)</span> possible topics; and <span class="math inline">\(Dir(\eta_\bullet)\)</span> over <span class="math inline">\(N\)</span> possible words. In this model documents are presumed to have been randomly generated as follows.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<ul>
+<li>Generate word probability vector <span class="math inline">\(\phi_\bullet (k) \sim Dir(\eta_\bullet )\)</span> for each topic index <span class="math inline">\(k \in \{ 1, 2, \ldots, K \}\)</span></li>
+</ul>
+<p>Then for each document <span class="math inline">\(d \in \mathcal{D}\)</span> and for each word position <span class="math inline">\(\nu \in d\)</span>:<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<ol type="1">
+<li>Generate topic probability vector <span class="math inline">\(\theta_\bullet (d) \sim Dir(\alpha_\bullet)\)</span></li>
+<li>Assign topic index <span class="math inline">\(\kappa (d,\nu) \sim \theta_\bullet (d)\)</span></li>
+<li>Generate word index <span class="math inline">\(\omega (d,\nu) \sim \phi_\bullet (\kappa (d,\nu))\)</span></li>
+</ol>
+<p>These Dirichlet distributions are typically assumed to be symmetric. That is, if we define</p>
+<p><span id="eq-avg-Dirichlet-param"><span class="math display">\[
+\begin{align}
+  \bar{\alpha} &amp;= \frac{\alpha_+}{K} = \frac{1}{K} \sum_{k = 1}^K
+\alpha_k \\
+  \bar{\eta} &amp;= \frac{\eta_+}{N} = \frac{1}{N} \sum_{\nu = 1}^N
+\eta_\nu
+\end{align}
+\qquad(2)\]</span></span></p>
+<p>then current practice is to set all elements of vectors <span class="math inline">\(\alpha_\bullet\)</span> and <span class="math inline">\(\eta_\bullet\)</span> equal to their respective average values.</p>
+<p><span id="eq-symm-Dirichlet"><span class="math display">\[
+\begin{align}
+  \alpha_k &amp;= \bar{\alpha} \quad \text{for } k \in \{1, \ldots, K \} \\
+  \eta_\nu &amp;= \bar{\eta} \quad \text{for } \nu \in \{1, \ldots, N \}
+\end{align}
+\qquad(3)\]</span></span></p>
+<p>The values <span class="math inline">\(\bar{\alpha}\)</span> and <span class="math inline">\(\bar{\eta}\)</span> are called <em>concentration</em> parameters.</p>
+<p>For a symmetric Dirichlet distribution as above, if <span class="math inline">\(\bar{\alpha} &lt; 1\)</span> then for each document <span class="math inline">\(d\)</span>, <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a sparse probability vector <span class="math inline">\(\theta_\bullet (d)\)</span> that gives most of its weight to just a few of the K topics (with the selection of topics varying across documents). On the other hand, if <span class="math inline">\(\bar{\alpha} &gt; 1\)</span> then <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a more uniform probability vector <span class="math inline">\(\theta_\bullet (d)\)</span> spread more evenly across all topics.</p>
+<p>As for the distribution of words within a topic, in most applications the number <span class="math inline">\(N\)</span> of distinct words in the corpus <span class="math inline">\(\mathcal{D}\)</span> may be a few thousand or even a few tens of thousands. Then each topic is a mixture across a distinct subset of a large number of words, typically with <span class="math inline">\(\bar{\eta} &lt; 1\)</span>.</p>
+<p>See <span class="citation" data-cites="Antoniak_2023">Antoniak (<a href="#ref-Antoniak_2023" role="doc-biblioref">2023</a>)</span> for practical suggestions on these and other settings and workflows.</p>
+</section>
+<section id="lda-gibbs-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="lda-gibbs-algorithm">LDA-Gibbs Algorithm</h3>
 <p>The LDA identification of topics is a particular form of Markov chain Monte Carlo (MCMC) method. The data can be summarized as the set of unique words across the corpus of documents, along with counts of those unique words per document. The objective is to determine the topic of each word instance within each document.</p>
 <p>Assignment of topics to word positions is intially made at random in a manner similar to the generative model outlined above. We thereby have initial values for:</p>
 <p><span id="eq-log-ratio-topic-term"><span class="math display">\[
@@ -494,6 +545,7 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
 <p>The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the word in that position to each topic, conditioned on the current topic assignments of all other words. From this conditional distribution, a topic is generated and stored as the new topic assignment for the given word in the given position.</p>
 <p>A great computational savings is achieved by the choice of a Dirichlet prior for the multinomial distribution of unique topic instances per document, because the Dirichlet distribution is conjugate to the multinomial distribution. For further details on this updating algorithm see <span class="citation" data-cites="Steyvers_Griffiths_2007">Steyvers and Griffiths (<a href="#ref-Steyvers_Griffiths_2007" role="doc-biblioref">2007</a>)</span>.</p>
 </section>
+</section>
 <section id="concluding-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
 <p>Topic modeling is an active area of research that contributes to the statistical analysis of large document collections. The LDA model of document-generation enables Bayesian analysis of the latent structure of a corpus of documents.</p>
@@ -505,6 +557,9 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
 
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-wiki_Animal_Farm" class="csl-entry" role="listitem">
+<span>“Animal Farm | Wikipedia.”</span> 2025. <em>Wikipedia</em>, July. <a href="https://en.wikipedia.org/wiki/Animal_Farm">https://en.wikipedia.org/wiki/Animal_Farm</a>.
+</div>
 <div id="ref-Antoniak_2023" class="csl-entry" role="listitem">
 Antoniak, Maria. 2023. <span>“Topic Modeling for the People.”</span> <em>Maria Antoniak</em>. University of Colorado Boulder. <a href="https://maria-antoniak.github.io/2022/07/27/topic-modeling-for-the-people.html">https://maria-antoniak.github.io/2022/07/27/topic-modeling-for-the-people.html</a>.
 </div>
@@ -520,12 +575,17 @@ Silge, Julia, and David Robinson. 2017. <em>Text Mining with r: A Tidy Approach<
 <div id="ref-Steyvers_Griffiths_2007" class="csl-entry" role="listitem">
 Steyvers, Mark, and Tom Griffiths. 2007. <em>Probabilistic Topic Models</em>. <a href="https://cocosci.princeton.edu/tom/papers/SteyversGriffiths.pdf">https://cocosci.princeton.edu/tom/papers/SteyversGriffiths.pdf</a>.
 </div>
+<div id="ref-wiki_Butter_Battle_Book" class="csl-entry" role="listitem">
+<span>“The Butter Battle Book | Wikipedia.”</span> 2025. <em>Wikipedia</em>, July. <a href="https://en.wikipedia.org/wiki/The_Butter_Battle_Book">https://en.wikipedia.org/wiki/The_Butter_Battle_Book</a>.
+</div>
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>Other authors use the verb “sample” rather than “generate” to mean random generation from a specified probability distribution.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>We assume that document <span class="math inline">\(d\)</span> consists of <span class="math inline">\(n_d\)</span> word positions, which is either a fixed positive integer, or else is generated independently of other random variables.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>See <span class="citation" data-cites="wiki_Animal_Farm"><span>“Animal Farm | Wikipedia”</span> (<a href="#ref-wiki_Animal_Farm" role="doc-biblioref">2025</a>)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>See <span class="citation" data-cites="wiki_Butter_Battle_Book"><span>“The Butter Battle Book | Wikipedia”</span> (<a href="#ref-wiki_Butter_Battle_Book" role="doc-biblioref">2025</a>)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>See <span class="citation" data-cites="Grün_Hornik_2011">Grün and Hornik (<a href="#ref-Grün_Hornik_2011" role="doc-biblioref">2011</a>)</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Other authors use the verb “sample” rather than “generate” to mean random generation from a specified probability distribution.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>We assume that document <span class="math inline">\(d\)</span> consists of <span class="math inline">\(n_d\)</span> word positions, which is either a fixed positive integer, or else is generated independently of other random variables.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
