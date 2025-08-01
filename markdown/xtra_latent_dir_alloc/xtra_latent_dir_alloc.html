@@ -139,6 +139,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#mathematical-framework" id="toc-mathematical-framework" class="nav-link" data-scroll-target="#mathematical-framework">Mathematical Framework</a>
   <ul class="collapse">
+  <li><a href="#notation" id="toc-notation" class="nav-link" data-scroll-target="#notation">Notation</a></li>
   <li><a href="#generative-model" id="toc-generative-model" class="nav-link" data-scroll-target="#generative-model">Generative Model</a></li>
   <li><a href="#lda-gibbs-algorithm" id="toc-lda-gibbs-algorithm" class="nav-link" data-scroll-target="#lda-gibbs-algorithm">LDA-Gibbs Algorithm</a></li>
   </ul></li>
@@ -169,7 +170,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">11:09 Fri 1-Aug-2025</p>
+      <p class="date">21:45 Fri 1-Aug-2025</p>
     </div>
   </div>
   
@@ -299,7 +300,7 @@ Table&nbsp;2: Term-frequency: number of occurrences of each term within each doc
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb7" data-lst-cap=""><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Latent Dirichlet Allocation via Gibbs Sampling</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>extract_from_DTM <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>extract_from_DTM <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (extract_from_DTM <span class="sc">&amp;&amp;</span> topicmodels_loaded) {</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  af_bbb_gs <span class="ot">&lt;-</span> af_bbb_dtm_lst <span class="sc">|&gt;</span> </span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    topicmodels<span class="sc">::</span><span class="fu">LDA</span>(</span>
@@ -309,54 +310,67 @@ Table&nbsp;2: Term-frequency: number of occurrences of each term within each doc
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="co"># set seed to ensure results can be reproduced</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">1234</span>)</span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co">: decide whether and how to store LDA_Gibbs output</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># date()</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] "Fri Aug  1 09:46:27 2025"</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co"># af_bbb_gs |&gt; object.size(): 62 KB</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 62072 bytes</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co"># af_bbb_gs |&gt; str()</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Formal class 'LDA_Gibbs' [package "topicmodels"] with 16 slots</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ seedwords      : NULL</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ z              : int [1:717] 1 2 2 2 2 2 2 2 2 2 ...</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ alpha          : num 25</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ call           : language topicmodels::LDA(x = af_bbb_dtm_lst, k = 2, method = "Gibbs", control = list(seed = 1234))</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ Dim            : int [1:2] 9 485</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ control        :Formal class 'LDA_Gibbscontrol' [package "topicmodels"] with 14 slots</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ delta        : num 0.1</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ iter         : int 2000</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ thin         : int 2000</span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ burnin       : int 0</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ initialize   : chr "random"</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ alpha        : num 25</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ seed         : int 1234</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ verbose      : int 0</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ prefix       : chr "C:\\Users\\tthra\\AppData\\Local\\Temp\\Rtmpii0FrX\\file3809f25778"</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ save         : int 0</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ nstart       : int 1</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ best         : logi TRUE</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ keep         : int 0</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. .. ..@ estimate.beta: logi TRUE</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ k              : int 2</span></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ terms          : chr [1:485] "adopt" "adult" "alcoholic" "animal" ...</span></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ documents      : chr [1:9] "1" "2" "3" "4" ...</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ beta           : num [1:2, 1:485] -5.91 -8.32 -8.31 -5.92 -8.31 ...</span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ gamma          : num [1:9, 1:2] 0.449 0.423 0.53 0.447 0.562 ...</span></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ wordassignments:List of 5</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..$ i   : int [1:593] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..$ j   : int [1:593] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..$ v   : num [1:593] 1 2 2 2 2 2 1 2 2 1 ...</span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..$ nrow: int 9</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..$ ncol: int 485</span></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="co">#   .. ..- attr(*, "class")= chr "simple_triplet_matrix"</span></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ loglikelihood  : num -4730</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ iter           : int 2000</span></span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ logLiks        : num(0) </span></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="co">#   ..@ n              : int 717</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># save output components as TSV files</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># but save only as needed</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  save_file <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (save_file) {</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># z: topic assignment of successive words across corpus</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_z <span class="ot">&lt;-</span> af_bbb_gs<span class="sc">@</span> z <span class="sc">|&gt;</span> </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>      tibble<span class="sc">::</span><span class="fu">as_tibble_col</span>(<span class="at">column_name =</span> <span class="st">"z"</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_z <span class="sc">|&gt;</span> readr<span class="sc">::</span><span class="fu">write_tsv</span>(here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>      <span class="st">"data"</span>, <span class="st">"retain"</span>, <span class="st">"af_bbb_gs_z.txt"</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># conc: initial concentration parameters</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_conc <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span>param, <span class="sc">~</span>value, </span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>      <span class="st">"alpha"</span>, af_bbb_gs<span class="sc">@</span> alpha,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>      <span class="st">"delta"</span>, af_bbb_gs<span class="sc">@</span> control<span class="sc">@</span> delta)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_conc <span class="sc">|&gt;</span> readr<span class="sc">::</span><span class="fu">write_tsv</span>(here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">"data"</span>, <span class="st">"retain"</span>, <span class="st">"af_bbb_gs_conc.txt"</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># terms: unique words across the corpus</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_terms <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">tdx  =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(af_bbb_gs<span class="sc">@</span> terms), </span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">term =</span> af_bbb_gs<span class="sc">@</span> terms)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_terms <span class="sc">|&gt;</span> readr<span class="sc">::</span><span class="fu">write_tsv</span>(here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">"data"</span>, <span class="st">"retain"</span>, <span class="st">"af_bbb_gs_terms.txt"</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># beta: topic-specific ln(probability) across unique terms</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Note: saved tibble is transpose of the K-by-N beta matrix</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_beta <span class="ot">&lt;-</span> af_bbb_gs<span class="sc">@</span> beta <span class="sc">|&gt;</span> </span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">t</span>() <span class="sc">|&gt;</span> tibble<span class="sc">::</span><span class="fu">as_tibble</span>()</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(af_bbb_gs_beta) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"topic_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_beta <span class="sc">|&gt;</span> readr<span class="sc">::</span><span class="fu">write_tsv</span>(here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"data"</span>, <span class="st">"retain"</span>, <span class="st">"af_bbb_gs_beta.txt"</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gamma: prob(topic | doc), a D-by-K matrix</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_gamma <span class="ot">&lt;-</span> af_bbb_gs<span class="sc">@</span> gamma <span class="sc">|&gt;</span> </span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>      tibble<span class="sc">::</span><span class="fu">as_tibble</span>()</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(af_bbb_gs_gamma) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"topic_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_gamma <span class="sc">|&gt;</span> readr<span class="sc">::</span><span class="fu">write_tsv</span>(here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>      <span class="st">"data"</span>, <span class="st">"retain"</span>, <span class="st">"af_bbb_gs_gamma.txt"</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dw_assign: topic assignment per (doc, term)</span></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_dw_assign <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc_idx   =</span> af_bbb_gs<span class="sc">@</span> wordassignments<span class="sc">$</span> i, </span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>      <span class="at">trm_idx   =</span> af_bbb_gs<span class="sc">@</span> wordassignments<span class="sc">$</span> j, </span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>      <span class="at">topic_idx =</span> af_bbb_gs<span class="sc">@</span> wordassignments<span class="sc">$</span> v <span class="sc">|&gt;</span> <span class="fu">as.integer</span>()</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>    af_bbb_gs_dw_assign <span class="sc">|&gt;</span> readr<span class="sc">::</span><span class="fu">write_tsv</span>(here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>      <span class="st">"data"</span>, <span class="st">"retain"</span>, <span class="st">"af_bbb_gs_dw_assign.txt"</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co">: decide whether and how to store LDA_Gibbs output</span></span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>From the <code>LDA_Gibbs</code> output we extract the following “beta” matrix, that is the matrix of fitted probabilities that a term within a given document belongs to topic 1 or 2, respectively.</p>
@@ -492,11 +506,28 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
 </div>
 </div>
 </div>
-<p>This figure further supports the earlier conjecture that topic 1 best matches “The Butter Battle Book” and topic 2 best matches “Animal Farm”. But the constructed topics are not identical to the original sources of the documents, since “farm” is a key term distinguishing topic 1 from topic 2.</p>
+<p>This figure further supports the earlier conjecture that topic 1 best matches “The Butter Battle Book” and topic 2 best matches “Animal Farm”. But the match is not perfect, since “farm” is a key term distinguishing topic 1 from topic 2.</p>
 </section>
 </section>
 <section id="mathematical-framework" class="level2">
 <h2 class="anchored" data-anchor-id="mathematical-framework">Mathematical Framework</h2>
+<section id="notation" class="level3">
+<h3 class="anchored" data-anchor-id="notation">Notation</h3>
+<p>The data to be analyzed is a <em>corpus</em> (set) <span class="math inline">\(\mathcal{D}\)</span> of documents, with each <em>document</em> <span class="math inline">\(d \in \mathcal{D}\)</span> consisting of a sequence of <em>terms</em> (words).</p>
+<p><span id="eq-doc-equals-word-seq"><span class="math display">\[
+\begin{align}
+  d &amp;= (w_1, \ldots, w_{|d|})
+\end{align}
+\qquad(2)\]</span></span></p>
+<p>The <em>vocabulary</em> <span class="math inline">\(V\)</span> of the corpus is the set of <em>distinct</em> terms that occur in one or more of the documents.</p>
+<p><span id="eq-doc-equals-word-seq"><span class="math display">\[
+\begin{align}
+  V &amp;= \left \{ v \in d \; | \; d \in \mathcal{D} \right \}
+\end{align}
+\qquad(3)\]</span></span></p>
+<p>A <em>topic</em> <span class="math inline">\(\tau\)</span> is a probability distribution over vocabulary <span class="math inline">\(V\)</span>. Since <span class="math inline">\(V\)</span> consists of a finite number <span class="math inline">\(N = \left | V \right |\)</span> of distinct terms, <span class="math inline">\(\tau\)</span> can be represented as probability vector of length <span class="math inline">\(N\)</span>.</p>
+<p>The number <span class="math inline">\(K\)</span> of topics (categories) is prescribed for each analysis. Given <span class="math inline">\(K\)</span> and <span class="math inline">\(\mathcal{D}\)</span>, LDA produces a <em>topic model</em> based on a set of <span class="math inline">\(K\)</span> constructed topics. The model includes a set of probabilities <span class="math inline">\(\beta\)</span></p>
+</section>
 <section id="generative-model" class="level3">
 <h3 class="anchored" data-anchor-id="generative-model">Generative Model</h3>
 <p>LDA treats each document as a mixture of topics, and each topic as a mixture of words. LDA adopts a <em>bag-of-words</em> model in which each document <span class="math inline">\(d\)</span> in a corpus of documents <span class="math inline">\(\mathcal{D}\)</span> is generated from two Dirichlet distributions: <span class="math inline">\(Dir(\alpha_\bullet)\)</span> over <span class="math inline">\(K\)</span> possible topics; and <span class="math inline">\(Dir(\eta_\bullet)\)</span> over <span class="math inline">\(N\)</span> possible words. In this model documents are presumed to have been randomly generated as follows.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
@@ -517,14 +548,14 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
   \bar{\eta} &amp;= \frac{\eta_+}{N} = \frac{1}{N} \sum_{\nu = 1}^N
 \eta_\nu
 \end{align}
-\qquad(2)\]</span></span></p>
+\qquad(4)\]</span></span></p>
 <p>then current practice is to set all elements of vectors <span class="math inline">\(\alpha_\bullet\)</span> and <span class="math inline">\(\eta_\bullet\)</span> equal to their respective average values.</p>
 <p><span id="eq-symm-Dirichlet"><span class="math display">\[
 \begin{align}
   \alpha_k &amp;= \bar{\alpha} \quad \text{for } k \in \{1, \ldots, K \} \\
   \eta_\nu &amp;= \bar{\eta} \quad \text{for } \nu \in \{1, \ldots, N \}
 \end{align}
-\qquad(3)\]</span></span></p>
+\qquad(5)\]</span></span></p>
 <p>The values <span class="math inline">\(\bar{\alpha}\)</span> and <span class="math inline">\(\bar{\eta}\)</span> are called <em>concentration</em> parameters.</p>
 <p>For a symmetric Dirichlet distribution as above, if <span class="math inline">\(\bar{\alpha} &lt; 1\)</span> then for each document <span class="math inline">\(d\)</span>, <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a sparse probability vector <span class="math inline">\(\theta_\bullet (d)\)</span> that gives most of its weight to just a few of the K topics (with the selection of topics varying across documents). On the other hand, if <span class="math inline">\(\bar{\alpha} &gt; 1\)</span> then <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a more uniform probability vector <span class="math inline">\(\theta_\bullet (d)\)</span> spread more evenly across all topics.</p>
 <p>As for the distribution of words within a topic, in most applications the number <span class="math inline">\(N\)</span> of distinct words in the corpus <span class="math inline">\(\mathcal{D}\)</span> may be a few thousand or even a few tens of thousands. Then each topic is a mixture across a distinct subset of a large number of words, typically with <span class="math inline">\(\bar{\eta} &lt; 1\)</span>.</p>
@@ -540,7 +571,7 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
   n_{w, k} &amp;= \text{number of assignments of topic } k \text{ to unique word } w \\
   n_k &amp;= \text{number of assignments of topic } k \text{ across corpus } \mathcal{D}
 \end{align}
-\qquad(4)\]</span></span></p>
+\qquad(6)\]</span></span></p>
 <p>Then through many iterations the prior distributions <span class="math inline">\(Dir(\alpha_\bullet)\)</span> and <span class="math inline">\(Dir(\eta_\bullet)\)</span> are updated to form posterior distributions based on the data.</p>
 <p>The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the word in that position to each topic, conditioned on the current topic assignments of all other words. From this conditional distribution, a topic is generated and stored as the new topic assignment for the given word in the given position.</p>
 <p>A great computational savings is achieved by the choice of a Dirichlet prior for the multinomial distribution of unique topic instances per document, because the Dirichlet distribution is conjugate to the multinomial distribution. For further details on this updating algorithm see <span class="citation" data-cites="Steyvers_Griffiths_2007">Steyvers and Griffiths (<a href="#ref-Steyvers_Griffiths_2007" role="doc-biblioref">2007</a>)</span>.</p>

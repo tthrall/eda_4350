@@ -103,6 +103,10 @@ af_pst_lst <- para2token(
     "data", "retain", "Animal_Farm_summary.txt")
 )
 
+af_token_tbl <- af_pst_lst$ token_tbl |> 
+  dplyr::mutate(src = "AF") |> 
+  dplyr::select(src, everything())
+
 af_para_tbl <- af_pst_lst$ para_tbl |> 
   dplyr::mutate(src = "AF") |> 
   dplyr::select(src, everything())
@@ -118,9 +122,187 @@ bbb_pst_lst <- para2token(
     "data", "retain", "Butter_Battle_summary.txt")
 )
 
+bbb_token_tbl <- bbb_pst_lst$ token_tbl |> 
+  dplyr::mutate(src = "BBB") |> 
+  dplyr::select(src, everything())
+
 bbb_para_tbl <- bbb_pst_lst$ para_tbl |> 
   dplyr::mutate(src = "BBB") |> 
   dplyr::select(src, everything())
+```
+
+```{r}
+#| label: af-bbb-token-tbl
+
+af_bbb_token_tbl <- dplyr::bind_rows(
+  af_token_tbl, 
+  bbb_token_tbl
+)
+
+# af_bbb_token_tbl
+# # A tibble: 725 × 5
+#    src     pdx   sdx   wdx word      
+#    <chr> <int> <int> <int> <chr>     
+#  1 AF        1     1     2 animal    
+#  2 AF        1     1     3 populace  
+#  3 AF        1     1     6 poorly    
+#  4 AF        1     1     7 run       
+#  5 AF        1     1     8 manor     
+#  6 AF        1     1     9 farm      
+#  7 AF        1     1    10 near      
+#  8 AF        1     1    11 willingdon
+#  9 AF        1     1    13 england   
+# 10 AF        1     1    15 ripened   
+# # ℹ 715 more rows
+```
+
+```{r}
+#| label: af-bbb-word-ct-lst
+#| eval: true
+
+# count the number of non-stop-words per source
+af_bbb_src_smy <- af_bbb_token_tbl |> 
+  dplyr::group_by(src) |> 
+  summarise(n_words = n())
+# af_bbb_src_smy
+# # A tibble: 2 × 2
+#   src   n_words
+#   <chr>   <int>
+# 1 AF        553
+# 2 BBB       172
+
+# count the number of words in the reconstructed para_tbl
+af_bbb_para_smy <- af_bbb_token_tbl |> 
+  dplyr::group_by(src, pdx) |> 
+  summarise(n_words = n())
+
+# af_bbb_para_smy
+# # A tibble: 9 × 3
+# # Groups:   src [2]
+#   src     pdx n_words
+#   <chr> <int>   <int>
+# 1 AF        1     158
+# 2 AF        2     153
+# 3 AF        3      83
+# 4 AF        4     103
+# 5 AF        5      56
+# 6 BBB       1      39
+# 7 BBB       2      41
+# 8 BBB       3      65
+# 9 BBB       4      27
+
+af_bbb_word_ct_lst <- list(
+  af_bbb_src_smy  = af_bbb_src_smy, 
+  af_bbb_para_smy = af_bbb_para_smy
+)
+```
+
+```{r}
+#| label: af-bbb-vocab-lst
+#| eval: true
+
+# unique non-stop-words per source
+af_vocab  <- af_token_tbl$  word |> unique()
+bbb_vocab <- bbb_token_tbl$ word |> unique()
+
+# union (AF, BBB)
+af_bbb_vocab <- af_bbb_token_tbl$ word |> unique()
+
+# intersection (AF, BBB)
+ab_shared_vocab <- base::intersect(af_vocab, bbb_vocab)
+
+# list results
+af_bbb_vocab_lst <- list(
+  af_vocab        = af_vocab, 
+  bbb_vocab       = bbb_vocab, 
+  af_bbb_vocab    = af_bbb_vocab, 
+  ab_shared_vocab = ab_shared_vocab
+)
+```
+
+```{r}
+#| label: af-bbb-vocab-ct
+#| eval: true
+
+# count the number of unique non-stop-words per source and overall
+af_bbb_vocab_ct <- tibble::tibble(
+  lbl = c("A", "B", "A_or_B", "A_and_B"), 
+  ct = c(
+    af_vocab |> length(), 
+    bbb_vocab |> length(), 
+    af_bbb_vocab |> length(), 
+    ab_shared_vocab |> length()
+  ))
+
+# af_bbb_vocab_ct
+# # A tibble: 4 × 2
+#   lbl        ct
+#   <chr>   <int>
+# 1 A         369
+# 2 B         130
+# 3 A_or_B    486
+# 4 A_and_B    13
+```
+
+```{r}
+#| label: af-bbb-vocab-wt
+#| eval: true
+
+# record the number of occurrences of each unique non-stop-word
+af_bbb_vocab_wt <- af_bbb_token_tbl |> 
+  dplyr::group_by(src, pdx, word) |> 
+  dplyr::summarise(
+    wt  = n(), 
+    wdx = min(wdx)
+  ) |> 
+  dplyr::select(src, pdx, word, wdx, wt) |> 
+  dplyr::arrange(src, wdx)
+
+# Note: the tally beloe includes the term 'mr'
+# which is subsequently removed by tm:DocumentTermMatrix()
+
+# af_bbb_vocab_wt
+# # A tibble: 598 × 5
+# # Groups:   src, pdx [9]
+#    src     pdx word         wdx    wt
+#    <chr> <int> <chr>      <int> <int>
+#  1 AF        1 animal         2     3
+#  2 AF        1 populace       3     1
+#  3 AF        1 poorly         6     1
+#  4 AF        1 run            7     1
+#  5 AF        1 manor          8     1
+#  6 AF        1 farm           9     6
+#  7 AF        1 near          10     1
+#  8 AF        1 willingdon    11     1
+#  9 AF        1 england       13     2
+# 10 AF        1 ripened       15     1
+# # ℹ 588 more rows
+
+# here are the weights given to the term 'mr'
+
+# af_bbb_vocab_wt |> 
+#   dplyr::filter(word == "mr")
+# # A tibble: 5 × 5
+# # Groups:   src, pdx [5]
+#   src     pdx word    wdx    wt
+#   <chr> <int> <chr> <int> <int>
+# 1 AF        1 mr       29     3
+# 2 AF        2 mr      395     2
+# 3 AF        3 mr      537     1
+# 4 AF        4 mr      772     1
+# 5 AF        5 mr      921     1
+```
+
+```{r}
+#| label: af-bbb-dtm-term
+#| eval: false
+
+# compare af_bbb_vocab to Terms from DTM
+# base::setdiff(
+#   af_bbb_vocab, 
+#   af_bbb_dtm_lst$ dimnames$ Terms
+# )
+# [1] "mr"
 ```
 
 ```{r}
@@ -186,11 +368,11 @@ Here we choose the Gibbs Sampling method because it requires less memory.  The `
 #| label: lst-af-bbb-gs
 #| lst-cap: ""
 #| echo: true
-#| eval: false
+#| eval: true
 
 # Latent Dirichlet Allocation via Gibbs Sampling
 
-extract_from_DTM <- FALSE
+extract_from_DTM <- TRUE
 if (extract_from_DTM && topicmodels_loaded) {
   af_bbb_gs <- af_bbb_dtm_lst |> 
     topicmodels::LDA(
@@ -200,9 +382,74 @@ if (extract_from_DTM && topicmodels_loaded) {
       # set seed to ensure results can be reproduced
       control = list(seed = 1234)
     )
+  
+  # save output components as TSV files
+  # but save only as needed
+  save_file <- TRUE
+  if (save_file) {
+    
+    # z: topic assignment of successive words across corpus
+    af_bbb_gs_z <- af_bbb_gs@ z |> 
+      tibble::as_tibble_col(column_name = "z")
+    af_bbb_gs_z |> readr::write_tsv(here::here(
+      "data", "retain", "af_bbb_gs_z.txt"
+    ))
+    
+    # conc: initial concentration parameters
+    af_bbb_gs_conc <- tibble::tribble(
+      ~param, ~value, 
+      "alpha", af_bbb_gs@ alpha,
+      "delta", af_bbb_gs@ control@ delta)
+    af_bbb_gs_conc |> readr::write_tsv(here::here(
+      "data", "retain", "af_bbb_gs_conc.txt"
+    ))
+    
+    # terms: unique words across the corpus
+    af_bbb_gs_terms <- tibble::tibble(
+      tdx  = 1:length(af_bbb_gs@ terms), 
+      term = af_bbb_gs@ terms)
+    af_bbb_gs_terms |> readr::write_tsv(here::here(
+      "data", "retain", "af_bbb_gs_terms.txt"
+    ))
+    
+    # beta: topic-specific ln(probability) across unique terms
+    # Note: saved tibble is transpose of the K-by-N beta matrix
+    af_bbb_gs_beta <- af_bbb_gs@ beta |> 
+      t() |> tibble::as_tibble()
+    names(af_bbb_gs_beta) <- paste0("topic_", 1:2)
+    af_bbb_gs_beta |> readr::write_tsv(here::here(
+      "data", "retain", "af_bbb_gs_beta.txt"
+    ))
+    
+    # gamma: prob(topic | doc), a D-by-K matrix
+    af_bbb_gs_gamma <- af_bbb_gs@ gamma |> 
+      tibble::as_tibble()
+    names(af_bbb_gs_gamma) <- paste0("topic_", 1:2)
+    af_bbb_gs_gamma |> readr::write_tsv(here::here(
+      "data", "retain", "af_bbb_gs_gamma.txt"
+    ))
+    
+    # dw_assign: topic assignment per (doc, term)
+    af_bbb_gs_dw_assign <- tibble::tibble(
+      doc_idx   = af_bbb_gs@ wordassignments$ i, 
+      trm_idx   = af_bbb_gs@ wordassignments$ j, 
+      topic_idx = af_bbb_gs@ wordassignments$ v |> as.integer()
+    )
+    af_bbb_gs_dw_assign |> readr::write_tsv(here::here(
+      "data", "retain", "af_bbb_gs_dw_assign.txt"
+    ))
+    
+  }
 } else {
   # TODO: decide whether and how to store LDA_Gibbs output
 }
+```
+
+```{r}
+#| label: LDA-Gibbs-structure
+#| eval: false
+
+# record the structure of LDA output object "af_bbb_gs"
 
 # date()
 # [1] "Fri Aug  1 09:46:27 2025"
@@ -248,9 +495,50 @@ if (extract_from_DTM && topicmodels_loaded) {
 #   ..@ iter           : int 2000
 #   ..@ logLiks        : num(0) 
 #   ..@ n              : int 717
+
 ```
 
 From the `LDA_Gibbs` output we extract the following "beta" matrix, that is the matrix of fitted probabilities that a term within a given document belongs to topic 1 or 2, respectively.
+
+```{r}
+#| label: af-bbb-word-tally
+#| eval: true
+
+# Note: the term 'mr' occurs 8 times in af_token_tbl
+# with counts of c(3, 2, 1, 1, 1) in the respective paragraphs
+# but is removed by function tm::DocumentTermMatrix()
+
+# inclusion of 'mr' affects the following tallies
+af_bbb_word_tally <- tibble::tibble(
+  obj  = c(
+    "af_bbb_token_tbl", 
+    "af_bbb_gs", 
+    "af_bbb_vocab_wt", 
+    "af_bbb_tf_tbl", 
+    "af_bbb_vocab_lst", 
+    "af_bbb_gs"
+  ), 
+  elt  = c("word", "z", "wt", "count", "af_bbb_vocab", "terms"), 
+  len  = c(
+    af_bbb_token_tbl$ word         |> length(), 
+    af_bbb_gs@ z                   |> length(), 
+    af_bbb_vocab_wt$ wt            |> length(), 
+    af_bbb_tf_tbl$ count           |> length(), 
+    af_bbb_vocab_lst$ af_bbb_vocab |> length(),
+    af_bbb_gs@ terms               |> length()
+  ))
+
+# # af_bbb_word_tally
+# # A tibble: 6 × 3
+#   obj              elt            len
+#   <chr>            <chr>        <int>
+# 1 af_bbb_token_tbl word           725
+# 2 af_bbb_gs        z              717
+# 3 af_bbb_vocab_wt  wt             598
+# 4 af_bbb_tf_tbl    count          593
+# 5 af_bbb_vocab_lst af_bbb_vocab   486
+# 6 af_bbb_gs        terms          485
+```
 
 ```{r}
 #| label: af-bbb-topics
@@ -383,9 +671,31 @@ g_af_bbb_b_ratio_wide <- af_bbb_b_ratio_wide |>
 g_af_bbb_b_ratio_wide
 ```
 
-This figure further supports the earlier conjecture that topic 1 best matches "The Butter Battle Book" and topic 2 best matches "Animal Farm".  But the constructed topics are not identical to the original sources of the documents, since "farm" is a key term distinguishing topic 1 from topic 2.
+This figure further supports the earlier conjecture that topic 1 best matches "The Butter Battle Book" and topic 2 best matches "Animal Farm".  But the match is not perfect, since "farm" is a key term distinguishing topic 1 from topic 2.
 
 ## Mathematical Framework
+
+### Notation
+
+The data to be analyzed is a _corpus_ (set) $\mathcal{D}$ of documents, with each _document_ $d \in \mathcal{D}$ consisting of a sequence of _terms_ (words).
+
+$$
+\begin{align}
+  d &= (w_1, \ldots, w_{|d|})
+\end{align}
+$$ {#eq-doc-equals-word-seq}
+
+The _vocabulary_ $V$ of the corpus is the set of _distinct_ terms that occur in one or more of the documents.
+
+$$
+\begin{align}
+  V &= \left \{ v \in d \; | \; d \in \mathcal{D} \right \}
+\end{align}
+$$ {#eq-doc-equals-word-seq}
+
+A _topic_ $\tau$ is a probability distribution over vocabulary $V$.  Since $V$ consists of a finite number $N = \left | V \right |$ of distinct terms, $\tau$ can be represented as probability vector of length $N$.
+
+The number $K$ of topics (categories) is prescribed for each analysis.  Given $K$ and $\mathcal{D}$, LDA produces a _topic model_ based on a set of $K$ constructed topics.  The model includes a set of probabilities $\beta$
 
 ### Generative Model
 
