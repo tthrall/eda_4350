@@ -78,6 +78,98 @@ para2token <- function(
   ))
 }
 
+##
+#  list_lda_tbls()
+#    return a list of tibbles from an LDA_XXX object
+#
+#    input:  object of class "LDA_VEM" or "LDA_Gibbs"
+#    return: list of component tibbles
+##
+list_lda_tbls <- function(
+    lda_xxx # <lst> output from topicmodels:LDA()
+) {
+
+  # determine class of input object
+  lda_class <- lda_xxx |> class()
+  assertthat::assert_that(
+    lda_class %in% c("LDA_VEM", "LDA_Gibbs")
+  )
+
+  # z: topic assignment of successive words across corpus
+  if (lda_class == "LDA_Gibbs") {
+    z_tbl <- lda_xxx@ z |>
+      tibble::as_tibble_col(column_name = "z")
+  } else {
+    z_tbl <- tibble::tibble()
+  }
+
+  # conc: initial Dirichlet concentration parameters
+  if (lda_class == "LDA_Gibbs") {
+    delta_ref <- lda_xxx@ control@ delta
+  } else {
+    delta_ref <- NULL
+  }
+  conc_tbl <- tibble::tribble(
+    ~param, ~value,
+    "alpha", lda_xxx@ alpha,
+    "delta", delta_ref)
+
+  # terms: unique words across the corpus
+  terms_tbl <- tibble::tibble(
+    tdx  = 1:length(lda_xxx@ terms),
+    term = lda_xxx@ terms)
+
+  # topic_labels: <chr> topic_idx
+  K_topics  <- lda_xxx@ k
+  K_digits  <- (1 + floor(log10(K_topics))) |>
+    as.integer()
+  topic_idx <- (1:K_topics) |>
+    eeptools::leading_zero(digits = K_digits)
+  topic_labels <- paste0("topic_", topic_idx)
+
+  # beta: topic-specific ln(probability) across unique terms
+  # Note: tibble is transpose of the K-by-N beta matrix
+  beta_wide <- lda_xxx@ beta |>
+    t() |> tibble::as_tibble()
+  names(beta_wide) <- topic_labels
+
+  # beta_terms:
+  #   - append "terms" as new column
+  #   - pivot to longer configuration
+  beta_terms <- beta_wide |>
+    dplyr::mutate(term = lda_xxx@ terms) |>
+    tidyr::pivot_longer(
+      cols         = - term,
+      names_to     = "topic",
+      names_prefix = "topic_",
+      values_to    = "ln_prob"
+    ) |>
+    dplyr::mutate(topic = as.integer(topic)) |>
+    dplyr::arrange(term)
+
+  # gamma: prob(topic | doc), a D-by-K matrix
+  gamma_tbl <- lda_xxx@ gamma |>
+    tibble::as_tibble()
+  names(gamma_tbl) <- paste0("topic_", 1:2)
+
+  # dw_assign: topic assignment per (doc, term)
+  dw_assign_tbl <- tibble::tibble(
+    doc_idx   = lda_xxx@ wordassignments$ i,
+    trm_idx   = lda_xxx@ wordassignments$ j,
+    topic_idx = lda_xxx@ wordassignments$ v |> as.integer()
+  )
+
+  return(list(
+    z_tbl         = z_tbl,
+    conc_tbl      = conc_tbl,
+    terms_tbl     = terms_tbl,
+    beta_wide     = beta_wide,
+    beta_terms    = beta_terms,
+    gamma_tbl     = gamma_tbl,
+    dw_assign_tbl = dw_assign_tbl
+  ))
+}
+
 
 ##
 #  EOF
