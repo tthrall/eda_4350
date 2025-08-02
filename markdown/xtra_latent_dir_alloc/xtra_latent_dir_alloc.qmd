@@ -41,9 +41,10 @@ knitr::opts_chunk$set(
 ```{r}
 #| label: CRAN-libraries
 
-# library(assertthat)
+library(assertthat)
 # library(GGally)
 # library(gutenbergr)
+library(eeptools)
 library(here)
 # library(ISLR2)
 # library(janeaustenr)
@@ -372,8 +373,8 @@ Here we choose the Gibbs Sampling method because it requires less memory.  The `
 
 # Latent Dirichlet Allocation via Gibbs Sampling
 
-extract_from_DTM <- FALSE
-if (extract_from_DTM && topicmodels_loaded) {
+extract_from_list <- FALSE
+if (extract_from_list && topicmodels_loaded) {
   af_bbb_gs <- af_bbb_dtm_lst |> 
     topicmodels::LDA(
       # number of topics
@@ -384,41 +385,30 @@ if (extract_from_DTM && topicmodels_loaded) {
     )
   
   ## 
-  # extract output as separate tibbles
+  # extract tibbles from LDA() output
   ## 
+  af_bbb_gs_tbl_lst <- af_bbb_gs |> list_lda_tbls()
   
   # z: topic assignment of successive words across corpus
-  af_bbb_gs_z <- af_bbb_gs@ z |> 
-    tibble::as_tibble_col(column_name = "z")
+  af_bbb_gs_z <- af_bbb_gs_tbl_lst$ z_tbl
   
-  # conc: initial concentration parameters
-  af_bbb_gs_conc <- tibble::tribble(
-    ~param, ~value, 
-    "alpha", af_bbb_gs@ alpha,
-    "delta", af_bbb_gs@ control@ delta)
+  # conc: initial Dirichlet concentration parameters
+  af_bbb_gs_conc <- af_bbb_gs_tbl_lst$ conc_tbl
   
   # terms: unique words across the corpus
-  af_bbb_gs_terms <- tibble::tibble(
-    tdx  = 1:length(af_bbb_gs@ terms), 
-    term = af_bbb_gs@ terms)
+  af_bbb_gs_terms <- af_bbb_gs_tbl_lst$ terms_tbl
   
   # beta: topic-specific ln(probability) across unique terms
-  # Note: tibble is transpose of the K-by-N beta matrix
-  af_bbb_gs_beta <- af_bbb_gs@ beta |> 
-    t() |> tibble::as_tibble()
-  names(af_bbb_gs_beta) <- paste0("topic_", 1:2)
+  af_bbb_gs_beta <- af_bbb_gs_tbl_lst$ beta_wide
+  
+  # beta_terms: append terms, then pivot longer
+  af_bbb_gs_beta_terms <- af_bbb_gs_tbl_lst$ beta_terms
   
   # gamma: prob(topic | doc), a D-by-K matrix
-  af_bbb_gs_gamma <- af_bbb_gs@ gamma |> 
-    tibble::as_tibble()
-  names(af_bbb_gs_gamma) <- paste0("topic_", 1:2)
+  af_bbb_gs_gamma <- af_bbb_gs_tbl_lst$ gamma_tbl
   
   # dw_assign: topic assignment per (doc, term)
-  af_bbb_gs_dw_assign <- tibble::tibble(
-    doc_idx   = af_bbb_gs@ wordassignments$ i, 
-    trm_idx   = af_bbb_gs@ wordassignments$ j, 
-    topic_idx = af_bbb_gs@ wordassignments$ v |> as.integer()
-  )
+  af_bbb_gs_dw_assign <- af_bbb_gs_tbl_lst$ dw_assign_tbl
   
   ## 
   # save output components as TSV files: only as needed
@@ -431,7 +421,7 @@ if (extract_from_DTM && topicmodels_loaded) {
       "data", "retain", "af_bbb_gs_z.txt"
     ))
     
-    # conc: initial concentration parameters
+    # conc: initial Dirichlet concentration parameters
     af_bbb_gs_conc |> readr::write_tsv(here::here(
       "data", "retain", "af_bbb_gs_conc.txt"
     ))
@@ -444,6 +434,11 @@ if (extract_from_DTM && topicmodels_loaded) {
     # beta: topic-specific ln(probability) across unique terms
     af_bbb_gs_beta |> readr::write_tsv(here::here(
       "data", "retain", "af_bbb_gs_beta.txt"
+    ))
+    
+    # beta_terms: append terms, then pivot longer
+    af_bbb_gs_beta_terms |> readr::write_tsv(here::here(
+      "data", "retain", "af_bbb_gs_beta_terms.txt"
     ))
     
     # gamma: prob(topic | doc), a D-by-K matrix
@@ -465,7 +460,7 @@ if (extract_from_DTM && topicmodels_loaded) {
     "data", "retain", "af_bbb_gs_z.txt"
   ))
   
-  # conc: initial concentration parameters
+  # conc: initial Dirichlet concentration parameters
   af_bbb_gs_conc <- readr::read_tsv(here::here(
     "data", "retain", "af_bbb_gs_conc.txt"
   ))
@@ -478,6 +473,11 @@ if (extract_from_DTM && topicmodels_loaded) {
   # beta: topic-specific ln(probability) across unique terms
   af_bbb_gs_beta <- readr::read_tsv(here::here(
     "data", "retain", "af_bbb_gs_beta.txt"
+  ))
+  
+  # beta_terms: append terms, then pivot longer
+  af_bbb_gs_beta_terms <- readr::read_tsv(here::here(
+    "data", "retain", "af_bbb_gs_beta_terms.txt"
   ))
   
   # gamma: prob(topic | doc), a D-by-K matrix
@@ -545,6 +545,60 @@ if (extract_from_DTM && topicmodels_loaded) {
 
 ```
 
+```{r}
+#| label: LDA-VEM-structure
+#| eval: false
+
+# record the structure of LDA output object "af_bbb_vem"
+
+# date()
+# [1] "Sat Aug  2 08:20:28 2025"
+
+# af_bbb_vem |> object.size(): 60 KB
+# 60400 bytes
+
+# af_bbb_vem |> str()
+# Formal class 'LDA_VEM' [package "topicmodels"] with 14 slots
+#   ..@ alpha          : num 0.0306
+#   ..@ call           : language topicmodels::LDA(x = af_bbb_dtm_lst, k = 2, method = "VEM", control = list(seed = 1234))
+#   ..@ Dim            : int [1:2] 9 485
+#   ..@ control        :Formal class 'LDA_VEMcontrol' [package "topicmodels"] with 13 slots
+#   .. .. ..@ estimate.alpha: logi TRUE
+#   .. .. ..@ alpha         : num 25
+#   .. .. ..@ seed          : int 1234
+#   .. .. ..@ verbose       : int 0
+#   .. .. ..@ prefix        : chr "C:\\Users\\tthra\\AppData\\Local\\Temp\\RtmpUlDLWt\\file2d44587097c"
+#   .. .. ..@ save          : int 0
+#   .. .. ..@ nstart        : int 1
+#   .. .. ..@ best          : logi TRUE
+#   .. .. ..@ keep          : int 0
+#   .. .. ..@ estimate.beta : logi TRUE
+#   .. .. ..@ var           :Formal class 'OPTcontrol' [package "topicmodels"] with 2 slots
+#   .. .. .. .. ..@ iter.max: int 500
+#   .. .. .. .. ..@ tol     : num 1e-06
+#   .. .. ..@ em            :Formal class 'OPTcontrol' [package "topicmodels"] with 2 slots
+#   .. .. .. .. ..@ iter.max: int 1000
+#   .. .. .. .. ..@ tol     : num 1e-04
+#   .. .. ..@ initialize    : chr "random"
+#   ..@ k              : int 2
+#   ..@ terms          : chr [1:485] "adopt" "adult" "alcoholic" "animal" ...
+#   ..@ documents      : chr [1:9] "1" "2" "3" "4" ...
+#   ..@ beta           : num [1:2, 1:485] -5.96 -152 -5.96 -153.88 -5.96 ...
+#   ..@ gamma          : num [1:9, 1:2] 0.999802 0.999797 0.999627 0.0003 0.000556 ...
+#   ..@ wordassignments:List of 5
+#   .. ..$ i   : int [1:593] 1 1 1 1 1 1 1 1 1 1 ...
+#   .. ..$ j   : int [1:593] 1 2 3 4 5 6 7 8 9 10 ...
+#   .. ..$ v   : num [1:593] 1 1 1 1 1 1 1 1 1 1 ...
+#   .. ..$ nrow: int 9
+#   .. ..$ ncol: int 485
+#   .. ..- attr(*, "class")= chr "simple_triplet_matrix"
+#   ..@ loglikelihood  : num [1:9] -831 -797 -453 -555 -300 ...
+#   ..@ iter           : int 13
+#   ..@ logLiks        : num(0) 
+#   ..@ n              : int 717
+
+```
+
 From the `LDA_Gibbs` output we extract the following "beta" matrix consisting of two fitted probability vectors: the respective probability distributions of topic 1 and 2 across the unique terms of the corpus.
 
 ```{r}
@@ -592,12 +646,14 @@ af_bbb_word_tally <- tibble::tibble(
 #| eval: true
 #| echo: true
 
-# TODO: overcome error generated by tidytext::tidy(<LDA_Gibbs>)
-# when <LDA_Gibbs> is large and memory is constrained
-# in the meantime, patch as follows
+# af_bbb_topics: beta matrix in long format with column "term"
 
-extract_from_DTM <- FALSE
-if (extract_from_DTM) {
+# Note: tidytext::tidy(<LDA_Gibbs>) generates error 
+# when <LDA_Gibbs> is large and memory is constrained.
+# In the meantime, patch as follows
+
+extract_from_list <- FALSE
+if (extract_from_list) {
   # beta: K (topics) by N (terms) of log-probabilities
   beta_mat           <- af_bbb_gs@beta
   colnames(beta_mat) <- af_bbb_gs@terms
