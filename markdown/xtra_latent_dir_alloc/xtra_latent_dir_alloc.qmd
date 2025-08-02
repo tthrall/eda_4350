@@ -780,7 +780,7 @@ This figure further supports the earlier conjecture that topic 1 best matches "T
 
 ### Notation
 
-The data to be analyzed is a _corpus_ (set) $\mathcal{D}$ of documents, with each _document_ $d \in \mathcal{D}$ consisting of a sequence of _terms_ (words).
+The data set to be analyzed is a _corpus_ (set) $\mathcal{D}$ of documents, with each _document_ $d \in \mathcal{D}$ consisting of a sequence of words, that may include multiple instances of the same term.
 
 $$
 \begin{align}
@@ -792,13 +792,26 @@ The _vocabulary_ $V$ of the corpus is the set of _distinct_ terms that occur in 
 
 $$
 \begin{align}
-  V &= \left \{ v \in d \; | \; d \in \mathcal{D} \right \}
+  V &= \cup_{d \in \mathcal{D}} \;  \{ v \in d \}
 \end{align}
-$$ {#eq-doc-equals-word-seq}
+$$ {#eq-vocab-defn}
 
-A _topic_ $\tau$ is a probability distribution over vocabulary $V$.  Since $V$ consists of a finite number $N = \left | V \right |$ of distinct terms, $\tau$ can be represented as probability vector of length $N$.
+The elements of $V$ are referred to as _terms_.  We will use _word_ to mean an occurrence of a term within the corpus.  With this distinction, the total number of words (term occurrences) in the corpus typically exceeds the number of distinct terms.[^token-NLP] [^term-v-word]
 
-The number $K$ of topics (categories) is prescribed for each analysis.  Given $K$ and $\mathcal{D}$, LDA produces a _topic model_ based on a set of $K$ constructed topics.  The model includes a set of probabilities $\beta$
+[^token-NLP]: In natural language processing (NLP), text is broken into _tokens_, a broad term that must be defined for each analysis.  In the present context the original text is stripped of punctuation and of commonly occurring words ("stop-words") so that the remaining words are the tokens analyzed.
+
+[^term-v-word]: For clarity we use _term_ to mean a distinct element of a vocabulary, and we use _word_ to mean an occurrence of a term in the corpus.  There does not seem to be an established jargon for this distinction.
+
+A _topic_ $\theta$ is a probability distribution over vocabulary $V$.  Since $V$ consists of a finite number $N = \left | V \right |$ of distinct terms, $\theta$ can be represented as probability vector of length $N$.
+
+The number $K$ of topics (categories) is prescribed for each analysis.  Given $K$ and $\mathcal{D}$, LDA produces a _topic model_ defined by a set of constructed topics, $\{ \theta_1, \ldots, \theta_K \}$.  These topic-specific probability vectors are stored in matrix $\beta$.
+
+$$
+\begin{align}
+  \beta [k, \nu] &= \theta_k[\nu] \\ 
+  &= \text{probability assigned by topic } \theta_k \text{ to term } v_\nu \in V
+\end{align}
+$$ {#eq-matrix-beta}
 
 ### Generative Model
 
