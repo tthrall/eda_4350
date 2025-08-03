@@ -129,8 +129,12 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
   <li><a href="#text-analysis" id="toc-text-analysis" class="nav-link" data-scroll-target="#text-analysis">Text Analysis</a></li>
+  <li><a href="#topic-modelsart-steyvers-griffiths-2007" id="toc-topic-modelsart-steyvers-griffiths-2007" class="nav-link" data-scroll-target="#topic-modelsart-steyvers-griffiths-2007">Topic Models</a></li>
+  <li><a href="#lda-method" id="toc-lda-method" class="nav-link" data-scroll-target="#lda-method">LDA Method</a></li>
+  </ul></li>
   <li><a href="#book-review-example" id="toc-book-review-example" class="nav-link" data-scroll-target="#book-review-example">Book Review Example</a>
   <ul class="collapse">
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
@@ -170,7 +174,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">14:55 Sat 2-Aug-2025</p>
+      <p class="date">11:08 Sun 3-Aug-2025</p>
     </div>
   </div>
   
@@ -189,20 +193,36 @@ window.Quarto = {
 
 
 <hr>
-<section id="background" class="level2">
-<h2 class="anchored" data-anchor-id="background">Background</h2>
-<p>Latent Dirichlet Allocation (LDA) was proposed by <span class="citation" data-cites="BNJ2003LDA">Blei, Ng, and Jordan (<a href="#ref-BNJ2003LDA" role="doc-biblioref">2003</a>)</span> as a method of topic modeling. The method is briefly mentioned in Part 1 of the course. Several course participants requested a more detailed description. This note is a response to that request.</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="text-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="text-analysis">Text Analysis</h3>
+<p>Part 1, Session 2b, of the course presents an overview of text analysis based on <span class="citation" data-cites="Silge_Robinson_2017">Silge and Robinson (<a href="#ref-Silge_Robinson_2017" role="doc-biblioref">2017</a>)</span>. The authors describe topic models, and in particular the method of Latent Dirichlet Allocation (LDA). Several course participants requested a more detailed description. This note is a response to that request.</p>
 </section>
-<section id="text-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="text-analysis">Text Analysis</h2>
-<p>Part 1, Session 2b, of the course presents an overview of text analysis based on <span class="citation" data-cites="Silge_Robinson_2017">Silge and Robinson (<a href="#ref-Silge_Robinson_2017" role="doc-biblioref">2017</a>)</span>. The authors use the <code>R</code> function <code>topicmodels::LDA()</code> with default parameter setting <code>method = VEM</code>, which denotes the Variational Expectation Maximization (EM) algorithm. In this note we use an alternative implementation of LDA described below.</p>
+<section id="topic-modelsart-steyvers-griffiths-2007" class="level3">
+<h3 class="anchored" data-anchor-id="topic-modelsart-steyvers-griffiths-2007">Topic Models<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></h3>
+<p>A topic model treats documents as mixtures of topics, where a topic is a probability distribution over the elements of a vocabulary. According to the model, each document is generated in the following steps:</p>
+<ol type="1">
+<li>Generate a document-specific probability distribution over a fixed set of topics; and then</li>
+<li>For each word-position in that document:</li>
+</ol>
+<ol type="i">
+<li>Select a topic at random; and</li>
+<li>Generate a vocabulary term from the selected topic.</li>
+</ol>
+<p>Standard statistical techniques can be used to invert this process, inferring the set of topics that were responsible for generating a collection of documents.</p>
+</section>
+<section id="lda-method" class="level3">
+<h3 class="anchored" data-anchor-id="lda-method">LDA Method</h3>
+<p>Latent Dirichlet Allocation (LDA) was proposed by <span class="citation" data-cites="BNJ2003LDA">Blei, Ng, and Jordan (<a href="#ref-BNJ2003LDA" role="doc-biblioref">2003</a>)</span> as a method of topic modeling. <span class="citation" data-cites="Silge_Robinson_2017">Silge and Robinson (<a href="#ref-Silge_Robinson_2017" role="doc-biblioref">2017</a>)</span> use the <code>R</code> function <code>topicmodels::LDA()</code> with default parameter setting <code>method = VEM</code>, which denotes the Variational Expectation Maximization (EM) algorithm. In this note we use an alternative implementation of LDA described below.</p>
+</section>
 </section>
 <section id="book-review-example" class="level2">
 <h2 class="anchored" data-anchor-id="book-review-example">Book Review Example</h2>
 <p>As an experiment we construct a small set of documents from two distinct sources. We then run the documents through the LDA algorithm (without identifying the source of each document) specifying that <span class="math inline">\(K = 2\)</span> topics are to be constructed to see whether and how well the constructed topics match the original sources.</p>
 <section id="data" class="level3">
 <h3 class="anchored" data-anchor-id="data">Data</h3>
-<p>“Animal Farm” by George Orwell was published in 1945<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, and nearly forty years later (1984) “The Butter Battle Book” by Dr.&nbsp;Seuss was published<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The books are quite different of course, but they both allude to the Soviet Union in its earlier and later years, respectively.</p>
+<p>“Animal Farm” by George Orwell was published in 1945<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, and nearly forty years later (1984) “The Butter Battle Book” by Dr.&nbsp;Seuss was published<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. The books are quite different of course, but they both allude to the Soviet Union in its earlier and later years, respectively.</p>
 <p>As a toy example of a corpus of documents, we have extracted Wikipedia’s description of the plots of the two books, counting each paragraph as a separate document.</p>
 <p>Here are the successive paragraphs (stripped of punctuation and stop-words) summarizing the two books.</p>
 <details class="code-fold">
@@ -293,7 +313,7 @@ Table&nbsp;2: Term-frequency: number of occurrences of each term within each doc
 </section>
 <section id="lda-function" class="level3">
 <h3 class="anchored" data-anchor-id="lda-function">LDA function</h3>
-<p>We now employ function <code>topicmodels::LDA()</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> to perform latent Dirichlet allocation. The function determines the probable topic of each word within each document by one of two methods: (1) “VEM” (Variational Expectation Maximization); or else (2) “Gibbs” (Gibbs Sampling). The function output, depending on the choice of method, is a list conforming to the format of either <code>LDA_VEM</code> or else <code>LDA_Gibbs</code>.</p>
+<p>We now employ function <code>topicmodels::LDA()</code><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> to perform latent Dirichlet allocation. The function determines the probable topic of each word within each document by one of two methods: (1) “VEM” (Variational Expectation Maximization); or else (2) “Gibbs” (Gibbs Sampling). The function output, depending on the choice of method, is a list conforming to the format of either <code>LDA_VEM</code> or else <code>LDA_Gibbs</code>.</p>
 <p>Here we choose the Gibbs Sampling method because it requires less memory. The <code>DocumentTermMatrix</code> (DTM) representing the corpus of documents (paragraphs) is the primary input to <code>topicmodels::LDA()</code>. (Note that the DTM does not identify the source of each document.) We specify that <code>LDA()</code> should construct <span class="math inline">\(K = 2\)</span> topics from this input corpus.</p>
 <div class="cell">
 <details class="code-fold">
@@ -561,7 +581,7 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
 <h2 class="anchored" data-anchor-id="mathematical-framework">Mathematical Framework</h2>
 <section id="notation" class="level3">
 <h3 class="anchored" data-anchor-id="notation">Notation</h3>
-<p>The data set to be analyzed is a <em>corpus</em> (set) <span class="math inline">\(\mathcal{D}\)</span> of documents, with each <em>document</em> <span class="math inline">\(d \in \mathcal{D}\)</span> consisting of a sequence of words, that may include multiple instances of the same term.</p>
+<p>The data set to be analyzed is a <em>corpus</em> (set) <span class="math inline">\(\mathcal{D}\)</span> of documents. Each <em>document</em> <span class="math inline">\(d \in \mathcal{D}\)</span> is a vector (sequence) of words, that may include multiple instances of the same term.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <p><span id="eq-doc-equals-word-seq"><span class="math display">\[
 \begin{align}
   d &amp;= (w_1, \ldots, w_{|d|})
@@ -570,10 +590,17 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
 <p>The <em>vocabulary</em> <span class="math inline">\(V\)</span> of the corpus is the set of <em>distinct</em> terms that occur in one or more of the documents.</p>
 <p><span id="eq-vocab-defn"><span class="math display">\[
 \begin{align}
-  V &amp;= \cup_{d \in \mathcal{D}} \;  \{ v \in d \}
+  V &amp;= \cup_{d \in \mathcal{D}} \;  \{ v \in d \} \\
+  &amp;= \left \{ v_\nu \right \}_{\nu = 1}^N
 \end{align}
 \qquad(3)\]</span></span></p>
-<p>The elements of <span class="math inline">\(V\)</span> are referred to as <em>terms</em>. We will use <em>word</em> to mean an occurrence of a term within the corpus. With this distinction, the total number of words (term occurrences) in the corpus typically exceeds the number of distinct terms.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>where the elements of <span class="math inline">\(V\)</span> may be indexed, typically in alphabetical order. These elements <span class="math inline">\(v_\nu\)</span> are referred to as <em>terms</em>. We will use <em>word</em> to mean an occurrence of a term within the corpus. With this distinction, the total number of words (term occurrences) in the corpus exceeds or equals the number of distinct terms.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> <a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<p><span id="eq-len-corpus-v-vocab"><span class="math display">\[
+\begin{align}
+  \left | \mathcal{D} \right | &amp;= \sum_{d \in \mathcal{D}} \; |d| \\
+  &amp;\ge | V |
+\end{align}
+\qquad(4)\]</span></span></p>
 <p>A <em>topic</em> <span class="math inline">\(\theta\)</span> is a probability distribution over vocabulary <span class="math inline">\(V\)</span>. Since <span class="math inline">\(V\)</span> consists of a finite number <span class="math inline">\(N = \left | V \right |\)</span> of distinct terms, <span class="math inline">\(\theta\)</span> can be represented as probability vector of length <span class="math inline">\(N\)</span>.</p>
 <p>The number <span class="math inline">\(K\)</span> of topics (categories) is prescribed for each analysis. Given <span class="math inline">\(K\)</span> and <span class="math inline">\(\mathcal{D}\)</span>, LDA produces a <em>topic model</em> defined by a set of constructed topics, <span class="math inline">\(\{ \theta_1, \ldots, \theta_K \}\)</span>. These topic-specific probability vectors are stored in matrix <span class="math inline">\(\beta\)</span>.</p>
 <p><span id="eq-matrix-beta"><span class="math display">\[
@@ -581,39 +608,35 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
   \beta [k, \nu] &amp;= \theta_k[\nu] \\
   &amp;= \text{probability assigned by topic } \theta_k \text{ to term } v_\nu \in V
 \end{align}
-\qquad(4)\]</span></span></p>
+\qquad(5)\]</span></span></p>
 </section>
 <section id="generative-model" class="level3">
 <h3 class="anchored" data-anchor-id="generative-model">Generative Model</h3>
-<p>LDA treats each document as a mixture of topics, and each topic as a mixture of words. LDA adopts a <em>bag-of-words</em> model in which each document <span class="math inline">\(d\)</span> in a corpus of documents <span class="math inline">\(\mathcal{D}\)</span> is generated from two Dirichlet distributions: <span class="math inline">\(Dir(\alpha_\bullet)\)</span> over <span class="math inline">\(K\)</span> possible topics; and <span class="math inline">\(Dir(\eta_\bullet)\)</span> over <span class="math inline">\(N\)</span> possible words. In this model documents are presumed to have been randomly generated as follows.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>LDA treats each document as a mixture of topics, and each topic as a mixture of terms. This is a <em>bag-of-words</em> model in which each document <span class="math inline">\(d\)</span> in a corpus of documents <span class="math inline">\(\mathcal{D}\)</span> is randomly generated as follows.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
 <ul>
-<li>Generate word probability vector <span class="math inline">\(\phi_\bullet (k) \sim Dir(\eta_\bullet )\)</span> for each topic index <span class="math inline">\(k \in \{ 1, 2, \ldots, K \}\)</span></li>
+<li><p>Generate <span class="math inline">\(K\)</span> topics, <span class="math inline">\(\{ \theta_1, \ldots, \theta_K \}\)</span>, from given Dirichlet distribution <span class="math inline">\(Dir(\delta_\bullet)\)</span>, where topic <span class="math inline">\(\theta_k\)</span> is a probability vector over vocabulary <span class="math inline">\(V = \{ v_\nu \}_{\nu = 1}^N\)</span>.</p></li>
+<li><p>For each document <span class="math inline">\(d\)</span> generate probability vector <span class="math inline">\(\varphi_d\)</span> from given Dirichlet distribution <span class="math inline">\(Dir(\alpha_\bullet)\)</span>, where <span class="math inline">\(\varphi_d\)</span> is a probability distribution over topics <span class="math inline">\(\{ \theta_1, \ldots, \theta_K \}\)</span>.</p></li>
+<li><p>For each word-position<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> <span class="math inline">\(j\)</span> in document <span class="math inline">\(d\)</span>: use probability vector <span class="math inline">\(\varphi_d\)</span> to select at random a single topic <span class="math inline">\(\theta_k\)</span>; then use <span class="math inline">\(\theta_k\)</span> to generate a term <span class="math inline">\(v_\nu\)</span>, where <span class="math inline">\(z[d, j] = \nu\)</span> denotes the index of the selected term.</p></li>
 </ul>
-<p>Then for each document <span class="math inline">\(d \in \mathcal{D}\)</span> and for each word position <span class="math inline">\(\nu \in d\)</span>:<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
-<ol type="1">
-<li>Generate topic probability vector <span class="math inline">\(\theta_\bullet (d) \sim Dir(\alpha_\bullet)\)</span></li>
-<li>Assign topic index <span class="math inline">\(\kappa (d,\nu) \sim \theta_\bullet (d)\)</span></li>
-<li>Generate word index <span class="math inline">\(\omega (d,\nu) \sim \phi_\bullet (\kappa (d,\nu))\)</span></li>
-</ol>
 <p>These Dirichlet distributions are typically assumed to be symmetric. That is, if we define</p>
 <p><span id="eq-avg-Dirichlet-param"><span class="math display">\[
 \begin{align}
   \bar{\alpha} &amp;= \frac{\alpha_+}{K} = \frac{1}{K} \sum_{k = 1}^K
 \alpha_k \\
-  \bar{\eta} &amp;= \frac{\eta_+}{N} = \frac{1}{N} \sum_{\nu = 1}^N
-\eta_\nu
+  \bar{\delta} &amp;= \frac{\delta_+}{N} = \frac{1}{N} \sum_{\nu = 1}^N
+\delta_\nu
 \end{align}
-\qquad(5)\]</span></span></p>
-<p>then current practice is to set all elements of vectors <span class="math inline">\(\alpha_\bullet\)</span> and <span class="math inline">\(\eta_\bullet\)</span> equal to their respective average values.</p>
+\qquad(6)\]</span></span></p>
+<p>then current practice is to set all elements of vectors <span class="math inline">\(\alpha_\bullet\)</span> and <span class="math inline">\(\delta_\bullet\)</span> equal to their respective average values.</p>
 <p><span id="eq-symm-Dirichlet"><span class="math display">\[
 \begin{align}
   \alpha_k &amp;= \bar{\alpha} \quad \text{for } k \in \{1, \ldots, K \} \\
-  \eta_\nu &amp;= \bar{\eta} \quad \text{for } \nu \in \{1, \ldots, N \}
+  \delta_\nu &amp;= \bar{\delta} \quad \text{for } \nu \in \{1, \ldots, N \}
 \end{align}
-\qquad(6)\]</span></span></p>
-<p>The values <span class="math inline">\(\bar{\alpha}\)</span> and <span class="math inline">\(\bar{\eta}\)</span> are called <em>concentration</em> parameters.</p>
-<p>For a symmetric Dirichlet distribution as above, if <span class="math inline">\(\bar{\alpha} &lt; 1\)</span> then for each document <span class="math inline">\(d\)</span>, <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a sparse probability vector <span class="math inline">\(\theta_\bullet (d)\)</span> that gives most of its weight to just a few of the K topics (with the selection of topics varying across documents). On the other hand, if <span class="math inline">\(\bar{\alpha} &gt; 1\)</span> then <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a more uniform probability vector <span class="math inline">\(\theta_\bullet (d)\)</span> spread more evenly across all topics.</p>
-<p>As for the distribution of words within a topic, in most applications the number <span class="math inline">\(N\)</span> of distinct words in the corpus <span class="math inline">\(\mathcal{D}\)</span> may be a few thousand or even a few tens of thousands. Then each topic is a mixture across a distinct subset of a large number of words, typically with <span class="math inline">\(\bar{\eta} &lt; 1\)</span>.</p>
+\qquad(7)\]</span></span></p>
+<p>The values <span class="math inline">\(\bar{\alpha}\)</span> and <span class="math inline">\(\bar{\delta}\)</span> are called <em>concentration</em> parameters.</p>
+<p>For a symmetric Dirichlet distribution as above, if <span class="math inline">\(\bar{\alpha} &lt; 1\)</span> then for each document <span class="math inline">\(d\)</span>, <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a sparse probability vector <span class="math inline">\(\varphi_d\)</span> that gives most of its weight to just a few of the K topics (with the selection of topics varying across documents). On the other hand, if <span class="math inline">\(\bar{\alpha} &gt; 1\)</span> then <span class="math inline">\(Dir(\alpha_\bullet)\)</span> tends to generate a more uniform probability vector <span class="math inline">\(\varphi_d\)</span> spread more evenly across all topics.</p>
+<p>As for the distribution of terms within a topic, in most applications the number <span class="math inline">\(N\)</span> of distinct terms in the corpus <span class="math inline">\(\mathcal{D}\)</span> may be a few thousand or even a few tens of thousands. Then each topic is a mixture across a distinct subset of a large number of terms, typically with <span class="math inline">\(\bar{\delta} &lt; 1\)</span>.</p>
 <p>See <span class="citation" data-cites="Antoniak_2023">Antoniak (<a href="#ref-Antoniak_2023" role="doc-biblioref">2023</a>)</span> for practical suggestions on these and other settings and workflows.</p>
 </section>
 <section id="lda-gibbs-algorithm" class="level3">
@@ -626,8 +649,8 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
   n_{w, k} &amp;= \text{number of assignments of topic } k \text{ to unique word } w \\
   n_k &amp;= \text{number of assignments of topic } k \text{ across corpus } \mathcal{D}
 \end{align}
-\qquad(7)\]</span></span></p>
-<p>Then through many iterations the prior distributions <span class="math inline">\(Dir(\alpha_\bullet)\)</span> and <span class="math inline">\(Dir(\eta_\bullet)\)</span> are updated to form posterior distributions based on the data.</p>
+\qquad(8)\]</span></span></p>
+<p>Then through many iterations the prior distributions <span class="math inline">\(Dir(\alpha_\bullet)\)</span> and <span class="math inline">\(Dir(\delta_\bullet)\)</span> are updated to form posterior distributions based on the data.</p>
 <p>The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the word in that position to each topic, conditioned on the current topic assignments of all other words. From this conditional distribution, a topic is generated and stored as the new topic assignment for the given word in the given position.</p>
 <p>A great computational savings is achieved by the choice of a Dirichlet prior for the multinomial distribution of unique topic instances per document, because the Dirichlet distribution is conjugate to the multinomial distribution. For further details on this updating algorithm see <span class="citation" data-cites="Steyvers_Griffiths_2007">Steyvers and Griffiths (<a href="#ref-Steyvers_Griffiths_2007" role="doc-biblioref">2007</a>)</span>.</p>
 </section>
@@ -667,13 +690,15 @@ Steyvers, Mark, and Tom Griffiths. 2007. <em>Probabilistic Topic Models</em>. <a
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>See <span class="citation" data-cites="wiki_Animal_Farm"><span>“Animal Farm | Wikipedia”</span> (<a href="#ref-wiki_Animal_Farm" role="doc-biblioref">2025</a>)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>See <span class="citation" data-cites="wiki_Butter_Battle_Book"><span>“The Butter Battle Book | Wikipedia”</span> (<a href="#ref-wiki_Butter_Battle_Book" role="doc-biblioref">2025</a>)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>See <span class="citation" data-cites="Grün_Hornik_2011">Grün and Hornik (<a href="#ref-Grün_Hornik_2011" role="doc-biblioref">2011</a>)</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>In natural language processing (NLP), text is broken into <em>tokens</em>, a broad term that must be defined for each analysis. In the present context the original text is stripped of punctuation and of commonly occurring words (“stop-words”) so that the remaining words are the tokens analyzed.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>For clarity we use <em>term</em> to mean a distinct element of a vocabulary, and we use <em>word</em> to mean an occurrence of a term in the corpus. There does not seem to be an established jargon for this distinction.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>Other authors use the verb “sample” rather than “generate” to mean random generation from a specified probability distribution.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>We assume that document <span class="math inline">\(d\)</span> consists of <span class="math inline">\(n_d\)</span> word positions, which is either a fixed positive integer, or else is generated independently of other random variables.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>See <span class="citation" data-cites="Steyvers_Griffiths_2007">Steyvers and Griffiths (<a href="#ref-Steyvers_Griffiths_2007" role="doc-biblioref">2007</a>)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>See <span class="citation" data-cites="wiki_Animal_Farm"><span>“Animal Farm | Wikipedia”</span> (<a href="#ref-wiki_Animal_Farm" role="doc-biblioref">2025</a>)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>See <span class="citation" data-cites="wiki_Butter_Battle_Book"><span>“The Butter Battle Book | Wikipedia”</span> (<a href="#ref-wiki_Butter_Battle_Book" role="doc-biblioref">2025</a>)</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>See <span class="citation" data-cites="Grün_Hornik_2011">Grün and Hornik (<a href="#ref-Grün_Hornik_2011" role="doc-biblioref">2011</a>)</span>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p><span class="math inline">\(| S |\)</span> denotes the number of elements in a finite set <span class="math inline">\(S\)</span> (or more generally the cardinality of set <span class="math inline">\(S\)</span>). We extend this notation to a sequence. If <span class="math inline">\(d = (w_1, \ldots, w_n)\)</span> is a finite sequence of words, we treat <span class="math inline">\(d\)</span> as a vector of length <span class="math inline">\(n = |d|\)</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>In natural language processing (NLP), text is broken into <em>tokens</em>, a broad term that must be defined for each analysis. In the present context the original text is stripped of punctuation and of commonly occurring words (“stop-words”) so that the remaining words are the tokens analyzed.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>For clarity we use <em>term</em> to mean a distinct element of a vocabulary, and we use <em>word</em> to mean an occurrence of a term in the corpus. There does not seem to be an established jargon for this distinction.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Other authors use the verb “sample” rather than “generate” to mean random generation from a specified probability distribution.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>We assume that document <span class="math inline">\(d\)</span> is a sequence of <span class="math inline">\(n_d = |d|\)</span> words, where <span class="math inline">\(n_d\)</span> is either a given positive integer, or else is generated independently of other random variables.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

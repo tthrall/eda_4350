@@ -72,13 +72,28 @@ source(here("code", "text_helpers.R"))
 
 ------------------------------------------------------------------------
 
-## Background
+## Introduction
 
-Latent Dirichlet Allocation (LDA) was proposed by @BNJ2003LDA as a method of topic modeling. The method is briefly mentioned in Part 1 of the course. Several course participants requested a more detailed description. This note is a response to that request.
+### Text Analysis
 
-## Text Analysis
+Part 1, Session 2b, of the course presents an overview of text analysis based on @Silge_Robinson_2017.  The authors describe topic models, and in particular the method of Latent Dirichlet Allocation (LDA). Several course participants requested a more detailed description. This note is a response to that request.
 
-Part 1, Session 2b, of the course presents an overview of text analysis based on @Silge_Robinson_2017.  The authors use the `R` function `topicmodels::LDA()` with default parameter setting `method = VEM`, which denotes the Variational Expectation Maximization (EM) algorithm.  In this note we use an alternative implementation of LDA described below.
+### Topic Models[^art-Steyvers-Griffiths-2007]
+
+[^art-Steyvers-Griffiths-2007]:  See @Steyvers_Griffiths_2007.
+
+A topic model treats documents as mixtures of topics, where a topic is a probability distribution over the elements of a vocabulary.  According to the model, each document is generated in the following steps: 
+
+  1. Generate a document-specific probability distribution over a fixed set of topics; and then 
+  1. For each word-position in that document: 
+   i) Select a topic at random; and 
+   i) Generate a vocabulary term from the selected topic.
+
+Standard statistical techniques can be used to invert this process, inferring the set of topics that were responsible for generating a collection of documents.
+
+### LDA Method
+
+Latent Dirichlet Allocation (LDA) was proposed by @BNJ2003LDA as a method of topic modeling. @Silge_Robinson_2017 use the `R` function `topicmodels::LDA()` with default parameter setting `method = VEM`, which denotes the Variational Expectation Maximization (EM) algorithm.  In this note we use an alternative implementation of LDA described below.
 
 ## Book Review Example
 
@@ -780,7 +795,9 @@ This figure further supports the earlier conjecture that topic 1 best matches "T
 
 ### Notation
 
-The data set to be analyzed is a _corpus_ (set) $\mathcal{D}$ of documents, with each _document_ $d \in \mathcal{D}$ consisting of a sequence of words, that may include multiple instances of the same term.
+The data set to be analyzed is a _corpus_ (set) $\mathcal{D}$ of documents.  Each _document_ $d \in \mathcal{D}$ is a vector (sequence) of words, that may include multiple instances of the same term.[^set-cardinality]
+
+[^set-cardinality]: $| S |$ denotes the number of elements in a finite set $S$ (or more generally the cardinality of set $S$).  We extend this notation to a sequence.  If $d = (w_1, \ldots, w_n)$ is a finite sequence of words, we treat $d$ as a vector of length $n = |d|$.
 
 $$
 \begin{align}
@@ -792,15 +809,23 @@ The _vocabulary_ $V$ of the corpus is the set of _distinct_ terms that occur in 
 
 $$
 \begin{align}
-  V &= \cup_{d \in \mathcal{D}} \;  \{ v \in d \}
+  V &= \cup_{d \in \mathcal{D}} \;  \{ v \in d \} \\ 
+  &= \left \{ v_\nu \right \}_{\nu = 1}^N
 \end{align}
 $$ {#eq-vocab-defn}
 
-The elements of $V$ are referred to as _terms_.  We will use _word_ to mean an occurrence of a term within the corpus.  With this distinction, the total number of words (term occurrences) in the corpus typically exceeds the number of distinct terms.[^token-NLP] [^term-v-word]
+where the elements of $V$ may be indexed, typically in alphabetical order.  These elements $v_\nu$ are referred to as _terms_.  We will use _word_ to mean an occurrence of a term within the corpus.  With this distinction, the total number of words (term occurrences) in the corpus exceeds or equals the number of distinct terms.[^token-NLP] [^term-v-word]
 
 [^token-NLP]: In natural language processing (NLP), text is broken into _tokens_, a broad term that must be defined for each analysis.  In the present context the original text is stripped of punctuation and of commonly occurring words ("stop-words") so that the remaining words are the tokens analyzed.
 
 [^term-v-word]: For clarity we use _term_ to mean a distinct element of a vocabulary, and we use _word_ to mean an occurrence of a term in the corpus.  There does not seem to be an established jargon for this distinction.
+
+$$
+\begin{align}
+  \left | \mathcal{D} \right | &= \sum_{d \in \mathcal{D}} \; |d| \\ 
+  &\ge | V |
+\end{align}
+$$ {#eq-len-corpus-v-vocab}
 
 A _topic_ $\theta$ is a probability distribution over vocabulary $V$.  Since $V$ consists of a finite number $N = \left | V \right |$ of distinct terms, $\theta$ can be represented as probability vector of length $N$.
 
@@ -815,19 +840,17 @@ $$ {#eq-matrix-beta}
 
 ### Generative Model
 
-LDA treats each document as a mixture of topics, and each topic as a mixture of words.  LDA adopts a _bag-of-words_ model in which each document $d$ in a corpus of documents $\mathcal{D}$ is generated from two Dirichlet distributions: $Dir(\alpha_\bullet)$ over $K$ possible topics; and $Dir(\eta_\bullet)$ over $N$ possible words.  In this model documents are presumed to have been randomly generated as follows.[^generate-v-sample]
+LDA treats each document as a mixture of topics, and each topic as a mixture of terms.  This is a _bag-of-words_ model in which each document $d$ in a corpus of documents $\mathcal{D}$ is randomly generated as follows.[^generate-v-sample]
 
 [^generate-v-sample]: Other authors use the verb "sample" rather than "generate" to mean random generation from a specified probability distribution.
 
-  - Generate word probability vector $\phi_\bullet (k) \sim Dir(\eta_\bullet )$ for each topic index $k \in \{ 1, 2, \ldots, K \}$
+  - Generate $K$ topics, $\{ \theta_1, \ldots, \theta_K \}$, from given Dirichlet distribution $Dir(\delta_\bullet)$, where topic $\theta_k$ is a probability vector over vocabulary $V = \{ v_\nu \}_{\nu = 1}^N$.
 
-Then for each document $d \in \mathcal{D}$ and for each word position $\nu \in d$:[^doc-length]
+  - For each document $d$ generate probability vector $\varphi_d$ from given Dirichlet distribution $Dir(\alpha_\bullet)$, where $\varphi_d$ is a probability distribution over topics $\{ \theta_1, \ldots, \theta_K \}$.
 
-[^doc-length]:  We assume that document $d$ consists of $n_d$ word positions, which is either a fixed positive integer, or else is generated independently of other random variables.
+  - For each word-position[^doc-length] $j$ in document $d$: use probability vector $\varphi_d$ to select at random a single topic $\theta_k$; then use $\theta_k$ to generate a term $v_\nu$, where $z[d, j] = \nu$ denotes the index of the selected term.
 
-  1. Generate topic probability vector $\theta_\bullet (d) \sim Dir(\alpha_\bullet)$
-  1. Assign topic index $\kappa (d,\nu) \sim \theta_\bullet (d)$
-  1. Generate word index $\omega (d,\nu) \sim \phi_\bullet (\kappa (d,\nu))$
+[^doc-length]:  We assume that document $d$ is a sequence of $n_d = |d|$ words, where $n_d$ is either a given positive integer, or else is generated independently of other random variables.
 
 These Dirichlet distributions are typically assumed to be symmetric.  That is, if we define 
 
@@ -835,25 +858,25 @@ $$
 \begin{align}
   \bar{\alpha} &= \frac{\alpha_+}{K} = \frac{1}{K} \sum_{k = 1}^K
 \alpha_k \\ 
-  \bar{\eta} &= \frac{\eta_+}{N} = \frac{1}{N} \sum_{\nu = 1}^N
-\eta_\nu
+  \bar{\delta} &= \frac{\delta_+}{N} = \frac{1}{N} \sum_{\nu = 1}^N
+\delta_\nu
 \end{align}
 $$ {#eq-avg-Dirichlet-param}
 
-then current practice is to set all elements of vectors $\alpha_\bullet$ and $\eta_\bullet$ equal to their respective average values.
+then current practice is to set all elements of vectors $\alpha_\bullet$ and $\delta_\bullet$ equal to their respective average values.
 
 $$
 \begin{align}
   \alpha_k &= \bar{\alpha} \quad \text{for } k \in \{1, \ldots, K \} \\ 
-  \eta_\nu &= \bar{\eta} \quad \text{for } \nu \in \{1, \ldots, N \}
+  \delta_\nu &= \bar{\delta} \quad \text{for } \nu \in \{1, \ldots, N \}
 \end{align}
 $$ {#eq-symm-Dirichlet}
 
-The values $\bar{\alpha}$ and $\bar{\eta}$ are called _concentration_ parameters.
+The values $\bar{\alpha}$ and $\bar{\delta}$ are called _concentration_ parameters.
 
-For a symmetric Dirichlet distribution as above, if $\bar{\alpha} < 1$ then for each document $d$, $Dir(\alpha_\bullet)$ tends to generate a sparse probability vector $\theta_\bullet (d)$ that gives most of its weight to just a few of the K topics (with the selection of topics varying across documents).  On the other hand, if $\bar{\alpha} > 1$ then $Dir(\alpha_\bullet)$ tends to generate a more uniform probability vector $\theta_\bullet (d)$ spread more evenly across all topics.
+For a symmetric Dirichlet distribution as above, if $\bar{\alpha} < 1$ then for each document $d$, $Dir(\alpha_\bullet)$ tends to generate a sparse probability vector $\varphi_d$ that gives most of its weight to just a few of the K topics (with the selection of topics varying across documents).  On the other hand, if $\bar{\alpha} > 1$ then $Dir(\alpha_\bullet)$ tends to generate a more uniform probability vector $\varphi_d$ spread more evenly across all topics.
 
-As for the distribution of words within a topic, in most applications the number $N$ of distinct words in the corpus $\mathcal{D}$ may be a few thousand or even a few tens of thousands.  Then each topic is a mixture across a distinct subset of a large number of words, typically with $\bar{\eta} < 1$.
+As for the distribution of terms within a topic, in most applications the number $N$ of distinct terms in the corpus $\mathcal{D}$ may be a few thousand or even a few tens of thousands.  Then each topic is a mixture across a distinct subset of a large number of terms, typically with $\bar{\delta} < 1$.
 
 See @Antoniak_2023 for practical suggestions on these and other settings and workflows.
 
@@ -871,7 +894,7 @@ $$
 \end{align}
 $$ {#eq-log-ratio-topic-term}
 
-Then through many iterations the prior distributions $Dir(\alpha_\bullet)$ and $Dir(\eta_\bullet)$ are updated to form posterior distributions based on the data.
+Then through many iterations the prior distributions $Dir(\alpha_\bullet)$ and $Dir(\delta_\bullet)$ are updated to form posterior distributions based on the data.
 
 The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the word in that position to each topic, conditioned on the current topic assignments of all other words.  From this conditional distribution, a topic is generated and stored as the new topic assignment for the given word in the given position.
 
