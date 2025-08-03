@@ -882,21 +882,21 @@ See @Antoniak_2023 for practical suggestions on these and other settings and wor
 
 ### LDA-Gibbs Algorithm
 
-The LDA identification of topics is a particular form of Markov chain Monte Carlo (MCMC) method.  The data can be summarized as the set of unique words across the corpus of documents, along with counts of those unique words per document.  The objective is to determine the topic of each word instance within each document.
+The LDA identification of topics is a particular form of Markov chain Monte Carlo (MCMC) method.  The data can be summarized as the set of unique terms across the corpus of documents, along with counts of those unique terms per document.  The objective is to determine the topic of each term within each document.
 
-Assignment of topics to word positions is intially made at random in a manner similar to the generative model outlined above.  We thereby have initial values for: 
+Assignment of topics to terms is intially made at random in a manner similar to the generative model outlined above.  We thereby have initial values for: 
 
 $$
 \begin{align}
   n_{d, k} &= \text{number of assignments of topic } k \text{ to document } d \\ 
-  n_{w, k} &= \text{number of assignments of topic } k \text{ to unique word } w \\ 
+  n_{\nu, k} &= \text{number of assignments of topic } k \text{ to term } v_\nu \\ 
   n_k &= \text{number of assignments of topic } k \text{ across corpus } \mathcal{D} 
 \end{align}
 $$ {#eq-log-ratio-topic-term}
 
-Then through many iterations the prior distributions $Dir(\alpha_\bullet)$ and $Dir(\delta_\bullet)$ are updated to form posterior distributions based on the data.
+Then through many iterations the topics $\{ \theta_k \}$ and document-specific topic distributions $\{ \varphi_d \}$ are updated to form posterior distributions based on the data.
 
-The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the word in that position to each topic, conditioned on the current topic assignments of all other words.  From this conditional distribution, a topic is generated and stored as the new topic assignment for the given word in the given position.
+The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the term in that position to each topic, conditioned on the current topic assignments of all other terms.  From this conditional distribution, a topic is generated and stored as the new topic assignment for the given term in the given position.
 
 A great computational savings is achieved by the choice of a Dirichlet prior for the multinomial distribution of unique topic instances per document, because the Dirichlet distribution is conjugate to the multinomial distribution.  For further details on this updating algorithm see @Steyvers_Griffiths_2007.
 

@@ -174,7 +174,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">11:08 Sun 3-Aug-2025</p>
+      <p class="date">12:15 Sun 3-Aug-2025</p>
     </div>
   </div>
   
@@ -641,17 +641,17 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
 </section>
 <section id="lda-gibbs-algorithm" class="level3">
 <h3 class="anchored" data-anchor-id="lda-gibbs-algorithm">LDA-Gibbs Algorithm</h3>
-<p>The LDA identification of topics is a particular form of Markov chain Monte Carlo (MCMC) method. The data can be summarized as the set of unique words across the corpus of documents, along with counts of those unique words per document. The objective is to determine the topic of each word instance within each document.</p>
-<p>Assignment of topics to word positions is intially made at random in a manner similar to the generative model outlined above. We thereby have initial values for:</p>
+<p>The LDA identification of topics is a particular form of Markov chain Monte Carlo (MCMC) method. The data can be summarized as the set of unique terms across the corpus of documents, along with counts of those unique terms per document. The objective is to determine the topic of each term within each document.</p>
+<p>Assignment of topics to terms is intially made at random in a manner similar to the generative model outlined above. We thereby have initial values for:</p>
 <p><span id="eq-log-ratio-topic-term"><span class="math display">\[
 \begin{align}
   n_{d, k} &amp;= \text{number of assignments of topic } k \text{ to document } d \\
-  n_{w, k} &amp;= \text{number of assignments of topic } k \text{ to unique word } w \\
+  n_{\nu, k} &amp;= \text{number of assignments of topic } k \text{ to term } v_\nu \\
   n_k &amp;= \text{number of assignments of topic } k \text{ across corpus } \mathcal{D}
 \end{align}
 \qquad(8)\]</span></span></p>
-<p>Then through many iterations the prior distributions <span class="math inline">\(Dir(\alpha_\bullet)\)</span> and <span class="math inline">\(Dir(\delta_\bullet)\)</span> are updated to form posterior distributions based on the data.</p>
-<p>The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the word in that position to each topic, conditioned on the current topic assignments of all other words. From this conditional distribution, a topic is generated and stored as the new topic assignment for the given word in the given position.</p>
+<p>Then through many iterations the topics <span class="math inline">\(\{ \theta_k \}\)</span> and document-specific topic distributions <span class="math inline">\(\{ \varphi_d \}\)</span> are updated to form posterior distributions based on the data.</p>
+<p>The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the term in that position to each topic, conditioned on the current topic assignments of all other terms. From this conditional distribution, a topic is generated and stored as the new topic assignment for the given term in the given position.</p>
 <p>A great computational savings is achieved by the choice of a Dirichlet prior for the multinomial distribution of unique topic instances per document, because the Dirichlet distribution is conjugate to the multinomial distribution. For further details on this updating algorithm see <span class="citation" data-cites="Steyvers_Griffiths_2007">Steyvers and Griffiths (<a href="#ref-Steyvers_Griffiths_2007" role="doc-biblioref">2007</a>)</span>.</p>
 </section>
 </section>
