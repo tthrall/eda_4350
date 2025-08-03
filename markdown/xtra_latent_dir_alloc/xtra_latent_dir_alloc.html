@@ -174,7 +174,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">12:15 Sun 3-Aug-2025</p>
+      <p class="date">12:58 Sun 3-Aug-2025</p>
     </div>
   </div>
   
@@ -650,14 +650,14 @@ Figure&nbsp;2: Log2 ratio of beta in topic 2 / topic 1
   n_k &amp;= \text{number of assignments of topic } k \text{ across corpus } \mathcal{D}
 \end{align}
 \qquad(8)\]</span></span></p>
-<p>Then through many iterations the topics <span class="math inline">\(\{ \theta_k \}\)</span> and document-specific topic distributions <span class="math inline">\(\{ \varphi_d \}\)</span> are updated to form posterior distributions based on the data.</p>
-<p>The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the term in that position to each topic, conditioned on the current topic assignments of all other terms. From this conditional distribution, a topic is generated and stored as the new topic assignment for the given term in the given position.</p>
-<p>A great computational savings is achieved by the choice of a Dirichlet prior for the multinomial distribution of unique topic instances per document, because the Dirichlet distribution is conjugate to the multinomial distribution. For further details on this updating algorithm see <span class="citation" data-cites="Steyvers_Griffiths_2007">Steyvers and Griffiths (<a href="#ref-Steyvers_Griffiths_2007" role="doc-biblioref">2007</a>)</span>.</p>
+<p>The Gibbs sampling procedure treats in turn each word position in the corpus, and estimates the probability of assigning the term in that position to each topic, conditioned on the current topic assignments of all other terms. From this conditional distribution, a topic is generated and stored as the new topic assignment for the given term in the given position.</p>
+<p>Through many iterations the counts <span class="math inline">\(n_{d, k}, n_{\nu, k}, n_k\)</span> are updated, thereby updating the constructed topics <span class="math inline">\(\{ \theta_k \}\)</span> and document-specific topic distributions <span class="math inline">\(\{ \varphi_d \}\)</span>.</p>
+<p>A great computational savings is achieved by the choice of a Dirichlet prior for the probability vectors <span class="math inline">\(\{ \theta_k \}\)</span> and <span class="math inline">\(\{ \varphi_d \}\)</span>, and thus for the multinomial distributions of the counts <span class="math inline">\(n_{d, k}, n_{\nu, k}, n_k\)</span>. This is because the Dirichlet distribution is conjugate to the multinomial distribution. For further details on this updating algorithm see <span class="citation" data-cites="Steyvers_Griffiths_2007">Steyvers and Griffiths (<a href="#ref-Steyvers_Griffiths_2007" role="doc-biblioref">2007</a>)</span>.</p>
 </section>
 </section>
 <section id="concluding-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
-<p>Topic modeling is an active area of research that contributes to the statistical analysis of large document collections. The LDA model of document-generation enables Bayesian analysis of the latent structure of a corpus of documents.</p>
+<p>Topic modeling is an active area of research that contributes to the statistical analysis of large document collections. The LDA model of document-generation specifies prior Dirichlet distributions for topics, and for the mixture of topics within each document, respectively. This enables efficient Bayesian analysis of the latent structure of a corpus of documents.</p>
 </section>
 <section id="references" class="level2 unnumbered">
 

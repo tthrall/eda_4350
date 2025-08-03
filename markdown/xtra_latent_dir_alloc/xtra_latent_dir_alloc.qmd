@@ -894,14 +894,14 @@ $$
 \end{align}
 $$ {#eq-log-ratio-topic-term}
 
-Then through many iterations the topics $\{ \theta_k \}$ and document-specific topic distributions $\{ \varphi_d \}$ are updated to form posterior distributions based on the data.
+The Gibbs sampling procedure treats in turn each word position in the corpus, and estimates the probability of assigning the term in that position to each topic, conditioned on the current topic assignments of all other terms.  From this conditional distribution, a topic is generated and stored as the new topic assignment for the given term in the given position.
 
-The Gibbs sampling procedure treats each word position in the text collection in turn, and estimates the probability of assigning the term in that position to each topic, conditioned on the current topic assignments of all other terms.  From this conditional distribution, a topic is generated and stored as the new topic assignment for the given term in the given position.
+Through many iterations the counts $n_{d, k}, n_{\nu, k}, n_k$ are updated, thereby updating the constructed topics $\{ \theta_k \}$ and document-specific topic distributions $\{ \varphi_d \}$.
 
-A great computational savings is achieved by the choice of a Dirichlet prior for the multinomial distribution of unique topic instances per document, because the Dirichlet distribution is conjugate to the multinomial distribution.  For further details on this updating algorithm see @Steyvers_Griffiths_2007.
+A great computational savings is achieved by the choice of a Dirichlet prior for the probability vectors $\{ \theta_k \}$ and  $\{ \varphi_d \}$, and thus for the multinomial distributions of the counts $n_{d, k}, n_{\nu, k}, n_k$.  This is because the Dirichlet distribution is conjugate to the multinomial distribution.  For further details on this updating algorithm see @Steyvers_Griffiths_2007.
 
 ## Concluding Remarks
 
-Topic modeling is an active area of research that contributes to the statistical analysis of large document collections.  The LDA model of document-generation enables Bayesian analysis of the latent structure of a corpus of documents.
+Topic modeling is an active area of research that contributes to the statistical analysis of large document collections.  The LDA model of document-generation specifies prior Dirichlet distributions for topics, and for the mixture of topics within each document, respectively.  This enables efficient Bayesian analysis of the latent structure of a corpus of documents.
 
 ## References
